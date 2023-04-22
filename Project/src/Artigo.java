@@ -1,5 +1,7 @@
 import com.sun.jdi.PrimitiveValue;
 
+import java.io.Serializable;
+
 /**
  * Descrição classe
  *
@@ -7,7 +9,7 @@ import com.sun.jdi.PrimitiveValue;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public abstract class Artigo
+public abstract class Artigo implements Serializable
 {
     private int id;
     private String descricao;

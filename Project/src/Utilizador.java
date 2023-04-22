@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 /**
  * Descrição classe
@@ -7,9 +8,10 @@
  * @author Rafael Gomes A96208
  */
 
-public class Utilizador {
+public class Utilizador implements Serializable {
     private int id;
     private String email;
+    private String palavraPasse;
     private String nome;
     private String morada;
     private int nrFiscal;
@@ -20,16 +22,18 @@ public class Utilizador {
 
         this.id = 0;
         this.email = "";
+        this.palavraPasse = "";
         this.nome = "";
         this.morada = "";
         this.nrFiscal = 0;
 
     }
 
-    public Utilizador(int id, String email, String nome, String morada, int nrFiscal) {
+    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal) {
 
         this.id = id;
         this.email = email;
+        this.palavraPasse = palavraPasse;
         this.nome = nome;
         this.morada = morada;
         this.nrFiscal = nrFiscal;
@@ -40,6 +44,7 @@ public class Utilizador {
 
         this.id = utilizador.getId();
         this.email = utilizador.getEmail();
+        this.palavraPasse = utilizador.getPalavraPasse();
         this.nome = utilizador.getNome();
         this.morada = utilizador.getMorada();
         this.nrFiscal = utilizador.getNrFiscal();
@@ -60,6 +65,16 @@ public class Utilizador {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPalavraPasse()
+    {
+        return palavraPasse;
+    }
+
+    public void setPalavraPasse(String palavraPasse)
+    {
+        this.palavraPasse = palavraPasse;
     }
 
     public String getNome() {

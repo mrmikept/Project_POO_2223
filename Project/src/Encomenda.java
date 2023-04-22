@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Encomenda
+public class Encomenda implements Serializable
 {
     private ArrayList<Artigo> listaArtigos;
     private int dimensao;

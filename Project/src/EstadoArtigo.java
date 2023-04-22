@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Descrição classe
  *
@@ -5,7 +7,7 @@
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class EstadoArtigo
+public class EstadoArtigo implements Serializable
 {
     private int tipoEstado;
     private double avaliacao;

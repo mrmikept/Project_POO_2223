@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -6,7 +7,7 @@ import java.io.ObjectOutputStream;
 
 public class CarregamentoFicheiro {
     
-    public static void escreveFicheiro(Sistema sistema, String path){
+    public static void escreveFicheiro(Sistema sistema, String path) throws IOException{
         File ficheiro = new File(path);
         ficheiro.delete();
         ficheiro.createNewFile();
@@ -15,7 +16,7 @@ public class CarregamentoFicheiro {
         estado.close();
     }
 
-    public static Sistema carregaFicheiro(String path){
+    public static Sistema carregaFicheiro(String path) throws IOException, ClassNotFoundException{
         Sistema sistema = new sistema();
         File ficheiro = new File(path);
         if(ficheiro.exists()){

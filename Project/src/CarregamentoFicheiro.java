@@ -17,7 +17,7 @@ public class CarregamentoFicheiro {
     }
 
     public static Sistema carregaFicheiro(String path) throws IOException, ClassNotFoundException{
-        Sistema sistema = new sistema();
+        Sistema sistema = new Sistema();
         File ficheiro = new File(path);
         if(ficheiro.exists()){
             ObjectInputStream estado = new ObjectInputStream(new FileInputStream(ficheiro));

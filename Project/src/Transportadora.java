@@ -6,6 +6,7 @@
  * @author Rafael Gomes A96208
  */
 public class Transportadora {
+    private String nome;
     private double margemLucro;
     private int tipo;
 
@@ -14,20 +15,31 @@ public class Transportadora {
 
     public Transportadora()
     {
+        this.nome = "";
         this.margemLucro = 0.0;
         this.tipo = NORMAL;
     }
 
-    public Transportadora(double lucro, int tipo)
+    public Transportadora(String nome, double lucro, int tipo)
     {
+        this.nome = nome;
         this.margemLucro = lucro;
         this.tipo = tipo;
     }
 
     public Transportadora(Transportadora transportadora)
     {
+        this.nome = transportadora.getNome();
         this.margemLucro = transportadora.getMargemLucro();
         this.tipo = transportadora.getTipo();
+    }
+
+    public String getNome(){
+        return nome;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
     }
 
     public double getMargemLucro() {

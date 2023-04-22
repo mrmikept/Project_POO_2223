@@ -95,23 +95,27 @@ public class Sistema implements Serializable
         //TODO Atualizar sistema e gerar faturas!
     }
 
-    public void adicionaUtilizador(Utilizador utilizador)
+    public void adicionaUtilizador(Utilizador utilizador) throws UtilizadorException
     {
         if (!this.listaUtilizadores.containsKey(utilizador.getEmail()))
         {
             this.listaUtilizadores.put(utilizador.getEmail(),utilizador.clone());
         }
-        //TODO mensagem erro caso exista!
+        else{
+            throw new UtilizadorException("Este utilizador já existe");
+        }
     }
 
-    public void adicionaUtilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal)
+    public void adicionaUtilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException
     {
         if (!this.listaUtilizadores.containsKey(email))
         {
             Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal);
             this.listaUtilizadores.put(email,utilizador);
         }
-        //TODO mensagem erro caso exista!
+        else{
+            throw new UtilizadorException("Este utilizador já existe");
+        }
     }
 
     public void adicionaTransportadora(Transportadora transportadora)
@@ -131,78 +135,95 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaTshirtVenda(Tshirt tshirt)
+    public void adicionaTshirtVenda(Tshirt tshirt) throws TshirtException
     {
         if (!this.listaArtigosVenda.containsKey(tshirt.getId()))
         {
             this.listaArtigosVenda.put(tshirt.getId(),tshirt.clone());
         }
-        //TODO Warning artigo já á venda.
+        else{
+            throw new TshirtException("Este artigo já está à venda");
+        }
     }
 
-    public void adicionaTshirtVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int padrao)
+    public void adicionaTshirtVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int padrao) throws TshirtException
     {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Tshirt tshirt = new Tshirt(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, padrao);
             this.listaArtigosVenda.put(id,tshirt);
         }
-        //TODO Warning artigo já á venda
+        else{
+            throw new TshirtException("Este artigo já está à venda");
+        }
     }
 
-    public void adicionaSapatilhaVenda(Sapatilha sapatilha)
+    public void adicionaSapatilhaVenda(Sapatilha sapatilha) throws SapatilhaException
     {
         if (!this.listaArtigosVenda.containsKey(sapatilha.getId()))
         {
             this.listaArtigosVenda.put(sapatilha.getId(),sapatilha.clone());
         }
-        //TODO Warning artigo já á venda
+        else{
+            throw new SapatilhaException("Este artigo já está à venda");
+        }
     }
-    public void adicionaSapatilhaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo)
+    public void adicionaSapatilhaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws SapatilhaException
     {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Sapatilha sapatilha = new Sapatilha(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, data, tipo);
             this.listaArtigosVenda.put(id,sapatilha);
         }
-        //TODO Warning artigo já á venda
+        else{
+            throw new SapatilhaException("Este artigo já está à venda");
+        }
     }
 
-    public void adicionaMalaVenda(Mala mala)
+    public void adicionaMalaVenda(Mala mala) throws MalaException
     {
         if (!this.listaArtigosVenda.containsKey(mala.getId()))
         {
             this.listaArtigosVenda.put(mala.getId(),mala.clone());
         }
-        //TODO Warning artigo já á venda
+        else{
+            throw new MalaException("Este artigo já está à venda");
+        }
     }
 
-    public void adicionaMalaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public void adicionaMalaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws MalaException
     {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Mala mala = new Mala(id,descricao,marca,precoBase, correcaoPreco, estado, transportadora, dimensao, material, anoLancamento, tipo);
             this.listaArtigosVenda.put(id,mala);
         }
-        //TODO Warning artigo já á venda
+        else{
+            throw new MalaException("Este artigo já está à venda");
+        }
     }
 
-    public Utilizador procuraUtilizador(String email)
+    
+    public Utilizador procuraUtilizador(String email) throws UtilizadorException
     {
         if (listaUtilizadores.containsKey(email))
         {
             return listaUtilizadores.get(email);
         }
-        //TODO Warning utilizdor não encontrado
+        else{
+            throw new UtilizadorException("O utilizador com o email:" + email + "não encontrado");
+        }
     }
 
-    public Artigo procuraArtigoVenda(int id)
+    public Artigo procuraArtigoVenda(int id) throws ArtigoException
     {
         if (listaArtigosVenda.containsKey(id))
         {
             return listaArtigosVenda.get(id);
         }
-        //TODO Warning artigo não encontrado
+        else{
+            throw new ArtigoException("O artigo com o id" + id + "não existe");
+        }
     }
 
     public Sistema clone()

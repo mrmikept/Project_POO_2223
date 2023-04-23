@@ -101,6 +101,16 @@ public class Utilizador implements Serializable {
         this.nrFiscal = nrFiscal;
     }
 
+
+    public String toString()
+    {
+        return "Utilizador numero: " + this.getId() + "\n" +
+                "Email: " + this.getEmail() + "\n" +
+                "Nome: " + this.getNome() + "\n" +
+                "Morada: " + this.getMorada() + "\n" +
+                "Numero Fiscal: " + this.getNrFiscal() + "\n";
+    }
+
     public Utilizador clone() {
         return new Utilizador(this);
     }

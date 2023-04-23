@@ -162,5 +162,6 @@ replay_pid*
 # Mine
 
 .idea/workspace.xml
+teste.java
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,visualstudiocode

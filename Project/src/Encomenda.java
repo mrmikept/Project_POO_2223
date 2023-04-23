@@ -15,6 +15,7 @@ public class Encomenda implements Serializable
     private int dimensao;
     private double precoFinal;
     private int estado;
+
     private LocalDate data;
 
     //Pequeno: Encomenda com apenas 1 artigo.
@@ -87,8 +88,67 @@ public class Encomenda implements Serializable
         this.data = data;
     }
 
+    public void alteraDimensãoEncomenda(int tamanho)
+    {
+        if (tamanho <= 1)
+        {
+            this.setDimensao(PEQUENO);
+        }
+        if (tamanho >= 2 && tamanho <= 5)
+        {
+            this.setDimensao(MEDIO);
+        }
+        if (tamanho >= 6)
+        {
+            this.setDimensao(GRANDE);
+        }
+    }
+
+    public void alteraPreco()
+    {
+        double valorArtigos = this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() +
+                this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
+
+
+        System.out.println(valorArtigos);
+    }
+
+    public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException
+    {
+        if (!this.listaArtigos.contains(artigo))
+        {
+            this.listaArtigos.add(artigo);
+            this.alteraDimensãoEncomenda(this.listaArtigos.size());
+            //TODO Maybe alteração do preço aqui??????
+        }
+        else throw new EncomendaException("Este Artigo já se encontra na encomenda!");
+    }
+
+    public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException
+    {
+        if (this.listaArtigos.contains(artigo))
+        {
+            this.listaArtigos.remove(artigo);
+            this.alteraDimensãoEncomenda(this.listaArtigos.size());
+            //TODO Maybe alteração do preço aqui??
+        }
+        else throw new EncomendaException("Este Artigo não se encontra na encomenda!");
+    }
+
     public Encomenda clone()
     {
         return new Encomenda(this);
+    }
+
+    public String toString()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("[Encomenda] ");
+        string.append("Artigos: " + this.listaArtigos.toString() + "\n");
+        string.append("Dimensão: " + this.getDimensao() + "\n");
+        string.append("Preço Final: " + this.getPrecoFinal() + "\n");
+        string.append("Estado: " + this.getEstado() + "\n");
+        string.append("Data criação: " + this.getData().toString());
+        return string.toString();
     }
 }

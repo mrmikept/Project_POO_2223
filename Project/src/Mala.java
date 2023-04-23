@@ -76,6 +76,15 @@ public class Mala extends Artigo
         this.tipo = tipo;
     }
 
+    public double getCorrecaoPreco()
+    {
+        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO)
+        {
+            return (this.getPrecoBase() / this.getDimensao()) * -1;
+        }
+        return 0;
+    }
+
     public Mala clone()
     {
         return new Mala(this);

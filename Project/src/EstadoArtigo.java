@@ -16,8 +16,6 @@ public class EstadoArtigo implements Serializable
     public static final int NOVO = 0;
     public static final int USADO = 1;
 
-    //TODO DEFINE AVALIACAO POR OMISSÃO 5 ESTRELAS
-
     public EstadoArtigo()
     {
         this.tipoEstado = NOVO;
@@ -61,6 +59,21 @@ public class EstadoArtigo implements Serializable
     public int getNrDonos() {
         return nrDonos;
     }
+
+    public String toString()
+    {
+        if (this.tipoEstado == NOVO)
+        {
+            return "NOVO";
+        }
+        else
+        {
+            return "USADO" + "\n" +
+                    "Avaliação Artigo: " + this.getAvaliacao() + "\n" +
+                    "Número de Donos: " + this.getNrDonos();
+        }
+    }
+
 
     public EstadoArtigo clone()
     {

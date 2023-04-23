@@ -90,6 +90,19 @@ public class Sapatilha extends Artigo {
         this.tipo = tipo;
     }
 
+    public double getCorrecaoPreco()
+    {
+        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getEstado().getNrDonos() <= 10)
+        {
+            return (1 - ((((double)this.getEstado().getNrDonos() / 11) * (1- ((double)this.getEstado().getAvaliacao() / 6)))));
+        } else if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getEstado().getNrDonos() > 10) {
+            return (1 - (((10.0 / 11) * (1- ((double)this.getEstado().getAvaliacao() / 6)))));
+        } else if (this.getEstado().getTipoEstado() == EstadoArtigo.NOVO && this.getTamanho() > 45) {
+            return 0.3;
+        }
+        return 0;
+    }
+
     public Sapatilha clone()
     {
         return new Sapatilha(this);

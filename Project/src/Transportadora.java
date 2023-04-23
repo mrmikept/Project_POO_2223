@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * Descrição classe
  *
@@ -5,7 +7,7 @@
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Transportadora {
+public class Transportadora implements Serializable {
     private String nome;
     private double margemLucro;
     private int tipo;
@@ -56,6 +58,20 @@ public class Transportadora {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    private String tipotoString()
+    {
+        if (this.getTipo() == NORMAL)
+        {
+            return "Normal";
+        }
+        return "Premium";
+    }
+
+    public String toString()
+    {
+        return this.getNome() + ", Margem de Lucro: " + this.getMargemLucro() + ", Tipo de transportadora: " + this.tipotoString() + "\n";
     }
 
     public Transportadora clone()

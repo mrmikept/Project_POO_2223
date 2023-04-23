@@ -12,6 +12,7 @@ public class Tshirt extends Artigo
 {
     private int tamanho;
     private int padrao;
+    private double correcaoPreco;
 
     public static final int LISA = 0;
     public static final int RISCAS = 1;
@@ -57,6 +58,55 @@ public class Tshirt extends Artigo
 
     public void setPadrao(int padrao) {
         this.padrao = padrao;
+    }
+
+    @Override
+    public double getCorrecaoPreco() {
+        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getPadrao() != Tshirt.LISA)
+        {
+            return (this.getPrecoBase() * (-0.5));
+        }
+        return 0;
+    }
+
+    private String tamanhoToString()
+    {
+        if (this.getTamanho() == S)
+        {
+            return "S";
+        }
+        if (this.getTamanho() == M)
+        {
+            return "M";
+        }
+        if (this.getTamanho() == L)
+        {
+            return "L";
+        }
+        return "XL";
+    }
+
+    private String padraoToString()
+    {
+        if (this.getPadrao() == LISA)
+        {
+            return "Lisa";
+        }
+        if (this.getPadrao() == RISCAS)
+        {
+            return "Riscas";
+        }
+        return "Palmeiras";
+    }
+
+    public String toString()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("[Artigo Tshirt]" + "\n");
+        string.append(super.toString());
+        string.append("Tamanho: " + this.tamanhoToString() + "\n");
+        string.append("Padrão: " + this.padraoToString() + "\n");
+        return string.toString();
     }
 
     @Override

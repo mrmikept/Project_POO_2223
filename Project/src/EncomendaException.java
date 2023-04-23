@@ -1,2 +1,6 @@
-package PACKAGE_NAME;public class EncomendaException {
+public class EncomendaException extends Exception
+{
+    public EncomendaException(String erro){
+        super(erro);
+    }
 }

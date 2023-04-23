@@ -27,7 +27,7 @@ public abstract class Artigo implements Serializable
         this.precoBase = 0.0;
         this.correcaoPreco = 0.0;
         this.estado = new EstadoArtigo();
-        //TODO Construtor da transportadora
+        this.transportadora = new Transportadora();
     }
 
     public Artigo(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora)
@@ -38,7 +38,7 @@ public abstract class Artigo implements Serializable
         this.precoBase = precoBase;
         this.correcaoPreco = correcaoPreco;
         this.estado = estado.clone();
-        this.transportadora = transportadora;
+        this.transportadora = transportadora.clone();
     }
 
     public Artigo(Artigo artigo)
@@ -48,8 +48,8 @@ public abstract class Artigo implements Serializable
         this.marca = artigo.getMarca();
         this.precoBase = artigo.getPrecoBase();
         this.correcaoPreco = artigo.getCorrecaoPreco();
-        this.estado = artigo.getEstado();
-        this.transportadora = artigo.getTransportadora();
+        this.estado = artigo.getEstado().clone();
+        this.transportadora = artigo.getTransportadora().clone();
     }
 
     public void setId(int id) {
@@ -98,10 +98,7 @@ public abstract class Artigo implements Serializable
         return precoBase;
     }
 
-    public double getCorrecaoPreco() {
-        return correcaoPreco;
-    }
-
+    public abstract double getCorrecaoPreco();
 
     public EstadoArtigo getEstado() {
         return this.estado.clone();
@@ -111,5 +108,21 @@ public abstract class Artigo implements Serializable
         return this.transportadora.clone();
     }
 
+
     public abstract Artigo clone();
+
+    public String toString()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("Identificador: " + this.getId() + "\n");
+        string.append("Descrição: " + this.getDescricao() + "\n");
+        string.append("Marca: " + this.getMarca() + "\n");
+        string.append("Preço Base: " + this.getPrecoBase() + "\n");
+        string.append("Correção Preço: " + this.getCorrecaoPreco() + "\n");
+        string.append("Estado: " + this.getEstado().toString() + "\n");
+        string.append("Transportadora: " + this.getTransportadora().toString());
+
+        return string.toString();
+    }
+
 }

@@ -97,6 +97,7 @@ public class Sistema implements Serializable
 
     /**
      * Adiciona um utilizador à lista de utilizadores do Sistema.
+     *
      * @param utilizador Um utilizdor
      * @throws UtilizadorException Caso o utilizdor já exista
      */
@@ -111,100 +112,142 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaUtilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException
+    /**
+     * Adiciona um utilizador à lista de utilizadores do Sistema
+     *
+     * @param email Email do utilizador
+     * @param palavraPasse Palavra-passe do utilizador
+     * @param nome Nome do utilizador
+     * @param morada Morada Fiscal do utilizador
+     * @param nrFiscal Numero de contribuinte do utilizador
+     * @throws UtilizadorException Caso o utilizador já exista
+     */
+    public void adicionaUtilizador( String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException
     {
         if (!this.listaUtilizadores.containsKey(email))
         {
+            int id = this.listaUtilizadores.size() + 1;
             Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal);
             this.listaUtilizadores.put(email,utilizador);
         }
-        else{
+        else
+        {
             throw new UtilizadorException("O utilizador com email: "+ email + " já existe!");
         }
     }
 
-    public void adicionaTransportadora(Transportadora transportadora)
+    /**
+     * Adiciona uma transportadora à lista de transportadoras do Sistema
+     *
+     * @param transportadora Uma transportadora
+     * @throws TransportadoraException Caso a Transportadora já exista
+     */
+    public void adicionaTransportadora(Transportadora transportadora) throws TransportadoraException
     {
         if(!this.listaTransportadoras.containsKey(transportadora.getNome()))
         {
             this.listaTransportadoras.put(transportadora.getNome(),transportadora.clone());
         }
+        else
+        {
+            throw new TransportadoraException("A Transportadora " + transportadora.getNome() + " já existe!");
+        }
     }
 
-    public void adicionaTransportadora(String nome, double lucro, int tipo)
+    /**
+     * Adiciona uma transportadora à lista de transportadoras do Sistema
+     *
+     * @param nome Nome da transportadora
+     * @param lucro Margem de lucro da Transportadora
+     * @param tipo Tipo de transportadora
+     * @throws TransportadoraException Caso a Transportadora já exista
+     */
+    public void adicionaTransportadora(String nome, double lucro, int tipo) throws TransportadoraException
     {
         if (!this.listaTransportadoras.containsKey(nome))
         {
             Transportadora transportadora = new Transportadora(nome, lucro, tipo);
             this.listaTransportadoras.put(nome,transportadora);
         }
+        else
+        {
+            throw new TransportadoraException("A Transportadora " + nome + " já existe!");
+        }
     }
 
-    public void adicionaTshirtVenda(Tshirt tshirt) throws TshirtException
+    public void adicionaArtigoVenda(Artigo artigo) throws ArtigoException
     {
+        if (!this.listaArtigosVenda.containsKey(artigo.getId()))
+        {
+            this.listaArtigosVenda.put(artigo.getId(), artigo.clone());
+        }
+    }
+
+    /**
+     * Adiciona o artigo Tshirt à lista de artigos
+     *
+     * @param tshirt
+     * @throws ArtigoException
+     */
+    public void adicionaTshirtVenda(Tshirt tshirt) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(tshirt.getId()))
         {
             this.listaArtigosVenda.put(tshirt.getId(),tshirt.clone());
         }
         else{
-            throw new TshirtException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
 
-    public void adicionaTshirtVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int padrao) throws TshirtException
-    {
+    public void adicionaTshirtVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int padrao) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Tshirt tshirt = new Tshirt(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, padrao);
             this.listaArtigosVenda.put(id,tshirt);
         }
         else{
-            throw new TshirtException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
 
-    public void adicionaSapatilhaVenda(Sapatilha sapatilha) throws SapatilhaException
-    {
+    public void adicionaSapatilhaVenda(Sapatilha sapatilha) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(sapatilha.getId()))
         {
             this.listaArtigosVenda.put(sapatilha.getId(),sapatilha.clone());
         }
         else{
-            throw new SapatilhaException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
-    public void adicionaSapatilhaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws SapatilhaException
-    {
+    public void adicionaSapatilhaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Sapatilha sapatilha = new Sapatilha(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, data, tipo);
             this.listaArtigosVenda.put(id,sapatilha);
         }
         else{
-            throw new SapatilhaException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
 
-    public void adicionaMalaVenda(Mala mala) throws MalaException
-    {
+    public void adicionaMalaVenda(Mala mala) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(mala.getId()))
         {
             this.listaArtigosVenda.put(mala.getId(),mala.clone());
         }
         else{
-            throw new MalaException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
 
-    public void adicionaMalaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws MalaException
-    {
+    public void adicionaMalaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(id))
         {
             Mala mala = new Mala(id,descricao,marca,precoBase, correcaoPreco, estado, transportadora, dimensao, material, anoLancamento, tipo);
             this.listaArtigosVenda.put(id,mala);
         }
         else{
-            throw new MalaException("Este artigo já está à venda");
+            throw new ArtigoException("Este Artigo já está à venda");
         }
     }
 

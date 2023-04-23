@@ -59,7 +59,7 @@ public class CarregamentoBackup {
                     try{
                         artVenda(aux, sistema);
                     }
-                    catch(SapatilhaException|MalaException|TshirtException|ArtigoException a){
+                    catch(ArtigoException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -68,7 +68,7 @@ public class CarregamentoBackup {
                     try{
                         artCompra(aux, sistema);
                     }
-                    catch(SapatilhaException|MalaException|TshirtException|ArtigoException a){
+                    catch(ArtigoException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -88,17 +88,16 @@ public class CarregamentoBackup {
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException{
         String[] camposUtil = aux[1].split(",");
-        int id = Integer.valueOf(camposUtil[0]);
-        String email = camposUtil[1];
-        String palavraPasse = camposUtil[2];
-        String nome = camposUtil[3];
-        String morada = camposUtil[4];
-        int nrFiscal = Integer.valueOf(camposUtil[5]);
-        sistema.adicionaUtilizador(id, email, palavraPasse, nome, morada, nrFiscal);
+        String email = camposUtil[0];
+        String palavraPasse = camposUtil[1];
+        String nome = camposUtil[2];
+        String morada = camposUtil[3];
+        int nrFiscal = Integer.valueOf(camposUtil[4]);
+        sistema.adicionaUtilizador(email, palavraPasse, nome, morada, nrFiscal);
     }
     
 
-    public void artVenda(String[] aux, Sistema sistema) throws SapatilhaException,MalaException,TshirtException,ArtigoException{
+    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException{
         String[] camposArt = aux[1].split(",");
         int id = Integer.valueOf(camposArt[1]);
         String descricao = camposArt[2];
@@ -131,7 +130,7 @@ public class CarregamentoBackup {
 
     }
 
-    public void artCompra(String[] aux, Sistema sistema) throws SapatilhaException,MalaException,TshirtException,ArtigoException{
+    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException{
         String[] camposArtComp = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArtComp[0]);
         int idUtilizador = Integer.valueOf(camposArtComp[1]);

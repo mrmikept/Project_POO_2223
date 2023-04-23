@@ -263,6 +263,17 @@ public class Sistema implements Serializable
         }
     }
 
+    public boolean verificaUtilizador(String email) throws UtilizadorException
+    {
+        return (listaUtilizadores.containsKey(email));
+    }
+
+    public boolean verificaPassword(String email, String pass) throws UtilizadorException
+    {
+        Utilizador utilizador = procuraUtilizador(email);
+        return (pass.compareTo(utilizador.getPalavraPasse()) == 0);
+    }
+
     public Artigo procuraArtigoVenda(int id) throws ArtigoException
     {
         if (listaArtigosVenda.containsKey(id))

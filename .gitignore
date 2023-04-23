@@ -159,4 +159,8 @@ replay_pid*
 .history
 .ionide
 
+# Mine
+
+.idea/workspace.xml
+
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,visualstudiocode

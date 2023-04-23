@@ -95,6 +95,11 @@ public class Sistema implements Serializable
         //TODO Atualizar sistema e gerar faturas!
     }
 
+    /**
+     * Adiciona um utilizador à lista de utilizadores do Sistema.
+     * @param utilizador Um utilizdor
+     * @throws UtilizadorException Caso o utilizdor já exista
+     */
     public void adicionaUtilizador(Utilizador utilizador) throws UtilizadorException
     {
         if (!this.listaUtilizadores.containsKey(utilizador.getEmail()))
@@ -102,7 +107,7 @@ public class Sistema implements Serializable
             this.listaUtilizadores.put(utilizador.getEmail(),utilizador.clone());
         }
         else{
-            throw new UtilizadorException("Este utilizador já existe");
+            throw new UtilizadorException("O utilizador com email: "+ utilizador.getEmail() + " já existe!");
         }
     }
 
@@ -114,7 +119,7 @@ public class Sistema implements Serializable
             this.listaUtilizadores.put(email,utilizador);
         }
         else{
-            throw new UtilizadorException("Este utilizador já existe");
+            throw new UtilizadorException("O utilizador com email: "+ email + " já existe!");
         }
     }
 

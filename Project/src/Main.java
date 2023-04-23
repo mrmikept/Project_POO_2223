@@ -23,7 +23,7 @@ public class Main {
     }
 
     private void run() throws UtilizadorException {
-        String x = "Menu";
+        int x = 0;
         String email, pass, nome, morada;
         int nif;
         boolean bool;
@@ -34,7 +34,7 @@ public class Main {
             switch (x) {
                 case 0:
                     apresentacao.printMenu(s);
-                    x = ler.nextLine();
+                    x = ler.nextInt();
                     break;
                 case 1: //Iniciar sessao
                     System.out.println("Insira o seu email: ");
@@ -52,7 +52,7 @@ public class Main {
                         else
                         {
                             bool = false;
-                            while (!bool && x == 1) {
+                            while (!bool || x == 1) {
                                 System.out.println("PASS INCORRETA!! TENTE DE NOVO");
                                 System.out.println("Insira a sua password: ");
                                 ler = new Scanner(System.in);
@@ -64,6 +64,13 @@ public class Main {
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        System.out.println("Email incorreto! Tente de novo");
+                        ler = new Scanner(System.in);
+                        email = ler.nextLine();
+
                     }
 
                     break;
@@ -106,7 +113,14 @@ public class Main {
 
         } while (x != 7);
     }
+
+
+
 }
+
+
+
+
 
 
 

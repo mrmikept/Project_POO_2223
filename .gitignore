@@ -6,11 +6,11 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
+Project/.idea/**/workspace.xml
+Project/.idea/**/tasks.xml
+Project/.idea/**/usage.statistics.xml
+Project/.idea/**/dictionaries
+Project/.idea/**/shelf
 
 # AWS User-specific
 .idea/**/aws.xml

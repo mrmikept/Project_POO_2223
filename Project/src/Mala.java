@@ -78,11 +78,33 @@ public class Mala extends Artigo
 
     public double getCorrecaoPreco()
     {
-        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO)
+        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getTipo() == NORMAL)
         {
             return (this.getPrecoBase() / this.getDimensao()) * -1;
         }
+        //TODO Acrescimo tipo Premium
         return 0;
+    }
+
+    private String tipoToString()
+    {
+        if (this.getTipo() == Sapatilha.PREMIUM)
+        {
+            return "Premium";
+        }
+        return "Normal";
+    }
+
+    public String toString()
+    {
+        StringBuffer string = new StringBuffer();
+        string.append("[Artigo Mala]");
+        string.append(super.toString());
+        string.append("Dimensão: " + this.getDimensao() + "\n");
+        string.append("Material: " + this.getMaterial() + "\n");
+        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + "\n");
+        string.append("Tipo: " + this.tipoToString());
+        return string.toString();
     }
 
     public Mala clone()

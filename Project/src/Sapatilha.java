@@ -14,10 +14,10 @@ public class Sapatilha extends Artigo {
     private LocalDate dataLancamento;
     private int tipo;
 
-    public static final int CORDAO = 0;
-    public static final int ATILHO = 1;
-    public static final int NORMAL = 0;
-    public static final int PREMIUM = 1;
+    public static final Integer CORDAO = 0;
+    public static final Integer ATILHO = 1;
+    public static final Integer NORMAL = 0;
+    public static final Integer PREMIUM = 1;
 
     public Sapatilha() {
         super();
@@ -95,6 +95,37 @@ public class Sapatilha extends Artigo {
             return this.getPrecoBase() * (-0.2);
         }
         return 0;
+    }
+
+    private String tipoCordaoToString()
+    {
+        if (this.getTipoCordao() == Sapatilha.CORDAO)
+        {
+            return "Cordão";
+        }
+        return "Atilho";
+    }
+
+    private String tipoToString()
+    {
+        if (this.getTipo() == Sapatilha.PREMIUM)
+        {
+            return "Premium";
+        }
+        return "Normal";
+    }
+
+    public String toString()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("[Artigo Sapatilha]" + "\n");
+        string.append(super.toString());
+        string.append("Tamanho: " + this.getTamanho() + "\n");
+        string.append("Tipo Cordão: " + this.tipoCordaoToString() + "\n");
+        string.append("Cor: " + this.getCor() + "\n");
+        string.append("Data Lançamento: " + this.getDataLancamento().toString() + "\n");
+        string.append("Tipo: " + this.tipoToString());
+        return string.toString();
     }
 
     public Sapatilha clone() {

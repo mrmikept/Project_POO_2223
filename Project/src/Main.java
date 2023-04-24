@@ -6,14 +6,6 @@ public class Main {
     private Apresentacao apresentacao;
 
     public static void main(String[] args) throws IOException, UtilizadorException {
-        //int x = 0;
-        //String c;
-        //String[] s = {"Iniciar sessao", "Registar utilizador"};
-        //System.out.println("Bem-vindo!!!");
-        //System.out.println("1 - Iniciar sessao");
-        //System.out.println("2 - Registar utilizador");
-        //Scanner ler = new Scanner(System.in);
-        //x = ler.nextInt();
         new Main().run();
     }
 
@@ -33,7 +25,7 @@ public class Main {
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s);
+                    apresentacao.printMenu(s,x);
                     x = ler.nextInt();
                     break;
                 case 1: //Iniciar sessao
@@ -46,7 +38,7 @@ public class Main {
                         pass = ler.nextLine();
                         if(sistema.verificaPassword(email, pass))
                         {
-                            x = 3;
+                            x = runUtilizador();
                             break;
                         }
                         else
@@ -54,12 +46,19 @@ public class Main {
                             bool = false;
                             while (!bool || x == 1) {
                                 System.out.println("PASS INCORRETA!! TENTE DE NOVO");
+                                System.out.println("DESEJA CONTINUAR A TENTAR?");
+                                System.out.println("1 - SIM");
+                                System.out.println("0 - NAO");
+                                x = ler.nextInt();
+
+                                if (x == 0) break;
+
                                 System.out.println("Insira a sua password: ");
                                 ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if(sistema.verificaPassword(email, pass))
                                 {
-                                    x = 3;
+                                    x = runUtilizador();
                                     break;
                                 }
                             }
@@ -96,17 +95,6 @@ public class Main {
                     sistema.adicionaUtilizador(email, pass, nome, morada, nif);
                     x = 3; //TODO: mudanca de menu
                     break;
-
-                case 3: // MENU DO UTILIZADOR
-                    System.out.println("1 - Comprar");
-                    System.out.println("2 - Vendas");
-                    System.out.println("3 - Faturas");
-                    System.out.println("4 - Sair");
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
-                    break;
-
-                case 4:
             }
 
 
@@ -114,7 +102,36 @@ public class Main {
         } while (x != 7);
     }
 
+    private int runUtilizador() //MENU UTILIZADOR
+    {
+        String[] s = {"1 - Comprar", "2 - Vendas", "3 - Faturas", "4 - Sair"};
+        int x;
+        Scanner ler = new Scanner(System.in);
 
+        apresentacao.printMenu(s,x);
+
+        System.out.println("Insira a sua opcao: ");
+
+        x = ler.nextInt();
+
+        do {
+            switch (x)
+            {
+                case 1: // MENU COMPRAR
+
+                case 2: // MENU VENDAS
+
+                case 3: // MENU FATURAS
+
+                case 4: // VOLTAR PARA TRÁS
+                    return
+
+            }
+        }
+
+
+
+    }
 
 }
 

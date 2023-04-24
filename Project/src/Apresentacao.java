@@ -42,29 +42,28 @@ public class Apresentacao
         System.out.println("     "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
-    public void printMenu(String[] opcoes){
+    public void printMenu(String[] opcoes, int x){
         clear(ECRA);
-        red();
-        System.out.println("VINTAGE");
-        //System.out.println("");
-        //System.out.println("");
-        //System.out.println("");
-        //System.out.println("");
-        //System.out.println("");
 
-        resetColor();
-        int number= ((ECRA - 18) - opcoes.length) / 2;
-        int i=1;
-        clear(number);
-        for(String s: opcoes){
-            printOpcao(i,s);
-            i++;
+        if(x == 0) {
+            red();
+            System.out.println("VINTAGE");
+            resetColor();
+            int number = ((ECRA - 18) - opcoes.length) / 2;
+            int i = 1;
+            clear(number);
+            for (String s : opcoes) {
+                printOpcao(i, s);
+                i++;
+            }
+            cyan();
+            clear(number);
+            line(1);
+            resetColor();
+            System.out.println("     Opção pretendida: ");
         }
-        cyan();
-        clear(number);
-        line(1);
-        resetColor();
-        System.out.println("     Opção pretendida: ");
+
+
     }
 
     public void printLogin() {

@@ -105,7 +105,7 @@ public class Main {
     private int runUtilizador() //MENU UTILIZADOR
     {
         String[] s = {"1 - Comprar", "2 - Vendas", "3 - Faturas", "4 - Sair"};
-        int x;
+        int x = 0;
         Scanner ler = new Scanner(System.in);
 
         apresentacao.printMenu(s,x);
@@ -124,11 +124,11 @@ public class Main {
                 case 3: // MENU FATURAS
 
                 case 4: // VOLTAR PARA TRÁS
-                    return
+                    return 0;
 
             }
-        }
-
+        } while (x != 0);
+        return 0;
 
 
     }

@@ -18,6 +18,7 @@ public class Sistema implements Serializable
     private Map<String, Transportadora> listaTransportadoras;
     private Map<Integer, Artigo> listaArtigosVenda;
     private Map<Integer, Artigo> listaArtigosComprados;
+    private Map<String, Encomenda> listaEncomendas;
     private LocalDate dataSistema;
 
     public Sistema()
@@ -26,15 +27,17 @@ public class Sistema implements Serializable
         this.listaTransportadoras = new HashMap<>();
         this.listaArtigosVenda = new HashMap<>();
         this.listaArtigosComprados = new HashMap<>();
+        this.listaEncomendas = new HashMap<>();
         this.dataSistema = LocalDate.now();
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, LocalDate dataSistema)
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String,Encomenda> listaEncomendas, LocalDate dataSistema)
     {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigosVenda = listaArtigosVenda;
         this.listaArtigosComprados = listaArtigosComprados;
+        this.listaEncomendas = listaEncomendas;
         this.dataSistema = dataSistema;
     }
 
@@ -44,6 +47,7 @@ public class Sistema implements Serializable
         this.listaTransportadoras = sistema.getListaTransportadoras();
         this.listaArtigosVenda = sistema.getListaArtigosVenda();
         this.listaArtigosComprados = sistema.getListaArtigosComprados();
+        this.listaEncomendas = sistema.getListaEncomendas();
         this.dataSistema = sistema.getDataSistema();
     }
 
@@ -77,6 +81,14 @@ public class Sistema implements Serializable
 
     public void setListaArtigosComprados(Map<Integer, Artigo> listaArtigosComprados) {
         this.listaArtigosComprados = listaArtigosComprados.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
+    public Map<String, Encomenda> getListaEncomendas() {
+        return listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
+    public void setListaEncomendas(Map<String, Encomenda> listaEncomendas) {
+        this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public LocalDate getDataSistema()
@@ -284,6 +296,18 @@ public class Sistema implements Serializable
             throw new ArtigoException("O artigo com o id" + id + "não existe");
         }
     }
+
+    public Encomenda procuraEncomenda(String email) throws EncomendaException {
+        if (listaEncomendas.containsKey(email))
+        {
+            return listaEncomendas.get(email);
+        }
+        else
+        {
+            throw new EncomendaException("O Utilizador com email, " + email + " não tem encomendas!");
+        }
+    }
+
 
     public Sistema clone()
     {

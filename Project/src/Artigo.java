@@ -108,6 +108,25 @@ public abstract class Artigo implements Serializable
         return this.transportadora.clone();
     }
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        Artigo artigo = (Artigo) o;
+        return (this.getId() == artigo.getId() &&
+                this.getMarca().equals(artigo.getMarca()) &&
+                this.getPrecoBase() == artigo.getPrecoBase() &&
+                this.getCorrecaoPreco() == artigo.getCorrecaoPreco() &&
+                this.getTransportadora().equals(artigo.getTransportadora()) &&
+                this.getEstado().equals(artigo.getEstado()) &&
+                this.getDescricao().equals(artigo.getDescricao()));
+    }
 
     public abstract Artigo clone();
 
@@ -124,5 +143,6 @@ public abstract class Artigo implements Serializable
 
         return string.toString();
     }
+
 
 }

@@ -74,6 +74,21 @@ public class EstadoArtigo implements Serializable
         }
     }
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        EstadoArtigo estadoArtigo = (EstadoArtigo) o;
+        return (this.getTipoEstado() == estadoArtigo.getTipoEstado() &&
+                this.getAvaliacao() == estadoArtigo.getAvaliacao() &&
+                this.getNrDonos() == estadoArtigo.getNrDonos());
+    }
 
     public EstadoArtigo clone()
     {

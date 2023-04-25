@@ -11,6 +11,10 @@ public class Transportadora implements Serializable {
     private String nome;
     private double margemLucro;
     private int tipo;
+    private int imposto;
+    private double taxaEncPeq;
+    private double taxaEncMed;
+    private double taxaEncGD;
 
     public static final int NORMAL = 0;
     public static final int PREMIUM = 1;
@@ -20,6 +24,7 @@ public class Transportadora implements Serializable {
         this.nome = "";
         this.margemLucro = 0.0;
         this.tipo = NORMAL;
+        this.
     }
 
     public Transportadora(String nome, double lucro, int tipo)

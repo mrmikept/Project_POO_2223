@@ -21,6 +21,16 @@ public class Sistema implements Serializable
     private Map<String, Encomenda> listaEncomendas;
     private LocalDate dataSistema;
 
+    private int imposto;
+    private double taxaEncPequena;
+    private double taxaEncMedia;
+    private double taxaEncGrande;
+
+    private static final int TAXAIMPOSTO_OMISSAO = 23;
+    private static final double TAXAENC_PQ_OMISSAO = 2.55;
+    private static final double TAXAENC_MD_OMISSAO = 3.25;
+    private static final double TAXAENC_GD_OMISSAO = 4.15;
+
     public Sistema()
     {
         this.listaUtilizadores = new HashMap<>();
@@ -29,9 +39,13 @@ public class Sistema implements Serializable
         this.listaArtigosComprados = new HashMap<>();
         this.listaEncomendas = new HashMap<>();
         this.dataSistema = LocalDate.now();
+        this.imposto = TAXAIMPOSTO_OMISSAO;
+        this.taxaEncPequena = TAXAENC_PQ_OMISSAO;
+        this.taxaEncMedia = TAXAENC_MD_OMISSAO;
+        this.taxaEncGrande = TAXAENC_GD_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String,Encomenda> listaEncomendas, LocalDate dataSistema)
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String,Encomenda> listaEncomendas, LocalDate dataSistema, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
     {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
@@ -39,6 +53,10 @@ public class Sistema implements Serializable
         this.listaArtigosComprados = listaArtigosComprados;
         this.listaEncomendas = listaEncomendas;
         this.dataSistema = dataSistema;
+        this.imposto = imposto;
+        this.taxaEncPequena = taxaEncPequena;
+        this.taxaEncMedia = taxaEncMedia;
+        this.taxaEncGrande = taxaEncGrande;
     }
 
     public Sistema(Sistema sistema)
@@ -105,6 +123,38 @@ public class Sistema implements Serializable
     {
         this.dataSistema.plusDays(dias);
         //TODO Atualizar sistema e gerar faturas!
+    }
+
+    public int getImposto() {
+        return imposto;
+    }
+
+    public void setImposto(int imposto) {
+        this.imposto = imposto;
+    }
+
+    public double getTaxaEncPequena() {
+        return taxaEncPequena;
+    }
+
+    public void setTaxaEncPequena(double taxaEncPequena) {
+        this.taxaEncPequena = taxaEncPequena;
+    }
+
+    public double getTaxaEncMedia() {
+        return taxaEncMedia;
+    }
+
+    public void setTaxaEncMedia(double taxaEncMedia) {
+        this.taxaEncMedia = taxaEncMedia;
+    }
+
+    public double getTaxaEncGrande() {
+        return taxaEncGrande;
+    }
+
+    public void setTaxaEncGrande(double taxaEncGrande) {
+        this.taxaEncGrande = taxaEncGrande;
     }
 
     /**

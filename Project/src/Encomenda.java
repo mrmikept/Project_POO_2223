@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Descrição classe
@@ -108,9 +109,10 @@ public class Encomenda implements Serializable
     {
         double valorArtigos = this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() +
                 this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
-
-
-        System.out.println(valorArtigos);
+        double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.USADO).count()) * 0.25;
+        double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.NOVO).count()) * 0.5;
+        double valorTransportadoras = 0;
+        this.setPrecoFinal(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorTransportadoras);
     }
 
     public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException
@@ -119,7 +121,7 @@ public class Encomenda implements Serializable
         {
             this.listaArtigos.add(artigo);
             this.alteraDimensãoEncomenda(this.listaArtigos.size());
-            //TODO Maybe alteração do preço aqui??????
+            this.alteraPreco();
         }
         else throw new EncomendaException("Este Artigo já se encontra na encomenda!");
     }
@@ -130,7 +132,7 @@ public class Encomenda implements Serializable
         {
             this.listaArtigos.remove(artigo);
             this.alteraDimensãoEncomenda(this.listaArtigos.size());
-            //TODO Maybe alteração do preço aqui??
+            this.alteraPreco();
         }
         else throw new EncomendaException("Este Artigo não se encontra na encomenda!");
     }
@@ -140,15 +142,29 @@ public class Encomenda implements Serializable
         return new Encomenda(this);
     }
 
+    private String dimensaoToString()
+    {
+        if (this.getDimensao() == PEQUENO)
+        {
+            return "Pequena";
+        }
+        if (this.getDimensao() == MEDIO)
+        {
+            return "Media";
+        }
+        return "Grande";
+    }
+
     public String toString()
     {
         StringBuilder string = new StringBuilder();
         string.append("[Encomenda] ");
         string.append("Artigos: " + this.listaArtigos.toString() + "\n");
-        string.append("Dimensão: " + this.getDimensao() + "\n");
+        string.append("Dimensão: " + this.dimensaoToString() + "\n");
         string.append("Preço Final: " + this.getPrecoFinal() + "\n");
         string.append("Estado: " + this.getEstado() + "\n");
         string.append("Data criação: " + this.getData().toString());
         return string.toString();
     }
 }
+2

@@ -1,6 +1,9 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -12,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class Encomenda implements Serializable
 {
-    private ArrayList<Artigo> listaArtigos;
+    private Map<String,List<Artigo>> listaArtigos;
     private int dimensao;
     private double precoFinal;
     private int estado;
@@ -32,9 +35,9 @@ public class Encomenda implements Serializable
 
     public Encomenda()
     {
-        this.listaArtigos = new ArrayList<Artigo>();
+        this.listaArtigos = new HashMap<>();
         this.dimensao = PEQUENO;
-        this.precoFinal = 0.0; //TODO Por formula para calcular valor final;
+        this.precoFinal = 0.0;
         this.estado = PENDENTE;
         this.data = LocalDate.now();
     }
@@ -55,6 +58,10 @@ public class Encomenda implements Serializable
         this.precoFinal = encomenda.getPrecoFinal();
         this.estado = encomenda.getEstado();
         this.data = encomenda.getData();
+    }
+
+    public Map<String, List<Artigo>> getListaArtigos() {
+        return listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().stream().map(Artigo::clone).collect(Collectors.toList())));
     }
 
     public int getDimensao() {
@@ -105,36 +112,44 @@ public class Encomenda implements Serializable
         }
     }
 
-    public void alteraPreco()
-    {
-        double valorArtigos = this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() +
-                this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
-        double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.USADO).count()) * 0.25;
-        double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.NOVO).count()) * 0.5;
-        double valorTransportadoras = 0;
-        this.setPrecoFinal(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorTransportadoras);
-    }
+   // public void alteraPreco()
+   // {
+      //  double valorArtigos = this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() +
+     //           this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
+    //    double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.USADO).count()) * 0.25;
+    //    double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.NOVO).count()) * 0.5;
+  //      List<Artigo> arrayListEnc = this.getListaArtigos();
+//
+ //       this.setPrecoFinal(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorTransportadoras);
+ //   }
 
     public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException
     {
-        if (!this.listaArtigos.contains(artigo))
+        if (this.getListaArtigos().containsKey(artigo.getTransportadora().getNome()))
         {
-            this.listaArtigos.add(artigo);
-            this.alteraDimensãoEncomenda(this.listaArtigos.size());
-            this.alteraPreco();
+            List<Artigo> listaArtigos = this.getListaArtigos().get(artigo.getTransportadora().getNome());
+            if (!listaArtigos.contains(artigo))
+            {
+                listaArtigos.add(artigo.clone());
+                this.listaArtigos.replace(artigo.getTransportadora().getNome(),listaArtigos);
+            }
+            else throw new EncomendaException("O artigo já se encontra na encomenda");
         }
-        else throw new EncomendaException("Este Artigo já se encontra na encomenda!");
+        else
+        {
+            List<Artigo> listaArtigos = new ArrayList<Artigo>();
+            listaArtigos.add(artigo.clone());
+            this.listaArtigos.put(artigo.getTransportadora().getNome(),listaArtigos);
+        }
     }
 
     public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException
     {
-        if (this.listaArtigos.contains(artigo))
-        {
-            this.listaArtigos.remove(artigo);
-            this.alteraDimensãoEncomenda(this.listaArtigos.size());
-            this.alteraPreco();
-        }
-        else throw new EncomendaException("Este Artigo não se encontra na encomenda!");
+        //TODO: Ver se existe chave.
+        //TODO: Se existir, verificar se o arrayList possui o artigo
+        //TODO: Se sim, remover o artigo.
+
+        //TODO: Se não existir chave então throw exception
     }
 
     public Encomenda clone()
@@ -167,4 +182,3 @@ public class Encomenda implements Serializable
         return string.toString();
     }
 }
-2

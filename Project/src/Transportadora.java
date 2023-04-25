@@ -24,7 +24,6 @@ public class Transportadora implements Serializable {
         this.nome = "";
         this.margemLucro = 0.0;
         this.tipo = NORMAL;
-        this.
     }
 
     public Transportadora(String nome, double lucro, int tipo)

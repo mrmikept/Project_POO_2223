@@ -19,7 +19,7 @@ public class Main {
         String email, pass, nome, morada;
         int nif;
         boolean bool;
-        String[] s = {"Iniciar sessao", "Registar utilizador"};
+        String[] s = {"Iniciar sessao", "Registar utilizador", "Sair"};
         Scanner ler = new Scanner(System.in);
 
         do {
@@ -29,11 +29,18 @@ public class Main {
                     x = ler.nextInt();
                     break;
                 case 1: //Iniciar sessao
-                    System.out.println("Insira o seu email: ");
+                    apresentacao.printLogin();
+                    apresentacao.cyan();
+                    System.out.println("                                                                                       Insira o seu email");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                       ");
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if(sistema.verificaUtilizador(email)) {
-                        System.out.println("Insira a sua password: ");
+                        apresentacao.cyan();
+                        System.out.println("                                                                                       Insira a sua password");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                       ");
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         if(sistema.verificaPassword(email, pass))
@@ -43,17 +50,34 @@ public class Main {
                         }
                         else
                         {
-                            bool = false;
-                            while (!bool || x == 1) {
-                                System.out.println("PASS INCORRETA!! TENTE DE NOVO");
-                                System.out.println("DESEJA CONTINUAR A TENTAR?");
-                                System.out.println("1 - SIM");
-                                System.out.println("0 - NAO");
+                            while (x == 1) {
+                                System.out.println();
+                                System.out.println();
+                                System.out.println();
+                                apresentacao.red();
+                                System.out.println("                                                                               PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?");
+                                apresentacao.resetColor();
+                                System.out.println();
+                                System.out.println("                                                                                                    1 - SIM");
+                                System.out.println("                                                                                                    0 - NAO");
+                                System.out.println();
+                                System.out.print("                                                                                                      ");
                                 x = ler.nextInt();
 
                                 if (x == 0) break;
 
-                                System.out.println("Insira a sua password: ");
+                                apresentacao.clear();
+                                apresentacao.printLogin();
+                                apresentacao.cyan();
+                                System.out.println("                                                                                       Insira o seu email");
+                                apresentacao.resetColor();
+                                System.out.print("                                                                                       " + email);
+                                System.out.println();
+                                apresentacao.cyan();
+                                System.out.println("                                                                                       Insira a sua password");
+                                apresentacao.resetColor();
+                                System.out.print("                                                                                       ");
+
                                 ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if(sistema.verificaPassword(email, pass))
@@ -64,47 +88,152 @@ public class Main {
                             }
                         }
                     }
-                    else
-                    {
-                        System.out.println("Email incorreto! Tente de novo");
-                        ler = new Scanner(System.in);
-                        email = ler.nextLine();
+                    else {
+                        while (x == 1) {
+                            System.out.println();
+                            System.out.println();
+                            System.out.println();
+                            apresentacao.red();
+                            System.out.println("                                                                         EMAIL INCORRETO OU NAO EXISTE!! DESEJA CONTINUAR A TENTAR?");
+                            apresentacao.resetColor();
+                            System.out.println();
+                            System.out.println("                                                                                                   1 - SIM");
+                            System.out.println("                                                                                                   0 - NAO");
+                            System.out.println();
+                            System.out.print("                                                                                                      ");
 
+                            x = ler.nextInt();
+
+                            if (x == 0) break;
+
+                            apresentacao.clear();
+                            apresentacao.printLogin();
+                            apresentacao.cyan();
+                            System.out.println("                                                                                       Insira o seu email");
+                            apresentacao.resetColor();
+                            System.out.print("                                                                                       ");
+
+                            ler = new Scanner(System.in);
+                            email = ler.nextLine();
+
+                            if(sistema.verificaUtilizador(email)) {
+                                System.out.println();
+                                apresentacao.cyan();
+                                System.out.println("                                                                                       Insira a sua password");
+
+                                apresentacao.resetColor();
+                                System.out.print("                                                                                       ");
+                                ler = new Scanner(System.in);
+                                pass = ler.nextLine();
+                                if(sistema.verificaPassword(email, pass))
+                                {
+                                    x = runUtilizador();
+                                    break;
+                                }
+                                else
+                                {
+                                    while (x == 1) {
+                                        System.out.println();
+                                        System.out.println();
+                                        System.out.println();
+                                        apresentacao.red();
+                                        System.out.println("                                                                               PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?");
+                                        apresentacao.resetColor();
+                                        System.out.println();
+                                        System.out.println("                                                                                                    1 - SIM");
+                                        System.out.println("                                                                                                    0 - NAO");
+                                        System.out.println();
+                                        System.out.print("                                                                                                      ");
+                                        x = ler.nextInt();
+
+                                        if (x == 0) break;
+
+                                        apresentacao.clear();
+                                        apresentacao.printLogin();
+                                        apresentacao.cyan();
+                                        System.out.println("                                                                                       Insira o seu email");
+                                        apresentacao.resetColor();
+                                        System.out.print("                                                                                       " + email);
+                                        System.out.println();
+                                        apresentacao.cyan();
+                                        System.out.println("                                                                                       Insira a sua password");
+
+                                        apresentacao.resetColor();
+                                        System.out.print("                                                                                       ");
+
+                                        ler = new Scanner(System.in);
+                                        pass = ler.nextLine();
+                                        if(sistema.verificaPassword(email, pass))
+                                        {
+                                            x = runUtilizador();
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-
                     break;
 
                 case 2: //Registar utilizador
-                    System.out.println("Insira o email: ");
+                    apresentacao.printReg();
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira o email:");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
-                    System.out.println("Insira a password: ");
+
+                    System.out.println();
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira a password:");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     pass = ler.nextLine();
+
+                    System.out.println();
+
                     //TODO: verificar se ja nao existe um email no sistema
-                    System.out.println("Insira o primeiro e ultimo nome: ");
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira o seu primeiro e ultimo nome:");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     nome = ler.nextLine();
-                    System.out.println("Insira a morada: ");
+
+                    System.out.println();
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira a sua morada: ");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
+
                     ler = new Scanner(System.in);
                     morada = ler.nextLine();
-                    System.out.println("Insira o numero fiscal: ");
+
+                    System.out.println();
+
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira o seu numero fiscal: ");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     nif = ler.nextInt();
                     //TODO: Duvida! Verificar se ja existe um numero fiiscal
                     sistema.adicionaUtilizador(email, pass, nome, morada, nif);
-                    x = 3; //TODO: mudanca de menu
+                    x = runUtilizador();
                     break;
             }
-
-
-
-        } while (x != 7);
+        } while (x != 3);
     }
 
     private int runUtilizador() //MENU UTILIZADOR
     {
-        String[] s = {"1 - Comprar", "2 - Vendas", "3 - Faturas", "4 - Sair"};
+        String[] s = {"Comprar", "Vendas", "Faturas", "Retroceder"};
         int x = 0;
         Scanner ler = new Scanner(System.in);
 
@@ -128,11 +257,9 @@ public class Main {
 
             }
         } while (x != 0);
+
         return 0;
-
-
     }
-
 }
 
 

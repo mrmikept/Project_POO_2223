@@ -153,11 +153,13 @@ public class Pedido implements Serializable {
     public void alteraEstadoExpedido()
     {
         this.estado = EXPEDIDA;
+        this.setDataAtualizacao(LocalDate.now());
     }
 
     public void alteraEstadoFinalizado()
     {
         this.estado = FINALIZADA;
+        this.setDataAtualizacao(LocalDate.now());
     }
 
     public String estadoToString()
@@ -184,11 +186,11 @@ public class Pedido implements Serializable {
             return false;
         }
         Pedido pedido = (Pedido) o;
-        return (//TODO equals hashmap)
+        return this.getListaEncomendas().equals(pedido.getListaEncomendas()) &&
                 this.getEstado() == pedido.getEstado() &&
                 this.getPrecoFinal() == pedido.getPrecoFinal() &&
                 this.getDataAtualizacao().equals(pedido.getDataAtualizacao()) &&
-                this.getDataCriacao().equals(pedido.getDataCriacao()));
+                this.getDataCriacao().equals(pedido.getDataCriacao());
     }
 
 

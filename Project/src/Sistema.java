@@ -229,7 +229,7 @@ public class Sistema implements Serializable
     {
         if (!this.listaTransportadoras.containsKey(nome))
         {
-            Transportadora transportadora = new Transportadora(nome, lucro, tipo);
+            Transportadora transportadora = new Transportadora(nome, lucro, tipo, this.getImposto(), this.getTaxaEncPequena(), this.getTaxaEncMedia(),this.getTaxaEncGrande());
             this.listaTransportadoras.put(nome,transportadora);
         }
         else
@@ -380,7 +380,7 @@ public class Sistema implements Serializable
         }
     }
 
-    public Encomenda procuraEncomenda(String email) throws EncomendaException {
+    public Pedido procuraEncomenda(String email) throws EncomendaException {
         if (listaEncomendas.containsKey(email))
         {
             return listaEncomendas.get(email);
@@ -390,9 +390,6 @@ public class Sistema implements Serializable
             throw new EncomendaException("O Utilizador com email, " + email + " não tem encomendas!");
         }
     }
-
-
-
 
     public Sistema clone()
     {

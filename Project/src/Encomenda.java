@@ -126,7 +126,7 @@ public class Encomenda {
             return false;
         }
         Encomenda encomenda = (Encomenda) o;
-        return (this.getListaArtigos().equals(encomenda.getListaArtigos()) && //TODO Isto esta mal, tenho de fazer o equals dos artigos...
+        return (this.getListaArtigos().equals(encomenda.getListaArtigos()) &&
                 this.getTransportadora().equals(encomenda.getTransportadora()) &&
                 this.getPrecoTotalArtigos() == encomenda.getPrecoTotalArtigos() &&
                 this.getDimensao() == encomenda.getDimensao());

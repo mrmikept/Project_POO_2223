@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,9 +20,9 @@ public class Utilizador implements Serializable {
     private String nome;
     private String morada;
     private int nrFiscal;
-    private List<Artigo> listaVendas;
-    private List<Artigo> listaVendidos;
-    private List<Encomenda>listaCompras;
+    private Map<Integer, Artigo> listaVendas;
+    private Map<Integer, Artigo> listaVendidos;
+    private Pedido listaCompras;
     //TODO: Historico de venda, compras e artigos à venda.
 
 
@@ -33,13 +34,13 @@ public class Utilizador implements Serializable {
         this.nome = "";
         this.morada = "";
         this.nrFiscal = 0;
-        this.listaVendas = new ArrayList<>();
-        this.listaVendidos = new ArrayList<>();
-        this.listaCompras = new ArrayList<>();
+        this.listaVendas = new HashMap<>();
+        this.listaVendidos = new HashMap<>();
+        this.listaCompras = new Pedido();
 
     }
 
-    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal) {
+    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaVendas, HashMap<Integer, Artigo> listaVendidos, Pedido pedido) {
 
         this.id = id;
         this.email = email;
@@ -47,9 +48,9 @@ public class Utilizador implements Serializable {
         this.nome = nome;
         this.morada = morada;
         this.nrFiscal = nrFiscal;
-        this.listaVendas = new ArrayList<>();
-        this.listaVendidos = new ArrayList<>();
-        this.listaCompras = new ArrayList<>();
+        this.listaVendas = listaVendas;
+        this.listaVendidos = listaVendidos;
+        this.listaCompras = pedido;
 
     }
 
@@ -117,28 +118,57 @@ public class Utilizador implements Serializable {
         this.nrFiscal = nrFiscal;
     }
 
-    public List<Artigo> getListaVendas(){
-        return listaVendas.stream().map(Artigo::clone).collect(Collectors.toList());
+    public Map<Integer, Artigo> getListaVendas(){
+        return listaVendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaVendas(List<Artigo> listaVendas){
-        this.listaVendas = listaVendas.stream().map(Artigo::clone).collect(Collectors.toList());
+    public void setListaVendas(Map<Integer, Artigo> listaVendas){
+        this.listaVendas = listaVendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public List<Artigo> getListaVendidos(){
-        return listaVendidos.stream().map(Artigo::clone).collect(Collectors.toList());
+    public Map<Integer, Artigo> getListaVendidos(){
+        return listaVendidos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaVendidos(List<Artigo> listaVendidos){
-        this.listaVendidos = listaVendidos.stream().map(Artigo::clone).collect(Collectors.toList());
+    public void setListaVendidos(Map<Integer, Artigo> listaVendidos){
+        this.listaVendidos = listaVendidos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public List<Encomenda> getListaCompras(){
-        return listaCompras.stream().map(Encomenda::clone).collect(Collectors.toList());
+    public Pedido getListaCompras(){
+        return listaCompras;
     }
 
-    public void setListaCompras(List<Encomenda> listaCompras){
-        this.listaCompras = listaCompras.stream().map(Encomenda::clone).collect(Collectors.toList());
+    public void setListaCompras(Pedido listaCompras){
+        this.listaCompras = listaCompras.clone();
+    }
+
+    public void adicionaArtigoVenda(Artigo artigo) throws UtilizadorException {
+        if (!this.listaVendas.containsKey(artigo.getId()))
+        {
+            this.listaVendas.put(artigo.getId(),artigo.clone());
+        }
+        else throw new UtilizadorException("O utilizador já tem este artigo à venda!");
+    }
+
+    public void adicionaArtigoVendidos(Artigo artigo) throws UtilizadorException {
+        if (this.listaVendas.containsKey(artigo.getId()))
+        {
+            this.listaVendas.remove(artigo.getId(),artigo);
+            if (!this.listaVendidos.containsKey(artigo.getId()))
+            {
+                this.listaVendidos.put(artigo.getId(), artigo.clone());
+            }
+            else throw new UtilizadorException("O utilizador já possui este artigo na lista de vendidos!");
+        }
+        else throw new UtilizadorException("Este artigo não está a ser vendido pelo utilizador");
+    }
+
+    public void adicionaArtigoPedido(Artigo artigo) throws EncomendaException {
+        this.listaCompras.adicionaArtigoPedido(artigo);
+    }
+
+    public void removeArtigoPedido(Artigo artigo) throws EncomendaException {
+        this.listaCompras.removeArtigoPedido(artigo);
     }
 
 

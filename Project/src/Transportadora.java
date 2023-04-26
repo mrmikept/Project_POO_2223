@@ -11,7 +11,7 @@ public class Transportadora implements Serializable {
     private String nome;
     private double margemLucro;
     private int tipo;
-    private int imposto;
+    private double imposto;
     private double txEncPq;
     private double txEncMd;
     private double txEncGd;
@@ -31,7 +31,7 @@ public class Transportadora implements Serializable {
         this.txEncGd = 0;
     }
 
-    public Transportadora(String nome, double lucro, int tipo, int imposto, double txEncPq, double txEncMd, double txEncGd)
+    public Transportadora(String nome, double lucro, int tipo, double imposto, double txEncPq, double txEncMd, double txEncGd)
     {
         this.nome = nome;
         this.margemLucro = lucro;
@@ -77,7 +77,7 @@ public class Transportadora implements Serializable {
         this.tipo = tipo;
     }
 
-    public int getImposto() {
+    public double getImposto() {
         return imposto;
     }
 
@@ -124,6 +124,7 @@ public class Transportadora implements Serializable {
 
     public double calculaValorExpedicao(int tamanhoEnc)
     {
+        System.out.println("TxExp " + this.getTxExpedicao(tamanhoEnc) + "do tamanho " + tamanhoEnc + "\n" + "Margem lucro " + this.getMargemLucro() + "Imposto: " + this.getImposto());
         return this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + this.getImposto()));
     }
 

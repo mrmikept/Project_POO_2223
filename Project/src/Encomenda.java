@@ -73,7 +73,7 @@ public class Encomenda {
     }
 
     public void setPrecoTotalArtigos(double precoTotalArtigos) {
-        this.precoTotalArtigos = precoTotalArtigos;
+        this.precoTotalArtigos = Math.round(precoTotalArtigos * 100.0) / 100.0;
     }
 
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
@@ -97,7 +97,7 @@ public class Encomenda {
                 this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.USADO).count()) * 0.25;
         double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.NOVO).count()) * 0.5;
-        double valorExpedicao = Math.round((this.transportadora.calculaValorExpedicao(this.listaArtigos.size())) * 100) / 100;
+        double valorExpedicao = this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
         System.out.println(valorExpedicao);
         this.setPrecoTotalArtigos(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorExpedicao);
     }
@@ -126,7 +126,7 @@ public class Encomenda {
             return false;
         }
         Encomenda encomenda = (Encomenda) o;
-        return (this.getListaArtigos().equals(encomenda.getListaArtigos()) &&
+        return (this.getListaArtigos().equals(encomenda.getListaArtigos()) && //TODO Isto esta mal, tenho de fazer o equals dos artigos...
                 this.getTransportadora().equals(encomenda.getTransportadora()) &&
                 this.getPrecoTotalArtigos() == encomenda.getPrecoTotalArtigos() &&
                 this.getDimensao() == encomenda.getDimensao());

@@ -150,6 +150,16 @@ public class Pedido implements Serializable {
         this.precoFinal = this.listaEncomendas.values().stream().mapToDouble(encomenda -> encomenda.getPrecoTotalArtigos()).sum();
     }
 
+    public void alteraEstadoExpedido()
+    {
+        this.estado = EXPEDIDA;
+    }
+
+    public void alteraEstadoFinalizado()
+    {
+        this.estado = FINALIZADA;
+    }
+
     public String estadoToString()
     {
         if (this.getEstado() == PENDENTE)
@@ -162,6 +172,25 @@ public class Pedido implements Serializable {
         }
         return "FINALIZADA";
     }
+
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        Pedido pedido = (Pedido) o;
+        return (//TODO equals hashmap)
+                this.getEstado() == pedido.getEstado() &&
+                this.getPrecoFinal() == pedido.getPrecoFinal() &&
+                this.getDataAtualizacao().equals(pedido.getDataAtualizacao()) &&
+                this.getDataCriacao().equals(pedido.getDataCriacao()));
+    }
+
 
     public String toString()
     {

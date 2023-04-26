@@ -5,7 +5,7 @@ public class Main {
     private Sistema sistema;
     private Apresentacao apresentacao;
 
-    public static void main(String[] args) throws IOException, UtilizadorException {
+    public static void main(String[] args) throws IOException, UtilizadorException, TransportadoraException, ClassNotFoundException {
         new Main().run();
     }
 
@@ -14,12 +14,83 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    private void run() throws UtilizadorException {
+    private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException {
         int x = 0;
-        String email, pass, nome, morada;
+        String [] s = {"Entrar no programa", "Guardar estado", "Carregar ficheiro para o sistema", "Carregar estado anterior", "Estatísticas", "Sair"};
+        Scanner ler = new Scanner(System.in);
+        String input;
+
+        do {
+            switch (x) {
+                case 0:
+                    apresentacao.printMenu(s,x);
+                    x = ler.nextInt();
+                    break;
+
+                case 1:
+                    x = runIN();
+                    x = 0;
+                    break;
+
+                case 2:
+                    apresentacao.printGuardar();
+                    apresentacao.cyan();
+                    System.out.println("                                                               Indique o caminho para a pasta onde pertende guardar o estado (../\"ficheiro\"):");
+                    apresentacao.resetColor();
+                    System.out.print("                                                               ");
+                    ler = new Scanner(System.in);
+                    input = ler.nextLine();
+                    CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
+
+                    apresentacao.clear();
+                    apresentacao.printGuardar();
+                    apresentacao.yellow();
+                    System.out.println("                                                                                            ESTADO GRAVADO COM SUCESSO!!");
+                    apresentacao.resetColor();
+                    System.out.println();
+                    System.out.println("                                                                                          Pressione enter para continuar...");
+                    System.out.println();
+                    System.out.print("                                                                                                         ");
+                    ler = new Scanner(System.in);
+                    ler.nextLine();
+                    x = 0;
+                    break;
+
+                case 3:
+                    apresentacao.printLoad();
+                    apresentacao.cyan();
+                    System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o estado (../\"ficheiro\"):");
+                    apresentacao.resetColor();
+                    System.out.print("                                                               ");
+                    ler = new Scanner(System.in);
+                    input = ler.nextLine();
+                    this.sistema = CarregamentoFicheiro.lerFicheiro(input);
+
+                    apresentacao.clear();
+                    apresentacao.printLoad();
+                    apresentacao.yellow();
+                    System.out.println("                                                                                         ESTADO CARREGADO COM SUCESSO!!");
+                    apresentacao.resetColor();
+                    System.out.println();
+                    System.out.println("                                                                                        Pressione enter para continuar...");
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    ler.nextLine();
+                    x = 0;
+                    break;
+            }
+        } while (x != 6);
+        apresentacao.clear();
+    }
+
+    private int runIN() throws UtilizadorException, TransportadoraException {
+        int x = 0;
+        String email, pass, nome, morada, nomeTrans;
         int nif;
-        boolean bool;
-        String[] s = {"Iniciar sessao", "Registar utilizador", "Sair"};
+        int tipo = 0;
+        double lucro;
+        String[] s = {"Iniciar sessao - Utlizador", "Iniciar Sessao - Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Retroceder"};
         Scanner ler = new Scanner(System.in);
 
         do {
@@ -31,14 +102,14 @@ public class Main {
                 case 1: //Iniciar sessao
                     apresentacao.printLogin();
                     apresentacao.cyan();
-                    System.out.println("                                                                                       Insira o seu email");
+                    System.out.println("                                                                                       Insira o seu email:");
                     apresentacao.resetColor();
                     System.out.print("                                                                                       ");
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if(sistema.verificaUtilizador(email)) {
                         apresentacao.cyan();
-                        System.out.println("                                                                                       Insira a sua password");
+                        System.out.println("                                                                                       Insira a sua password:");
                         apresentacao.resetColor();
                         System.out.print("                                                                                       ");
                         ler = new Scanner(System.in);
@@ -69,12 +140,12 @@ public class Main {
                                 apresentacao.clear();
                                 apresentacao.printLogin();
                                 apresentacao.cyan();
-                                System.out.println("                                                                                       Insira o seu email");
+                                System.out.println("                                                                                       Insira o seu email:");
                                 apresentacao.resetColor();
                                 System.out.print("                                                                                       " + email);
                                 System.out.println();
                                 apresentacao.cyan();
-                                System.out.println("                                                                                       Insira a sua password");
+                                System.out.println("                                                                                       Insira a sua password:");
                                 apresentacao.resetColor();
                                 System.out.print("                                                                                       ");
 
@@ -109,7 +180,7 @@ public class Main {
                             apresentacao.clear();
                             apresentacao.printLogin();
                             apresentacao.cyan();
-                            System.out.println("                                                                                       Insira o seu email");
+                            System.out.println("                                                                                       Insira o seu email:");
                             apresentacao.resetColor();
                             System.out.print("                                                                                       ");
 
@@ -119,7 +190,7 @@ public class Main {
                             if(sistema.verificaUtilizador(email)) {
                                 System.out.println();
                                 apresentacao.cyan();
-                                System.out.println("                                                                                       Insira a sua password");
+                                System.out.println("                                                                                       Insira a sua password:");
 
                                 apresentacao.resetColor();
                                 System.out.print("                                                                                       ");
@@ -151,12 +222,12 @@ public class Main {
                                         apresentacao.clear();
                                         apresentacao.printLogin();
                                         apresentacao.cyan();
-                                        System.out.println("                                                                                       Insira o seu email");
+                                        System.out.println("                                                                                       Insira o seu email:");
                                         apresentacao.resetColor();
                                         System.out.print("                                                                                       " + email);
                                         System.out.println();
                                         apresentacao.cyan();
-                                        System.out.println("                                                                                       Insira a sua password");
+                                        System.out.println("                                                                                       Insira a sua password:");
 
                                         apresentacao.resetColor();
                                         System.out.print("                                                                                       ");
@@ -175,7 +246,7 @@ public class Main {
                     }
                     break;
 
-                case 2: //Registar utilizador
+                case 3: //Registar utilizador
                     apresentacao.printReg();
 
                     apresentacao.cyan();
@@ -207,7 +278,7 @@ public class Main {
                     System.out.println();
 
                     apresentacao.cyan();
-                    System.out.println("                                                                                      Insira a sua morada: ");
+                    System.out.println("                                                                                      Insira a sua morada:");
                     apresentacao.resetColor();
                     System.out.print("                                                                                      ");
 
@@ -218,17 +289,82 @@ public class Main {
 
 
                     apresentacao.cyan();
-                    System.out.println("                                                                                      Insira o seu numero fiscal: ");
+                    System.out.println("                                                                                      Insira o seu numero fiscal:");
                     apresentacao.resetColor();
                     System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     nif = ler.nextInt();
                     //TODO: Duvida! Verificar se ja existe um numero fiiscal
                     sistema.adicionaUtilizador(email, pass, nome, morada, nif);
-                    x = runUtilizador();
+
+                    apresentacao.printReg();
+                    apresentacao.yellow();
+                    System.out.println("                                                                        UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
+                    apresentacao.resetColor();
+                    System.out.println();
+                    System.out.println("                                                                                                    1 - SIM");
+                    System.out.println("                                                                                                    0 - NAO");
+                    System.out.println();
+                    System.out.print("                                                                                                      ");
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+
+                    if (x==1) x = 3;
+                    else x = 0;
+
+                    break;
+
+                case 4:
+                    apresentacao.printRegTrans();
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira o nome da transportadora:");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
+                    ler = new Scanner(System.in);
+                    nomeTrans = ler.nextLine();
+
+                    System.out.println();
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
+                    ler = new Scanner(System.in);
+                    lucro = ler.nextDouble();
+
+                    System.out.println();
+
+                    apresentacao.cyan();
+                    System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
+                    apresentacao.resetColor();
+                    System.out.print("                                                                                      ");
+                    ler = new Scanner(System.in);
+                    tipo = ler.nextInt();
+
+                    sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
+
+                    apresentacao.printRegTrans();
+                    apresentacao.yellow();
+                    System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
+                    apresentacao.resetColor();
+                    System.out.println();
+                    System.out.println("                                                                                                    1 - SIM");
+                    System.out.println("                                                                                                    0 - NAO");
+                    System.out.println();
+                    System.out.print("                                                                                                      ");
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+
+                    if (x==1) x = 4;
+                    else x = 0;
+
                     break;
             }
-        } while (x != 3);
+        } while (x != 5);
+
+        return x;
     }
 
     private int runUtilizador() //MENU UTILIZADOR

@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class Sistema implements Serializable
     private Map<String, Transportadora> listaTransportadoras;
     private Map<Integer, Artigo> listaArtigosVenda;
     private Map<Integer, Artigo> listaArtigosComprados;
-    private Map<String, Encomenda> listaEncomendas;
+    private Map<String, Pedido> listaEncomendas;
     private LocalDate dataSistema;
 
     private int imposto;
@@ -45,7 +46,7 @@ public class Sistema implements Serializable
         this.taxaEncGrande = TAXAENC_GD_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String,Encomenda> listaEncomendas, LocalDate dataSistema, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String, Pedido> listaEncomendas, LocalDate dataSistema, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
     {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
@@ -101,11 +102,11 @@ public class Sistema implements Serializable
         this.listaArtigosComprados = listaArtigosComprados.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public Map<String, Encomenda> getListaEncomendas() {
+    public Map<String, Pedido> getListaEncomendas() {
         return listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaEncomendas(Map<String, Encomenda> listaEncomendas) {
+    public void setListaEncomendas(Map<String, Pedido> listaEncomendas) {
         this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
@@ -184,7 +185,7 @@ public class Sistema implements Serializable
      * @param nrFiscal Numero de contribuinte do utilizador
      * @throws UtilizadorException Caso o utilizador já exista
      */
-    public void adicionaUtilizador( String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException
+    public void adicionaUtilizador(String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException
     {
         if (!this.listaUtilizadores.containsKey(email))
         {
@@ -244,6 +245,12 @@ public class Sistema implements Serializable
             this.listaArtigosVenda.put(artigo.getId(), artigo.clone());
         }
     }
+    public void adicionaArtigoCompra(Artigo artigo) throws ArtigoException{
+
+        if(!this.listaArtigosComprados.containsKey(artigo.getId())){
+            this.listaArtigosComprados.put(artigo.getId(), artigo.clone());
+        }
+    }
 
     /**
      * Adiciona o artigo Tshirt à lista de artigos
@@ -272,6 +279,15 @@ public class Sistema implements Serializable
         }
     }
 
+    public void adicionaTshirtCompra(Tshirt tshirt) throws ArtigoException{
+        if(!this.listaArtigosComprados.containsKey(tshirt.getId())){
+            this.listaArtigosComprados.put(tshirt.getId(), tshirt.clone());
+        }
+        else{
+            throw new ArtigoException("Este Artigo já está comprado");
+        }
+    }
+
     public void adicionaSapatilhaVenda(Sapatilha sapatilha) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(sapatilha.getId()))
         {
@@ -281,6 +297,7 @@ public class Sistema implements Serializable
             throw new ArtigoException("Este Artigo já está à venda");
         }
     }
+
     public void adicionaSapatilhaVenda(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException {
         if (!this.listaArtigosVenda.containsKey(id))
         {
@@ -289,6 +306,14 @@ public class Sistema implements Serializable
         }
         else{
             throw new ArtigoException("Este Artigo já está à venda");
+        }
+    }
+    public void adicionaSapatilhaCompra(Sapatilha sapatilha) throws ArtigoException{
+        if (!this.listaArtigosComprados.containsKey(sapatilha.getId())){
+            this.listaArtigosComprados.put(sapatilha.getId(), sapatilha.clone());
+        }
+        else{
+            throw new ArtigoException("Este artigo já foi comprado");
         }
     }
 
@@ -310,6 +335,14 @@ public class Sistema implements Serializable
         }
         else{
             throw new ArtigoException("Este Artigo já está à venda");
+        }
+    }
+    public void adicionaMalaCompra(Mala mala) throws ArtigoException{
+        if(!this.listaArtigosComprados.containsKey(mala.getId())){
+            this.listaArtigosComprados.put(mala.getId(), mala.clone());
+        }
+        else{
+            throw new ArtigoException("Este artigo já está comprado");
         }
     }
 
@@ -357,6 +390,8 @@ public class Sistema implements Serializable
             throw new EncomendaException("O Utilizador com email, " + email + " não tem encomendas!");
         }
     }
+
+
 
 
     public Sistema clone()

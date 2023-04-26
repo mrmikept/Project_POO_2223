@@ -81,6 +81,15 @@ public class CarregamentoBackup {
                         this.excecoes.add(a.getMessage());
                     }
                 }
+
+                if(linha.contains("Adiciona Encomenda:")){
+                    try {
+                        encom(aux, sistema);
+                    }
+                    catch (EncomendaException a){
+                        this.excecoes.add(a.getMessage());
+                    }
+                }
             }
         }
         comeco.close();
@@ -88,43 +97,45 @@ public class CarregamentoBackup {
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException{
         String[] camposUtil = aux[1].split(",");
-        String email = camposUtil[0];
-        String palavraPasse = camposUtil[1];
-        String nome = camposUtil[2];
-        String morada = camposUtil[3];
-        int nrFiscal = Integer.valueOf(camposUtil[4]);
+        LocalDate data = LocalDate.parse(camposUtil[0]);
+        String email = camposUtil[1];
+        String palavraPasse = camposUtil[2];
+        String nome = camposUtil[3];
+        String morada = camposUtil[4];
+        int nrFiscal = Integer.valueOf(camposUtil[5]);
         sistema.adicionaUtilizador(email, palavraPasse, nome, morada, nrFiscal);
     }
     
 
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException{
         String[] camposArt = aux[1].split(",");
-        int id = Integer.valueOf(camposArt[1]);
-        String descricao = camposArt[2];
-        String marca = camposArt[3];
-        double precoBase = Double.parseDouble(camposArt[4]);
-        double correcaoPreco = Double.parseDouble(camposArt[5]);
-        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[6]), Double.parseDouble(camposArt[7]), Integer.valueOf(camposArt[8]));
-        Transportadora transportadora = new Transportadora(camposArt[9], Double.parseDouble(camposArt[10]), Integer.valueOf(camposArt[11]));
+        LocalDate data = LocalDate.parse(camposArt[0]);
+        int id = Integer.valueOf(camposArt[2]);
+        String descricao = camposArt[3];
+        String marca = camposArt[4];
+        double precoBase = Double.parseDouble(camposArt[5]);
+        double correcaoPreco = Double.parseDouble(camposArt[6]);
+        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[7]), Double.parseDouble(camposArt[8]), Integer.valueOf(camposArt[9]));
+        Transportadora transportadora = new Transportadora(camposArt[10], Double.parseDouble(camposArt[11]), Integer.valueOf(camposArt[12]));
 
-        if(camposArt[0].contains("Mala")){
-            double dimensao = Double.parseDouble(camposArt[12]);
-            String material = camposArt[13];
-            LocalDate anoLancamento = LocalDate.parse(camposArt[14]);
-            int tipo = Integer.valueOf(camposArt[15]);
+        if(camposArt[1].contains("Mala")){
+            double dimensao = Double.parseDouble(camposArt[13]);
+            String material = camposArt[14];
+            LocalDate anoLancamento = LocalDate.parse(camposArt[15]);
+            int tipo = Integer.valueOf(camposArt[16]);
             sistema.adicionaMalaVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, dimensao, material, anoLancamento, tipo);
         }
-        else if(camposArt[0].contains("Sapatilha")){
-            int tamanho = Integer.valueOf(camposArt[12]);
-            int tipoCordao = Integer.valueOf(camposArt[13]);
-            String cor = camposArt[14];
-            LocalDate data = LocalDate.parse(camposArt[15]);
-            int tipo = Integer.valueOf(camposArt[16]);
-            sistema.adicionaSapatilhaVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, data, tipo);
+        else if(camposArt[1].contains("Sapatilha")){
+            int tamanho = Integer.valueOf(camposArt[13]);
+            int tipoCordao = Integer.valueOf(camposArt[14]);
+            String cor = camposArt[15];
+            LocalDate dataLancamento = LocalDate.parse(camposArt[16]);
+            int tipo = Integer.valueOf(camposArt[17]);
+            sistema.adicionaSapatilhaVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
         }
-        else if(camposArt[0].contains("Tshirt")){
-            int tamanho = Integer.valueOf(camposArt[12]);
-            int padrao = Integer.valueOf(camposArt[13]);
+        else if(camposArt[1].contains("Tshirt")){
+            int tamanho = Integer.valueOf(camposArt[13]);
+            int padrao = Integer.valueOf(camposArt[14]);
             sistema.adicionaTshirtVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, padrao);
         }
 
@@ -135,14 +146,29 @@ public class CarregamentoBackup {
         LocalDate data = LocalDate.parse(camposArtComp[0]);
         int idUtilizador = Integer.valueOf(camposArtComp[1]);
         int idArtigo = Integer.valueOf(camposArtComp[2]);
+        Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
+        sistema.adicionaArtigoCompra(artigo);
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException{
         String[] camposTransp = aux[1].split(",");
-        String nome = camposTransp[0];
-        double margemLucro = Double.parseDouble(camposTransp[1]);
-        int tipo = Integer.valueOf(camposTransp[2]);
+        LocalDate data = LocalDate.parse(camposTransp[0]);
+        String nome = camposTransp[1];
+        double margemLucro = Double.parseDouble(camposTransp[2]);
+        int tipo = Integer.valueOf(camposTransp[3]);
         sistema.adicionaTransportadora(nome, margemLucro, tipo);
+    }
+
+    public void encom(String[] aux, Sistema sistema) throws EncomendaException{
+        String[] camposEncom = aux[1].split(",");
+        LocalDate data = LocalDate.parse(camposEncom[0]);
+        String email = camposEncom[1];
+        int dimensao = Integer.valueOf(camposEncom[2]);
+        int estado = Integer.valueOf(camposEncom[3]);
+        ArrayList<Artigo> listaArtigos = new ArrayList<>();
+
+
+
     }
 
 

@@ -1,4 +1,8 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Descrição classe
@@ -15,6 +19,9 @@ public class Utilizador implements Serializable {
     private String nome;
     private String morada;
     private int nrFiscal;
+    private List<Artigo> listaVendas;
+    private List<Artigo> listaVendidos;
+    private List<Encomenda>listaCompras;
     //TODO: Historico de venda, compras e artigos à venda.
 
 
@@ -26,6 +33,9 @@ public class Utilizador implements Serializable {
         this.nome = "";
         this.morada = "";
         this.nrFiscal = 0;
+        this.listaVendas = new ArrayList<>();
+        this.listaVendidos = new ArrayList<>();
+        this.listaCompras = new ArrayList<>();
 
     }
 
@@ -37,6 +47,9 @@ public class Utilizador implements Serializable {
         this.nome = nome;
         this.morada = morada;
         this.nrFiscal = nrFiscal;
+        this.listaVendas = new ArrayList<>();
+        this.listaVendidos = new ArrayList<>();
+        this.listaCompras = new ArrayList<>();
 
     }
 
@@ -48,6 +61,9 @@ public class Utilizador implements Serializable {
         this.nome = utilizador.getNome();
         this.morada = utilizador.getMorada();
         this.nrFiscal = utilizador.getNrFiscal();
+        this.listaVendas = utilizador.getListaVendas();
+        this.listaVendidos = utilizador.getListaVendidos();
+        this.listaCompras = utilizador.getListaCompras();
 
     }
 
@@ -99,6 +115,30 @@ public class Utilizador implements Serializable {
 
     public void setNrFiscal(int nrFiscal) {
         this.nrFiscal = nrFiscal;
+    }
+
+    public List<Artigo> getListaVendas(){
+        return listaVendas.stream().map(Artigo::clone).collect(Collectors.toList());
+    }
+
+    public void setListaVendas(List<Artigo> listaVendas){
+        this.listaVendas = listaVendas.stream().map(Artigo::clone).collect(Collectors.toList());
+    }
+
+    public List<Artigo> getListaVendidos(){
+        return listaVendidos.stream().map(Artigo::clone).collect(Collectors.toList());
+    }
+
+    public void setListaVendidos(List<Artigo> listaVendidos){
+        this.listaVendidos = listaVendidos.stream().map(Artigo::clone).collect(Collectors.toList());
+    }
+
+    public List<Encomenda> getListaCompras(){
+        return listaCompras.stream().map(Encomenda::clone).collect(Collectors.toList());
+    }
+
+    public void setListaCompras(List<Encomenda> listaCompras){
+        this.listaCompras = listaCompras.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
 

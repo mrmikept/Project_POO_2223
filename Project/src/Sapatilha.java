@@ -28,8 +28,8 @@ public class Sapatilha extends Artigo {
         this.tipo = NORMAL;
     }
 
-    public Sapatilha(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
-        super(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora);
+    public Sapatilha(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
+        super(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora);
         this.tamanho = tamanho;
         this.tipoCordao = tipoCordao;
         this.cor = cor;

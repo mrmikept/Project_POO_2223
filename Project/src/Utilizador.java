@@ -139,7 +139,7 @@ public class Utilizador implements Serializable {
     }
 
     public void setListaCompras(Pedido listaCompras){
-        this.listaCompras = listaCompras.clone();
+        this.listaCompras = listaCompras;
     }
 
     public void adicionaArtigoVenda(Artigo artigo) throws UtilizadorException {

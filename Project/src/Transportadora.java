@@ -124,8 +124,7 @@ public class Transportadora implements Serializable {
 
     public double calculaValorExpedicao(int tamanhoEnc)
     {
-        System.out.println("TxExp " + this.getTxExpedicao(tamanhoEnc) + "do tamanho " + tamanhoEnc + "\n" + "Margem lucro " + this.getMargemLucro() + "Imposto: " + this.getImposto());
-        return this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + this.getImposto()));
+       return this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + this.getImposto()));
     }
 
     private String tipotoString()

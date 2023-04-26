@@ -1,5 +1,3 @@
-import com.sun.jdi.PrimitiveValue;
-
 import java.io.Serializable;
 
 /**
@@ -12,6 +10,7 @@ import java.io.Serializable;
 public abstract class Artigo implements Serializable
 {
     private int id;
+    private Utilizador vendedor;
     private String descricao;
     private String marca;
     private double precoBase;
@@ -22,6 +21,7 @@ public abstract class Artigo implements Serializable
     public Artigo()
     {
         this.id = 0;
+        this.vendedor = new Utilizador();
         this.descricao = "";
         this.marca = "";
         this.precoBase = 0.0;
@@ -30,9 +30,10 @@ public abstract class Artigo implements Serializable
         this.transportadora = new Transportadora();
     }
 
-    public Artigo(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora)
+    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora)
     {
         this.id = id;
+        this.vendedor = utilizador;
         this.descricao = descricao;
         this.marca = marca;
         this.precoBase = precoBase;
@@ -44,16 +45,22 @@ public abstract class Artigo implements Serializable
     public Artigo(Artigo artigo)
     {
         this.id = artigo.getId();
+        this.vendedor = artigo.getVendedor();
         this.descricao = artigo.getDescricao();
         this.marca = artigo.getMarca();
         this.precoBase = artigo.getPrecoBase();
         this.correcaoPreco = artigo.getCorrecaoPreco();
-        this.estado = artigo.getEstado().clone();
-        this.transportadora = artigo.getTransportadora().clone();
+        this.estado = artigo.getEstado();
+        this.transportadora = artigo.getTransportadora();
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setVendedor(Utilizador vendedor)
+    {
+        this.vendedor = vendedor;
     }
 
     public void setDescricao(String descricao) {
@@ -84,6 +91,11 @@ public abstract class Artigo implements Serializable
 
     public int getId() {
         return id;
+    }
+
+    public Utilizador getVendedor()
+    {
+        return this.vendedor;
     }
 
     public String getDescricao() {

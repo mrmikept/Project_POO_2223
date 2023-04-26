@@ -98,7 +98,6 @@ public class Encomenda {
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.USADO).count()) * 0.25;
         double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == EstadoArtigo.NOVO).count()) * 0.5;
         double valorExpedicao = this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
-        System.out.println(valorExpedicao);
         this.setPrecoTotalArtigos(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorExpedicao);
     }
 

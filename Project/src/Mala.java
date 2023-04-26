@@ -26,9 +26,9 @@ public class Mala extends Artigo
         this.tipo = NORMAL;
     }
 
-    public Mala(int id, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo)
     {
-        super(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora);
+        super(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora);
         this.dimensao = dimensao;
         this.material = material;
         this.anoLancamento = anoLancamento;

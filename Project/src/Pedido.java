@@ -140,6 +140,7 @@ public class Pedido implements Serializable {
         if (this.listaEncomendas.containsKey(artigo.getTransportadora().getNome()))
         {
             this.listaEncomendas.get(artigo.getTransportadora().getNome()).removeArtigo(artigo);
+            this.listaEncomendas.remove(artigo.getTransportadora().getNome());
             this.alteraPrecoTotal();
         }
         else throw new EncomendaException("Artigo não existente na encomenda!");

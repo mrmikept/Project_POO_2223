@@ -142,6 +142,7 @@ public class Encomenda {
         return "Grande";
     }
 
+
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();

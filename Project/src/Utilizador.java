@@ -142,6 +142,28 @@ public class Utilizador implements Serializable {
     }
 
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        Utilizador utilizador = (Utilizador) o;
+        return (this.getId() == utilizador.getId() &&
+                this.getEmail().equals(utilizador.getEmail()) &&
+                this.getPalavraPasse().equals(utilizador.getPalavraPasse()) &&
+                this.getNome().equals(utilizador.getNome()) &&
+                this.getMorada().equals(utilizador.getMorada()) &&
+                this.getNrFiscal() == utilizador.getNrFiscal() &&
+                this.getListaVendas().equals(utilizador.getListaVendas()) &&
+                this.getListaCompras().equals(utilizador.getListaCompras()) &&
+                this.getListaVendidos().equals(utilizador.getListaVendidos()));
+    }
+
     public Utilizador clone() {
         return new Utilizador(this);
     }

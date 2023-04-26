@@ -106,6 +106,25 @@ public class Sapatilha extends Artigo {
         return "Atilho";
     }
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || o.getClass() != this.getClass())
+        {
+            return false;
+        }
+        Sapatilha sapatilha = (Sapatilha) o;
+        return (super.equals(sapatilha) &&
+                this.getTamanho() == sapatilha.getTamanho() &&
+                this.getTipoCordao() == sapatilha.getTipoCordao() &&
+                this.getCor().equals(sapatilha.getCor()) &&
+                this.getDataLancamento().equals(sapatilha.getDataLancamento()) &&
+                this.getTipo() == sapatilha.getTipo());
+    }
+
     private String tipoToString()
     {
         if (this.getTipo() == Sapatilha.PREMIUM)

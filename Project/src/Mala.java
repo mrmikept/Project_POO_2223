@@ -86,6 +86,24 @@ public class Mala extends Artigo
         return 0;
     }
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() == o.getClass())
+        {
+            return false;
+        }
+        Mala mala = (Mala) o;
+        return (super.equals(mala) &&
+                this.getTipo() == mala.getTipo() &&
+                this.getMaterial().equals(mala.getMaterial()) &&
+                this.getDimensao() == mala.getDimensao()) &&
+                this.getAnoLancamento().equals(mala.getAnoLancamento());
+    }
+
     private String tipoToString()
     {
         if (this.getTipo() == Sapatilha.PREMIUM)

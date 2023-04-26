@@ -69,6 +69,23 @@ public class Tshirt extends Artigo
         return 0;
     }
 
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass())
+        {
+            return false;
+        }
+        Tshirt tshirt = (Tshirt) o;
+        return (super.equals(tshirt) &&
+                this.getTamanho() == tshirt.getTamanho() &&
+                this.getPadrao() == tshirt.getPadrao() &&
+                this.getCorrecaoPreco() == tshirt.getCorrecaoPreco());
+    }
+
     private String tamanhoToString()
     {
         if (this.getTamanho() == S)

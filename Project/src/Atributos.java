@@ -16,6 +16,9 @@ public class Atributos
     public static final int NOVO = 0;
     public static final int USADO = 1;
 
+    public static final int VENDA = 0;
+    public static final int VENDIDO = 1;
+
     public static final int S = 0;
     public static final int M = 1;
     public static final int L = 2;

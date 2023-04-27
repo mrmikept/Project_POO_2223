@@ -20,7 +20,7 @@ public class Mala extends Artigo
         this.dimensao = 0.0;
         this.material = "";
         this.anoLancamento = LocalDate.now();
-        this.tipo = NORMAL;
+        this.tipo = Atributos.NORMAL;
     }
 
     public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
@@ -75,7 +75,7 @@ public class Mala extends Artigo
 
     public double getCorrecaoPreco()
     {
-        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getTipo() == NORMAL)
+        if (this.getEstado().getTipoEstado() == Atributos.USADO && this.getTipo() == Atributos.NORMAL)
         {
             return (this.getPrecoBase() / this.getDimensao()) * -1;
         }
@@ -103,7 +103,7 @@ public class Mala extends Artigo
 
     private String tipoToString()
     {
-        if (this.getTipo() == Sapatilha.PREMIUM)
+        if (this.getTipo() == Atributos.PREMIUM)
         {
             return "Premium";
         }

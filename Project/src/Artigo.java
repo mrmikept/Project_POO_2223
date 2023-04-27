@@ -29,7 +29,7 @@ public abstract class Artigo implements Serializable
         this.correcaoPreco = 0.0;
         this.estado = new EstadoArtigo();
         this.transportadora = new Transportadora();
-        this.estadoVenda = 0;
+        this.estadoVenda = Atributos.VENDA;
     }
 
     public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda)

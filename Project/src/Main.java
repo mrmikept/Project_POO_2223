@@ -1,11 +1,13 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     private Sistema sistema;
     private Apresentacao apresentacao;
 
-    public static void main(String[] args) throws IOException, UtilizadorException, TransportadoraException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, UtilizadorException, TransportadoraException, ClassNotFoundException, ArtigoException {
         new Main().run();
     }
 
@@ -14,16 +16,16 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException {
+    private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException {
         int x = 0;
-        String [] s = {"Entrar no programa", "Guardar estado", "Carregar ficheiro para o sistema", "Carregar estado anterior", "Estatísticas", "Sair"};
+        String [] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
         Scanner ler = new Scanner(System.in);
-        String input;
+        String input, input_backup;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s,x);
+                    apresentacao.printMenu(s,x, "");
                     x = ler.nextInt();
                     break;
 
@@ -79,12 +81,19 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
+                case 4 :
+                    apresentacao.printBackup();
+                    ler = new Scanner(System.in);
+                    input_backup = ler.nextLine();
+                    Automatizaçao backup = new Automatizaçao(input_backup);
+                    backup.carregaFicheiro(this.sistema);
+                    x = 0;
             }
         } while (x != 6);
         apresentacao.clear();
     }
 
-    private int runIN() throws UtilizadorException, TransportadoraException {
+    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException {
         int x = 0;
         String email, pass, nome, morada, nomeTrans;
         int nif;
@@ -96,7 +105,7 @@ public class Main {
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s,x);
+                    apresentacao.printMenu(s,x, "");
                     x = ler.nextInt();
                     break;
                 case 1: //Iniciar sessao
@@ -116,7 +125,7 @@ public class Main {
                         pass = ler.nextLine();
                         if(sistema.verificaPassword(email, pass))
                         {
-                            x = runUtilizador();
+                            x = runUtilizador(email);
                             break;
                         }
                         else
@@ -153,7 +162,7 @@ public class Main {
                                 pass = ler.nextLine();
                                 if(sistema.verificaPassword(email, pass))
                                 {
-                                    x = runUtilizador();
+                                    x = runUtilizador(email);
                                     break;
                                 }
                             }
@@ -198,7 +207,7 @@ public class Main {
                                 pass = ler.nextLine();
                                 if(sistema.verificaPassword(email, pass))
                                 {
-                                    x = runUtilizador();
+                                    x = runUtilizador(email);
                                     break;
                                 }
                                 else
@@ -236,7 +245,7 @@ public class Main {
                                         pass = ler.nextLine();
                                         if(sistema.verificaPassword(email, pass))
                                         {
-                                            x = runUtilizador();
+                                            x = runUtilizador(email);
                                             break;
                                         }
                                     }
@@ -367,32 +376,55 @@ public class Main {
         return x;
     }
 
-    private int runUtilizador() //MENU UTILIZADOR
+    private int runUtilizador(String email) throws UtilizadorException, ArtigoException //MENU UTILIZADOR
     {
-        String[] s = {"Comprar", "Vendas", "Faturas", "Retroceder"};
+        String[] s = {"Ver perfil", "Comprar", "Vendas", "Faturas", "Encomenda", "Retroceder"};
         int x = 0;
+        Utilizador utilizador = sistema.procuraUtilizador(email);
+        String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
+        //Transportadora ctt = new Transportadora("ctt",0.3, Atributos.PREMIUM,0.23,1.75,2.45,3.15);
+        //Transportadora tcc = new Transportadora("tcc",0.3,Atributos.NORMAL,0.23,1.75,2.45,3.15);
+        //Tshirt tshirt = new Tshirt(0, utilizador,"tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
+        //Tshirt tshirt1 = new Tshirt(1, utilizador,"tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
+        //Tshirt tshirt2 = new Tshirt(2, utilizador,"tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
+        //Sapatilha sapatilha = new Sapatilha(3, utilizador,"sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
-        apresentacao.printMenu(s,x);
-
-        System.out.println("Insira a sua opcao: ");
-
-        x = ler.nextInt();
+        //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
+        //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
+        //sistema.adicionaArtigoVenda(tshirt);
+        //sistema.adicionaArtigoVenda(tshirt1);
+        //sistema.adicionaArtigoVenda(tshirt2);
+        //sistema.adicionaArtigoVenda(sapatilha);
 
         do {
             switch (x)
             {
-                case 1: // MENU COMPRAR
+                case 0:
+                    apresentacao.printMenu(s,1,nome);
+                    x = ler.nextInt();
+                    break;
 
-                case 2: // MENU VENDAS
+                case 2: // MENU COMPRAR
+                    apresentacao.clear();
+                    apresentacao.printComprar();
+                    sistema.getListaArtigosVenda().forEach((k,v)->System.out.println(v.showArtigo()));
+                    //TODO: Alterar para a funcao do sistema
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
 
-                case 3: // MENU FATURAS
 
-                case 4: // VOLTAR PARA TRÁS
-                    return 0;
+
+                case 3: // MENU VENDAS
+
+                case 4: // MENU FATURAS
+
+                case 5: // MENU ENCOMENDA
+
+                case 6:
 
             }
-        } while (x != 0);
+        } while (x != 6);
 
         return 0;
     }

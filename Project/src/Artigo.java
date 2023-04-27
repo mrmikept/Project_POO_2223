@@ -152,6 +152,8 @@ public abstract class Artigo implements Serializable
 
     public abstract Artigo clone();
 
+    public abstract String showArtigo();
+
     public String toString()
     {
         StringBuilder string = new StringBuilder();

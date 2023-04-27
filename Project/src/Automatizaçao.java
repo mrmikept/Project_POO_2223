@@ -2,12 +2,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Automatizaçao {
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private String path;
     private List<String> excecoes;
@@ -99,19 +102,19 @@ public class Automatizaçao {
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException{
         String[] camposUtil = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposUtil[0]);
+        LocalDate data = LocalDate.parse(camposUtil[0], formatter);
         String email = camposUtil[1];
         String palavraPasse = camposUtil[2];
         String nome = camposUtil[3];
         String morada = camposUtil[4];
-        int nrFiscal = Integer.valueOf(camposUtil[5]);
+        int nrFiscal = Integer.parseInt(camposUtil[5]);
         sistema.adicionaUtilizador(email, palavraPasse, nome, morada, nrFiscal);
     }
     
 
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException{
         String[] camposArt = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposArt[0]);
+        LocalDate data = LocalDate.parse(camposArt[0], formatter);
         String email = camposArt[1];
         int id = Integer.valueOf(camposArt[3]);
         String descricao = camposArt[4];
@@ -147,7 +150,7 @@ public class Automatizaçao {
 
     public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException{
         String[] camposArtComp = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposArtComp[0]);
+        LocalDate data = LocalDate.parse(camposArtComp[0], formatter);
         String email = camposArtComp[1];
         Utilizador utilizador = sistema.procuraUtilizador(email);
         int idArtigo = Integer.valueOf(camposArtComp[2]);
@@ -158,7 +161,7 @@ public class Automatizaçao {
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException{
         String[] camposTransp = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposTransp[0]);
+        LocalDate data = LocalDate.parse(camposTransp[0], formatter);
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
         int tipo = Integer.valueOf(camposTransp[3]);
@@ -167,7 +170,7 @@ public class Automatizaçao {
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{
         String[] camposEncom = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposEncom[0]);
+        LocalDate data = LocalDate.parse(camposEncom[0], formatter);
         String email = camposEncom[1];
         String nomeTransportadora = camposEncom[2];
         Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);

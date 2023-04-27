@@ -124,6 +124,27 @@ public class Sapatilha extends Artigo {
                 this.getTipo() == sapatilha.getTipo());
     }
 
+    public String showArtigo() {
+        String tipo = "PREMIUM";
+        int x = this.getTransportadora().getTipo();
+        if (x == 0) tipo = "NORMAL";
+        return (Apresentacao.RED +    "                                     [Artigo Sapatilha]\n" +
+                Apresentacao.YELLOW + "                                     Identificador: " + Apresentacao.RESET + this.getId() + "\n" +
+                Apresentacao.YELLOW + "                                     Descrição: " + Apresentacao.RESET + this.getDescricao() + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠟⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣾⠿⢦⣴⠏⠀⠀⣴⢿⡄⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⢀⣀⣀⣤⣴⡶⢻⣏⠻⡦⠙⠇⠀⠉⠻⠶⠞⠫⡼⣧⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
+                Apresentacao.CYAN + "   ⣴⠞⠛⠛⠋⠉⠉⠀⠀⠋⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⣦⡀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Estado: " + Apresentacao.RESET + this.getEstado().toString() + "\n" +
+                Apresentacao.CYAN + "   ⣿⣷⡶⠶⣤⣤⣤⣤⣤⠶⠶⠶⠛⠛⠛⠛⢛⣠⣴⣾⣏⣀⡾⠁⠀⢀⣶⡄ ⠀    "   + Apresentacao.YELLOW + "Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
+                Apresentacao.CYAN + "    ⠉⠙⠛⠳⠶⠶⠶⣤⠀⠀⢀⣀⣤⣴⡾⢻⣍⠻⣦⠈⠙⢷⣤⣴⠟⣩⣷ ⠀    "   + Apresentacao.YELLOW + "Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⢀⣴⠶⠶⠶⠚⠛⠋⠉⠻⠂⠙⠀⠉⠀⠀⠀⠀⠀⠀⣠⡞⠉⣿ ⠀    "   + Apresentacao.YELLOW + "Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⣿⣧⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣤⠶⠶⠶⠶⠶⠶⠶⠿⠶⢶⣏ ⠀    "   + Apresentacao.YELLOW + "Tamanho: " + Apresentacao.RESET + this.getTamanho() + "\n" +
+                Apresentacao.CYAN + "    ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿ ⠀    "   + Apresentacao.YELLOW + "Tipo Cordão: " + Apresentacao.RESET + this.tipoCordaoToString() +  "\n" +
+                Apresentacao.YELLOW + "                                     Cor: " + Apresentacao.RESET + this.getCor() + "\n" +
+                Apresentacao.YELLOW + "                                     Data Lançamento: " + Apresentacao.RESET + this.getDataLancamento().toString() + "\n" +
+                Apresentacao.YELLOW + "                                     Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n");
+    }
+
     private String tipoToString()
     {
         if (this.getTipo() == Atributos.PREMIUM)

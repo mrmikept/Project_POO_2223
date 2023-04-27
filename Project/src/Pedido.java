@@ -20,20 +20,16 @@ public class Pedido implements Serializable {
     private LocalDate dataCriacao;
     private LocalDate dataAtualizacao;
 
-    public static final int PENDENTE = 0;
-    public static final int FINALIZADA = 1;
-    public static final int EXPEDIDA = 2;
-
     public Pedido()
     {
         this.listaEncomendas = new HashMap<>();
         this.precoFinal = 0;
-        this.estado = PENDENTE;
+        this.estado = Atributos.PENDENTE;
         this.dataCriacao = LocalDate.now();
         this.dataAtualizacao = LocalDate.now();
     }
 
-    public Pedido(Map<String, Encomenda> listaEncomendas, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao)
+    public Pedido(Map<String, Encomenda> listaEncomendas, double precoFinal, int estado, LocalDate dataCriacao)
     {
         this.listaEncomendas = listaEncomendas;
         this.precoFinal = precoFinal;
@@ -151,25 +147,25 @@ public class Pedido implements Serializable {
         this.precoFinal = this.listaEncomendas.values().stream().mapToDouble(encomenda -> encomenda.getPrecoTotalArtigos()).sum();
     }
 
-    public void alteraEstadoExpedido()
+    public void alteraEstadoExpedido(LocalDate dataAtualizacao)
     {
-        this.estado = EXPEDIDA;
-        this.setDataAtualizacao(LocalDate.now());
+        this.estado = Atributos.EXPEDIDA;
+        this.setDataAtualizacao(dataAtualizacao);
     }
 
-    public void alteraEstadoFinalizado()
+    public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
-        this.estado = FINALIZADA;
-        this.setDataAtualizacao(LocalDate.now());
+        this.estado = Atributos.FINALIZADA;
+        this.setDataAtualizacao(dataAtualizacao);
     }
 
     public String estadoToString()
     {
-        if (this.getEstado() == PENDENTE)
+        if (this.getEstado() == Atributos.PENDENTE)
         {
             return "PENDENTE";
         }
-        if (this.getEstado() == EXPEDIDA)
+        if (this.getEstado() == Atributos.EXPEDIDA)
         {
             return "EXPEDIDA";
         }

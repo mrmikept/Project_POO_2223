@@ -13,12 +13,10 @@ public class EstadoArtigo implements Serializable
     private double avaliacao;
     private int nrDonos;
 
-    public static final int NOVO = 0;
-    public static final int USADO = 1;
 
     public EstadoArtigo()
     {
-        this.tipoEstado = NOVO;
+        this.tipoEstado = Atributos.NOVO;
         this.avaliacao = 0.0;
         this.nrDonos = 0;
     }
@@ -62,7 +60,7 @@ public class EstadoArtigo implements Serializable
 
     public String toString()
     {
-        if (this.tipoEstado == NOVO)
+        if (this.tipoEstado == Atributos.NOVO)
         {
             return "NOVO";
         }

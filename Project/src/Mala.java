@@ -14,9 +14,6 @@ public class Mala extends Artigo
     private LocalDate anoLancamento;
     private int tipo;
 
-    public static final int NORMAL = 0;
-    public static final int PREMIUM = 1;
-
     public Mala()
     {
         super();

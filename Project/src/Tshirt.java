@@ -18,15 +18,11 @@ public class Tshirt extends Artigo
     public static final int RISCAS = 1;
     public static final int PALMEIRAS = 2;
 
-    public static final int S = 0;
-    public static final int M = 1;
-    public static final int L = 2;
-    public static final int XL = 3;
 
     public Tshirt()
     {
         super();
-        this.tamanho = S;
+        this.tamanho = Atributos.S;
         this.padrao = LISA;
     }
 
@@ -62,7 +58,7 @@ public class Tshirt extends Artigo
 
     @Override
     public double getCorrecaoPreco() {
-        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO && this.getPadrao() != Tshirt.LISA)
+        if (this.getEstado().getTipoEstado() == Atributos.USADO && this.getPadrao() != Tshirt.LISA)
         {
             return (this.getPrecoBase() * (-0.5));
         }
@@ -88,15 +84,15 @@ public class Tshirt extends Artigo
 
     private String tamanhoToString()
     {
-        if (this.getTamanho() == S)
+        if (this.getTamanho() == Atributos.S)
         {
             return "S";
         }
-        if (this.getTamanho() == M)
+        if (this.getTamanho() == Atributos.M)
         {
             return "M";
         }
-        if (this.getTamanho() == L)
+        if (this.getTamanho() == Atributos.L)
         {
             return "L";
         }

@@ -1,10 +1,6 @@
-import jdk.jshell.execution.Util;
-
 import java.io.Serializable;
-import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,7 +18,8 @@ public class Sistema implements Serializable
     private Map<Integer, Artigo> listaArtigosVenda;
     private Map<Integer, Artigo> listaArtigosComprados;
     private Map<String, Pedido> listaEncomendas;
-    private LocalDate dataSistema;
+    private LocalDate dataCriacao;
+    private LocalDate dataAtual;
 
     private int imposto;
     private double taxaEncPequena;
@@ -41,21 +38,23 @@ public class Sistema implements Serializable
         this.listaArtigosVenda = new HashMap<>();
         this.listaArtigosComprados = new HashMap<>();
         this.listaEncomendas = new HashMap<>();
-        this.dataSistema = LocalDate.now();
+        this.dataCriacao = LocalDate.now();
+        this.dataAtual = LocalDate.now();
         this.imposto = TAXAIMPOSTO_OMISSAO;
         this.taxaEncPequena = TAXAENC_PQ_OMISSAO;
         this.taxaEncMedia = TAXAENC_MD_OMISSAO;
         this.taxaEncGrande = TAXAENC_GD_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String, Pedido> listaEncomendas, LocalDate dataSistema, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String, Pedido> listaEncomendas, LocalDate dataCriacao, LocalDate dataAtual, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
     {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigosVenda = listaArtigosVenda;
         this.listaArtigosComprados = listaArtigosComprados;
         this.listaEncomendas = listaEncomendas;
-        this.dataSistema = dataSistema;
+        this.dataCriacao = dataCriacao;
+        this.dataAtual = dataAtual;
         this.imposto = imposto;
         this.taxaEncPequena = taxaEncPequena;
         this.taxaEncMedia = taxaEncMedia;
@@ -69,7 +68,8 @@ public class Sistema implements Serializable
         this.listaArtigosVenda = sistema.getListaArtigosVenda();
         this.listaArtigosComprados = sistema.getListaArtigosComprados();
         this.listaEncomendas = sistema.getListaEncomendas();
-        this.dataSistema = sistema.getDataSistema();
+        this.dataCriacao = sistema.getDataCriacao();
+        this.dataAtual = sistema.getDataAtual();
     }
 
     public Map<String, Utilizador> getListaUtilizadores() {
@@ -112,19 +112,29 @@ public class Sistema implements Serializable
         this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public LocalDate getDataSistema()
+    public LocalDate getDataCriacao()
     {
-        return this.dataSistema;
+        return this.dataCriacao;
     }
 
-    public void setDataSistema(LocalDate data)
+    public void setDataCriacao(LocalDate data)
     {
-        this.dataSistema = data;
+        this.dataCriacao = data;
+    }
+
+    public LocalDate getDataAtual()
+    {
+        return this.dataAtual;
+    }
+
+    public void setDataAtual(LocalDate data)
+    {
+        this.dataAtual = data;
     }
 
     public void setDataSistema(int dias)
     {
-        this.dataSistema.plusDays(dias);
+        this.dataCriacao.plusDays(dias);
         //TODO Atualizar sistema e gerar faturas!
     }
 
@@ -407,6 +417,14 @@ public class Sistema implements Serializable
             utilizador.removeArtigoPedido(artigo);
         } else throw new ArtigoException("Artigo não encontrado à venda!");
     }
+
+    public void aceitaPedido(String email) throws EncomendaException {
+        if (this.listaUtilizadores.containsKey(email) && this.procuraEncomenda(email).getEstado() == Atributos.PENDENTE)
+        {
+            Pedido pedido = this.listaEncomendas.get(email);
+            pedido.alteraEstadoExpedido(this.dataAtual);
+        }
+    }
     
     public Utilizador procuraUtilizador(String email) throws UtilizadorException
     {
@@ -416,6 +434,17 @@ public class Sistema implements Serializable
         }
         else{
             throw new UtilizadorException("O utilizador com o email:" + email + "não encontrado");
+        }
+    }
+
+    public Transportadora procuraTransportadora(String nome) throws TransportadoraException{
+        if (listaTransportadoras.containsKey(nome))
+        {
+            return listaTransportadoras.get(nome);
+        }
+        else
+        {
+            throw new TransportadoraException("A Transportadora com o nome, " + nome + "não existe!");
         }
     }
 
@@ -451,6 +480,8 @@ public class Sistema implements Serializable
             throw new EncomendaException("O Utilizador com email, " + email + " não tem encomendas!");
         }
     }
+
+
 
     public Sistema clone()
     {

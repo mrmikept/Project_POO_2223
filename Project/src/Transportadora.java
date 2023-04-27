@@ -16,15 +16,12 @@ public class Transportadora implements Serializable {
     private double txEncMd;
     private double txEncGd;
 
-    public static final int NORMAL = 0;
-    public static final int PREMIUM = 1;
-
 
     public Transportadora()
     {
         this.nome = "";
         this.margemLucro = 0.0;
-        this.tipo = NORMAL;
+        this.tipo = Atributos.NORMAL;
         this.imposto = 0;
         this.txEncPq = 0;
         this.txEncMd = 0;
@@ -129,7 +126,7 @@ public class Transportadora implements Serializable {
 
     private String tipotoString()
     {
-        if (this.getTipo() == NORMAL)
+        if (this.getTipo() == Atributos.NORMAL)
         {
             return "Normal";
         }

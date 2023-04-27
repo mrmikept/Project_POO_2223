@@ -14,10 +14,9 @@ public class Sapatilha extends Artigo {
     private LocalDate dataLancamento;
     private int tipo;
 
-    public static final Integer CORDAO = 0;
-    public static final Integer ATILHO = 1;
-    public static final Integer NORMAL = 0;
-    public static final Integer PREMIUM = 1;
+    private static final Integer CORDAO = 0;
+    private static final Integer ATILHO = 1;
+
 
     public Sapatilha() {
         super();
@@ -25,7 +24,7 @@ public class Sapatilha extends Artigo {
         this.tipoCordao = CORDAO;
         this.cor = "";
         this.dataLancamento = LocalDate.now();
-        this.tipo = NORMAL;
+        this.tipo = Atributos.NORMAL;
     }
 
     public Sapatilha(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
@@ -88,10 +87,10 @@ public class Sapatilha extends Artigo {
     }
 
     public double getCorrecaoPreco() {
-        if (this.getEstado().getTipoEstado() == EstadoArtigo.USADO)
+        if (this.getEstado().getTipoEstado() == Atributos.USADO)
         {
             return  -this.getPrecoBase() * (double) Math.round((((1 - (this.getEstado().getAvaliacao() / 5.0)) * 0.6) + ((Math.pow((2),(-this.getEstado().getNrDonos())) * (-1) + 1) * 0.4)) * 100.0) / 100.0;
-        } else if (this.getEstado().getTipoEstado() == EstadoArtigo.NOVO && this.getTamanho() > 45) {
+        } else if (this.getEstado().getTipoEstado() == Atributos.NOVO && this.getTamanho() > 45) {
             return this.getPrecoBase() * (-0.2);
         }
         return 0;
@@ -127,7 +126,7 @@ public class Sapatilha extends Artigo {
 
     private String tipoToString()
     {
-        if (this.getTipo() == Sapatilha.PREMIUM)
+        if (this.getTipo() == Atributos.PREMIUM)
         {
             return "Premium";
         }

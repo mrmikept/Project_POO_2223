@@ -3,20 +3,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CarregamentoBackup {
+public class Automatizaçao {
 
     private String path;
     private List<String> excecoes;
 
-    public CarregamentoBackup(){
+    public Automatizaçao(){
 
         this.path = "";
         this.excecoes = new ArrayList<>();
     }
 
-    public CarregamentoBackup(String path){
+    public Automatizaçao(String path){
 
         this.path = path;
         this.excecoes = new ArrayList<>();
@@ -55,20 +57,20 @@ public class CarregamentoBackup {
                     }
                 }
 
-                if(linha.contains("Venda:")){
+                if(linha.contains("Adiciona Venda:")){
                     try{
                         artVenda(aux, sistema);
                     }
-                    catch(ArtigoException a){
+                    catch(ArtigoException| TransportadoraException| UtilizadorException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
 
-                if(linha.contains("Compra:")){
+                if(linha.contains("Adiciona Compra:")){
                     try{
                         artCompra(aux, sistema);
                     }
-                    catch(ArtigoException a){
+                    catch(ArtigoException| UtilizadorException| EncomendaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -86,7 +88,7 @@ public class CarregamentoBackup {
                     try {
                         encom(aux, sistema);
                     }
-                    catch (EncomendaException a){
+                    catch (EncomendaException| ArtigoException| TransportadoraException| UtilizadorException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -107,47 +109,50 @@ public class CarregamentoBackup {
     }
     
 
-    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException{
+    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException{
         String[] camposArt = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArt[0]);
-        int id = Integer.valueOf(camposArt[2]);
-        String descricao = camposArt[3];
-        String marca = camposArt[4];
-        double precoBase = Double.parseDouble(camposArt[5]);
-        double correcaoPreco = Double.parseDouble(camposArt[6]);
-        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[7]), Double.parseDouble(camposArt[8]), Integer.valueOf(camposArt[9]));
-        Transportadora transportadora = new Transportadora(camposArt[10], Double.parseDouble(camposArt[11]), Integer.valueOf(camposArt[12]));
+        String email = camposArt[1];
+        int id = Integer.valueOf(camposArt[3]);
+        String descricao = camposArt[4];
+        String marca = camposArt[5];
+        double precoBase = Double.parseDouble(camposArt[6]);
+        double correcaoPreco = Double.parseDouble(camposArt[7]);
+        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[8]), Double.parseDouble(camposArt[9]), Integer.valueOf(camposArt[10]));
+        String nomeTransportadora = camposArt[11];
+        Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
 
         if(camposArt[1].contains("Mala")){
-            double dimensao = Double.parseDouble(camposArt[13]);
-            String material = camposArt[14];
-            LocalDate anoLancamento = LocalDate.parse(camposArt[15]);
-            int tipo = Integer.valueOf(camposArt[16]);
-            sistema.adicionaMalaVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, dimensao, material, anoLancamento, tipo);
+            double dimensao = Double.parseDouble(camposArt[12]);
+            String material = camposArt[13];
+            LocalDate anoLancamento = LocalDate.parse(camposArt[14]);
+            int tipo = Integer.valueOf(camposArt[15]);
+            sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, dimensao, material, anoLancamento, tipo);
         }
         else if(camposArt[1].contains("Sapatilha")){
-            int tamanho = Integer.valueOf(camposArt[13]);
-            int tipoCordao = Integer.valueOf(camposArt[14]);
-            String cor = camposArt[15];
-            LocalDate dataLancamento = LocalDate.parse(camposArt[16]);
-            int tipo = Integer.valueOf(camposArt[17]);
-            sistema.adicionaSapatilhaVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
+            int tamanho = Integer.valueOf(camposArt[12]);
+            int tipoCordao = Integer.valueOf(camposArt[13]);
+            String cor = camposArt[14];
+            LocalDate dataLancamento = LocalDate.parse(camposArt[15]);
+            int tipo = Integer.valueOf(camposArt[16]);
+            sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
         }
         else if(camposArt[1].contains("Tshirt")){
-            int tamanho = Integer.valueOf(camposArt[13]);
-            int padrao = Integer.valueOf(camposArt[14]);
-            sistema.adicionaTshirtVenda(id, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, padrao);
+            int tamanho = Integer.valueOf(camposArt[12]);
+            int padrao = Integer.valueOf(camposArt[13]);
+            sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, tamanho, padrao);
         }
-
     }
 
-    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException{
+    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException{
         String[] camposArtComp = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArtComp[0]);
-        int idUtilizador = Integer.valueOf(camposArtComp[1]);
+        String email = camposArtComp[1];
+        Utilizador utilizador = sistema.procuraUtilizador(email);
         int idArtigo = Integer.valueOf(camposArtComp[2]);
         Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-        sistema.adicionaArtigoCompra(artigo);
+        utilizador.adicionaArtigoPedido(artigo);
+
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException{
@@ -159,19 +164,20 @@ public class CarregamentoBackup {
         sistema.adicionaTransportadora(nome, margemLucro, tipo);
     }
 
-    public void encom(String[] aux, Sistema sistema) throws EncomendaException{
+    public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{
         String[] camposEncom = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposEncom[0]);
         String email = camposEncom[1];
-        int dimensao = Integer.valueOf(camposEncom[2]);
-        int estado = Integer.valueOf(camposEncom[3]);
-        ArrayList<Artigo> listaArtigos = new ArrayList<>();
-
-
-
+        String nomeTransportadora = camposEncom[2];
+        Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
+        Encomenda encomenda = new Encomenda();
+        encomenda.setTransportadora(transportadora);
+        int x = 3;
+        while (camposEncom[x] != null){
+            int idArtigo = Integer.valueOf(camposEncom[x]);
+            Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
+            sistema.adicionaArtigoPedido(artigo, email);
+            x++;
+        }
     }
-
-
-
-
 }

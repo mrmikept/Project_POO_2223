@@ -17,7 +17,7 @@ public abstract class Artigo implements Serializable
     private double correcaoPreco;
     private EstadoArtigo estado;
     private Transportadora transportadora;
-    private int tipo;
+    private int estadoVenda;
 
     public Artigo()
     {
@@ -29,10 +29,10 @@ public abstract class Artigo implements Serializable
         this.correcaoPreco = 0.0;
         this.estado = new EstadoArtigo();
         this.transportadora = new Transportadora();
-        this.tipo = 0;
+        this.estadoVenda = 0;
     }
 
-    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int tipo)
+    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda)
     {
         this.id = id;
         this.vendedor = utilizador;
@@ -42,7 +42,7 @@ public abstract class Artigo implements Serializable
         this.correcaoPreco = correcaoPreco;
         this.estado = estado.clone();
         this.transportadora = transportadora.clone();
-        this.tipo = tipo;
+        this.estadoVenda = estadoVenda;
     }
 
     public Artigo(Artigo artigo)
@@ -55,7 +55,7 @@ public abstract class Artigo implements Serializable
         this.correcaoPreco = artigo.getCorrecaoPreco();
         this.estado = artigo.getEstado();
         this.transportadora = artigo.getTransportadora();
-        this.tipo = artigo.getTipo();
+        this.estadoVenda = artigo.getEstadoVenda();
     }
 
     public void setId(int id) {
@@ -124,10 +124,10 @@ public abstract class Artigo implements Serializable
         return this.transportadora.clone();
     }
 
-    public int getTipo(){ return tipo; }
+    public int getEstadoVenda(){ return estadoVenda; }
 
-    public void setTipo(int tipo){
-        this.tipo = tipo;
+    public void setEstadoVenda(int estadoVenda){
+        this.estadoVenda = estadoVenda;
     }
 
     public boolean equals(Object o)

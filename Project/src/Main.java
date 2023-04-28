@@ -30,8 +30,15 @@ public class Main {
                     break;
 
                 case 1:
-                    x = runIN();
-                    x = 0;
+                    try {
+                        x = runIN();
+                        x = 0;
+                    }
+                    catch (UtilizadorException a){
+                        System.out.println(a.getMessage());
+                    }
+
+
                     break;
 
                 case 2:
@@ -112,7 +119,7 @@ public class Main {
 
     private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans;
+        String email, pass, nome, morada, nomeTrans, c;
         int nif;
         int tipo = 0;
         double lucro;
@@ -275,19 +282,26 @@ public class Main {
                 case 2:
                     apresentacao.printProcuraTrans();
 
-                    System.out.println(apresentacao.YELLOW + "                                                                     Introduza a transportadora que pretende procurar:" + apresentacao.RESET);
-                    System.out.println("                                                                                         ");
+                    System.out.println(apresentacao.YELLOW + "                                                                             Introduza a transportadora que pretende procurar:" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                             ");
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
                     Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
                     apresentacao.printProcuraTrans();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                       Nome:" + transportadora.getNome());
-                    System.out.println(apresentacao.CYAN_BOLD + "                                Margem Lucro: " + transportadora.getMargemLucro() +
-                            " Tipo: " + transportadora.getTipo() + " Imposto: " + transportadora.getImposto() + " Taxas: " + transportadora.getTxEncPq()+ "(Pequena), " + transportadora.getTxEncMd()+" (Média), " + transportadora.getTxEncGd()+" (Grande)");
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                  Nome: " + apresentacao.RESET + transportadora.getNome());
                     System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                      Margem Lucro: " + apresentacao.RESET + transportadora.getMargemLucro() + apresentacao.CYAN_BOLD +
+                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() +  apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + transportadora.getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + transportadora.getTxEncPq() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + transportadora.getTxEncMd() + apresentacao.CYAN_BOLD+ " (Média), " + apresentacao.RESET + transportadora.getTxEncGd() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
                     System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                Encomendas:" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.println(apresentacao.YELLOW + "                                                                                      Pressione enter para continuar..." + Apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                     ");
                     ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    c = ler.nextLine();
+                    x = 0;
                     break;
 
                 case 3: //Registar utilizador
@@ -299,63 +313,80 @@ public class Main {
                     System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
+                    if(!sistema.verificaUtilizador(email)) {
+                        System.out.println();
 
-                    System.out.println();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira a password:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        pass = ler.nextLine();
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira a password:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    pass = ler.nextLine();
+                        System.out.println();
 
-                    System.out.println();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira o seu primeiro e ultimo nome:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        nome = ler.nextLine();
 
-                    //TODO: verificar se ja nao existe um email no sistema
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira o seu primeiro e ultimo nome:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    nome = ler.nextLine();
+                        System.out.println();
 
-                    System.out.println();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira a sua morada:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira a sua morada:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        morada = ler.nextLine();
 
-                    ler = new Scanner(System.in);
-                    morada = ler.nextLine();
-
-                    System.out.println();
+                        System.out.println();
 
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira o seu numero fiscal:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    nif = ler.nextInt();
-                    //TODO: Duvida! Verificar se ja existe um numero fiiscal
-                    sistema.adicionaUtilizador(email, pass, nome, morada, nif);
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira o seu numero fiscal:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        nif = ler.nextInt();
+                        sistema.adicionaUtilizador(email, pass, nome, morada, nif);
 
-                    apresentacao.printReg();
-                    apresentacao.yellow();
-                    System.out.println("                                                                        UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                                    1 - SIM");
-                    System.out.println("                                                                                                    0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                        apresentacao.printReg();
+                        apresentacao.yellow();
+                        System.out.println("                                                                        UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                    1 - SIM");
+                        System.out.println("                                                                                                    0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
 
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
 
-                    if (x==1) x = 3;
-                    else x = 0;
+                        if (x == 1) x = 3;
+                        else x = 0;
+                    }
+                    else
+                    {
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(apresentacao.RED + "                                                                                 ESTE EMAIL JÁ EXISTE!! DESEJA TENTAR DE NOVO?");
+                        System.out.println();
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                   1 - SIM");
+                        System.out.println("                                                                                                   0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+                        if (x == 1) x = 3;
+                        else x = 0;
+                    }
 
                     break;
 
@@ -466,7 +497,6 @@ public class Main {
                     break;
 
                 case 2: // MENU COMPRAR
-                    apresentacao.clear();
                     apresentacao.printComprar();
                     sistema.getListaArtigosVenda().forEach((k,v)->System.out.println(v.showArtigo()));
                     //TODO: Alterar para a funcao do sistema
@@ -476,6 +506,10 @@ public class Main {
 
 
                 case 3: // MENU VENDAS
+                    apresentacao.printVendas();
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    runVendas(x);
 
                 case 4: // MENU FATURAS
 
@@ -487,6 +521,36 @@ public class Main {
         } while (x != 6);
 
         return 0;
+    }
+    public int runVendas(int x) {
+        String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
+        Scanner ler = new Scanner(System.in);
+        x = 0;
+
+        do {
+            switch (x) {
+                case 0:
+                    apresentacao.printMenu(s,0, "");
+                    x = ler.nextInt();
+                case 1:
+                    System.out.println("                                                                 MINHA LISTA DE ARTIGOS A VENDA");
+                    //TODO: Mostrar todos os artigos a venda pelo o utilizador
+                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    break;
+
+                case 2:
+                    System.out.println("                                                             ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS");
+                    //TODO: Mostrar todos os artigos comprados pelo o utilizador
+                    //TODO: Adicionar algum artigo à minha lista de vendas
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    break;
+            }
+        } while (x != 0);
+
+        return x;
     }
 }
 

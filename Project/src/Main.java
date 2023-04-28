@@ -83,11 +83,28 @@ public class Main {
                     break;
                 case 4 :
                     apresentacao.printBackup();
+                    apresentacao.cyan();
+                    System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o backup (../\"ficheiro\"):");
+                    apresentacao.resetColor();
+                    System.out.print("                                                               ");
                     ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
                     Automatizaçao backup = new Automatizaçao(input_backup);
                     backup.carregaFicheiro(this.sistema);
+
+                    apresentacao.clear();
+                    apresentacao.printBackup();
+                    apresentacao.yellow();
+                    System.out.println("                                                                                        BACKUP CARREGADO COM SUCESSO!!");
+                    apresentacao.resetColor();
+                    System.out.println();
+                    System.out.println("                                                                                       Pressione enter para continuar...");
+                    System.out.println();
+                    System.out.print("                                                                                                      ");
+                    ler = new Scanner(System.in);
+                    ler.nextLine();
                     x = 0;
+                    break;
             }
         } while (x != 6);
         apresentacao.clear();
@@ -99,7 +116,7 @@ public class Main {
         int nif;
         int tipo = 0;
         double lucro;
-        String[] s = {"Iniciar sessao - Utlizador", "Iniciar Sessao - Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Retroceder"};
+        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Retroceder"};
         Scanner ler = new Scanner(System.in);
 
         do {
@@ -255,6 +272,24 @@ public class Main {
                     }
                     break;
 
+                case 2:
+                    apresentacao.printProcuraTrans();
+
+                    System.out.println(apresentacao.YELLOW + "                                                                     Introduza a transportadora que pretende procurar:" + apresentacao.RESET);
+                    System.out.println("                                                                                         ");
+                    ler = new Scanner(System.in);
+                    nomeTrans = ler.nextLine();
+                    Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
+                    apresentacao.printProcuraTrans();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                       Nome:" + transportadora.getNome());
+                    System.out.println(apresentacao.CYAN_BOLD + "                                Margem Lucro: " + transportadora.getMargemLucro() +
+                            " Tipo: " + transportadora.getTipo() + " Imposto: " + transportadora.getImposto() + " Taxas: " + transportadora.getTxEncPq()+ "(Pequena), " + transportadora.getTxEncMd()+" (Média), " + transportadora.getTxEncGd()+" (Grande)");
+                    System.out.println();
+                    System.out.println();
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    break;
+
                 case 3: //Registar utilizador
                     apresentacao.printReg();
 
@@ -380,6 +415,7 @@ public class Main {
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Faturas", "Encomenda", "Retroceder"};
         int x = 0;
+        String c;
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
@@ -403,6 +439,30 @@ public class Main {
                 case 0:
                     apresentacao.printMenu(s,1,nome);
                     x = ler.nextInt();
+                    break;
+
+                case 1:
+                    apresentacao.printLogin();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                        ID: " + Apresentacao.RESET + utilizador.getId());
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                        Nome: " + Apresentacao.RESET + utilizador.getNome());
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                        Email: " + Apresentacao.RESET + utilizador.getEmail());
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                        Morada: " + Apresentacao.RESET + utilizador.getMorada());
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                        Nr. Fiscal: " + Apresentacao.RESET + utilizador.getNrFiscal());
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println(apresentacao.YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
                     break;
 
                 case 2: // MENU COMPRAR

@@ -156,7 +156,7 @@ public class Utilizador implements Serializable {
         //TODO ???????????????
         if (!this.listaEncomendas.isEmpty())
         {
-            if (!this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().isEmpty())
+            if (!this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).collect(Collectors.toList()).isEmpty())
             {
                 //Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().get(0);
                 //encomenda.adicionaArtigo(artigo);
@@ -181,7 +181,7 @@ public class Utilizador implements Serializable {
 
     public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException {
         //TODO ???????????????????
-        Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().get(0);
+        Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).collect(Collectors.toList()).get(0);
         if (encomenda != null)
         {
             encomenda.removeArtigo(artigo);
@@ -192,7 +192,7 @@ public class Utilizador implements Serializable {
 
     public List<Encomenda> getEncomendaPendente(String nomeTransportadora)
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).toList();
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
     }
 
     public boolean equals(Object o)

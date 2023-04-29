@@ -164,6 +164,7 @@ public abstract class Artigo implements Serializable
         string.append("Correção Preço: " + this.getCorrecaoPreco() + "\n");
         string.append("Estado: " + this.getEstado().toString() + "\n");
         string.append("Transportadora: " + this.getTransportadora().toString());
+        string.append("Estado Venda: " + this.getEstadoVenda() + "\n");
 
         return string.toString();
     }

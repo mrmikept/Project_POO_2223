@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
  * @author Rafael Gomes A96208
  */
 public class Encomenda {
+    private int id;
     private List<Artigo> listaArtigos;
     private Transportadora transportadora;
     private int dimensao;
@@ -21,6 +22,7 @@ public class Encomenda {
 
 
     public Encomenda() {
+        this.id = 0;
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -30,7 +32,8 @@ public class Encomenda {
         this.dataAtualizacao = LocalDate.now();
     }
 
-    public Encomenda(List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+    public Encomenda(int id, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+        this.id = id;
         this.listaArtigos = listaArtigos;
         this.transportadora = transportadora;
         this.dimensao = dimensao;
@@ -41,6 +44,7 @@ public class Encomenda {
     }
 
     public Encomenda(Encomenda encomenda) {
+        this.id = encomenda.getId();
         this.listaArtigos = encomenda.getListaArtigos();
         this.transportadora = encomenda.getTransportadora();
         this.dimensao = encomenda.getDimensao();
@@ -50,7 +54,8 @@ public class Encomenda {
         this.dataAtualizacao = encomenda.getDataAtualizacao();
     }
 
-    public Encomenda(LocalDate dataCriacao) {
+    public Encomenda(int id, LocalDate dataCriacao) {
+        this.id = id;
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -61,6 +66,13 @@ public class Encomenda {
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public List<Artigo> getListaArtigos() {
         return listaArtigos.stream().map(Artigo::clone).collect(Collectors.toList());
@@ -122,7 +134,7 @@ public class Encomenda {
 
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
         if (!this.listaArtigos.contains(artigo)) {
-            this.listaArtigos.add(artigo.clone());
+            this.listaArtigos.add(artigo);
             this.setTransportadora(artigo.getTransportadora());
             this.alteraPreco();
             this.alteraDimensão(listaArtigos.size());
@@ -162,6 +174,34 @@ public class Encomenda {
         }
     }
 
+
+    public void alteraEstadoExpedido(LocalDate dataAtualizacao)
+    {
+        this.estado = Atributos.EXPEDIDA;
+        for (Artigo artigo: listaArtigos) {
+            artigo.setEstadoVenda(Atributos.VENDIDO);
+        }
+        this.setDataAtualizacao(dataAtualizacao);
+    }
+
+    public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
+    {
+        LocalDate dataPrevistaEntrega = this.getDataAtualizacao().plusDays(this.getTransportadora().getTempoExpedicao());
+        if (dataPrevistaEntrega.isBefore(dataAtualizacao))
+        {
+            this.estado = Atributos.FINALIZADA;
+            this.setDataAtualizacao(dataPrevistaEntrega);
+        }
+    }
+
+    public void devolveEncomenda()
+    {
+        for (Artigo artigo:listaArtigos)
+        {
+            artigo.setEstadoVenda(Atributos.VENDA);
+        }
+    }
+
     public boolean equals(Object o)
     {
         if (this == o)
@@ -178,19 +218,6 @@ public class Encomenda {
                 this.getPrecoFinal() == encomenda.getPrecoFinal() &&
                 this.getDimensao() == encomenda.getDimensao());
     }
-
-    public void alteraEstadoExpedido(LocalDate dataAtualizacao)
-    {
-        this.estado = Atributos.EXPEDIDA;
-        this.setDataAtualizacao(dataAtualizacao);
-    }
-
-    public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
-    {
-        this.estado = Atributos.FINALIZADA;
-        this.setDataAtualizacao(dataAtualizacao);
-    }
-
     private String dimensaoToString() {
         if (this.getDimensao() == Atributos.PEQUENO) {
             return "Pequena";
@@ -217,6 +244,7 @@ public class Encomenda {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
+        string.append("Identificador Encomenda: " + this.getId());
         string.append(this.listaArtigos.toString());
         string.append("Dimensão: " + this.dimensaoToString() + "\n");
         string.append("Preço: " + this.precoFinal + "\n");

@@ -152,6 +152,13 @@ public class Utilizador implements Serializable {
         this.listaEncomendas.add(encomenda);
     }
 
+    public void removeEncomenda(Encomenda encomenda) throws UtilizadorException {
+        if (this.listaEncomendas.contains(encomenda))
+        {
+            this.listaEncomendas.remove(encomenda);
+        } else throw new UtilizadorException("O utilizador não possui esta encomenda!");
+    }
+
     public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException {
         //TODO ???????????????
         if (!this.listaEncomendas.isEmpty())

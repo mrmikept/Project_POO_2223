@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,29 +14,53 @@ public class Encomenda {
     private List<Artigo> listaArtigos;
     private Transportadora transportadora;
     private int dimensao;
-    private double precoTotalArtigos;
+    private double precoFinal;
+    private int estado;
+    private LocalDate dataCriacao;
+    private LocalDate dataAtualizacao;
 
 
     public Encomenda() {
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
-        this.precoTotalArtigos = 0;
+        this.precoFinal = 0;
+        this.estado = Atributos.PENDENTE;
+        this.dataCriacao = LocalDate.now();
+        this.dataAtualizacao = LocalDate.now();
     }
 
-    public Encomenda(List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoTotalArtigos) {
+    public Encomenda(List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
         this.listaArtigos = listaArtigos;
         this.transportadora = transportadora;
         this.dimensao = dimensao;
-        this.precoTotalArtigos = precoTotalArtigos;
+        this.precoFinal = precoFinal;
+        this.estado = estado;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public Encomenda(Encomenda encomenda) {
         this.listaArtigos = encomenda.getListaArtigos();
         this.transportadora = encomenda.getTransportadora();
         this.dimensao = encomenda.getDimensao();
-        this.precoTotalArtigos = encomenda.getPrecoTotalArtigos();
+        this.precoFinal = encomenda.getPrecoFinal();
+        this.estado = encomenda.getEstado();
+        this.dataCriacao = encomenda.getDataCriacao();
+        this.dataAtualizacao = encomenda.getDataAtualizacao();
     }
+
+    public Encomenda(LocalDate dataCriacao) {
+        this.listaArtigos = new ArrayList<>();
+        this.transportadora = new Transportadora();
+        this.dimensao = Atributos.PEQUENO;
+        this.precoFinal = 0;
+        this.estado = Atributos.PENDENTE;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataCriacao;
+    }
+
+
 
     public List<Artigo> getListaArtigos() {
         return listaArtigos.stream().map(Artigo::clone).collect(Collectors.toList());
@@ -63,17 +88,42 @@ public class Encomenda {
         this.dimensao = dimensao;
     }
 
-    public double getPrecoTotalArtigos() {
-        return precoTotalArtigos;
+    public double getPrecoFinal() {
+        return precoFinal;
     }
 
-    public void setPrecoTotalArtigos(double precoTotalArtigos) {
-        this.precoTotalArtigos = Math.round(precoTotalArtigos * 100.0) / 100.0;
+    public void setPrecoFinal(double precoFinal) {
+        this.precoFinal = precoFinal;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public LocalDate getDataCriacao() {
+        return this.dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDate getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDate dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
         if (!this.listaArtigos.contains(artigo)) {
             this.listaArtigos.add(artigo.clone());
+            this.setTransportadora(artigo.getTransportadora());
             this.alteraPreco();
             this.alteraDimensão(listaArtigos.size());
         } else throw new EncomendaException("Artigo já existente na encomenda!");
@@ -83,6 +133,10 @@ public class Encomenda {
         if (this.listaArtigos.contains(artigo)) {
             this.listaArtigos.remove(artigo);
             this.alteraDimensão(listaArtigos.size());
+            if (this.listaArtigos.isEmpty())
+            {
+                this.setTransportadora(new Transportadora());
+            }
             this.alteraPreco();
         } else throw new EncomendaException("Artigo não existe na encomenda!");
     }
@@ -93,7 +147,7 @@ public class Encomenda {
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.USADO).count()) * 0.25;
         double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.NOVO).count()) * 0.5;
         double valorExpedicao = this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
-        this.setPrecoTotalArtigos(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorExpedicao);
+        this.setPrecoFinal(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorExpedicao);
     }
 
     public void alteraDimensão(int tamanho) {
@@ -108,7 +162,6 @@ public class Encomenda {
         }
     }
 
-
     public boolean equals(Object o)
     {
         if (this == o)
@@ -122,8 +175,20 @@ public class Encomenda {
         Encomenda encomenda = (Encomenda) o;
         return (this.getListaArtigos().equals(encomenda.getListaArtigos()) &&
                 this.getTransportadora().equals(encomenda.getTransportadora()) &&
-                this.getPrecoTotalArtigos() == encomenda.getPrecoTotalArtigos() &&
+                this.getPrecoFinal() == encomenda.getPrecoFinal() &&
                 this.getDimensao() == encomenda.getDimensao());
+    }
+
+    public void alteraEstadoExpedido(LocalDate dataAtualizacao)
+    {
+        this.estado = Atributos.EXPEDIDA;
+        this.setDataAtualizacao(dataAtualizacao);
+    }
+
+    public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
+    {
+        this.estado = Atributos.FINALIZADA;
+        this.setDataAtualizacao(dataAtualizacao);
     }
 
     private String dimensaoToString() {
@@ -136,13 +201,28 @@ public class Encomenda {
         return "Grande";
     }
 
+    public String estadoToString()
+    {
+        if (this.getEstado() == Atributos.PENDENTE)
+        {
+            return "PENDENTE";
+        }
+        if (this.getEstado() == Atributos.EXPEDIDA)
+        {
+            return "EXPEDIDA";
+        }
+        return "FINALIZADA";
+    }
 
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append(this.listaArtigos.toString());
         string.append("Dimensão: " + this.dimensaoToString() + "\n");
-        string.append("Preço: " + this.precoTotalArtigos + "\n");
+        string.append("Preço: " + this.precoFinal + "\n");
+        string.append("Estado encomenda: " + this.estadoToString() + "\n");
+        string.append("Data Criação Encomenda: " + this.getDataCriacao() + "\n");
+        string.append("Data Atualização Estado: " + this.getDataAtualizacao());
         return string.toString();
     }
 

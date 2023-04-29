@@ -1,6 +1,12 @@
+import com.sun.source.tree.ReturnTree;
+
 import java.io.Serializable;
+import java.security.PublicKey;
+import java.sql.SQLSyntaxErrorException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,9 +21,8 @@ public class Sistema implements Serializable
 {
     private Map<String,Utilizador> listaUtilizadores;
     private Map<String, Transportadora> listaTransportadoras;
-    private Map<Integer, Artigo> listaArtigosVenda;
-    private Map<Integer, Artigo> listaArtigosComprados;
-    private Map<String, Pedido> listaEncomendas;
+    private Map<Integer, Artigo> listaArtigos;
+    private List<Encomenda> listaEncomendas;
     private LocalDate dataCriacao;
     private LocalDate dataAtual;
 
@@ -35,9 +40,8 @@ public class Sistema implements Serializable
     {
         this.listaUtilizadores = new HashMap<>();
         this.listaTransportadoras = new HashMap<>();
-        this.listaArtigosVenda = new HashMap<>();
-        this.listaArtigosComprados = new HashMap<>();
-        this.listaEncomendas = new HashMap<>();
+        this.listaArtigos = new HashMap<>();
+        this.listaEncomendas = new ArrayList<>();
         this.dataCriacao = LocalDate.now();
         this.dataAtual = LocalDate.now();
         this.imposto = TAXAIMPOSTO_OMISSAO;
@@ -46,12 +50,11 @@ public class Sistema implements Serializable
         this.taxaEncGrande = TAXAENC_GD_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigosVenda, Map<Integer,Artigo> listaArtigosComprados, Map<String, Pedido> listaEncomendas, LocalDate dataCriacao, LocalDate dataAtual, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String,Transportadora> listaTransportadoras, Map<Integer,Artigo> listaArtigos, List<Encomenda> listaEncomendas, LocalDate dataCriacao, LocalDate dataAtual, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande)
     {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
-        this.listaArtigosVenda = listaArtigosVenda;
-        this.listaArtigosComprados = listaArtigosComprados;
+        this.listaArtigos = listaArtigos;
         this.listaEncomendas = listaEncomendas;
         this.dataCriacao = dataCriacao;
         this.dataAtual = dataAtual;
@@ -65,8 +68,7 @@ public class Sistema implements Serializable
     {
         this.listaUtilizadores = sistema.getListaUtilizadores();
         this.listaTransportadoras = sistema.getListaTransportadoras();
-        this.listaArtigosVenda = sistema.getListaArtigosVenda();
-        this.listaArtigosComprados = sistema.getListaArtigosComprados();
+        this.listaArtigos = sistema.getListaArtigos();
         this.listaEncomendas = sistema.getListaEncomendas();
         this.dataCriacao = sistema.getDataCriacao();
         this.dataAtual = sistema.getDataAtual();
@@ -88,28 +90,22 @@ public class Sistema implements Serializable
         this.listaTransportadoras = listaTransportadoras.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));;
     }
 
-    public Map<Integer, Artigo> getListaArtigosVenda() {
-        return listaArtigosVenda.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e-> e.getValue().clone()));
+    public Map<Integer, Artigo> getListaArtigos()
+    {
+        return this.listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaArtigosVenda(Map<Integer, Artigo> listaArtigosVenda) {
-        this.listaArtigosVenda = listaArtigosVenda.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e-> e.getValue().clone()));
+    public void setListaArtigos(Map<Integer,Artigo> listaArtigos)
+    {
+        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public Map<Integer, Artigo> getListaArtigosComprados() {
-        return listaArtigosComprados.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    public List<Encomenda> getListaEncomendas() {
+        return listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
-    public void setListaArtigosComprados(Map<Integer, Artigo> listaArtigosComprados) {
-        this.listaArtigosComprados = listaArtigosComprados.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
-    }
-
-    public Map<String, Pedido> getListaEncomendas() {
-        return listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
-    }
-
-    public void setListaEncomendas(Map<String, Pedido> listaEncomendas) {
-        this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    public void setListaEncomendas(List<Encomenda> listaEncomendas) {
+        this.listaEncomendas = listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
     public LocalDate getDataCriacao()
@@ -130,12 +126,6 @@ public class Sistema implements Serializable
     public void setDataAtual(LocalDate data)
     {
         this.dataAtual = data;
-    }
-
-    public void setDataSistema(int dias)
-    {
-        this.dataCriacao.plusDays(dias);
-        //TODO Atualizar sistema e gerar faturas!
     }
 
     public int getImposto() {
@@ -170,6 +160,11 @@ public class Sistema implements Serializable
         this.taxaEncGrande = taxaEncGrande;
     }
 
+    public Map<Integer, Artigo> getArtigosVenda(String email) throws UtilizadorException {
+        Utilizador utilizador = this.procuraUtilizador(email);
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() != utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
     /* TODO:
     *   Adiciona utilizador por objeto
     *   Adiciona utilizador por parametros
@@ -190,10 +185,8 @@ public class Sistema implements Serializable
     {
         if (!this.listaUtilizadores.containsKey(utilizador.getEmail()))
         {
-            Pedido pedido = utilizador.getListaCompras();
             int id = this.listaUtilizadores.size() + 1;
             utilizador.setId(id);
-            this.listaEncomendas.put(utilizador.getEmail(),pedido);
             this.listaUtilizadores.put(utilizador.getEmail(),utilizador.clone());
         }
         else{
@@ -216,10 +209,8 @@ public class Sistema implements Serializable
         if (!this.listaUtilizadores.containsKey(email))
         {
             int id = this.listaUtilizadores.size() + 1;
-            Pedido pedido = new Pedido();
-            Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal, new HashMap<>(), new HashMap<>(), new Pedido());
+            Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal, new HashMap<>(), new ArrayList<>());
             this.listaUtilizadores.put(email,utilizador);
-            this.listaEncomendas.put(email,utilizador.getListaCompras());
         }
         else
         {
@@ -266,74 +257,42 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaArtigoVenda(Artigo artigo) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(artigo.getId()))
+    public void adicionaArtigo(Artigo artigo) throws ArtigoException, UtilizadorException {
+        if (!this.listaArtigos.containsKey(artigo.getId()))
         {
             Utilizador utilizador = this.procuraUtilizador(artigo.getVendedor().getEmail());
-            this.listaArtigosVenda.put(artigo.getId(), artigo.clone());
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(artigo.getId()));
+            this.listaArtigos.put(artigo.getId(), artigo.clone());
+            utilizador.adicionaArtigo(this.listaArtigos.get(artigo.getId()));
         }
         else throw new ArtigoException("Artigo já há venda!");
     }
 
-    public void adicionaArtigoComprado(Artigo artigo) throws UtilizadorException {
-        if (this.listaArtigosVenda.containsKey(artigo.getId()))
+    public void removeArtigo(Artigo artigo) throws UtilizadorException {
+        if (this.listaArtigos.containsKey(artigo.getId()))
         {
-            this.procuraUtilizador(artigo.getVendedor().getEmail()).adicionaArtigoVendidos(artigo);
-            this.listaArtigosVenda.remove(artigo.getId(),artigo);
-            this.listaArtigosComprados.put(artigo.getId(),artigo);
+            Utilizador utilizador = this.procuraUtilizador(artigo.getVendedor().getEmail());
+            this.listaArtigos.remove(artigo.getId(), artigo);
+            utilizador.removeArtigo(artigo);
         }
     }
 
-    /**
-     * Adiciona o artigo Tshirt à lista de artigos
-     *
-     * @param tshirt
-     * @throws ArtigoException
-     */
-    public void adicionaTshirtVenda(Tshirt tshirt) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(tshirt.getId()))
+    public void removeArtigo(int id) throws UtilizadorException, ArtigoException {
+        if (this.listaArtigos.containsKey(id))
         {
-            Utilizador utilizador =  this.procuraUtilizador(tshirt.getVendedor().getEmail());
-            this.listaArtigosVenda.put(tshirt.getId(),tshirt.clone());
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(tshirt.getId()));
-        }
-        else{
-            throw new ArtigoException("Este Artigo já está à venda");
+            Artigo artigo = this.procuraArtigo(id);
+            Utilizador utilizador = this.procuraUtilizador(artigo.getVendedor().getEmail());
+            this.listaArtigos.remove(artigo.getId(), artigo);
+            utilizador.removeArtigo(artigo);
         }
     }
 
     public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int padrao) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(id))
+        if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
             Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, padrao);
-            this.listaArtigosVenda.put(id,tshirt);
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(id));
-        }
-        else{
-            throw new ArtigoException("Este Artigo já está à venda");
-        }
-    }
-
-    public void adicionaTshirtComprados(Tshirt tshirt) throws ArtigoException, UtilizadorException {
-        if(!this.listaArtigosComprados.containsKey(tshirt.getId())){
-            Utilizador utilizador = this.procuraUtilizador(tshirt.getVendedor().getEmail());
-            this.listaArtigosComprados.put(tshirt.getId(), tshirt.clone());
-            this.listaArtigosVenda.remove(tshirt.getId());
-            utilizador.adicionaArtigoVendidos(this.listaArtigosComprados.get(tshirt.getId()));
-        }
-        else{
-            throw new ArtigoException("Este Artigo já está comprado");
-        }
-    }
-
-    public void adicionaSapatilhaVenda(Sapatilha sapatilha) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(sapatilha.getId()))
-        {
-            Utilizador utilizador = this.procuraUtilizador(sapatilha.getVendedor().getEmail());
-            this.listaArtigosVenda.put(sapatilha.getId(),sapatilha.clone());
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(sapatilha.getId()));
+            this.listaArtigos.put(id,tshirt);
+            utilizador.adicionaArtigo(this.listaArtigos.get(id));
         }
         else{
             throw new ArtigoException("Este Artigo já está à venda");
@@ -341,35 +300,12 @@ public class Sistema implements Serializable
     }
 
     public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(id))
+        if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
             Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, data, tipo);
-            this.listaArtigosVenda.put(id,sapatilha);
-            utilizador.adicionaArtigoVenda(sapatilha);
-        }
-        else{
-            throw new ArtigoException("Este Artigo já está à venda");
-        }
-    }
-    public void adicionaSapatilhaCompra(Sapatilha sapatilha) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosComprados.containsKey(sapatilha.getId())){
-            Utilizador utilizador = this.procuraUtilizador(sapatilha.getVendedor().getEmail());
-            this.listaArtigosComprados.put(sapatilha.getId(), sapatilha.clone());
-            this.listaArtigosVenda.remove(sapatilha.getId(),sapatilha);
-            utilizador.adicionaArtigoVendidos(this.listaArtigosComprados.get(sapatilha.getId()));
-        }
-        else{
-            throw new ArtigoException("Este artigo já foi comprado");
-        }
-    }
-
-    public void adicionaMalaVenda(Mala mala) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(mala.getId()))
-        {
-            Utilizador utilizador = this.procuraUtilizador(mala.getVendedor().getEmail());
-            this.listaArtigosVenda.put(mala.getId(),mala.clone());
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(mala.getId()));
+            this.listaArtigos.put(id,sapatilha);
+            utilizador.adicionaArtigo(sapatilha);
         }
         else{
             throw new ArtigoException("Este Artigo já está à venda");
@@ -377,55 +313,45 @@ public class Sistema implements Serializable
     }
 
     public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException {
-        if (!this.listaArtigosVenda.containsKey(id))
+        if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
             Mala mala = new Mala(id, utilizador, descricao,marca,precoBase, correcaoPreco, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
-            this.listaArtigosVenda.put(id,mala);
-            utilizador.adicionaArtigoVenda(this.listaArtigosVenda.get(id));
+            this.listaArtigos.put(id,mala);
+            utilizador.adicionaArtigo(this.listaArtigos.get(id));
         }
         else{
             throw new ArtigoException("Este Artigo já está à venda");
         }
     }
-    public void adicionaMalaCompra(Mala mala) throws ArtigoException, UtilizadorException {
-        if(!this.listaArtigosComprados.containsKey(mala.getId())){
-            Utilizador utilizador = this.procuraUtilizador(mala.getVendedor().getEmail());
-            this.listaArtigosComprados.put(mala.getId(), mala.clone());
-            this.listaArtigosVenda.remove(mala.getId(),mala);
-            utilizador.adicionaArtigoVendidos(mala);
-        }
-        else{
-            throw new ArtigoException("Este artigo já está comprado");
-        }
-    }
 
-
-    public void adicionaArtigoPedido(Artigo artigo, String email) throws UtilizadorException, EncomendaException, ArtigoException {
-        if (this.listaArtigosVenda.containsKey(artigo.getId()))
+    public void adicionaArtigoComprado(int id) throws ArtigoException {
+        if (this.listaArtigos.containsKey(id))
         {
-            Utilizador comprador = this.procuraUtilizador(email);
-            comprador.adicionaArtigoPedido(artigo);
+            Artigo artigo = this.listaArtigos.get(id);
+            if (artigo.getEstadoVenda() == Atributos.VENDA)
+            {
+                artigo.setEstadoVenda(Atributos.VENDIDO);
+            }
+            else throw new ArtigoException("O artigo já está comprado!");
         }
-        else throw new ArtigoException("Artigo não encontrado à venda!");
+        else throw new ArtigoException("O artigo não existe!");
     }
 
-    public void removeArtigoPedido(Artigo artigo, String email) throws UtilizadorException, EncomendaException, ArtigoException {
-        if (this.listaArtigosVenda.containsKey(artigo.getId()))
+    public void adicionaArtigoComprado(Artigo artigo) throws ArtigoException {
+
+        if (this.listaArtigos.containsKey(artigo.getId()))
         {
-            Utilizador utilizador = this.procuraUtilizador(email);
-            utilizador.removeArtigoPedido(artigo);
-        } else throw new ArtigoException("Artigo não encontrado à venda!");
+            Artigo a = this.listaArtigos.get(artigo.getId());
+            if (a.getEstadoVenda() == Atributos.VENDA)
+            {
+                a.setEstadoVenda(Atributos.VENDIDO);
+            }
+            else throw new ArtigoException("O artigo já está comprado!");
+        }
+        else throw new ArtigoException("O artigo não existe!");
     }
 
-    public void aceitaPedido(String email) throws EncomendaException {
-        if (this.listaUtilizadores.containsKey(email) && this.procuraEncomenda(email).getEstado() == Atributos.PENDENTE)
-        {
-            Pedido pedido = this.listaEncomendas.get(email);
-            pedido.alteraEstadoExpedido(this.dataAtual);
-        }
-    }
-    
     public Utilizador procuraUtilizador(String email) throws UtilizadorException
     {
         if (listaUtilizadores.containsKey(email))
@@ -448,6 +374,141 @@ public class Sistema implements Serializable
         }
     }
 
+    public Artigo procuraArtigo(int id) throws ArtigoException
+    {
+        if (listaArtigos.containsKey(id))
+        {
+            return listaArtigos.get(id);
+        }
+        else{
+            throw new ArtigoException("O artigo com o id" + id + "não existe");
+        }
+    }
+
+    public void adicionaEncomenda(Encomenda encomenda, String email) throws UtilizadorException, EncomendaException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            if (!this.listaEncomendas.contains(encomenda))
+            {
+                this.listaEncomendas.add(encomenda);
+            }
+            else throw new EncomendaException("Encomenda já existente!");
+        }
+        else throw new UtilizadorException("Utilizador não encontrado!");
+    }
+
+    public void adicionaArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Utilizador comprador = this.procuraUtilizador(email);
+            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome());
+            if (!listaEncomenda.isEmpty())
+            {
+                Encomenda encomenda = listaEncomenda.get(0);
+                encomenda.adicionaArtigo(artigo);
+            }
+            else
+            {
+                Encomenda encomenda = new Encomenda(this.getDataAtual());
+                encomenda.adicionaArtigo(artigo);
+                comprador.adicionaEncomenda(encomenda);
+                this.adicionaEncomenda(encomenda,comprador.getEmail());
+            }
+        }
+        else throw new UtilizadorException("Utilizador não existente!");
+    }
+
+    public void adicionaArtigoEncomenda(int id, String email) throws EncomendaException, UtilizadorException, ArtigoException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Utilizador comprador = this.procuraUtilizador(email);
+            Artigo artigo = this.procuraArtigo(id);
+            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome());
+            if (!listaEncomenda.isEmpty())
+            {
+                Encomenda encomenda = listaEncomenda.get(0);
+                encomenda.adicionaArtigo(artigo);
+            }
+            else
+            {
+                Encomenda encomenda = new Encomenda(this.getDataAtual());
+                encomenda.adicionaArtigo(artigo);
+                comprador.adicionaEncomenda(encomenda);
+                this.adicionaEncomenda(encomenda,comprador.getEmail());
+            }
+        }
+        else throw new UtilizadorException("Utilizador não existente!");
+    }
+
+    public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Utilizador comprador = this.procuraUtilizador(email);
+            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome());
+            if (!listaEncomenda.isEmpty())
+            {
+                Encomenda encomenda = listaEncomenda.get(0);
+                encomenda.removeArtigo(artigo);
+            }
+            else throw new EncomendaException("Encomenda não existe!");
+        }
+        else throw new UtilizadorException("Utilizador não existente!");
+    }
+
+    public void removeArtigoEncomenda(int id, String email) throws EncomendaException, UtilizadorException, ArtigoException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Utilizador comprador = this.procuraUtilizador(email);
+            Artigo artigo = this.procuraArtigo(id);
+            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome());
+            if (!listaEncomenda.isEmpty())
+            {
+                Encomenda encomenda = listaEncomenda.get(0);
+                encomenda.removeArtigo(artigo);
+            }
+            else throw new EncomendaException("Encomenda não existe!");
+        }
+        else throw new UtilizadorException("Utilizador não existente!");
+    }
+
+    public void confirmaSelecaoEncomenda(String email, String nomeTransportadora) throws UtilizadorException, EncomendaException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Utilizador utilizador = this.procuraUtilizador(email);
+            List<Encomenda> lista = utilizador.getEncomendaPendente(nomeTransportadora);
+            if(!lista.isEmpty())
+            {
+                Encomenda encomenda = lista.get(0);
+                encomenda.alteraEstadoExpedido(this.getDataAtual());
+            } else throw new EncomendaException("A encomenda não existe!");
+        } else throw new UtilizadorException("O utilizador não existe!");
+    }
+
+    public void saltaTempo()
+    {
+        LocalDate dataAtualReal = LocalDate.now();
+        System.out.println("Data criacao sistema: " + this.getDataCriacao());
+        System.out.println("Data atual real: " + dataAtualReal);
+        int diferenca = dataAtualReal.compareTo(this.getDataCriacao());
+        System.out.println("Diferenca de dias: " + diferenca);
+        System.out.println("Data atual do sistema: " + this.getDataAtual());
+        this.setDataAtual(this.getDataAtual().plusDays(diferenca));
+        System.out.println("Data atualizada do sistema: " + this.getDataAtual());
+    }
+
+    public void saltaTempo(int dias)
+    {
+        System.out.println(this.getDataAtual());
+        this.setDataAtual(this.getDataAtual().plusDays(dias));
+        System.out.println(this.getDataAtual());
+    }
+    //TODO saltaTempo que recebe data!
+
+    public void atualizaSistema()
+    { //TODO Função que atualiza o sistema: Entregar encomendas, diminuit stock, e emissão de fatura para cada comprador/vendedor
+
+    }
+
     public boolean verificaUtilizador(String email) throws UtilizadorException
     {
         return (listaUtilizadores.containsKey(email));
@@ -458,30 +519,6 @@ public class Sistema implements Serializable
         Utilizador utilizador = procuraUtilizador(email);
         return (pass.compareTo(utilizador.getPalavraPasse()) == 0);
     }
-
-    public Artigo procuraArtigoVenda(int id) throws ArtigoException
-    {
-        if (listaArtigosVenda.containsKey(id))
-        {
-            return listaArtigosVenda.get(id);
-        }
-        else{
-            throw new ArtigoException("O artigo com o id" + id + "não existe");
-        }
-    }
-
-    public Pedido procuraEncomenda(String email) throws EncomendaException {
-        if (listaEncomendas.containsKey(email))
-        {
-            return listaEncomendas.get(email);
-        }
-        else
-        {
-            throw new EncomendaException("O Utilizador com email, " + email + " não tem encomendas!");
-        }
-    }
-
-
 
     public Sistema clone()
     {

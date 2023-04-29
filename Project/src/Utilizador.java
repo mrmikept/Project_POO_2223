@@ -20,10 +20,8 @@ public class Utilizador implements Serializable {
     private String nome;
     private String morada;
     private int nrFiscal;
-    private Map<Integer, Artigo> listaVendas;
-    private Map<Integer, Artigo> listaVendidos;
-    private Pedido listaCompras;
-    //TODO: Historico de venda, compras e artigos à venda.
+    private Map<Integer, Artigo> listaArtigos;
+    private List<Encomenda> listaEncomendas;
 
 
     public Utilizador() {
@@ -34,13 +32,12 @@ public class Utilizador implements Serializable {
         this.nome = "";
         this.morada = "";
         this.nrFiscal = 0;
-        this.listaVendas = new HashMap<>();
-        this.listaVendidos = new HashMap<>();
-        this.listaCompras = new Pedido();
+        this.listaArtigos = new HashMap<>();
+        this.listaEncomendas = new ArrayList<>();
 
     }
 
-    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaVendas, HashMap<Integer, Artigo> listaVendidos, Pedido pedido) {
+    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas) {
 
         this.id = id;
         this.email = email;
@@ -48,9 +45,8 @@ public class Utilizador implements Serializable {
         this.nome = nome;
         this.morada = morada;
         this.nrFiscal = nrFiscal;
-        this.listaVendas = listaVendas;
-        this.listaVendidos = listaVendidos;
-        this.listaCompras = pedido;
+        this.listaArtigos = listaArtigos;
+        this.listaEncomendas = listaEncomendas;
 
     }
 
@@ -62,9 +58,8 @@ public class Utilizador implements Serializable {
         this.nome = utilizador.getNome();
         this.morada = utilizador.getMorada();
         this.nrFiscal = utilizador.getNrFiscal();
-        this.listaVendas = utilizador.getListaVendas();
-        this.listaVendidos = utilizador.getListaVendidos();
-        this.listaCompras = utilizador.getListaCompras();
+        this.listaArtigos = utilizador.getListaArtigos();
+        this.listaEncomendas = utilizador.getListaEncomendas();
 
     }
 
@@ -118,59 +113,87 @@ public class Utilizador implements Serializable {
         this.nrFiscal = nrFiscal;
     }
 
-    public Map<Integer, Artigo> getListaVendas(){
-        return listaVendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    public Map<Integer, Artigo> getListaArtigos(){
+        return listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaVendas(Map<Integer, Artigo> listaVendas){
-        this.listaVendas = listaVendas.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    public void setListaArtigos(Map<Integer, Artigo> listaArtigos){
+        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public Map<Integer, Artigo> getListaVendidos(){
-        return listaVendidos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+
+    public List<Encomenda> getListaEncomendas(){
+        return this.listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
-    public void setListaVendidos(Map<Integer, Artigo> listaVendidos){
-        this.listaVendidos = listaVendidos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    public void setListaEncomendas(List<Encomenda> listaEncomendas)
+    {
+        this.listaEncomendas = listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
-    public Pedido getListaCompras(){
-        return listaCompras;
-    }
-
-    public void setListaCompras(Pedido listaCompras){
-        this.listaCompras = listaCompras;
-    }
-
-    public void adicionaArtigoVenda(Artigo artigo) throws UtilizadorException {
-        if (!this.listaVendas.containsKey(artigo.getId()))
+    public void adicionaArtigo(Artigo artigo) throws UtilizadorException {
+        if (!this.listaArtigos.containsKey(artigo.getId()))
         {
-            this.listaVendas.put(artigo.getId(),artigo.clone());
+            this.listaArtigos.put(artigo.getId(),artigo);
         }
         else throw new UtilizadorException("O utilizador já tem este artigo à venda!");
     }
 
-    public void adicionaArtigoVendidos(Artigo artigo) throws UtilizadorException {
-        if (this.listaVendas.containsKey(artigo.getId()))
+    public void removeArtigo(Artigo artigo) throws UtilizadorException {
+        if (this.listaArtigos.containsKey(artigo.getId()))
         {
-            this.listaVendas.remove(artigo.getId(),artigo);
-            if (!this.listaVendidos.containsKey(artigo.getId()))
-            {
-                this.listaVendidos.put(artigo.getId(), artigo.clone());
-            }
-            else throw new UtilizadorException("O utilizador já possui este artigo na lista de vendidos!");
+            this.listaArtigos.remove(artigo.getId(),artigo);
         }
-        else throw new UtilizadorException("Este artigo não está a ser vendido pelo utilizador");
+        else throw new UtilizadorException("Este artigo não existe!");
     }
 
-    public void adicionaArtigoPedido(Artigo artigo) throws EncomendaException {
-        this.listaCompras.adicionaArtigoPedido(artigo);
+    public void adicionaEncomenda(Encomenda encomenda)
+    {
+        this.listaEncomendas.add(encomenda);
     }
 
-    public void removeArtigoPedido(Artigo artigo) throws EncomendaException {
-        this.listaCompras.removeArtigoPedido(artigo);
+    public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException {
+        //TODO ???????????????
+        if (!this.listaEncomendas.isEmpty())
+        {
+            if (!this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().isEmpty())
+            {
+                //Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().get(0);
+                //encomenda.adicionaArtigo(artigo);
+                System.out.println("LOOOOOOL");
+            }
+            else
+            {
+                Encomenda novaEncomenda = new Encomenda();
+                novaEncomenda.adicionaArtigo(artigo);
+                this.listaEncomendas.add(novaEncomenda);
+                System.out.println("LOOOOOOL2");
+            }
+        }
+        else
+        {
+            Encomenda novaEncomenda = new Encomenda();
+            novaEncomenda.adicionaArtigo(artigo);
+            this.listaEncomendas.add(novaEncomenda);
+        }
+
     }
 
+    public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException {
+        //TODO ???????????????????
+        Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().get(0);
+        if (encomenda != null)
+        {
+            encomenda.removeArtigo(artigo);
+        }
+        else throw new EncomendaException("Este artigo não está atribuido a nenhuma encomenda!");
+    }
+
+
+    public List<Encomenda> getEncomendaPendente(String nomeTransportadora)
+    {
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).toList();
+    }
 
     public boolean equals(Object o)
     {
@@ -189,9 +212,8 @@ public class Utilizador implements Serializable {
                 this.getNome().equals(utilizador.getNome()) &&
                 this.getMorada().equals(utilizador.getMorada()) &&
                 this.getNrFiscal() == utilizador.getNrFiscal() &&
-                this.getListaVendas().equals(utilizador.getListaVendas()) &&
-                this.getListaCompras().equals(utilizador.getListaCompras()) &&
-                this.getListaVendidos().equals(utilizador.getListaVendidos()));
+                this.getListaArtigos().equals(utilizador.getListaArtigos()) &&
+                this.getListaEncomendas().equals(utilizador.getListaEncomendas()));
     }
 
     public Utilizador clone() {

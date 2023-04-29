@@ -1,3 +1,4 @@
+import javax.swing.text.Style;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class Main {
 
                 case 1:
                     try {
+                        //sistema.adicionaUtilizador("r","r","r","r",1);
+                        //x = runUtilizador("r");
                         x = runIN();
                         x = 0;
                     }
@@ -91,6 +94,7 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
+                    /*
                 case 4 :
                     apresentacao.printBackup();
                     apresentacao.cyan();
@@ -115,9 +119,10 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
+                     */
             }
         } while (x != 6);
-        apresentacao.clear();
+        //apresentacao.clear();
     }
 
     private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException {
@@ -455,17 +460,17 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         Transportadora ctt = new Transportadora("ctt",0.3, Atributos.PREMIUM,0.23,1.75,2.45,3.15);
         Transportadora tcc = new Transportadora("tcc",0.3,Atributos.NORMAL,0.23,1.75,2.45,3.15);
-        Tshirt tshirt = new Tshirt(1, utilizador,"tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
-        Tshirt tshirt1 = new Tshirt(2, utilizador,"tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
-        Tshirt tshirt2 = new Tshirt(3, utilizador,"tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
-        Sapatilha sapatilha = new Sapatilha(4, utilizador,"sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
-        sistema.adicionaArtigoVenda(tshirt);
-        sistema.adicionaArtigoVenda(tshirt1);
-        sistema.adicionaArtigoVenda(tshirt2);
-        sistema.adicionaArtigoVenda(sapatilha);
+        //sistema.adicionaArtigoVenda(tshirt);
+        //sistema.adicionaArtigoVenda(tshirt1);
+        //sistema.adicionaArtigoVenda(tshirt2);
+        //sistema.adicionaArtigoVenda(sapatilha);
 
         do {
             switch (x)
@@ -501,14 +506,11 @@ public class Main {
 
                 case 2: // MENU COMPRAR
                     apresentacao.printComprar();
-                    //sistema.getListaArtigosVenda().forEach((k,v)->System.out.println(v.showArtigo()));
-                    //TODO: Alterar para a funcao do sistema
 
-                    paginateMenu(sistema.getListaArtigosVenda(), 3,2);
+                    paginateMenu(sistema.getArtigosVenda(email),2);
 
 
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    x = 0;
                     break;
 
                 case 3: // MENU VENDAS
@@ -559,39 +561,40 @@ public class Main {
         return x;
     }
 
-    public void paginateMenu(Map<Integer, Artigo> lista, int pageSize, int x) {
-        int numPages = (int) Math.ceil((double) lista.size() / pageSize);
+    public void paginateMenu(Map<Integer, Artigo> lista, int pageSize) {
+        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
+        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
         int currentPage = 1;
         int startIndex, endIndex;
-        int j = 0;
 
         do {
+            apresentacao.printComprar();
             startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, lista.size());
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
 
-            if (j == 0) {
-                for (Map.Entry<Integer, Artigo> entry : lista.entrySet()) {
-                    if (j >= x) break;
-                    System.out.println(entry.getValue().showArtigo());
-                    j++;
-                }
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Artigo artigo = menuItems[i];
+                System.out.println(artigo.showArtigo());
             }
-            if (j > 0) {
-
-            }
-
-
 
             if (numPages > 1) {
-                System.out.println("Page " + currentPage + " of " + numPages);
-                System.out.println("Press 'n' for next page, 'p' for previous page, or any other key to exit:");
+                System.out.println();
+                System.out.println();
+                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
+                System.out.println();
+                System.out.println(apresentacao.CYAN_BOLD + "                                                                      Pressione" + apresentacao.RESET + " '+' " +
+                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e" + apresentacao.RESET +
+                        " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
+                System.out.println();
+                System.out.print("                                                                                                       ");
 
                 Scanner scanner = new Scanner(System.in);
                 String input = scanner.nextLine().toLowerCase();
 
-                if (input.equals("n") && currentPage < numPages) {
+                if (input.equals("+") && currentPage < numPages) {
                     currentPage++;
-                } else if (input.equals("p") && currentPage > 1) {
+                } else if (input.equals("-") && currentPage > 1) {
                     currentPage--;
                 } else {
                     break;
@@ -599,6 +602,7 @@ public class Main {
             }
         } while (true);
     }
+
 
 
 }

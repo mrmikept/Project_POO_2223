@@ -127,7 +127,7 @@ public class Main {
                      */
             }
         } while (x != 6);
-        //apresentacao.clear();
+        apresentacao.clear();
     }
 
     private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException {
@@ -538,10 +538,8 @@ public class Main {
                     break;
 
                 case 3: // MENU VENDAS
-                    apresentacao.printVendas();
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
-                    runVendas(x);
+                    x = runVendas(email);
+                    x = 0;
 
                 case 4: // MENU FATURAS
 
@@ -554,33 +552,42 @@ public class Main {
 
         return 0;
     }
-    public int runVendas(int x) {
+    public int runVendas(String email) throws UtilizadorException {
         String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
         Scanner ler = new Scanner(System.in);
-        x = 0;
+        int x = 0;
 
         do {
             switch (x) {
                 case 0:
+                    apresentacao.printVendas();
                     apresentacao.printMenu(s,0, "");
-                    x = ler.nextInt();
-                case 1:
-                    System.out.println("                                                                 MINHA LISTA DE ARTIGOS A VENDA");
-                    //TODO: Mostrar todos os artigos a venda pelo o utilizador
-                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
-                    ler = new Scanner(System.in);
                     x = ler.nextInt();
                     break;
 
-                case 2:
-                    System.out.println("                                                             ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS");
-                    //TODO: Mostrar todos os artigos comprados pelo o utilizador
+                case 1: //MINHA LISTA DE ARTIGOS A VENDA
+                    apresentacao.ptintMinhaLista();
+                    //TODO: Mostrar todos os artigos a venda pelo o utilizador
+                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
+
+                    //paginateMenu(sistema.getArtigosVenda(email),2);
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    x = 0;
+                    break;
+
+                case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
+                    apresentacao.printAdicionaArtigoVenda();
+
                     //TODO: Adicionar algum artigo à minha lista de vendas
                     ler = new Scanner(System.in);
                     x = ler.nextInt();
+                    x = 0;
                     break;
+
             }
-        } while (x != 0);
+        } while (x != 3);
 
         return x;
     }
@@ -620,7 +627,7 @@ public class Main {
                     currentPage++;
                 } else if (input.equals("-") && currentPage > 1) {
                     currentPage--;
-                } else {
+                } else if (input.equals("s")){
                     break;
                 }
             }

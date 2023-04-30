@@ -1,3 +1,4 @@
+import javax.swing.text.Style;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Main {
 
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException {
         int x = 0;
+        String c;
         String [] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
         Scanner ler = new Scanner(System.in);
         String input, input_backup;
@@ -34,6 +36,8 @@ public class Main {
 
                 case 1:
                     try {
+                        //sistema.adicionaUtilizador("r","r","r","r",1);
+                        //x = runUtilizador("r");
                         x = runIN();
                         x = 0;
                     }
@@ -91,6 +95,7 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
+                    /*
                 case 4 :
                     apresentacao.printBackup();
                     apresentacao.cyan();
@@ -101,7 +106,11 @@ public class Main {
                     input_backup = ler.nextLine();
                     Automatizaçao backup = new Automatizaçao(input_backup);
                     backup.carregaFicheiro(this.sistema);
-
+                    if (!backup.getExcecoes().isEmpty() ){
+                        apresentacao.printErros(backup.getExcecoes());
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                    }
                     apresentacao.clear();
                     apresentacao.printBackup();
                     apresentacao.yellow();
@@ -115,6 +124,7 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
+                     */
             }
         } while (x != 6);
         apresentacao.clear();
@@ -401,43 +411,62 @@ public class Main {
                     System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
+                    if(!sistema.verificaTransportadora(nomeTrans)) {
 
-                    System.out.println();
+                        System.out.println();
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    lucro = ler.nextDouble();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        lucro = ler.nextDouble();
 
-                    System.out.println();
+                        System.out.println();
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    tipo = ler.nextInt();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        tipo = ler.nextInt();
 
-                    sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
+                        sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
 
-                    apresentacao.printRegTrans();
-                    apresentacao.yellow();
-                    System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                                    1 - SIM");
-                    System.out.println("                                                                                                    0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                        apresentacao.printRegTrans();
+                        apresentacao.yellow();
+                        System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                    1 - SIM");
+                        System.out.println("                                                                                                    0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
 
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
 
-                    if (x==1) x = 4;
-                    else x = 0;
-
+                        if (x == 1) x = 4;
+                        else x = 0;
+                    }
+                    else
+                    {
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(apresentacao.RED + "                                                                             ESTA TRANSPORTADORA JÁ EXISTE!! DESEJA TENTAR DE NOVO?");
+                        System.out.println();
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                  1 - SIM");
+                        System.out.println("                                                                                                  0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+                        if (x == 1) x = 4;
+                        else x = 0;
+                    }
                     break;
             }
         } while (x != 5);
@@ -455,17 +484,17 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         Transportadora ctt = new Transportadora("ctt",0.3, Atributos.PREMIUM,0.23,1.75,2.45,3.15);
         Transportadora tcc = new Transportadora("tcc",0.3,Atributos.NORMAL,0.23,1.75,2.45,3.15);
-        Tshirt tshirt = new Tshirt(1, utilizador,"tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
-        Tshirt tshirt1 = new Tshirt(2, utilizador,"tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
-        Tshirt tshirt2 = new Tshirt(3, utilizador,"tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
-        Sapatilha sapatilha = new Sapatilha(4, utilizador,"sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
-        sistema.adicionaArtigoVenda(tshirt);
-        sistema.adicionaArtigoVenda(tshirt1);
-        sistema.adicionaArtigoVenda(tshirt2);
-        sistema.adicionaArtigoVenda(sapatilha);
+        //sistema.adicionaArtigoVenda(tshirt);
+        //sistema.adicionaArtigoVenda(tshirt1);
+        //sistema.adicionaArtigoVenda(tshirt2);
+        //sistema.adicionaArtigoVenda(sapatilha);
 
         do {
             switch (x)
@@ -501,21 +530,16 @@ public class Main {
 
                 case 2: // MENU COMPRAR
                     apresentacao.printComprar();
-                    //sistema.getListaArtigosVenda().forEach((k,v)->System.out.println(v.showArtigo()));
-                    //TODO: Alterar para a funcao do sistema
 
-                    paginateMenu(sistema.getListaArtigosVenda(), 3,2);
+                    paginateMenu(sistema.getArtigosVenda(email),2);
 
 
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    x = 0;
                     break;
 
                 case 3: // MENU VENDAS
-                    apresentacao.printVendas();
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
-                    runVendas(x);
+                    x = runVendas(email);
+                    x = 0;
 
                 case 4: // MENU FATURAS
 
@@ -528,77 +552,88 @@ public class Main {
 
         return 0;
     }
-    public int runVendas(int x) {
+    public int runVendas(String email) throws UtilizadorException {
         String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
         Scanner ler = new Scanner(System.in);
-        x = 0;
+        int x = 0;
 
         do {
             switch (x) {
                 case 0:
+                    apresentacao.printVendas();
                     apresentacao.printMenu(s,0, "");
-                    x = ler.nextInt();
-                case 1:
-                    System.out.println("                                                                 MINHA LISTA DE ARTIGOS A VENDA");
-                    //TODO: Mostrar todos os artigos a venda pelo o utilizador
-                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
-                    ler = new Scanner(System.in);
                     x = ler.nextInt();
                     break;
 
-                case 2:
-                    System.out.println("                                                             ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS");
-                    //TODO: Mostrar todos os artigos comprados pelo o utilizador
+                case 1: //MINHA LISTA DE ARTIGOS A VENDA
+                    apresentacao.ptintMinhaLista();
+                    //TODO: Mostrar todos os artigos a venda pelo o utilizador
+                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
+
+                    //paginateMenu(sistema.getArtigosVenda(email),2);
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    x = 0;
+                    break;
+
+                case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
+                    apresentacao.printAdicionaArtigoVenda();
+
                     //TODO: Adicionar algum artigo à minha lista de vendas
                     ler = new Scanner(System.in);
                     x = ler.nextInt();
+                    x = 0;
                     break;
+
             }
-        } while (x != 0);
+        } while (x != 3);
 
         return x;
     }
 
-    public void paginateMenu(Map<Integer, Artigo> lista, int pageSize, int x) {
-        int numPages = (int) Math.ceil((double) lista.size() / pageSize);
+    public void paginateMenu(Map<Integer, Artigo> lista, int pageSize) {
+        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
+        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
         int currentPage = 1;
         int startIndex, endIndex;
-        int j = 0;
 
         do {
+            apresentacao.printComprar();
             startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, lista.size());
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
 
-            if (j == 0) {
-                for (Map.Entry<Integer, Artigo> entry : lista.entrySet()) {
-                    if (j >= x) break;
-                    System.out.println(entry.getValue().showArtigo());
-                    j++;
-                }
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Artigo artigo = menuItems[i];
+                System.out.println(artigo.showArtigo());
             }
-            if (j > 0) {
-
-            }
-
-
 
             if (numPages > 1) {
-                System.out.println("Page " + currentPage + " of " + numPages);
-                System.out.println("Press 'n' for next page, 'p' for previous page, or any other key to exit:");
+                System.out.println();
+                System.out.println();
+                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
+                System.out.println();
+                System.out.println(apresentacao.CYAN_BOLD + "                                                                      Pressione" + apresentacao.RESET + " '+' " +
+                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e" + apresentacao.RESET +
+                        " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
+                System.out.println();
+                System.out.print("                                                                                                       ");
 
                 Scanner scanner = new Scanner(System.in);
                 String input = scanner.nextLine().toLowerCase();
 
-                if (input.equals("n") && currentPage < numPages) {
+                if (input.equals("+") && currentPage < numPages) {
                     currentPage++;
-                } else if (input.equals("p") && currentPage > 1) {
+                } else if (input.equals("-") && currentPage > 1) {
                     currentPage--;
-                } else {
+                } else if (input.equals("s")){
                     break;
                 }
             }
         } while (true);
     }
+
 
 
 }

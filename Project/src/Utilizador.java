@@ -152,6 +152,7 @@ public class Utilizador implements Serializable {
         this.listaEncomendas.add(encomenda);
     }
 
+
     public void removeEncomenda(Encomenda encomenda) throws UtilizadorException {
         if (this.listaEncomendas.contains(encomenda))
         {
@@ -206,6 +207,7 @@ public class Utilizador implements Serializable {
         }
         else throw new EncomendaException("Este artigo não está atribuido a nenhuma encomenda!");
     }
+    */
 
 
     public List<Encomenda> getEncomendaPendente(String nomeTransportadora, String emailVendedor)

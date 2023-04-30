@@ -170,6 +170,11 @@ public class Sistema implements Serializable {
         return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() != utilizador.getId()).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
+    public Map<Integer, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
+        Utilizador utilizador = this.procuraUtilizador(email);
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
     /* TODO:
      *   Adiciona utilizador por objeto
      *   Adiciona utilizador por parametros
@@ -343,10 +348,24 @@ public class Sistema implements Serializable {
     public Artigo procuraArtigo(int id) throws ArtigoException {
         if (listaArtigos.containsKey(id)) {
             return listaArtigos.get(id);
+
         } else {
             throw new ArtigoException("O artigo com o id" + id + "não existe");
         }
     }
+
+    public Artigo procuraArtigoVenda(int id) throws ArtigoException
+    {
+        if(listaArtigos.containsKey(id)){
+            Artigo artigo = this.listaArtigos.get(id);
+            if(artigo.getEstadoVenda() == Atributos.VENDA){
+                return artigo;
+            }
+            else throw new ArtigoException("Este artigo não está à venda!");
+         } else throw new ArtigoException("Este artigo não existe!");
+      }  
+
+
 
     public Encomenda procuraEncomenda(Encomenda encomenda) throws ArtigoException, EncomendaException {
         if (this.listaEncomendas.contains(encomenda)) {
@@ -484,7 +503,14 @@ public class Sistema implements Serializable {
         return (listaUtilizadores.containsKey(email));
     }
 
-    public boolean verificaPassword(String email, String pass) throws UtilizadorException {
+   
+    public boolean verificaTransportadora(String nome) throws TransportadoraException
+    {
+        return (listaTransportadoras.containsKey(nome));
+    }
+
+    public boolean verificaPassword(String email, String pass) throws UtilizadorException
+    {
         Utilizador utilizador = procuraUtilizador(email);
         return (pass.compareTo(utilizador.getPalavraPasse()) == 0);
     }

@@ -152,6 +152,7 @@ public class Utilizador implements Serializable {
         this.listaEncomendas.add(encomenda);
     }
 
+    /*
     public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException {
         //TODO ???????????????
         if (!this.listaEncomendas.isEmpty())
@@ -188,11 +189,12 @@ public class Utilizador implements Serializable {
         }
         else throw new EncomendaException("Este artigo não está atribuido a nenhuma encomenda!");
     }
+    */
 
 
     public List<Encomenda> getEncomendaPendente(String nomeTransportadora)
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).toList();
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
     }
 
     public boolean equals(Object o)

@@ -165,6 +165,11 @@ public class Sistema implements Serializable
         return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() != utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
+    public Map<Integer, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
+        Utilizador utilizador = this.procuraUtilizador(email);
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
     /* TODO:
     *   Adiciona utilizador por objeto
     *   Adiciona utilizador por parametros
@@ -381,8 +386,20 @@ public class Sistema implements Serializable
             return listaArtigos.get(id);
         }
         else{
-            throw new ArtigoException("O artigo com o id" + id + "não existe");
+            throw new ArtigoException("O artigo com o id" + id + " não existe!");
         }
+    }
+
+    public Artigo procuraArtigoVenda(int id) throws ArtigoException
+    {
+        if(listaArtigos.containsKey(id)){
+            Artigo artigo = this.listaArtigos.get(id);
+            if(artigo.getEstadoVenda() == Atributos.VENDA){
+                return artigo;
+            }
+            else throw new ArtigoException("Este artigo não está à venda!");
+        }
+        else throw new ArtigoException("O artigo com o id" + id + " não existe!");
     }
 
     public void adicionaEncomenda(Encomenda encomenda, String email) throws UtilizadorException, EncomendaException {
@@ -512,6 +529,11 @@ public class Sistema implements Serializable
     public boolean verificaUtilizador(String email) throws UtilizadorException
     {
         return (listaUtilizadores.containsKey(email));
+    }
+
+    public boolean verificaTransportadora(String nome) throws TransportadoraException
+    {
+        return (listaTransportadoras.containsKey(nome));
     }
 
     public boolean verificaPassword(String email, String pass) throws UtilizadorException

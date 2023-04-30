@@ -152,9 +152,20 @@ public class Utilizador implements Serializable {
         this.listaEncomendas.add(encomenda);
     }
 
-    /*
+
+    public void removeEncomenda(Encomenda encomenda) throws UtilizadorException {
+        if (this.listaEncomendas.contains(encomenda))
+        {
+            this.listaEncomendas.remove(encomenda);
+        } else throw new UtilizadorException("O utilizador não possui esta encomenda!");
+    }
+
     public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException {
-        //TODO ???????????????
+        if(!this.listaEncomendas.isEmpty())
+        {
+
+        }
+
         if (!this.listaEncomendas.isEmpty())
         {
             if (!this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).collect(Collectors.toList()).isEmpty())
@@ -177,7 +188,14 @@ public class Utilizador implements Serializable {
             novaEncomenda.adicionaArtigo(artigo);
             this.listaEncomendas.add(novaEncomenda);
         }
+    }
 
+    public Encomenda getEncomenda(int idEncomenda) throws UtilizadorException {
+        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList());
+        if (!encomendas.isEmpty())
+        {
+            return encomendas.get(0);
+        } else throw new UtilizadorException("O utilizador " + this.getEmail() + " não possui a encomenda com o id " + idEncomenda);
     }
 
     public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException {
@@ -192,9 +210,9 @@ public class Utilizador implements Serializable {
     */
 
 
-    public List<Encomenda> getEncomendaPendente(String nomeTransportadora)
+    public List<Encomenda> getEncomendaPendente(String nomeTransportadora, String emailVendedor)
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getEmailVendedor().equals(emailVendedor)).collect(Collectors.toList());
     }
 
     public boolean equals(Object o)

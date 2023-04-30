@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class SistemaException {
+public class SistemaException extends Exception {
+    public SistemaException(String erro){
+        super(erro);
+    }
 }

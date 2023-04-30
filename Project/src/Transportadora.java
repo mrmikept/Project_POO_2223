@@ -11,6 +11,7 @@ public class Transportadora implements Serializable {
     private String nome;
     private double margemLucro;
     private int tipo;
+    private int tempoExpedicao;
     private double imposto;
     private double txEncPq;
     private double txEncMd;
@@ -22,17 +23,19 @@ public class Transportadora implements Serializable {
         this.nome = "";
         this.margemLucro = 0.0;
         this.tipo = Atributos.NORMAL;
+        this.tempoExpedicao = 0;
         this.imposto = 0;
         this.txEncPq = 0;
         this.txEncMd = 0;
         this.txEncGd = 0;
     }
 
-    public Transportadora(String nome, double lucro, int tipo, double imposto, double txEncPq, double txEncMd, double txEncGd)
+    public Transportadora(String nome, double lucro, int tipo, int tempoExpedicao, double imposto, double txEncPq, double txEncMd, double txEncGd)
     {
         this.nome = nome;
         this.margemLucro = lucro;
         this.tipo = tipo;
+        this.tempoExpedicao = tempoExpedicao;
         this.imposto = imposto;
         this.txEncPq = txEncPq;
         this.txEncMd = txEncMd;
@@ -44,6 +47,7 @@ public class Transportadora implements Serializable {
         this.nome = transportadora.getNome();
         this.margemLucro = transportadora.getMargemLucro();
         this.tipo = transportadora.getTipo();
+        this.tempoExpedicao = transportadora.getTempoExpedicao();
         this.imposto = transportadora.getImposto();
         this.txEncPq = transportadora.getTxEncPq();
         this.txEncMd = transportadora.getTxEncMd();
@@ -72,6 +76,14 @@ public class Transportadora implements Serializable {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    public int getTempoExpedicao() {
+        return tempoExpedicao;
+    }
+
+    public void setTempoExpedicao(int tempoExpedicao) {
+        this.tempoExpedicao = tempoExpedicao;
     }
 
     public double getImposto() {

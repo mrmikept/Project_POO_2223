@@ -152,11 +152,9 @@ public class Automatizaçao {
         String[] camposArtComp = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArtComp[0], formatter);
         String email = camposArtComp[1];
-        Utilizador utilizador = sistema.procuraUtilizador(email);
         int idArtigo = Integer.valueOf(camposArtComp[2]);
         Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-        utilizador.adicionaArtigoPedido(artigo);
-
+        sistema.adicionaArtigoEncomenda(artigo, email);
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException{
@@ -180,8 +178,9 @@ public class Automatizaçao {
         while (camposEncom[x] != null){
             int idArtigo = Integer.valueOf(camposEncom[x]);
             Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-            sistema.adicionaArtigoPedido(artigo, email);
+            encomenda.adicionaArtigo(artigo);
             x++;
         }
+        sistema.adicionaEncomenda(encomenda, email);
     }
 }

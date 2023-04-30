@@ -22,6 +22,7 @@ public class Main {
 
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException {
         int x = 0;
+        String c;
         String [] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
         Scanner ler = new Scanner(System.in);
         String input, input_backup;
@@ -105,7 +106,11 @@ public class Main {
                     input_backup = ler.nextLine();
                     Automatizaçao backup = new Automatizaçao(input_backup);
                     backup.carregaFicheiro(this.sistema);
-
+                    if (!backup.getExcecoes().isEmpty() ){
+                        apresentacao.printErros(backup.getExcecoes());
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                    }
                     apresentacao.clear();
                     apresentacao.printBackup();
                     apresentacao.yellow();
@@ -406,43 +411,62 @@ public class Main {
                     System.out.print("                                                                                      ");
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
+                    if(!sistema.verificaTransportadora(nomeTrans)) {
 
-                    System.out.println();
+                        System.out.println();
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    lucro = ler.nextDouble();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        lucro = ler.nextDouble();
 
-                    System.out.println();
+                        System.out.println();
 
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
-                    ler = new Scanner(System.in);
-                    tipo = ler.nextInt();
+                        apresentacao.cyan();
+                        System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
+                        apresentacao.resetColor();
+                        System.out.print("                                                                                      ");
+                        ler = new Scanner(System.in);
+                        tipo = ler.nextInt();
 
-                    sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
+                        sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
 
-                    apresentacao.printRegTrans();
-                    apresentacao.yellow();
-                    System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                                    1 - SIM");
-                    System.out.println("                                                                                                    0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                        apresentacao.printRegTrans();
+                        apresentacao.yellow();
+                        System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                    1 - SIM");
+                        System.out.println("                                                                                                    0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
 
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
 
-                    if (x==1) x = 4;
-                    else x = 0;
-
+                        if (x == 1) x = 4;
+                        else x = 0;
+                    }
+                    else
+                    {
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(apresentacao.RED + "                                                                             ESTA TRANSPORTADORA JÁ EXISTE!! DESEJA TENTAR DE NOVO?");
+                        System.out.println();
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                                  1 - SIM");
+                        System.out.println("                                                                                                  0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+                        if (x == 1) x = 4;
+                        else x = 0;
+                    }
                     break;
             }
         } while (x != 5);

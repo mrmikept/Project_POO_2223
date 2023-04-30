@@ -1,6 +1,8 @@
 import java.security.PublicKey;
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
+import java.util.List;
+
 public class Apresentacao
 {
     public static final String RESET = "\033[0m";  // Text Reset
@@ -394,5 +396,47 @@ public class Apresentacao
         System.out.println();
         System.out.println();
         System.out.println();
+    }
+    
+    public void printAviso() {
+        clear();
+        cyan();
+        System.out.println("                                                                                      ######################################            ");
+        System.out.println("                                                                                   ############################################         ");
+        System.out.println("                                                                                ##################################################      ");
+        System.out.println("                                                                                   ░█████╗░██╗░░░██╗██╗░██████╗░█████╗░░██████╗         ");
+        System.out.println("                                                                                   ██╔══██╗██║░░░██║██║██╔════╝██╔══██╗██╔════╝         ");
+        System.out.println("                             ##################################################### ███████║╚██╗░██╔╝██║╚█████╗░██║░░██║╚█████╗░ #####################################################");
+        System.out.println("                                                                                   ██╔══██║░╚████╔╝░██║░╚═══██╗██║░░██║░╚═══██╗         ");
+        System.out.println("                                                                                   ██║░░██║░░╚██╔╝░░██║██████╔╝╚█████╔╝██████╔╝         ");
+        System.out.println("                                                                                   ╚═╝░░╚═╝░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░╚═════╝░         ");
+        System.out.println("                                                                                ##################################################      ");
+        System.out.println("                                                                                   ############################################         ");
+        System.out.println("                                                                                      ######################################            ");
+    }
+
+
+
+    public void printErros(List<String> erro){
+        printAviso();
+        cyan();
+        System.out.println();
+        System.out.println();
+        System.out.println(RED+"                                                                                        Avisos do carregamento do ficheiro");
+        resetColor();
+        System.out.println();
+        System.out.println();
+        int i = 1;
+        for (String s : erro){
+            System.out.println("                                                                          "+ CYAN_BOLD+i+")"+"    " + YELLOW +s);
+            i++;
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(RESET +"                                                                                       Pressione enter para continuar...");
+        System.out.println();
+        System.out.print("                                                                                                      ");
     }
 }

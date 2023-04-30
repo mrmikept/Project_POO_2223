@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  */
 public class Encomenda {
     private int id;
+    private String emailVendedor;
     private List<Artigo> listaArtigos;
     private Transportadora transportadora;
     private int dimensao;
@@ -23,6 +24,7 @@ public class Encomenda {
 
     public Encomenda() {
         this.id = 0;
+        this.emailVendedor = "";
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -32,8 +34,9 @@ public class Encomenda {
         this.dataAtualizacao = LocalDate.now();
     }
 
-    public Encomenda(int id, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+    public Encomenda(int id, String emailVendedor, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
         this.id = id;
+        this.emailVendedor = emailVendedor;
         this.listaArtigos = listaArtigos;
         this.transportadora = transportadora;
         this.dimensao = dimensao;
@@ -45,6 +48,7 @@ public class Encomenda {
 
     public Encomenda(Encomenda encomenda) {
         this.id = encomenda.getId();
+        this.emailVendedor = encomenda.getEmailVendedor();
         this.listaArtigos = encomenda.getListaArtigos();
         this.transportadora = encomenda.getTransportadora();
         this.dimensao = encomenda.getDimensao();
@@ -56,6 +60,7 @@ public class Encomenda {
 
     public Encomenda(int id, LocalDate dataCriacao) {
         this.id = id;
+        this.emailVendedor = "";
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -72,6 +77,14 @@ public class Encomenda {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmailVendedor() {
+        return emailVendedor;
+    }
+
+    public void setEmailVendedor(String emailVendedor) {
+        this.emailVendedor = emailVendedor;
     }
 
     public List<Artigo> getListaArtigos() {
@@ -134,8 +147,12 @@ public class Encomenda {
 
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
         if (!this.listaArtigos.contains(artigo)) {
+            if (this.listaArtigos.isEmpty())
+            {
+                this.setEmailVendedor(artigo.getVendedor().getEmail());
+                this.setTransportadora(artigo.getTransportadora());
+            }
             this.listaArtigos.add(artigo);
-            this.setTransportadora(artigo.getTransportadora());
             this.alteraPreco();
             this.alteraDimensão(listaArtigos.size());
         } else throw new EncomendaException("Artigo já existente na encomenda!");
@@ -147,6 +164,7 @@ public class Encomenda {
             this.alteraDimensão(listaArtigos.size());
             if (this.listaArtigos.isEmpty())
             {
+                this.setEmailVendedor("");
                 this.setTransportadora(new Transportadora());
             }
             this.alteraPreco();

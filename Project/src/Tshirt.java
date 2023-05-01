@@ -138,6 +138,10 @@ public class Tshirt extends Artigo
                 Apresentacao.CYAN + "                                                                                ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           " + Apresentacao.YELLOW + "Padrão: " + Apresentacao.RESET + this.padraoToString() + "\n\n");
     }
 
+    public String showArtigoLinha() {
+        return ("[Tshirt]");
+    }
+
     public String toString()
     {
         StringBuilder string = new StringBuilder();

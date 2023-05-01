@@ -145,6 +145,8 @@ public abstract class Artigo implements Serializable
 
     public abstract String showArtigo();
 
+    public abstract String showArtigoLinha();
+
     public String toString()
     {
         StringBuilder string = new StringBuilder();

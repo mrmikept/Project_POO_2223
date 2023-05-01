@@ -158,6 +158,10 @@ public class Sapatilha extends Artigo {
                 Apresentacao.YELLOW + "                                                                                                             Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
     }
 
+    public String showArtigoLinha() {
+        return ("[Sapatilha]");
+    }
+
     private String tipoToString()
     {
         if (this.getTipo() == Atributos.PREMIUM)

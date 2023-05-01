@@ -45,6 +45,8 @@ public class Main {
                         System.out.println(a.getMessage());
                     } catch (SistemaException e) {
                         throw new RuntimeException(e);
+                    } catch (EncomendaException e) {
+                        throw new RuntimeException(e);
                     }
 
 
@@ -131,7 +133,7 @@ public class Main {
         apresentacao.clear();
     }
 
-    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException {
+    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
         String email, pass, nome, morada, nomeTrans, c;
         int nif;
@@ -306,7 +308,7 @@ public class Main {
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                                  Nome: " + apresentacao.RESET + transportadora.getNome());
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                      Margem Lucro: " + apresentacao.RESET + transportadora.getMargemLucro() + apresentacao.CYAN_BOLD +
-                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() +  apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + transportadora.getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + transportadora.getTxEncPq() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + transportadora.getTxEncMd() + apresentacao.CYAN_BOLD+ " (Média), " + apresentacao.RESET + transportadora.getTxEncGd() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
+                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() +  apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + sistema.getTaxas().getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() + apresentacao.CYAN_BOLD+ " (Média), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                                Encomendas:" + apresentacao.RESET);
                     System.out.println();
@@ -479,7 +481,7 @@ public class Main {
         return x;
     }
 
-    private int runUtilizador(String email) throws UtilizadorException, ArtigoException //MENU UTILIZADOR
+    private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException //MENU UTILIZADOR
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Faturas", "Encomenda", "Retroceder"};
         int x = 0;
@@ -487,12 +489,12 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
-        Transportadora ctt = new Transportadora("ctt",0.3, Atributos.PREMIUM,2,0.23,1.75,2.45,3.15);
-        Transportadora tcc = new Transportadora("tcc",0.3,Atributos.NORMAL,2,0.23,1.75,2.45,3.15);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
+        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
         //Todo:
 
@@ -709,7 +711,7 @@ public class Main {
                     System.out.print("                                                                                                       ");
                     ler = new Scanner(System.in);
                     imposto = ler.nextInt();
-                    sistema.setImposto(imposto);
+                    sistema.getTaxas().setImposto(imposto);
 
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda pequena" + apresentacao.RESET);
@@ -717,7 +719,7 @@ public class Main {
                     System.out.print("                                                                                                       ");
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
-                    sistema.setTaxaEncPequena(taxa);
+                    sistema.getTaxas().setTaxaEncPequena(taxa);
 
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda media" + apresentacao.RESET);
@@ -725,7 +727,7 @@ public class Main {
                     System.out.print("                                                                                                       ");
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
-                    sistema.setTaxaEncMedia(taxa);
+                    sistema.getTaxas().setTaxaEncMedia(taxa);
 
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda grande" + apresentacao.RESET);
@@ -733,7 +735,7 @@ public class Main {
                     System.out.print("                                                                                                       ");
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
-                    sistema.setTaxaEncGrande(taxa);
+                    sistema.getTaxas().setTaxaEncGrande(taxa);
 
                     apresentacao.printTax();
 
@@ -778,19 +780,14 @@ public class Main {
         return 0;
     }
 
-    public int runEncomendas(String email) {
+    public int runEncomendas(String email) throws ArtigoException, UtilizadorException, EncomendaException {
         int x = 0;
         String [] s = {"Pendentes", "Expedidas", "Finalizadas", "Devolvidas"};
         Scanner ler = new Scanner(System.in);
-        Transportadora ctt = new Transportadora("ctt",0.3, Atributos.PREMIUM,2,0.23,1.75,2.45,3.15);
-        Transportadora tcc = new Transportadora("tcc",0.3,Atributos.NORMAL,2,0.23,1.75,2.45,3.15);
-        Tshirt tshirt = new (5, "m","tshirt","something",20,0,new EstadoArtigo(),ctt, Atributos.VENDA , Atributos.L,Atributos.M);
-        Tshirt tshirt1 = new (6, "m","tshirt1","something1",10,0,new EstadoArtigo(),ctt, Atributos.VENDA, Atributos.L,Atributos.M);
-        Tshirt tshirt2 = new(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),tcc, Atributos.VENDA, Atributos.L,Atributos.M);
-        Sapatilha sapatilha = (4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), ctt, Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
-
-
-
+        sistema.adicionaArtigoEncomenda(1,"r");
+        sistema.adicionaArtigoEncomenda(2,"r");
+        sistema.adicionaArtigoEncomenda(3,"r");
+        sistema.adicionaArtigoEncomenda(4,"r");
 
         do {
             switch (x) {
@@ -801,7 +798,8 @@ public class Main {
 
                 case 1: // MENU PENDENTES
                     apresentacao.printPendentes();
-                    System.out.println(apresentacao.RED + "[ARTIGOS]" + apresentacao.RESET);
+                    System.out.println(apresentacao.RED + "[ARTIGOS]\n" + apresentacao.RESET);
+
 
 
 

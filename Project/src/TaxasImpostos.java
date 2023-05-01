@@ -1,4 +1,6 @@
-public class TaxasImpostos
+import java.io.Serializable;
+
+public class TaxasImpostos implements Serializable
 {
     private int imposto;
     private double taxaEncPequena;

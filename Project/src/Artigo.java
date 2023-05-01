@@ -157,14 +157,14 @@ public abstract class Artigo implements Serializable
     public String toString()
     {
         StringBuilder string = new StringBuilder();
-        string.append("Identificador: " + this.getId() + "\n");
-        string.append("Descrição: " + this.getDescricao() + "\n");
-        string.append("Marca: " + this.getMarca() + "\n");
-        string.append("Preço Base: " + this.getPrecoBase() + "\n");
-        string.append("Correção Preço: " + this.getCorrecaoPreco() + "\n");
-        string.append("Estado: " + this.getEstado().toString() + "\n");
+        string.append("Identificador: " + this.getId() + " | ");
+        string.append("Descrição: " + this.getDescricao() + " | ");
+        string.append("Marca: " + this.getMarca() + " | ");
+        string.append("Preço Base: " + this.getPrecoBase() + " | ");
+        string.append("Correção Preço: " + this.getCorrecaoPreco() + " | ");
+        string.append("Estado: " + this.getEstado().toString() + " | ");
         string.append("Transportadora: " + this.getTransportadora().toString());
-        string.append("Estado Venda: " + this.getEstadoVenda() + "\n");
+        string.append("Estado Venda: " + this.getEstadoVenda() + " | ");
 
         return string.toString();
     }

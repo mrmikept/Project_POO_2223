@@ -163,13 +163,13 @@ public class Sapatilha extends Artigo {
     public String toString()
     {
         StringBuilder string = new StringBuilder();
-        string.append("[Artigo Sapatilha]" + "\n");
+        string.append("[Sapatilha]" + " | ");
         string.append(super.toString());
-        string.append("Tamanho: " + this.getTamanho() + "\n");
-        string.append("Tipo Cordão: " + this.tipoCordaoToString() + "\n");
-        string.append("Cor: " + this.getCor() + "\n");
-        string.append("Data Lançamento: " + this.getDataLancamento().toString() + "\n");
-        string.append("Tipo: " + this.tipoToString());
+        string.append("Tamanho: " + this.getTamanho() + " | ");
+        string.append("Tipo Cordão: " + this.tipoCordaoToString() + " | ");
+        string.append("Cor: " + this.getCor() + " | ");
+        string.append("Data Lançamento: " + this.getDataLancamento().toString() + " | ");
+        string.append("Tipo: " + this.tipoToString() + "\n");
         return string.toString();
     }
 

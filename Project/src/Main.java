@@ -584,6 +584,7 @@ public class Main {
                         else if (x == 0) {x=0; break;}
                     } else {
                         paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email);
+
                         x =0;
                         break;
                     }
@@ -1499,9 +1500,9 @@ public class Main {
                 System.out.println();
                 System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
                 System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                                      Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e" + apresentacao.RESET +
-                        " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
+                System.out.println(apresentacao.CYAN_BOLD + "                                                           Pressione" + apresentacao.RESET + " '+' " +
+                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'r' " + apresentacao.CYAN_BOLD +
+                                "para remover artigo e" + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
                 System.out.println();
                 System.out.print("                                                                                                       ");
 
@@ -1512,6 +1513,47 @@ public class Main {
                     currentPage++;
                 } else if (input.equals("-") && currentPage > 1) {
                     currentPage--;
+                } else if (input.equals("r")) {
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER"+ apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+
+                    int id = scanner.nextInt();
+
+                    Utilizador utilizador = sistema.procuraUtilizador(email);
+                    if(utilizador.getListaArtigos().containsKey(id)){
+                        Artigo artigo = sistema.procuraArtigoVenda(id);
+                        apresentacao.clear();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(artigo.showArtigo());
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                           DESEJA REMOVER ESTE ARTIGO?"+ apresentacao.RESET);
+                        sistema.removeArtigo(artigo);
+                        System.out.println();
+                        System.out.println("                                                                                                     1 - SIM");
+                        System.out.println("                                                                                                     0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                        ");
+
+                        int opcao = scanner.nextInt();
+                        if (opcao == 1) {
+                            sistema.removeArtigo(artigo);
+                            System.out.println();
+                            System.out.println(apresentacao.YELLOW +"                                                                                          ARTIGO REMOVIDO COM SUCESSO!" + apresentacao.RESET);
+                            System.out.println();
+                            System.out.println("                                                                                        Pressione enter para continuar...");
+                            System.out.println();
+                            System.out.print("                                                                                                       ");
+                            Scanner ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            break;
+                        }
+                    }
                 } else if (input.equals("s")) {
                     break;
                 }

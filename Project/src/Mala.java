@@ -23,9 +23,9 @@ public class Mala extends Artigo
         this.tipo = Atributos.NORMAL;
     }
 
-    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
     {
-        super(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda);
+        super(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda);
         this.dimensao = dimensao;
         this.material = material;
         this.anoLancamento = anoLancamento;
@@ -110,6 +110,13 @@ public class Mala extends Artigo
         return "Normal";
     }
 
+    private String estadoToString(){
+        if (this.getEstado().getTipoEstado() == Atributos.NOVO){
+            return "NOVO";
+        }
+        return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado().getNrDonos() + ")";
+    }
+
     public String showArtigo() {
         String tipo = "PREMIUM";
         int x = this.getTransportadora().getTipo();
@@ -120,24 +127,24 @@ public class Mala extends Artigo
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + this.getEstado().toString() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + this.estadoToString() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⣿⢸⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⡇⣿⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⠛⠛⠀⠀⢸⡯⠅⠈⢽⡇⠀⠀⠛⠛⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀"   + Apresentacao.YELLOW + "       Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀"   + Apresentacao.YELLOW + "       Dimensão: " + Apresentacao.RESET + this.getDimensao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀"   + Apresentacao.YELLOW + "       Material: " + Apresentacao.RESET + this.getMaterial() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + this.getAnoLancamento().toString() + Apresentacao.RESET + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + Apresentacao.RESET + this.getAnoLancamento().toString() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
     }
 
     public String toString()
     {
         StringBuffer string = new StringBuffer();
-        string.append("[Artigo Mala]");
+        string.append("[Mala]");
         string.append(super.toString());
-        string.append("Dimensão: " + this.getDimensao() + "\n");
-        string.append("Material: " + this.getMaterial() + "\n");
-        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + "\n");
+        string.append("Dimensão: " + this.getDimensao() + " | ");
+        string.append("Material: " + this.getMaterial() + " | ");
+        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + " | ");
         string.append("Tipo: " + this.tipoToString());
         return string.toString();
     }

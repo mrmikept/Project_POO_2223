@@ -4,24 +4,22 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Automatizaçao {
+public class Automatizacao {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private String path;
     private List<String> excecoes;
 
-    public Automatizaçao(){
+    public Automatizacao(){
 
         this.path = "";
         this.excecoes = new ArrayList<>();
     }
 
-    public Automatizaçao(String path){
+    public Automatizacao(String path){
 
         this.path = path;
         this.excecoes = new ArrayList<>();
@@ -120,18 +118,17 @@ public class Automatizaçao {
         String descricao = camposArt[4];
         String marca = camposArt[5];
         double precoBase = Double.parseDouble(camposArt[6]);
-        double correcaoPreco = Double.parseDouble(camposArt[7]);
-        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[8]), Double.parseDouble(camposArt[9]), Integer.valueOf(camposArt[10]));
-        String nomeTransportadora = camposArt[11];
+        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[7]), Double.parseDouble(camposArt[8]), Integer.valueOf(camposArt[9]));
+        String nomeTransportadora = camposArt[10];
         Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
-        int estadoVenda = Integer.valueOf(camposArt[12]);
+        int estadoVenda = Integer.valueOf(camposArt[11]);
 
         if(camposArt[1].contains("Mala")){
-            double dimensao = Double.parseDouble(camposArt[13]);
-            String material = camposArt[14];
-            LocalDate anoLancamento = LocalDate.parse(camposArt[15]);
-            int tipo = Integer.valueOf(camposArt[16]);
-            sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
+            double dimensao = Double.parseDouble(camposArt[12]);
+            String material = camposArt[13];
+            LocalDate anoLancamento = LocalDate.parse(camposArt[14]);
+            int tipo = Integer.valueOf(camposArt[15]);
+            sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
         }
         else if(camposArt[1].contains("Sapatilha")){
             int tamanho = Integer.valueOf(camposArt[13]);
@@ -139,12 +136,12 @@ public class Automatizaçao {
             String cor = camposArt[15];
             LocalDate dataLancamento = LocalDate.parse(camposArt[16]);
             int tipo = Integer.valueOf(camposArt[17]);
-            sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, dataLancamento, tipo);
+            sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, dataLancamento, tipo);
         }
         else if(camposArt[1].contains("Tshirt")){
             int tamanho = Integer.valueOf(camposArt[13]);
             int padrao = Integer.valueOf(camposArt[14]);
-            sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, padrao);
+            sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, padrao);
         }
     }
 
@@ -163,7 +160,7 @@ public class Automatizaçao {
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
         int tipo = Integer.valueOf(camposTransp[3]);
-        sistema.adicionaTransportadora(nome, margemLucro, tipo);
+        sistema.adicionaTransportadora(nome, margemLucro, tipo, 2);
     }
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{

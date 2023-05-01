@@ -186,12 +186,12 @@ public class Sistema implements Serializable {
     /**
      * Adiciona um utilizador à lista de utilizadores do Sistema
      *
-     * @param email        Email do utilizador
-     * @param palavraPasse Palavra-passe do utilizador
-     * @param nome         Nome do utilizador
-     * @param morada       Morada Fiscal do utilizador
-     * @param nrFiscal     Numero de contribuinte do utilizador
-     * @throws UtilizadorException Caso o utilizador já exista
+     * @param email        Email do utilizador.
+     * @param palavraPasse Palavra-passe do utilizador.
+     * @param nome         Nome do utilizador.
+     * @param morada       Morada Fiscal do utilizador.
+     * @param nrFiscal     Numero de contribuinte do utilizador.
+     * @throws UtilizadorException Caso o utilizador já exista.
      */
     public void adicionaUtilizador(String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException {
         if (!this.listaUtilizadores.containsKey(email)) {
@@ -410,7 +410,7 @@ public class Sistema implements Serializable {
     public void adicionaArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -430,7 +430,7 @@ public class Sistema implements Serializable {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -516,7 +516,6 @@ public class Sistema implements Serializable {
 
     public void atualizaData() {
         int diferenca = (int) this.getDataUltimoAcesso().until(LocalDate.now(), ChronoUnit.DAYS);
-        System.out.println(diferenca);
         this.setDataAtual(this.getDataAtual().plusDays(diferenca));
         this.setDataUltimoAcesso(LocalDate.now());
     }
@@ -528,8 +527,7 @@ public class Sistema implements Serializable {
 
     public void saltaTempo(int ano, int mes, int dia) throws SistemaException {
         LocalDate dataInput = LocalDate.of(ano, mes, dia);
-        int diferenca = dataInput.compareTo(this.getDataAtual());
-        if (diferenca >= 0) {
+        if (dataInput.isAfter(this.getDataAtual())) {
             this.setDataAtual(dataInput);
             this.atualizaSistema();
         } else throw new SistemaException("Data inserida não pode ser anterior à data atual!");

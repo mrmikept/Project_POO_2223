@@ -137,6 +137,10 @@ public class Mala extends Artigo
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
     }
 
+    public String showArtigoLinha() {
+        return ("[Mala]");
+    }
+
     public String toString()
     {
         StringBuffer string = new StringBuffer();

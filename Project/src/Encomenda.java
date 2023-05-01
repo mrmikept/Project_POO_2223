@@ -281,13 +281,25 @@ public class Encomenda {
         return "FINALIZADA";
     }
 
+    public String showEncomenda() {
+        StringBuilder string = new StringBuilder();
+        string.append("ID Encomenda: " + this.getId());
+        for(Artigo artigo:listaArtigos)
+        {
+            string.append(artigo.showArtigoLinha());
+        }
+        string.append("| Preço: " + this.getPrecoFinal());
+
+                return string.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append("Identificador Encomenda: " + this.getId());
         string.append(this.listaArtigos.toString());
         string.append("Dimensão: " + this.dimensaoToString() + "\n");
-        string.append("Preço: " + this.precoFinal + "\n");
+        string.append("Preco: " + this.precoFinal + "\n");
         string.append("Estado encomenda: " + this.estadoToString() + "\n");
         string.append("Data Criação Encomenda: " + this.getDataCriacao() + "\n");
         string.append("Data Atualização Estado: " + this.getDataAtualizacao());

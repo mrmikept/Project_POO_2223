@@ -1,9 +1,7 @@
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +18,7 @@ public class Sistema implements Serializable {
     private List<Encomenda> listaEncomendas;
     private List<Fatura> listaFaturas;
     private LocalDate dataCriacao;
+    private LocalDate dataUltimoAcesso;
     private LocalDate dataAtual;
     private TaxasImpostos taxas;
     private int tempoDevolucao;
@@ -33,11 +32,12 @@ public class Sistema implements Serializable {
         this.listaFaturas = new ArrayList<>();
         this.dataCriacao = LocalDate.now();
         this.dataAtual = LocalDate.now();
+        this.dataUltimoAcesso = LocalDate.now();
         this.taxas = new TaxasImpostos();
         this.tempoDevolucao = TEMPODEVOLUCAO_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<Integer, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, TaxasImpostos taxas, int tempoDevolucao) {
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<Integer, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, LocalDate dataUltimoAcesso, TaxasImpostos taxas, int tempoDevolucao) {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigos = listaArtigos;
@@ -45,6 +45,7 @@ public class Sistema implements Serializable {
         this.listaFaturas = listaFaturas;
         this.dataCriacao = dataCriacao;
         this.dataAtual = dataAtual;
+        this.dataUltimoAcesso = dataUltimoAcesso;
         this.taxas = taxas;
         this.tempoDevolucao = tempoDevolucao;
     }
@@ -56,6 +57,7 @@ public class Sistema implements Serializable {
         this.listaEncomendas = sistema.getListaEncomendas();
         this.listaFaturas = sistema.getListaFaturas();
         this.dataCriacao = sistema.getDataCriacao();
+        this.dataUltimoAcesso = sistema.getDataUltimoAcesso();
         this.dataAtual = sistema.getDataAtual();
         this.tempoDevolucao = sistema.getTempoDevolucao();
     }
@@ -118,6 +120,14 @@ public class Sistema implements Serializable {
 
     public void setDataAtual(LocalDate data) {
         this.dataAtual = data;
+    }
+
+    public LocalDate getDataUltimoAcesso() {
+        return dataUltimoAcesso;
+    }
+
+    public void setDataUltimoAcesso(LocalDate dataUltimoAcesso) {
+        this.dataUltimoAcesso = dataUltimoAcesso;
     }
 
     public TaxasImpostos getTaxas() {
@@ -490,9 +500,10 @@ public class Sistema implements Serializable {
 
 
     public void atualizaData() {
-        LocalDate dataAtualReal = LocalDate.now();
-        int diferenca = dataAtualReal.compareTo(this.getDataCriacao());
+        int diferenca = (int) this.getDataUltimoAcesso().until(LocalDate.now(), ChronoUnit.DAYS);
+        System.out.println(diferenca);
         this.setDataAtual(this.getDataAtual().plusDays(diferenca));
+        this.setDataUltimoAcesso(LocalDate.now());
     }
 
     public void saltaTempo(int dias) {
@@ -517,21 +528,80 @@ public class Sistema implements Serializable {
 
     public void atualizaSistema() { //TODO Função que atualiza o sistema: Entregar encomendas, diminuit stock, e emissão de fatura para cada comprador/vendedor
         this.atualizaEncomendas();
+        this.atualizaData();
     }
 
     public void emiteFatura(Encomenda encomenda, String emailComprador) throws UtilizadorException {
 
-        Fatura faturaComprador = new Fatura(encomenda.getId(), Atributos.VENDIDO, encomenda.calculaValorArtigos(), encomenda.calculaTaxaArtigos(), encomenda.calculaValorExpedicao(), this.getDataAtual());
-        Fatura faturaVendedor = new Fatura(encomenda.getId(),Atributos.VENDA, encomenda.calculaValorArtigos(), 0,0, this.getDataAtual());
-
         Utilizador vendedor = this.procuraUtilizador(encomenda.getVendedor().getEmail());
-        vendedor.adicionaFatura(faturaVendedor);
-
         Utilizador comprador = this.procuraUtilizador(emailComprador);
+
+        Fatura faturaComprador = new Fatura(encomenda.getId(), comprador, Atributos.VENDIDO, encomenda.calculaValorArtigos(), encomenda.calculaTaxaArtigos(), encomenda.calculaValorExpedicao(), this.getDataAtual());
+        Fatura faturaVendedor = new Fatura(encomenda.getId(), vendedor, Atributos.VENDA, encomenda.calculaValorArtigos(), 0,0, this.getDataAtual());
+
+        vendedor.adicionaFatura(faturaVendedor);
         comprador.adicionaFatura(faturaComprador);
 
         this.adicionaFatura(faturaComprador);
         this.adicionaFatura(faturaVendedor);
+    }
+
+    public List<Utilizador> utilizadoresFaturaramEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda)
+    {
+        return this.listaUtilizadores.values().stream()
+                .filter(utilizador -> utilizador.getListaFaturas().stream().filter(fatura -> fatura.getDataFaturacao().isAfter(primeiraData) && fatura.getDataFaturacao().isBefore(segundaData) && fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
+    }
+
+    public Utilizador vendedorMaisFaturouSempre()
+    {
+        Comparator<Utilizador> comparador = (Utilizador utilizador1, Utilizador utilizador2) -> {
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum() >
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum()) return -1;
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum() <
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum()) return 1;
+            return 0;
+        };
+        return listaUtilizadores.values().stream().sorted(comparador).collect(Collectors.toList()).get(0);
+    }
+
+    public Utilizador vendedorMaisFaturouEntreDatas(LocalDate primeiraData, LocalDate segundaData) throws SistemaException {
+        List<Utilizador> utilizadores = this.maioresUtilizadoresEntreDatas(primeiraData,segundaData,Atributos.VENDA);
+        if (!utilizadores.isEmpty())
+        {
+            return utilizadores.get(0);
+        } else throw new SistemaException("Não existe utilizadores com faturação entre as datas!");
+    }
+
+    public List<Utilizador> maioresUtilizadoresEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda)
+    {
+        Comparator<Utilizador> comparador = (Utilizador utilizador1, Utilizador utilizador2) -> {
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).mapToDouble(Fatura::getValorTotal).sum() >
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).mapToDouble(Fatura::getValorTotal).sum()) return -1;
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).mapToDouble(Fatura::getValorTotal).sum() <
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).mapToDouble(Fatura::getValorTotal).sum()) return 1;
+            return 0;
+        };
+        return this.utilizadoresFaturaramEntreDatas(primeiraData,segundaData, tipoVenda).stream().sorted(comparador).collect(Collectors.toList());
+    }
+
+    public Transportadora transportadoraMaiorFaturacao()
+    {
+        Comparator<Transportadora> comparator = (Transportadora trans1, Transportadora trans2) -> {
+            if (trans1.getValorFaturado() > trans2.getValorFaturado()) return -1;
+            if (trans1.getValorFaturado() < trans2.getValorFaturado()) return  1;
+            return 0;
+        };
+        return this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).get(0);
+    }
+
+    public double ganhoVintage()
+    {
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).mapToDouble(encomenda -> encomenda.calculaTaxaArtigos()).sum();
+    }
+
+    public List<Encomenda> listaEncomendasVendedor(String emailVendedor)
+    {
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().getEmail().equals(emailVendedor)).collect(Collectors.toList());
     }
 
     public boolean verificaUtilizador(String email) throws UtilizadorException {
@@ -549,7 +619,8 @@ public class Sistema implements Serializable {
         return (password.equals(utilizador.getPalavraPasse()));
     }
 
-    public Sistema clone() {
+    public Sistema clone()
+    {
         return new Sistema(this);
     }
 }

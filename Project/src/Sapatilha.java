@@ -86,12 +86,18 @@ public class Sapatilha extends Artigo {
         this.tipo = tipo;
     }
 
-    public double getCorrecaoPreco() {
-        if (this.getEstado().getTipoEstado() == Atributos.USADO)
+    public double getCorrecaoPreco()
+    {
+        if (this.getTipo() == Atributos.NORMAL)
         {
-            return  -this.getPrecoBase() * (double) Math.round((((1 - (this.getEstado().getAvaliacao() / 5.0)) * 0.6) + ((Math.pow((2),(-this.getEstado().getNrDonos())) * (-1) + 1) * 0.4)) * 100.0) / 100.0;
-        } else if (this.getEstado().getTipoEstado() == Atributos.NOVO && this.getTamanho() > 45) {
-            return this.getPrecoBase() * (-0.2);
+            if (this.getEstado().getTipoEstado() == Atributos.NOVO && this.getTamanho() > 45)
+            {
+                return this.getPrecoBase() * (-0.2);
+            }
+            if (this.getEstado().getTipoEstado() == Atributos.USADO)
+            {
+                return  -this.getPrecoBase() * (double) Math.round((((1 - (this.getEstado().getAvaliacao() / 5.0)) * 0.6) + ((Math.pow((2),(-this.getEstado().getNrDonos())) * (-1) + 1) * 0.4)) * 100.0) / 100.0;
+            }
         }
         return 0;
     }

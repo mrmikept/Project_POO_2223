@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  */
 public class Encomenda {
     private int id;
-    private String emailVendedor;
+    private Utilizador vendedor;
+    private Utilizador comprador;
     private List<Artigo> listaArtigos;
     private Transportadora transportadora;
     private int dimensao;
@@ -24,7 +25,8 @@ public class Encomenda {
 
     public Encomenda() {
         this.id = 0;
-        this.emailVendedor = "";
+        this.vendedor = new Utilizador();
+        this.comprador = new Utilizador();
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -34,11 +36,12 @@ public class Encomenda {
         this.dataAtualizacao = LocalDate.now();
     }
 
-    public Encomenda(int id, String emailVendedor, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+    public Encomenda(int id, Utilizador vendedor, Utilizador comprador, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
         this.id = id;
-        this.emailVendedor = emailVendedor;
+        this.vendedor = vendedor;
+        this.comprador = comprador;
         this.listaArtigos = listaArtigos;
-        this.transportadora = transportadora;
+        this.transportadora = transportadora.clone();
         this.dimensao = dimensao;
         this.precoFinal = precoFinal;
         this.estado = estado;
@@ -48,7 +51,8 @@ public class Encomenda {
 
     public Encomenda(Encomenda encomenda) {
         this.id = encomenda.getId();
-        this.emailVendedor = encomenda.getEmailVendedor();
+        this.vendedor = encomenda.getVendedor();
+        this.comprador = encomenda.getComprador();
         this.listaArtigos = encomenda.getListaArtigos();
         this.transportadora = encomenda.getTransportadora();
         this.dimensao = encomenda.getDimensao();
@@ -58,9 +62,10 @@ public class Encomenda {
         this.dataAtualizacao = encomenda.getDataAtualizacao();
     }
 
-    public Encomenda(int id, LocalDate dataCriacao) {
+    public Encomenda(int id, LocalDate dataCriacao, Utilizador comprador, Utilizador vendedor) {
         this.id = id;
-        this.emailVendedor = "";
+        this.vendedor = vendedor;
+        this.comprador = comprador;
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -79,12 +84,24 @@ public class Encomenda {
         this.id = id;
     }
 
-    public String getEmailVendedor() {
-        return emailVendedor;
+    public Utilizador getVendedor()
+    {
+        return this.vendedor;
     }
 
-    public void setEmailVendedor(String emailVendedor) {
-        this.emailVendedor = emailVendedor;
+    public void setVendedor(Utilizador vendedor)
+    {
+        this.vendedor = vendedor;
+    }
+
+    public Utilizador getComprador()
+    {
+        return this.comprador;
+    }
+
+    public void setComprador(Utilizador comprador)
+    {
+        this.comprador = comprador;
     }
 
     public List<Artigo> getListaArtigos() {
@@ -149,7 +166,7 @@ public class Encomenda {
         if (!this.listaArtigos.contains(artigo)) {
             if (this.listaArtigos.isEmpty())
             {
-                this.setEmailVendedor(artigo.getVendedor().getEmail());
+                this.setVendedor(artigo.getVendedor());
                 this.setTransportadora(artigo.getTransportadora());
             }
             this.listaArtigos.add(artigo);
@@ -162,22 +179,29 @@ public class Encomenda {
         if (this.listaArtigos.contains(artigo)) {
             this.listaArtigos.remove(artigo);
             this.alteraDimensão(listaArtigos.size());
-            if (this.listaArtigos.isEmpty())
-            {
-                this.setEmailVendedor("");
-                this.setTransportadora(new Transportadora());
-            }
             this.alteraPreco();
         } else throw new EncomendaException("Artigo não existe na encomenda!");
     }
 
-    public void alteraPreco() {
-        double valorArtigos = this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() +
-                this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
+    public double calculaValorArtigos()
+    {
+        return this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() + this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
+    }
+
+    public double calculaTaxaArtigos()
+    {
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.USADO).count()) * 0.25;
         double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.NOVO).count()) * 0.5;
-        double valorExpedicao = this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
-        this.setPrecoFinal(valorArtigos + valorArtigosUsados + valorArtigosNovos + valorExpedicao);
+        return valorArtigosNovos + valorArtigosUsados;
+    }
+
+    public double calculaValorExpedicao()
+    {
+        return this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
+    }
+    public void alteraPreco()
+    {
+        this.setPrecoFinal(this.calculaValorArtigos() + this.calculaTaxaArtigos() + this.calculaValorExpedicao());
     }
 
     public void alteraDimensão(int tamanho) {
@@ -212,12 +236,10 @@ public class Encomenda {
         }
     }
 
-    public void devolveEncomenda()
+    public void alteraEstadoDevolvida(LocalDate dataAtualizacao)
     {
-        for (Artigo artigo:listaArtigos)
-        {
-            artigo.setEstadoVenda(Atributos.VENDA);
-        }
+        this.setEstado(Atributos.DEVOLVIDA);
+        this.setDataAtualizacao(dataAtualizacao);
     }
 
     public boolean equals(Object o)

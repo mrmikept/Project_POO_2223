@@ -1,8 +1,4 @@
-import com.sun.source.tree.ReturnTree;
-
 import java.io.Serializable;
-import java.security.PublicKey;
-import java.sql.SQLSyntaxErrorException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,19 +18,11 @@ public class Sistema implements Serializable {
     private Map<String, Transportadora> listaTransportadoras;
     private Map<Integer, Artigo> listaArtigos;
     private List<Encomenda> listaEncomendas;
+    private List<Fatura> listaFaturas;
     private LocalDate dataCriacao;
     private LocalDate dataAtual;
-
-    private int imposto;
-    private double taxaEncPequena;
-    private double taxaEncMedia;
-    private double taxaEncGrande;
+    private TaxasImpostos taxas;
     private int tempoDevolucao;
-
-    private static final int TAXAIMPOSTO_OMISSAO = 23;
-    private static final double TAXAENC_PQ_OMISSAO = 2.55;
-    private static final double TAXAENC_MD_OMISSAO = 3.25;
-    private static final double TAXAENC_GD_OMISSAO = 4.15;
     private static final int TEMPODEVOLUCAO_OMISSAO = 2;
 
     public Sistema() {
@@ -42,26 +30,22 @@ public class Sistema implements Serializable {
         this.listaTransportadoras = new HashMap<>();
         this.listaArtigos = new HashMap<>();
         this.listaEncomendas = new ArrayList<>();
+        this.listaFaturas = new ArrayList<>();
         this.dataCriacao = LocalDate.now();
         this.dataAtual = LocalDate.now();
-        this.imposto = TAXAIMPOSTO_OMISSAO;
-        this.taxaEncPequena = TAXAENC_PQ_OMISSAO;
-        this.taxaEncMedia = TAXAENC_MD_OMISSAO;
-        this.taxaEncGrande = TAXAENC_GD_OMISSAO;
+        this.taxas = new TaxasImpostos();
         this.tempoDevolucao = TEMPODEVOLUCAO_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<Integer, Artigo> listaArtigos, List<Encomenda> listaEncomendas, LocalDate dataCriacao, LocalDate dataAtual, int imposto, double taxaEncPequena, double taxaEncMedia, double taxaEncGrande, int tempoDevolucao) {
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<Integer, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, TaxasImpostos taxas, int tempoDevolucao) {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigos = listaArtigos;
         this.listaEncomendas = listaEncomendas;
+        this.listaFaturas = listaFaturas;
         this.dataCriacao = dataCriacao;
         this.dataAtual = dataAtual;
-        this.imposto = imposto;
-        this.taxaEncPequena = taxaEncPequena;
-        this.taxaEncMedia = taxaEncMedia;
-        this.taxaEncGrande = taxaEncGrande;
+        this.taxas = taxas;
         this.tempoDevolucao = tempoDevolucao;
     }
 
@@ -70,6 +54,7 @@ public class Sistema implements Serializable {
         this.listaTransportadoras = sistema.getListaTransportadoras();
         this.listaArtigos = sistema.getListaArtigos();
         this.listaEncomendas = sistema.getListaEncomendas();
+        this.listaFaturas = sistema.getListaFaturas();
         this.dataCriacao = sistema.getDataCriacao();
         this.dataAtual = sistema.getDataAtual();
         this.tempoDevolucao = sistema.getTempoDevolucao();
@@ -109,6 +94,16 @@ public class Sistema implements Serializable {
         this.listaEncomendas = listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
+    public List<Fatura> getListaFaturas()
+    {
+        return this.listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+    }
+
+    public void setListaFaturas(List<Fatura> listaFaturas)
+    {
+        this.listaFaturas = listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+    }
+
     public LocalDate getDataCriacao() {
         return this.dataCriacao;
     }
@@ -125,36 +120,12 @@ public class Sistema implements Serializable {
         this.dataAtual = data;
     }
 
-    public int getImposto() {
-        return imposto;
+    public TaxasImpostos getTaxas() {
+        return taxas;
     }
 
-    public void setImposto(int imposto) {
-        this.imposto = imposto;
-    }
-
-    public double getTaxaEncPequena() {
-        return taxaEncPequena;
-    }
-
-    public void setTaxaEncPequena(double taxaEncPequena) {
-        this.taxaEncPequena = taxaEncPequena;
-    }
-
-    public double getTaxaEncMedia() {
-        return taxaEncMedia;
-    }
-
-    public void setTaxaEncMedia(double taxaEncMedia) {
-        this.taxaEncMedia = taxaEncMedia;
-    }
-
-    public double getTaxaEncGrande() {
-        return taxaEncGrande;
-    }
-
-    public void setTaxaEncGrande(double taxaEncGrande) {
-        this.taxaEncGrande = taxaEncGrande;
+    public void setTaxas(TaxasImpostos taxas) {
+        this.taxas = taxas.clone();
     }
 
     public int getTempoDevolucao() {
@@ -214,7 +185,7 @@ public class Sistema implements Serializable {
     public void adicionaUtilizador(String email, String palavraPasse, String nome, String morada, int nrFiscal) throws UtilizadorException {
         if (!this.listaUtilizadores.containsKey(email)) {
             int id = this.listaUtilizadores.size() + 1;
-            Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal, new HashMap<>(), new ArrayList<>());
+            Utilizador utilizador = new Utilizador(id, email, palavraPasse, nome, morada, nrFiscal, new HashMap<>(), new ArrayList<>(), new ArrayList<>());
             this.listaUtilizadores.put(email, utilizador);
         } else {
             throw new UtilizadorException("O utilizador com email: " + email + " já existe!");
@@ -245,7 +216,7 @@ public class Sistema implements Serializable {
      */
     public void adicionaTransportadora(String nome, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
         if (!this.listaTransportadoras.containsKey(nome)) {
-            Transportadora transportadora = new Transportadora(nome, lucro, tipo, tempExpedicao, this.getImposto(), this.getTaxaEncPequena(), this.getTaxaEncMedia(), this.getTaxaEncGrande());
+            Transportadora transportadora = new Transportadora(nome, lucro, tipo, tempExpedicao, 0, this.getTaxas());
             this.listaTransportadoras.put(nome, transportadora);
         } else {
             throw new TransportadoraException("A Transportadora " + nome + " já existe!");
@@ -367,9 +338,17 @@ public class Sistema implements Serializable {
 
 
 
-    public Encomenda procuraEncomenda(Encomenda encomenda) throws ArtigoException, EncomendaException {
+    public Encomenda procuraEncomenda(Encomenda encomenda) throws EncomendaException {
         if (this.listaEncomendas.contains(encomenda)) {
             return this.listaEncomendas.stream().filter(enc -> enc.equals(encomenda)).collect(Collectors.toList()).get(0);
+        } else throw new EncomendaException("Esta encomenda não existe!");
+    }
+
+    public Encomenda procuraEncomenda(int id) throws EncomendaException {
+        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getId() == id).collect(Collectors.toList());
+        if (!encomendas.isEmpty())
+        {
+            return encomendas.get(0);
         } else throw new EncomendaException("Esta encomenda não existe!");
     }
 
@@ -379,6 +358,16 @@ public class Sistema implements Serializable {
                 this.listaEncomendas.add(encomenda);
             } else throw new EncomendaException("Encomenda já existente!");
         } else throw new UtilizadorException("Utilizador não encontrado!");
+    }
+
+    public void adicionaFatura(Fatura fatura)
+    {
+        this.listaFaturas.add(fatura);
+    }
+
+    public void removeFatura(Fatura fatura)
+    {
+        this.listaFaturas.remove(fatura);
     }
 
     public void removeEncomenda(Encomenda encomenda) throws SistemaException {
@@ -394,77 +383,108 @@ public class Sistema implements Serializable {
     }
 
     public void adicionaArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
-        if (this.listaUtilizadores.containsKey(email)) {
-            Utilizador comprador = this.procuraUtilizador(email);
-            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome(), artigo.getVendedor().getEmail());
-            if (!listaEncomenda.isEmpty()) {
-                Encomenda encomenda = listaEncomenda.get(0);
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            if (!encomendas.isEmpty())
+            {
+                Encomenda encomenda = encomendas.get(0);
                 encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
-            } else {
-                Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual());
-                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
-                comprador.adicionaEncomenda(encomenda);
-                this.adicionaEncomenda(encomenda, comprador.getEmail());
+            }
+            else
+            {
+                Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual(), this.procuraUtilizador(email) ,this.procuraUtilizador(artigo.getVendedor().getEmail()));
+                encomenda.adicionaArtigo(artigo);
+                this.procuraUtilizador(email).adicionaEncomenda(encomenda);
+                this.adicionaEncomenda(encomenda,email);
             }
         } else throw new UtilizadorException("Utilizador não existente!");
     }
 
     public void adicionaArtigoEncomenda(int idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
-        if (this.listaUtilizadores.containsKey(email)) {
-            Utilizador comprador = this.procuraUtilizador(email);
+        if (this.listaUtilizadores.containsKey(email))
+        {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome(), artigo.getVendedor().getEmail());
-            if (!listaEncomenda.isEmpty()) {
-                Encomenda encomenda = listaEncomenda.get(0);
-                encomenda.adicionaArtigo(this.procuraArtigo(idArtigo));
-            } else {
-                Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual());
-                encomenda.adicionaArtigo(this.procuraArtigo(idArtigo));
-                comprador.adicionaEncomenda(encomenda);
-                this.adicionaEncomenda(encomenda, comprador.getEmail());
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getId() == artigo.getVendedor().getId() && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            if (!encomendas.isEmpty())
+            {
+                Encomenda encomenda = encomendas.get(0);
+                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
+            }
+            else
+            {
+                Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual(), this.procuraUtilizador(email) ,this.procuraUtilizador(artigo.getVendedor().getEmail()));
+                encomenda.adicionaArtigo(artigo);
+                this.procuraUtilizador(email).adicionaEncomenda(encomenda);
+                this.adicionaEncomenda(encomenda,email);
             }
         } else throw new UtilizadorException("Utilizador não existente!");
     }
 
-    public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
-        if (this.listaUtilizadores.containsKey(email)) {
-            Utilizador comprador = this.procuraUtilizador(email);
-            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome(), artigo.getVendedor().getEmail());
-            if (!listaEncomenda.isEmpty()) {
-                Encomenda encomenda = listaEncomenda.get(0);
-                encomenda.removeArtigo(this.procuraArtigo(artigo.getId()));
+    public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException, SistemaException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            if (!encomendas.isEmpty())
+            {
+                Encomenda encomenda = encomendas.get(0);
+                encomenda.removeArtigo(artigo);
+
+                if (encomenda.getListaArtigos().isEmpty())
+                {
+                    encomenda.getComprador().removeEncomenda(encomenda);
+                    this.removeEncomenda(encomenda);
+                }
             } else throw new EncomendaException("Encomenda não existe!");
         } else throw new UtilizadorException("Utilizador não existente!");
     }
 
-    public void removeArtigoEncomenda(int idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
-        if (this.listaUtilizadores.containsKey(email)) {
-            Utilizador comprador = this.procuraUtilizador(email);
+    public void removeArtigoEncomenda(int idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException, SistemaException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> listaEncomenda = comprador.getEncomendaPendente(artigo.getTransportadora().getNome(), artigo.getVendedor().getEmail());
-            if (!listaEncomenda.isEmpty()) {
-                Encomenda encomenda = listaEncomenda.get(0);
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            if (!encomendas.isEmpty())
+            {
+                Encomenda encomenda = encomendas.get(0);
                 encomenda.removeArtigo(this.procuraArtigo(idArtigo));
+
+                if (encomenda.getListaArtigos().isEmpty())
+                {
+                    encomenda.getComprador().removeEncomenda(encomenda);
+                    this.removeEncomenda(encomenda);
+                }
+
             } else throw new EncomendaException("Encomenda não existe!");
         } else throw new UtilizadorException("Utilizador não existente!");
     }
 
-    public void confirmaSelecaoEncomenda(int idEncomenda, String email) throws UtilizadorException, EncomendaException {
-        Utilizador utilizador = this.procuraUtilizador(email);
-        utilizador.getEncomenda(idEncomenda).alteraEstadoExpedido(this.getDataAtual());
+    public void confirmaEncomenda(int idEncomenda, String email) throws UtilizadorException, EncomendaException, TransportadoraException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            Encomenda encomenda = this.procuraEncomenda(idEncomenda);
+            if (encomenda.getEstado() == Atributos.PENDENTE)
+            {
+                encomenda.alteraEstadoExpedido(this.getDataAtual());
+                this.emiteFatura(encomenda,email);
+                this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
+            }
+        }
     }
 
     public void devolveEncomenda(String email, int idEncomenda) throws UtilizadorException, EncomendaException, SistemaException {
-        if (this.listaUtilizadores.containsKey(email)) {
-            Utilizador utilizador = this.procuraUtilizador(email);
-            Encomenda encomenda = utilizador.getEncomenda(idEncomenda);
-            System.out.println(encomenda.getEstado());
-            if (encomenda.getEstado() == Atributos.FINALIZADA && this.getDataAtual().compareTo(encomenda.getDataAtualizacao()) <= this.getTempoDevolucao()) {
-                utilizador.removeEncomenda(encomenda);
-                this.removeEncomenda(encomenda);
-                encomenda.devolveEncomenda();
-            } else throw new EncomendaException("Esta encomenda não pode ser devolvida!");
-        } else throw new EncomendaException("Esta encomenda não existe!");
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getId() == idEncomenda && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());;
+            if (!encomendas.isEmpty())
+            {
+                Encomenda encomenda = encomendas.get(0);
+                if (this.getDataAtual().compareTo(encomenda.getDataAtualizacao()) <= this.getTempoDevolucao())
+                {
+                   encomenda.alteraEstadoDevolvida(this.getDataAtual());
+                } else throw new EncomendaException("Esta encomenda não pode ser devolvida!");
+            } else throw new EncomendaException("Encomenda não encontrada!");
+        } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 
 
@@ -499,20 +519,34 @@ public class Sistema implements Serializable {
         this.atualizaEncomendas();
     }
 
+    public void emiteFatura(Encomenda encomenda, String emailComprador) throws UtilizadorException {
+
+        Fatura faturaComprador = new Fatura(encomenda.getId(), Atributos.VENDIDO, encomenda.calculaValorArtigos(), encomenda.calculaTaxaArtigos(), encomenda.calculaValorExpedicao(), this.getDataAtual());
+        Fatura faturaVendedor = new Fatura(encomenda.getId(),Atributos.VENDA, encomenda.calculaValorArtigos(), 0,0, this.getDataAtual());
+
+        Utilizador vendedor = this.procuraUtilizador(encomenda.getVendedor().getEmail());
+        vendedor.adicionaFatura(faturaVendedor);
+
+        Utilizador comprador = this.procuraUtilizador(emailComprador);
+        comprador.adicionaFatura(faturaComprador);
+
+        this.adicionaFatura(faturaComprador);
+        this.adicionaFatura(faturaVendedor);
+    }
+
     public boolean verificaUtilizador(String email) throws UtilizadorException {
         return (listaUtilizadores.containsKey(email));
     }
 
-   
     public boolean verificaTransportadora(String nome) throws TransportadoraException
     {
         return (listaTransportadoras.containsKey(nome));
     }
 
-    public boolean verificaPassword(String email, String pass) throws UtilizadorException
+    public boolean verificaPassword(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
-        return (pass.compareTo(utilizador.getPalavraPasse()) == 0);
+        return (password.equals(utilizador.getPalavraPasse()));
     }
 
     public Sistema clone() {

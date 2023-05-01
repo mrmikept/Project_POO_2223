@@ -12,10 +12,8 @@ public class Transportadora implements Serializable {
     private double margemLucro;
     private int tipo;
     private int tempoExpedicao;
-    private double imposto;
-    private double txEncPq;
-    private double txEncMd;
-    private double txEncGd;
+    private double valorFaturado;
+    private TaxasImpostos taxasImpostos;
 
 
     public Transportadora()
@@ -24,22 +22,18 @@ public class Transportadora implements Serializable {
         this.margemLucro = 0.0;
         this.tipo = Atributos.NORMAL;
         this.tempoExpedicao = 0;
-        this.imposto = 0;
-        this.txEncPq = 0;
-        this.txEncMd = 0;
-        this.txEncGd = 0;
+        this.valorFaturado = 0;
+        this.taxasImpostos = new TaxasImpostos();
     }
 
-    public Transportadora(String nome, double lucro, int tipo, int tempoExpedicao, double imposto, double txEncPq, double txEncMd, double txEncGd)
+    public Transportadora(String nome, double lucro, int tipo, int tempoExpedicao, double valorFaturado, TaxasImpostos taxasImpostos)
     {
         this.nome = nome;
         this.margemLucro = lucro;
         this.tipo = tipo;
         this.tempoExpedicao = tempoExpedicao;
-        this.imposto = imposto;
-        this.txEncPq = txEncPq;
-        this.txEncMd = txEncMd;
-        this.txEncGd = txEncGd;
+        this.valorFaturado = valorFaturado;
+        this.taxasImpostos = taxasImpostos;
     }
 
     public Transportadora(Transportadora transportadora)
@@ -48,10 +42,8 @@ public class Transportadora implements Serializable {
         this.margemLucro = transportadora.getMargemLucro();
         this.tipo = transportadora.getTipo();
         this.tempoExpedicao = transportadora.getTempoExpedicao();
-        this.imposto = transportadora.getImposto();
-        this.txEncPq = transportadora.getTxEncPq();
-        this.txEncMd = transportadora.getTxEncMd();
-        this.txEncGd = transportadora.getTxEncGd();
+        this.valorFaturado = transportadora.getValorFaturado();
+        this.taxasImpostos = transportadora.getTaxasImpostos();
     }
 
     public String getNome(){
@@ -86,54 +78,45 @@ public class Transportadora implements Serializable {
         this.tempoExpedicao = tempoExpedicao;
     }
 
-    public double getImposto() {
-        return imposto;
+    public double getValorFaturado()
+    {
+        return this.valorFaturado;
     }
 
-    public void setImposto(int imposto) {
-        this.imposto = imposto;
+    public void setValorFaturado(double valorFaturado)
+    {
+        this.valorFaturado = valorFaturado;
     }
 
-    public double getTxEncPq() {
-        return txEncPq;
+    public TaxasImpostos getTaxasImpostos() {
+        return taxasImpostos;
     }
 
-    public void setTxEncPq(double txEncPq) {
-        this.txEncPq = txEncPq;
-    }
-
-    public double getTxEncMd() {
-        return txEncMd;
-    }
-
-    public void setTxEncMd(double txEncMd) {
-        this.txEncMd = txEncMd;
-    }
-
-    public double getTxEncGd() {
-        return txEncGd;
-    }
-
-    public void setTxEncGd(double txEncGd) {
-        this.txEncGd = txEncGd;
+    public void setTaxasImpostos(TaxasImpostos taxasImpostos) {
+        this.taxasImpostos = taxasImpostos;
     }
 
     public double getTxExpedicao(int tamanhoEnc)
     {
         if (tamanhoEnc < 2)
         {
-            return this.getTxEncPq();
+            return this.getTaxasImpostos().getTaxaEncPequena();
         }
         if (tamanhoEnc > 2 && tamanhoEnc < 6)
         {
-            return this.getTxEncMd();
+            return this.getTaxasImpostos().getTaxaEncMedia();
         }
-        return this.getTxEncGd();
+        return this.getTaxasImpostos().getTaxaEncGrande();
     }
 
     public double calculaValorExpedicao(int tamanhoEnc)
     {
-       return this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + this.getImposto()));
+       return (double) Math.round((this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + ((double)this.getTaxasImpostos().getImposto() / 100)))) * 100) / 100;
+    }
+
+    public void adicionaValorGanho(double valor)
+    {
+        this.valorFaturado += valor;
     }
 
     private String tipotoString()
@@ -147,7 +130,14 @@ public class Transportadora implements Serializable {
 
     public String toString()
     {
-        return this.getNome() + ", Margem de Lucro: " + this.getMargemLucro() + ", Tipo de transportadora: " + this.tipotoString() + "\n";
+        StringBuilder string = new StringBuilder();
+        string.append("[Transportadora]\n");
+        string.append("Nome: " + this.getNome() + "\n");
+        string.append("Tipo: " + this.getTipo() + "\n");
+        string.append("Margem Lucro: " + this.getMargemLucro() + "\n");
+        string.append("Tempo de expedição: " + this.getTempoExpedicao() + " dias\n");
+        string.append("Valor Faturado: " + this.getValorFaturado() + "\n");
+        return string.toString();
     }
 
     public boolean equals(Object o)
@@ -163,7 +153,10 @@ public class Transportadora implements Serializable {
         Transportadora transportadora = (Transportadora) o;
         return (this.getNome().equals(transportadora.getNome()) &&
                 this.getTipo() == transportadora.getTipo() &&
-                this.getMargemLucro() == transportadora.getMargemLucro());
+                this.getMargemLucro() == transportadora.getMargemLucro()) &&
+                this.getTempoExpedicao() == transportadora.getTempoExpedicao() &&
+                this.getValorFaturado() == transportadora.getValorFaturado() &&
+                this.getTaxasImpostos().equals(transportadora.getTaxasImpostos());
     }
 
     public Transportadora clone()

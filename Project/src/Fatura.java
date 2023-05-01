@@ -1,11 +1,9 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Fatura
 {
     private int idEncomenda;
+    private Utilizador utilizador;
     private int tipo;
     private double valorArtigos;
     private double valorTaxas;
@@ -17,6 +15,7 @@ public class Fatura
     {
         this.idEncomenda = 0;
         this.tipo = Atributos.VENDA;
+        this.utilizador = new Utilizador();
         this.valorArtigos = 0;
         this.valorExpedicao = 0;
         this.valorTaxas = 0;
@@ -24,9 +23,10 @@ public class Fatura
         this.dataFaturacao = LocalDate.now();
     }
 
-    public Fatura(int idEncomenda, int tipo, double valorArtigos, double valorTaxas, double valorExpedicao, LocalDate dataFaturacao)
+    public Fatura(int idEncomenda, Utilizador utilizador, int tipo, double valorArtigos, double valorTaxas, double valorExpedicao, LocalDate dataFaturacao)
     {
         this.idEncomenda = idEncomenda;
+        this.utilizador = utilizador.clone();
         this.tipo = tipo;
         this.valorArtigos = valorArtigos;
         this.valorTaxas = valorTaxas;
@@ -38,6 +38,7 @@ public class Fatura
     public Fatura(Fatura fatura)
     {
         this.idEncomenda = fatura.getIdEncomenda();
+        this.utilizador = fatura.getUtilizador();
         this.tipo = fatura.getTipo();
         this.valorArtigos = fatura.getValorArtigos();
         this.valorTaxas = fatura.getValorTaxas();
@@ -52,6 +53,15 @@ public class Fatura
 
     public void setIdEncomenda(int idEncomenda) {
         this.idEncomenda = idEncomenda;
+    }
+
+    public Utilizador getUtilizador()
+    {
+        return this.utilizador.clone();
+    }
+
+    public void setUtilizador(Utilizador utilizador) {
+        this.utilizador = utilizador.clone();
     }
 
     public int getTipo()
@@ -109,6 +119,7 @@ public class Fatura
         StringBuilder string = new StringBuilder();
         string.append("[Fatura]\n");
         string.append("Fatura referente à encomenda: " + this.getIdEncomenda() + "\n");
+        //TODO TOSTRING UTILIZADOR;
         string.append("Tipo: " + this.getTipo() + "\n");
         string.append("Valor dos Artigos: " + this.getValorArtigos() + "\n");
         string.append("Valor Taxas sobre Artigos Novos e Usados: " + this.getValorTaxas() + "\n");
@@ -130,6 +141,7 @@ public class Fatura
         }
         Fatura fatura = (Fatura) o;
         return (this.getIdEncomenda() == fatura.getIdEncomenda() &&
+                this.getUtilizador().equals(fatura.getUtilizador()) &&
                 this.getTipo() == fatura.getTipo() &&
                 this.getValorArtigos() == fatura.getValorArtigos() &&
                 this.getValorTaxas() == fatura.getValorTaxas() &&

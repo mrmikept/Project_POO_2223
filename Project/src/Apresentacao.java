@@ -35,7 +35,6 @@ public class Apresentacao
         System.out.println("\033[0;33m");
     }
 
-
     /**
      * Texto a vermelho
      */
@@ -56,8 +55,11 @@ public class Apresentacao
 
     public void printMenu(String[] opcoes, int x, String nome){
         clear();
+        Sistema sistema;
 
-        if (x == 0) printVintage();
+        if (x == 0) {
+            printVintage();
+        }
 
         if (x == 1) {
             printVintage();

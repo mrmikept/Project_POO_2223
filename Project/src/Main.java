@@ -466,7 +466,7 @@ public class Main {
 
     private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException //MENU UTILIZADOR
     {
-        String[] s = {"Ver perfil", "Comprar", "Vendas", "Faturas", "Encomenda", "Retroceder"};
+        String[] s = {"Ver perfil", "Comprar", "Vendas", "Encomendas", "Faturas", "Retroceder"};
         int x = 0;
         String c;
         Utilizador utilizador = sistema.procuraUtilizador(email);
@@ -531,11 +531,11 @@ public class Main {
                     x = 0;
                     break;
 
-                case 4: // MENU FATURAS
-
-                case 5: // MENU ENCOMENDA
+                case 4: // MENU ENCOMENDAS
                     x = runEncomendas(email);
                     break;
+
+                case 5: // MENU FATURAS
 
                 case 6:
 
@@ -1447,20 +1447,13 @@ public class Main {
                 case 1: // MENU PENDENTES
                     apresentacao.printPendentes();
                     System.out.println(apresentacao.RED + "[ARTIGOS]\n" + apresentacao.RESET);
-
-
-
-
+                    System.out.println(sistema.procuraUtilizador(email).getListaEncomendas(Atributos.PENDENTE).toString());
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+                    break;
             }
 
         } while (x != 5);
-
-        apresentacao.printEncomendas();
-
-
-
-
-
 
         return 0;
     }

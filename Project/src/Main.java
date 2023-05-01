@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     private Sistema sistema;
@@ -1448,7 +1449,10 @@ public class Main {
                 case 1: // MENU PENDENTES
                     apresentacao.printPendentes();
                     System.out.println(apresentacao.RED + "[ARTIGOS]\n" + apresentacao.RESET);
-                    System.out.println(sistema.procuraUtilizador(email).getListaEncomendas(Atributos.PENDENTE).toString());
+                    Utilizador utilizador = sistema.procuraUtilizador(email);
+                    //System.out.println(utilizador.getListaEncomendas());
+                    //System.out.println(utilizador.getListaEncomendas(Atributos.PENDENTE).stream().map(Encomenda::showEncomenda).collect(Collectors.toList()));
+                    System.out.println("");
                     ler = new Scanner(System.in);
                     x = ler.nextInt();
                     break;

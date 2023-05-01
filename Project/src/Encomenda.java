@@ -283,14 +283,16 @@ public class Encomenda {
 
     public String showEncomenda() {
         StringBuilder string = new StringBuilder();
-        string.append("ID Encomenda: " + this.getId());
+        string.append("ID Encomenda: " + this.getId() + " ");
         for(Artigo artigo:listaArtigos)
         {
             string.append(artigo.showArtigoLinha());
         }
-        string.append("| Preço: " + this.getPrecoFinal());
+        string.append("| Preço: " + this.getPrecoFinal() + "\n");
 
-                return string.toString();
+        //System.out.println(string);
+
+        return string.toString();
     }
 
     @Override

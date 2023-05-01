@@ -475,10 +475,10 @@ public class Main {
 
         sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
         sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
         //Todo:
 
@@ -522,22 +522,20 @@ public class Main {
 
                 case 2: // MENU COMPRAR
                     apresentacao.printComprar();
-
                     paginateMenuCompras(sistema.getArtigosVenda(email), 2, email);
-
-
                     x = 0;
                     break;
 
                 case 3: // MENU VENDAS
                     x = runVendas(email);
                     x = 0;
+                    break;
 
                 case 4: // MENU FATURAS
 
                 case 5: // MENU ENCOMENDA
                     x = runEncomendas(email);
-
+                    break;
 
                 case 6:
 
@@ -558,7 +556,7 @@ public class Main {
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printVendas();
+                    //apresentacao.printVendas();
                     apresentacao.printMenu(s, 0, "");
                     x = ler.nextInt();
                     break;
@@ -583,12 +581,11 @@ public class Main {
                         x = ler.nextInt();
 
                         if (x == 1) runArtigosVender(email);
-                        else if (x == 0) runVendas(email);
+                        else if (x == 0) {x=0; break;}
                     } else {
                         paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email);
                         x =0;
                         break;
-
                     }
 
                 case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS

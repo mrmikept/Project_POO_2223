@@ -160,7 +160,7 @@ public class Automatizacao {
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
         int tipo = Integer.valueOf(camposTransp[3]);
-        sistema.adicionaTransportadora(nome, margemLucro, tipo);
+        sistema.adicionaTransportadora(nome, margemLucro, tipo, 2);
     }
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{

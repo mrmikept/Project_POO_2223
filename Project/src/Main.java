@@ -38,6 +38,10 @@ public class Main {
                         x = 0;
                     } catch (UtilizadorException a) {
                         System.out.println(a.getMessage());
+                    } catch (SistemaException e) {
+                        throw new RuntimeException(e);
+                    } catch (EncomendaException e) {
+                        throw new RuntimeException(e);
                     }
 
 
@@ -91,7 +95,7 @@ public class Main {
                     x = 0;
                     break;
 
-                case 4:
+                case 4 :
                     apresentacao.printBackup();
                     apresentacao.cyan();
                     System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o backup (../\"ficheiro\"):");
@@ -119,19 +123,18 @@ public class Main {
                     ler.nextLine();
                     x = 0;
                     break;
-
             }
         } while (x != 6);
         apresentacao.clear();
     }
 
-    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException {
+    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
         String email, pass, nome, morada, nomeTrans, c;
         int nif;
         int tipo = 0;
         double lucro;
-        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Retroceder"};
+        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
 
         do {
@@ -291,7 +294,8 @@ public class Main {
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                                  Nome: " + apresentacao.RESET + transportadora.getNome());
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                      Margem Lucro: " + apresentacao.RESET + transportadora.getMargemLucro() + apresentacao.CYAN_BOLD +
-                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() + apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + transportadora.getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + transportadora.getTxEncPq() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + transportadora.getTxEncMd() + apresentacao.CYAN_BOLD + " (Média), " + apresentacao.RESET + transportadora.getTxEncGd() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
+
+                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() +  apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + sistema.getTaxas().getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() + apresentacao.CYAN_BOLD+ " (Média), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
                     System.out.println();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                                Encomendas:" + apresentacao.RESET);
                     System.out.println();
@@ -415,7 +419,7 @@ public class Main {
                         ler = new Scanner(System.in);
                         tipo = ler.nextInt();
 
-                        sistema.adicionaTransportadora(nomeTrans, lucro, tipo);
+                        sistema.adicionaTransportadora(nomeTrans, lucro, tipo,2);
 
                         apresentacao.printRegTrans();
                         apresentacao.yellow();
@@ -450,13 +454,17 @@ public class Main {
                         else x = 0;
                     }
                     break;
+
+                case 5: // MENU CONFIGURACOES
+                    x = runConfig();
+                    break;
             }
-        } while (x != 5);
+        } while (x != 6);
 
         return x;
     }
 
-    private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException //MENU UTILIZADOR
+    private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException //MENU UTILIZADOR
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Faturas", "Encomenda", "Retroceder"};
         int x = 0;
@@ -464,14 +472,15 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
-        Transportadora ctt = new Transportadora("ctt", 0.3, Atributos.PREMIUM, 0.23, 1.75, 2.45, 3.15);
-        Transportadora tcc = new Transportadora("tcc", 0.3, Atributos.NORMAL, 0.23, 1.75, 2.45, 3.15);
-        sistema.adicionaTransportadora("ctt", 25.4, Atributos.PREMIUM);
-        sistema.adicionaTransportadora("tcc", 0.3, Atributos.NORMAL);
-        sistema.adicionaTshirtVenda(1, "m", "tshirt", "something", 20,  new EstadoArtigo(), ctt, Atributos.VENDA, Atributos.L, Atributos.M);
-        sistema.adicionaTshirtVenda(2, "m", "tshirt1", "something1", 10,  new EstadoArtigo(), ctt, Atributos.VENDA, Atributos.L, Atributos.M);
-        sistema.adicionaTshirtVenda(3, "m", "tshirt2", "something2", 10,  new EstadoArtigo(Atributos.USADO, 4.3, 4), tcc, Atributos.VENDA, Atributos.L, Atributos.M);
-        sistema.adicionaSapatilhaVenda(4, "m", "sapatilha", "NIKE", 30,  new EstadoArtigo(), ctt, Atributos.VENDA, 43, 0, "Branca", LocalDate.now(), 0);
+
+        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
+        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+
+        //Todo:
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
@@ -527,6 +536,8 @@ public class Main {
                 case 4: // MENU FATURAS
 
                 case 5: // MENU ENCOMENDA
+                    x = runEncomendas(email);
+
 
                 case 6:
 
@@ -598,7 +609,7 @@ public class Main {
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
-
+        
         do {
             switch (x) {
 
@@ -1239,6 +1250,220 @@ public class Main {
                     }
             }
         } while (x != 4);
+
+        return 0;
+    }
+    
+    public int runConfig() throws SistemaException {
+        int x = 0;
+        String [] s = {"Avancar no tempo", "Alterar taxas e impostos", "Alterar tempo de devolucao", "Retroceder"};
+        Scanner ler = new Scanner(System.in);
+        int opcao, dia, mes, ano;
+        String c;
+
+        do {
+            switch (x) {
+                case 0:
+                    apresentacao.printMenu(s, 2, "");
+                    x = ler.nextInt();
+                    break;
+                case 1: // MENU AVANCAR NO TEMPO
+                    apresentacao.printSaltaTempo();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                  Selecione o metodo para avancar no tempo:");
+                    System.out.println();
+                    System.out.println(apresentacao.YELLOW + "                                                                                       1 - Avancar para uma data");
+                    System.out.println(                      "                                                                                       2 - Adicionar dias à data atual" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                      ");
+                    ler = new Scanner(System.in);
+                    opcao = ler.nextInt();
+                    LocalDate localDate;
+
+                    if (opcao == 1) { // PARA UMA DATA
+                        apresentacao.printSaltaTempo();
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                            Introduza o dia (DD)" + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        dia = ler.nextInt();
+
+                        System.out.println();
+
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                            Introduza o mes (MM)" + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        mes = ler.nextInt();
+
+                        System.out.println();
+
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                           Introduza o ano (AAAA)" + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        ano = ler.nextInt();
+
+                        sistema.saltaTempo(ano, mes, dia);
+                        localDate = this.sistema.getDataAtual();
+
+                        apresentacao.printSaltaTempo();
+                        System.out.println(apresentacao.YELLOW + "                                                                                    SALTO NO TEMPO REALIZADO COM SUCESSO!!");
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                      Data atual do sistema: " + apresentacao.RESET + localDate);
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println("                                                                                        Pressione enter para sair...");
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+
+                    if (opcao == 2) { // ADICIONAR DIAS A DATA ATUAL
+                        apresentacao.printSaltaTempo();
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                            Introduza o numero de dias que pretende avancar (DD)" + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
+                        ler = new Scanner(System.in);
+                        dia = ler.nextInt();
+
+                        sistema.saltaTempo(dia);
+                        localDate = this.sistema.getDataAtual();
+
+                        apresentacao.printSaltaTempo();
+                        System.out.println(apresentacao.YELLOW + "                                                                                    SALTO NO TEMPO REALIZADO COM SUCESSO!!");
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                      Data atual do sistema: " + apresentacao.RESET + localDate);
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+                        System.out.println("                                                                                        Pressione enter para sair...");
+                        System.out.println();
+                        System.out.print("                                                                                                     ");
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+
+                    x = 0;
+                    break;
+
+                case 2: // MENU ALTERAR IMPOSTO E TAXAS
+                    apresentacao.printTax();
+                    int imposto;
+                    double taxa;
+
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                           Defina a taxa de imposto" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    imposto = ler.nextInt();
+                    sistema.getTaxas().setImposto(imposto);
+
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda pequena" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncPequena(taxa);
+
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda media" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncMedia(taxa);
+
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda grande" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncGrande(taxa);
+
+                    apresentacao.printTax();
+
+                    System.out.println(apresentacao.YELLOW + "                                                                                       ALTERACAO REALIZADA COM SUCESSO!!" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("                                                                                         Pressione enter para sair...");
+                    System.out.println();
+                    System.out.print("                                                                                                      ");
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
+
+                case 3:
+                    apresentacao.printReturnTime();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                            Defina o limite de dias para a devolucao de uma encomenda" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+
+                    sistema.setTempoDevolucao(x);
+
+                    apresentacao.printReturnTime();
+                    System.out.println(apresentacao.YELLOW + "                                                                                       ALTERACAO REALIZADA COM SUCESSO!!" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("                                                                                          Pressione enter para sair...");
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
+
+            }
+        } while (x != 4);
+
+        return 0;
+    }
+
+    public int runEncomendas(String email) throws ArtigoException, UtilizadorException, EncomendaException {
+        int x = 0;
+        String [] s = {"Pendentes", "Expedidas", "Finalizadas", "Devolvidas"};
+        Scanner ler = new Scanner(System.in);
+        sistema.adicionaArtigoEncomenda(1,"r");
+        sistema.adicionaArtigoEncomenda(2,"r");
+        sistema.adicionaArtigoEncomenda(3,"r");
+        sistema.adicionaArtigoEncomenda(4,"r");
+
+        do {
+            switch (x) {
+                case 0: // MENU ENCOMENDAS
+                    apresentacao.printMenu(s,3,"");
+                    x = ler.nextInt();
+                    break;
+
+                case 1: // MENU PENDENTES
+                    apresentacao.printPendentes();
+                    System.out.println(apresentacao.RED + "[ARTIGOS]\n" + apresentacao.RESET);
+
+
+
+
+            }
+
+        } while (x != 5);
+
+        apresentacao.printEncomendas();
+
+
+
+
+
 
         return 0;
     }

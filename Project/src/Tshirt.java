@@ -141,9 +141,9 @@ public class Tshirt extends Artigo
     public String toString()
     {
         StringBuilder string = new StringBuilder();
-        string.append("[Artigo Tshirt]" + "\n");
+        string.append("[Tshirt]" + " | ");
         string.append(super.toString());
-        string.append("Tamanho: " + this.tamanhoToString() + "\n");
+        string.append("Tamanho: " + this.tamanhoToString() + " | ");
         string.append("Padrão: " + this.padraoToString() + "\n");
         return string.toString();
     }

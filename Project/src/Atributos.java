@@ -1,8 +1,9 @@
 public class Atributos
 {
     public static final int PENDENTE = 0;
-    public static final int FINALIZADA = 1;
-    public static final int EXPEDIDA = 2;
+    public static final int EXPEDIDA = 1;
+    public static final int FINALIZADA = 2;
+    public static final int DEVOLVIDA = 3;
 
     public static final int NORMAL = 0;
     public static final int PREMIUM = 1;

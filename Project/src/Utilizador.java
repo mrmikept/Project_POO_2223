@@ -22,10 +22,11 @@ public class Utilizador implements Serializable {
     private int nrFiscal;
     private Map<Integer, Artigo> listaArtigos;
     private List<Encomenda> listaEncomendas;
+    private List<Fatura> listaFaturas;
 
 
-    public Utilizador() {
-
+    public Utilizador()
+    {
         this.id = 0;
         this.email = "";
         this.palavraPasse = "";
@@ -34,10 +35,10 @@ public class Utilizador implements Serializable {
         this.nrFiscal = 0;
         this.listaArtigos = new HashMap<>();
         this.listaEncomendas = new ArrayList<>();
-
+        this.listaFaturas = new ArrayList<>();
     }
 
-    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas) {
+    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas, ArrayList<Fatura> listaFaturas) {
 
         this.id = id;
         this.email = email;
@@ -47,7 +48,7 @@ public class Utilizador implements Serializable {
         this.nrFiscal = nrFiscal;
         this.listaArtigos = listaArtigos;
         this.listaEncomendas = listaEncomendas;
-
+        this.listaFaturas = listaFaturas;
     }
 
     public Utilizador(Utilizador utilizador) {
@@ -60,6 +61,7 @@ public class Utilizador implements Serializable {
         this.nrFiscal = utilizador.getNrFiscal();
         this.listaArtigos = utilizador.getListaArtigos();
         this.listaEncomendas = utilizador.getListaEncomendas();
+
 
     }
 
@@ -121,14 +123,37 @@ public class Utilizador implements Serializable {
         this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-
     public List<Encomenda> getListaEncomendas(){
         return this.listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
     }
 
+    public List<Encomenda> getListaEncomendas(int estado)
+    {
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() == estado).map(Encomenda::clone).collect(Collectors.toList());
+    }
+
+
     public void setListaEncomendas(List<Encomenda> listaEncomendas)
     {
         this.listaEncomendas = listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
+    }
+
+    public List<Fatura> getListaFaturas()
+    {
+        return this.listaFaturas = listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+    }
+
+    public void setListaFaturas(List<Fatura> listaFaturas)
+    {
+        this.listaFaturas = listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+    }
+
+    public Fatura getFatura(int idEncomenda) throws UtilizadorException {
+        List<Fatura> faturas = this.listaFaturas.stream().filter(fatura -> fatura.getIdEncomenda() == idEncomenda).collect(Collectors.toList());
+        if (!faturas.isEmpty())
+        {
+            return faturas.get(0).clone();
+        } else throw new UtilizadorException("Fatura não encontrada!");
     }
 
     public void adicionaArtigo(Artigo artigo) throws UtilizadorException {
@@ -152,49 +177,41 @@ public class Utilizador implements Serializable {
         this.listaEncomendas.add(encomenda);
     }
 
-    /*
-    public void adicionaArtigoEncomenda(Artigo artigo) throws EncomendaException {
-        //TODO ???????????????
-        if (!this.listaEncomendas.isEmpty())
-        {
-            if (!this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).collect(Collectors.toList()).isEmpty())
-            {
-                //Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).toList().get(0);
-                //encomenda.adicionaArtigo(artigo);
-                System.out.println("LOOOOOOL");
-            }
-            else
-            {
-                Encomenda novaEncomenda = new Encomenda();
-                novaEncomenda.adicionaArtigo(artigo);
-                this.listaEncomendas.add(novaEncomenda);
-                System.out.println("LOOOOOOL2");
-            }
-        }
-        else
-        {
-            Encomenda novaEncomenda = new Encomenda();
-            novaEncomenda.adicionaArtigo(artigo);
-            this.listaEncomendas.add(novaEncomenda);
-        }
 
+    public void removeEncomenda(Encomenda encomenda) throws UtilizadorException {
+        if (this.listaEncomendas.contains(encomenda))
+        {
+            this.listaEncomendas.remove(encomenda);
+        } else throw new UtilizadorException("O utilizador não possui esta encomenda!");
     }
 
-    public void removeArtigoEncomenda(Artigo artigo) throws EncomendaException {
-        //TODO ???????????????????
-        Encomenda encomenda = this.listaEncomendas.stream().filter(enc -> enc.getTransportadora().equals(artigo.getTransportadora()) && enc.getEstado() == Atributos.PENDENTE).collect(Collectors.toList()).get(0);
-        if (encomenda != null)
+
+    public Encomenda getEncomenda(int idEncomenda) throws UtilizadorException {
+        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList());
+        if (!encomendas.isEmpty())
         {
-            encomenda.removeArtigo(artigo);
-        }
-        else throw new EncomendaException("Este artigo não está atribuido a nenhuma encomenda!");
+            return encomendas.get(0);
+        } else throw new UtilizadorException("O utilizador " + this.getEmail() + " não possui a encomenda com o id " + idEncomenda);
     }
-    */
 
-
-    public List<Encomenda> getEncomendaPendente(String nomeTransportadora)
+    public void adicionaFatura(Fatura fatura)
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nomeTransportadora) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+        this.listaFaturas.add(fatura);
+    }
+
+    public void removeFatura(Fatura fatura) throws UtilizadorException {
+        if (this.listaFaturas.contains(fatura))
+        {
+            this.listaFaturas.remove(fatura);
+        } else throw new UtilizadorException("O utilizador " + this.getEmail() + " não possui fatura para a encomenda " + fatura.getIdEncomenda());
+    }
+
+    public void removeFatura(int idEncomenda) throws UtilizadorException {
+        List<Fatura> listaFaturas = this.listaFaturas.stream().filter(fatura -> fatura.getIdEncomenda() == idEncomenda).collect(Collectors.toList());
+        if (!listaFaturas.isEmpty())
+        {
+            this.listaFaturas.remove(listaFaturas.get(0));
+        } else throw new UtilizadorException("O utilizador " + this.getEmail() + " não possui fatura para a encomenda " + idEncomenda);
     }
 
     public boolean equals(Object o)

@@ -140,11 +140,11 @@ public class Mala extends Artigo
     public String toString()
     {
         StringBuffer string = new StringBuffer();
-        string.append("[Artigo Mala]");
+        string.append("[Mala]");
         string.append(super.toString());
-        string.append("Dimensão: " + this.getDimensao() + "\n");
-        string.append("Material: " + this.getMaterial() + "\n");
-        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + "\n");
+        string.append("Dimensão: " + this.getDimensao() + " | ");
+        string.append("Material: " + this.getMaterial() + " | ");
+        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + " | ");
         string.append("Tipo: " + this.tipoToString());
         return string.toString();
     }

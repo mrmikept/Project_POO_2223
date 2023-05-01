@@ -1554,7 +1554,7 @@ public class Main {
         } while (true);
     }
 
-    public void paginateMenuCompras(Map<Integer, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void paginateMenuCompras(Map<Integer, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException, EncomendaException {
         Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
         String c;
         int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
@@ -1588,9 +1588,9 @@ public class Main {
                 System.out.println();
                 System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
                 System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                                      Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e" + apresentacao.RESET +
-                        " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
+                System.out.println(apresentacao.CYAN_BOLD + "                                                           Pressione" + apresentacao.RESET + " '+' " +
+                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'c' " + apresentacao.CYAN_BOLD +
+                        "para comprar artigo e" + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
                 System.out.println();
                 System.out.print("                                                                                                       ");
 
@@ -1601,6 +1601,51 @@ public class Main {
                     currentPage++;
                 } else if (input.equals("-") && currentPage > 1) {
                     currentPage--;
+                } else if (input.equals("c")) {
+
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA COMPRAR"+ apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                       ");
+
+                    int id = scanner.nextInt();
+
+                    Artigo artigo = sistema.procuraArtigoVenda(id);
+                    apresentacao.clear();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println(artigo.showArtigo());
+                    System.out.println();
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                           DESEJA COMPRAR ESTE ARTIGO?"+ apresentacao.RESET);
+                    System.out.println();
+                    System.out.println("                                                                                                     1 - SIM");
+                    System.out.println("                                                                                                     0 - NAO");
+                    System.out.println();
+                    System.out.print("                                                                                                        ");
+
+                    int opcao = scanner.nextInt();
+                    if (opcao == 1) {
+                        sistema.adicionaArtigoEncomenda(artigo, email);
+                        System.out.println();
+                        System.out.println(apresentacao.YELLOW +"                                                                                          ARTIGO COMPRADO COM SUCESSO!" + apresentacao.RESET);
+                        System.out.println();
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                           DESEJA COMPRAR OUTRO ARTIGO?"+ apresentacao.RESET);
+                        System.out.println();
+                        System.out.println("                                                                                                     1 - SIM");
+                        System.out.println("                                                                                                     0 - NAO");
+                        System.out.println();
+                        System.out.print("                                                                                                        ");
+
+                        int opcao2 = scanner.nextInt();
+                        if (opcao2 == 1){
+                            input.equals("c");
+                        }
+                        else if (opcao2 == 0) { break;}
+                    }
                 } else if (input.equals("s")) {
                     break;
                 }

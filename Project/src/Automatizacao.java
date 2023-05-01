@@ -4,24 +4,22 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Automatizaçao {
+public class Automatizacao {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private String path;
     private List<String> excecoes;
 
-    public Automatizaçao(){
+    public Automatizacao(){
 
         this.path = "";
         this.excecoes = new ArrayList<>();
     }
 
-    public Automatizaçao(String path){
+    public Automatizacao(String path){
 
         this.path = path;
         this.excecoes = new ArrayList<>();
@@ -163,7 +161,7 @@ public class Automatizaçao {
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
         int tipo = Integer.valueOf(camposTransp[3]);
-        sistema.adicionaTransportadora(nome, margemLucro, tipo);
+        sistema.adicionaTransportadora(nome, margemLucro, tipo, 2);
     }
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{

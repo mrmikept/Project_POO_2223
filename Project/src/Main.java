@@ -1,11 +1,7 @@
-import javax.swing.text.Style;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
     private Sistema sistema;
@@ -108,7 +104,7 @@ public class Main {
                     System.out.print("                                                               ");
                     ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
-                    Automatizaçao backup = new Automatizaçao(input_backup);
+                    Automatizacao backup = new Automatizacao(input_backup);
                     backup.carregaFicheiro(this.sistema);
                     if (!backup.getExcecoes().isEmpty() ){
                         apresentacao.printErros(backup.getExcecoes());

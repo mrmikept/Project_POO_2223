@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.security.PublicKey;
 import java.sql.SQLSyntaxErrorException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  */
 public class Sistema implements Serializable
 {
+
     private Map<String,Utilizador> listaUtilizadores;
     private Map<String, Transportadora> listaTransportadoras;
     private Map<Integer, Artigo> listaArtigos;
@@ -291,11 +293,11 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int padrao) throws ArtigoException, UtilizadorException {
+    public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int padrao) throws ArtigoException, UtilizadorException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, padrao);
+            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, padrao);
             this.listaArtigos.put(id,tshirt);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         }
@@ -304,11 +306,11 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException {
+    public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, correcaoPreco, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, data, tipo);
+            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, data, tipo);
             this.listaArtigos.put(id,sapatilha);
             utilizador.adicionaArtigo(sapatilha);
         }
@@ -317,11 +319,11 @@ public class Sistema implements Serializable
         }
     }
 
-    public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException {
+    public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Mala mala = new Mala(id, utilizador, descricao,marca,precoBase, correcaoPreco, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
+            Mala mala = new Mala(id, utilizador, descricao,marca,precoBase, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
             this.listaArtigos.put(id,mala);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         }
@@ -400,6 +402,17 @@ public class Sistema implements Serializable
             else throw new ArtigoException("Este artigo não está à venda!");
         }
         else throw new ArtigoException("O artigo com o id" + id + " não existe!");
+    }
+
+    public boolean verificaArtigoVenda(int id) throws ArtigoException
+    {
+        if(listaArtigos.containsKey(id)){
+            Artigo artigo = this.listaArtigos.get(id);
+            if(artigo.getEstadoVenda() == Atributos.VENDA){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void adicionaEncomenda(Encomenda encomenda, String email) throws UtilizadorException, EncomendaException {
@@ -541,6 +554,7 @@ public class Sistema implements Serializable
         Utilizador utilizador = procuraUtilizador(email);
         return (pass.compareTo(utilizador.getPalavraPasse()) == 0);
     }
+
 
     public Sistema clone()
     {

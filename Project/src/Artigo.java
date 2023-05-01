@@ -14,7 +14,6 @@ public abstract class Artigo implements Serializable
     private String descricao;
     private String marca;
     private double precoBase;
-    private double correcaoPreco;
     private EstadoArtigo estado;
     private Transportadora transportadora;
     private int estadoVenda;
@@ -26,20 +25,18 @@ public abstract class Artigo implements Serializable
         this.descricao = "";
         this.marca = "";
         this.precoBase = 0.0;
-        this.correcaoPreco = 0.0;
         this.estado = new EstadoArtigo();
         this.transportadora = new Transportadora();
         this.estadoVenda = Atributos.VENDA;
     }
 
-    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, double correcaoPreco, EstadoArtigo estado, Transportadora transportadora, int estadoVenda)
+    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda)
     {
         this.id = id;
         this.vendedor = utilizador;
         this.descricao = descricao;
         this.marca = marca;
         this.precoBase = precoBase;
-        this.correcaoPreco = correcaoPreco;
         this.estado = estado.clone();
         this.transportadora = transportadora.clone();
         this.estadoVenda = estadoVenda;
@@ -52,7 +49,6 @@ public abstract class Artigo implements Serializable
         this.descricao = artigo.getDescricao();
         this.marca = artigo.getMarca();
         this.precoBase = artigo.getPrecoBase();
-        this.correcaoPreco = artigo.getCorrecaoPreco();
         this.estado = artigo.getEstado();
         this.transportadora = artigo.getTransportadora();
         this.estadoVenda = artigo.getEstadoVenda();
@@ -77,10 +73,6 @@ public abstract class Artigo implements Serializable
 
     public void setPrecoBase(double precoBase) {
         this.precoBase = precoBase;
-    }
-
-    public void setCorrecaoPreco(double correcaoPreco) {
-        this.correcaoPreco = correcaoPreco;
     }
 
     public void setEstado(EstadoArtigo estado)
@@ -144,7 +136,6 @@ public abstract class Artigo implements Serializable
         return (this.getId() == artigo.getId() &&
                 this.getMarca().equals(artigo.getMarca()) &&
                 this.getPrecoBase() == artigo.getPrecoBase() &&
-                this.getCorrecaoPreco() == artigo.getCorrecaoPreco() &&
                 this.getTransportadora().equals(artigo.getTransportadora()) &&
                 this.getEstado().equals(artigo.getEstado()) &&
                 this.getDescricao().equals(artigo.getDescricao()));
@@ -161,7 +152,6 @@ public abstract class Artigo implements Serializable
         string.append("Descrição: " + this.getDescricao() + "\n");
         string.append("Marca: " + this.getMarca() + "\n");
         string.append("Preço Base: " + this.getPrecoBase() + "\n");
-        string.append("Correção Preço: " + this.getCorrecaoPreco() + "\n");
         string.append("Estado: " + this.getEstado().toString() + "\n");
         string.append("Transportadora: " + this.getTransportadora().toString());
 

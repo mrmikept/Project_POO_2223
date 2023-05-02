@@ -9,7 +9,7 @@ public class Main {
     private Sistema sistema;
     private Apresentacao apresentacao;
 
-    public static void main(String[] args) throws IOException, UtilizadorException, TransportadoraException, ClassNotFoundException, ArtigoException {
+    public static void main(String[] args) throws IOException, UtilizadorException, TransportadoraException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         new Main().run();
     }
 
@@ -18,7 +18,7 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException {
+    private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         int x = 0;
         String c;
         String[] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
@@ -124,6 +124,10 @@ public class Main {
                     ler = new Scanner(System.in);
                     ler.nextLine();
                     x = 0;
+                    break;
+
+                case 5:
+                    x = runEstatisticas();
                     break;
             }
         } while (x != 6);
@@ -1753,6 +1757,269 @@ public class Main {
                 }
             }
         } while (true);
+    }
+
+    public void paginateCompradorVendedor(List<Utilizador> lista, int pageSize ) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
+        Utilizador[] menuItems = lista.toArray(new Utilizador[0]);
+        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
+        int currentPage = 1;
+        int startIndex, endIndex;
+        do {
+            apresentacao.printCompradorVendedor();
+            System.out.println();
+            System.out.println();
+            startIndex = (currentPage - 1) * pageSize;
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
+
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Utilizador utilizador = menuItems[i];
+                System.out.println();
+                System.out.println("                                                                                                        (" + key + ")");
+                System.out.println(utilizador.toString());
+            }
+
+            if (numPages > 1) {
+                System.out.println();
+                System.out.println();
+                System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
+                System.out.println();
+                System.out.println(apresentacao.CYAN_BOLD + "                                                                               Pressione" + apresentacao.RESET + " '+' " +
+                        apresentacao.CYAN_BOLD + "para avancar, " + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e " + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
+                        "para sair");
+                apresentacao.resetColor();
+                System.out.println();
+                System.out.print("                                                                                                       ");
+
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine().toLowerCase();
+
+                if (input.equals("+") && currentPage < numPages) {
+                    currentPage++;
+                } else if (input.equals("-") && currentPage > 1) {
+                    currentPage--;
+                } else if (input.equals("s")) {
+                    break;
+                }
+            } else if (numPages == 1) {
+                System.out.println();
+                System.out.println();
+                System.out.println(apresentacao.YELLOW +"                                                                                               Pressione enter para sair..." + apresentacao.RESET);
+                System.out.println();
+                System.out.print("                                                                                                          ");
+
+                Scanner scanner = new Scanner(System.in);
+                String c = scanner.nextLine();
+                break;
+            }
+        } while (true);
+    }
+
+    public int runEstatisticas() throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException, SistemaException {
+        int x = 0;
+        String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
+                " em um período de tempo", "Ganhos Vintage", "Retroceder"};
+        String d1,d2,c, email;
+        LocalDate data1, data2;
+        Scanner ler = new Scanner(System.in);
+
+        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
+        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+
+        sistema.adicionaArtigoEncomenda(1,"r");
+        sistema.adicionaArtigoEncomenda(2, "r");
+        sistema.adicionaArtigoEncomenda(3, "r");
+        sistema.adicionaArtigoEncomenda(4, "r");
+
+        sistema.confirmaEncomenda(1, "r");
+
+
+
+        do {
+            switch (x){
+                case 0:
+                    apresentacao.printMenu(s, 4, "");
+                    x = ler.nextInt();
+                    break;
+
+
+                case 1:
+                    apresentacao.printVendedorDinheiro();
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                             INDIQUE A OPÇÃO QUE PRETENDE" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.println("                                                                                                 1 - DE SEMPRE");
+                    System.out.println("                                                                                                 0 - PERÍODO DE TEMPO");
+                    System.out.println();
+                    System.out.print("                                                                                                           ");
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+
+                    if (x == 1){
+                        apresentacao.printVendedorDinheiro();
+                        System.out.println();
+                        Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
+                        System.out.println(utilizador.toString());
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        System.out.println();
+                        System.out.println(apresentacao.YELLOW +"                                                                                           Pressione enter para sair..." + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    } else if (x == 0) {
+                        apresentacao.printVendedorDinheiro();
+                        System.out.println();
+                        LocalDate dataagr = LocalDate.now();
+                        System.out.println("Data agr: " + sistema.getDataAtual());
+
+                        ler = new Scanner(System.in);
+
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        d1 = ler.nextLine();
+                        data1 = stringParaData(d1);
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        d2 = ler.nextLine();
+                        data2 = stringParaData(d2);
+                        Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
+                        apresentacao.printVendedorDinheiro();
+                        System.out.println();
+                        System.out.println(utilizador.toString());
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        System.out.println();
+                        System.out.println(apresentacao.YELLOW +"                                                                                           Pressione enter para sair..." + apresentacao.RESET);
+                        System.out.println();
+                        System.out.print("                                                                                                      ");
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    break;
+
+                case 2:
+                    apresentacao.printTransportadoraDinheiro();
+                    System.out.println();
+                    Transportadora transportadora = sistema.transportadoraMaiorFaturacao();
+                    System.out.println();
+                    System.out.println(transportadora.toString());
+                    System.out.println();
+                    System.out.println(apresentacao.YELLOW +"                                                                                                   Pressione enter para sair..." + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                            ");
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
+
+                case 3:
+                    apresentacao.printEncomendasVendedor();
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                   INTRODUZA O EMAIL DO VENDEDOR" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                   ");
+
+                    ler = new Scanner(System.in);
+                    email = ler.nextLine();
+
+                    List<Encomenda> listaEncomendas = sistema.listaEncomendasVendedor(email);
+                    Encomenda[] lista = new Encomenda[listaEncomendas.size()];
+
+                    int i;
+                    System.out.println();
+
+                    listaEncomendas.toArray(lista);
+                    for (i = 0; i < lista.length; i++){
+                        Encomenda encomenda = lista[i];
+                        System.out.println("                                                                                          " + encomenda.showEncomenda());
+                    }
+
+
+                    ler = new Scanner(System.in);
+                    x = ler.nextInt();
+
+
+                case 4:
+                    apresentacao.printCompradorVendedor();
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                                  INDIQUE A SUA ESCOLHA" + apresentacao.RESET);
+                    System.out.println();
+                    System.out.println("                                                                                                     1 - COMPRADOR");
+                    System.out.println("                                                                                                     0 - VENDEDOR");
+                    System.out.println();
+                    System.out.print("                                                                                                          ");
+
+                    ler = new Scanner(System.in);
+                    int op = ler.nextInt();
+
+                    if (op == 1){
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        ler = new Scanner(System.in);
+                        d1 = ler.nextLine();
+                        data1 = stringParaData(d1);
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        ler = new Scanner(System.in);
+                        d2 = ler.nextLine();
+                        data2 = stringParaData(d2);
+
+                        paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
+                        x = 0;
+                        break;
+                    }
+                    else if (op == 0){
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        ler = new Scanner(System.in);
+                        d1 = ler.nextLine();
+                        data1 = stringParaData(d1);
+                        System.out.println();
+                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
+                        System.out.print("                                                                                                   ");
+                        ler = new Scanner(System.in);
+                        d2 = ler.nextLine();
+                        data2 = stringParaData(d2);
+
+                        paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
+                        x = 0;
+                        break;
+
+                    }
+
+                case 5:
+                    apresentacao.printVintageDinheiro();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
+                    System.out.println();
+                    System.out.println(apresentacao.YELLOW +"                                                                                                  Pressione enter para sair..." + apresentacao.RESET);
+                    System.out.println();
+                    System.out.print("                                                                                                             ");
+
+
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
+            }
+        }while (x != 6);
+
+        return 0;
     }
 
 

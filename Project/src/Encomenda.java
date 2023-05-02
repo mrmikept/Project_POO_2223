@@ -283,12 +283,15 @@ public class Encomenda {
 
     public String showEncomenda() {
         StringBuilder string = new StringBuilder();
-        string.append("ID Encomenda: " + this.getId() + " ");
+        string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + this.getId() + Apresentacao.YELLOW + " | " +
+                Apresentacao.CYAN_BOLD + "Artigos: " + Apresentacao.RESET);
         for(Artigo artigo:listaArtigos)
         {
             string.append(artigo.showArtigoLinha());
         }
-        string.append("| Preço: " + this.getPrecoFinal() + "\n");
+        string.append(Apresentacao.YELLOW + "| " + Apresentacao.CYAN_BOLD + "Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + getVendedor().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + this.getPrecoFinal() + "\n");
 
         //System.out.println(string);
 

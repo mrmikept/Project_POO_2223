@@ -159,7 +159,7 @@ public class Sapatilha extends Artigo {
     }
 
     public String showArtigoLinha() {
-        return ("[Sapatilha]");
+        return ("[Sapatilha] ");
     }
 
     private String tipoToString()

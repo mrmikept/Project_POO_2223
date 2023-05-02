@@ -139,7 +139,7 @@ public class Tshirt extends Artigo
     }
 
     public String showArtigoLinha() {
-        return ("[Tshirt]");
+        return ("[Tshirt] ");
     }
 
     public String toString()

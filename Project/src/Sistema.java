@@ -449,7 +449,7 @@ public class Sistema implements Serializable {
     public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException, SistemaException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -468,7 +468,7 @@ public class Sistema implements Serializable {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);

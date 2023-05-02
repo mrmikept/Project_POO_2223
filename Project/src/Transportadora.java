@@ -136,12 +136,12 @@ public class Transportadora implements Serializable {
     public String toString()
     {
         StringBuilder string = new StringBuilder();
-        string.append("[Transportadora]\n");
-        string.append("Nome: " + this.getNome() + "\n");
-        string.append("Tipo: " + this.getTipo() + "\n");
-        string.append("Margem Lucro: " + this.getMargemLucro() + "\n");
-        string.append("Tempo de expedição: " + this.getTempoExpedicao() + " dias\n");
-        string.append("Valor Faturado: " + this.getValorFaturado() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    [Transportadora]\n" + Apresentacao.RESET);
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Nome: " + Apresentacao.RESET + this.getNome() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Tipo: " + Apresentacao.RESET + this.getTipo() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Margem Lucro: " + Apresentacao.RESET + this.getMargemLucro() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Tempo de expedição: " + Apresentacao.RESET + this.getTempoExpedicao() + Apresentacao.CYAN_BOLD + " dias\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Valor Faturado: " + Apresentacao.RESET + this.getValorFaturado() + "\n");
         return string.toString();
     }
 

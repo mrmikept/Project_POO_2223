@@ -241,12 +241,12 @@ public class Utilizador implements Serializable {
 
     public String toString()
     {
-        return "[Utilizador]" + "\n" +
-                "Numero: " + this.getId() + "\n" +
-                "Email: " + this.getEmail() + "\n" +
-                "Nome: " + this.getNome() + "\n" +
-                "Morada: " + this.getMorada() + "\n" +
-                "Numero Fiscal: " + this.getNrFiscal() + "\n";
+        return Apresentacao.CYAN_BOLD +"                                                                                                   [Utilizador]"+ Apresentacao.RESET + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                                   Numero: "+ Apresentacao.RESET + this.getId() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                                   Email: "+ Apresentacao.RESET + this.getEmail() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                                   Nome: "+ Apresentacao.RESET + this.getNome() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                                   Morada: "+ Apresentacao.RESET + this.getMorada() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                                   Numero Fiscal: "+ Apresentacao.RESET + this.getNrFiscal();
         //TODO Historico de compras e vendas Maybe???
     }
 }

@@ -1810,6 +1810,14 @@ public class Main {
                         "para sair" + apresentacao.RESET);
                 System.out.println();
                 System.out.print("                                                                                                      ");
+
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine().toLowerCase();
+
+                if (input.equals("+") && currentPage < numPages) {
+                    currentPage++;
+                    } else if (input.equals("-") && currentPage > 1) {
+                    currentPage--;
                 } else if (input.equals("c")) {
 
                     System.out.println();
@@ -1985,7 +1993,8 @@ public void paginateCompradorVendedor(List<Utilizador> lista, int pageSize ) thr
                         "para sair");
                 apresentacao.resetColor();
                 System.out.println();
-                System.out.print("  
+                System.out.print("                                                                                                    ");
+
                 Scanner scanner = new Scanner(System.in);
                 String input = scanner.nextLine().toLowerCase();
 

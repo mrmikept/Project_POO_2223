@@ -1875,6 +1875,8 @@ public class Main {
         List<Artigo> lista = encomenda.getListaArtigos();
         Artigo[] menuItems = new Artigo[lista.size()];
         lista.toArray(menuItems);
+        Utilizador utilizador = sistema.procuraUtilizador(email);
+        List <Encomenda> encomendas;
 
         int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
         int currentPage = 1;
@@ -1931,8 +1933,7 @@ public class Main {
                     System.out.print("                                                                                                        ");
                     Scanner ler = new Scanner(System.in);
                     String c = ler.nextLine();
-                    Utilizador utilizador = sistema.procuraUtilizador(email);
-                    List <Encomenda> encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
+                    encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
                     paginatePendentes(encomendas,pageSize,email);
                 }
 
@@ -1958,7 +1959,8 @@ public class Main {
                     break;
                 }
             } else if (input.equals("s")) {
-                break;
+                encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
+                paginatePendentes(encomendas,pageSize,email);
             }
         } while (true);
      }

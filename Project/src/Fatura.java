@@ -114,6 +114,15 @@ public class Fatura
         this.dataFaturacao = dataFaturacao;
     }
 
+    public String showFatura() {
+        StringBuilder string = new StringBuilder();
+
+        string.append(Apresentacao.CYAN_BOLD + "Fatura referente à encomenda: " + Apresentacao.RESET + this.getIdEncomenda() + Apresentacao.YELLOW + " | "
+        + Apresentacao.CYAN_BOLD + "Artigos: " + Apresentacao.RESET);
+
+        return " ";
+    }
+
     public String toString()
     {
         StringBuilder string = new StringBuilder();

@@ -293,8 +293,6 @@ public class Encomenda {
                 + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + getVendedor().getNome() + Apresentacao.YELLOW + " | "
                 + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + this.getPrecoFinal() + "\n");
 
-        //System.out.println(string);
-
         return string.toString();
     }
 

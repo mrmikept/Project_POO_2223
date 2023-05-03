@@ -546,11 +546,39 @@ public class Main {
                     break;
 
                 case 5: // MENU FATURAS
+                    x = runFaturas(email);
+                    break;
 
                 case 6:
 
             }
         } while (x != 6);
+
+        return 0;
+    }
+
+    public int runFaturas(String email) throws UtilizadorException {
+        String [] s = {"Faturas de compras", "Faturas de vendas", "Retroceder"};
+        apresentacao.printMenu(s,5,"");
+        int x = 0;
+        Scanner ler = new Scanner(System.in);
+        Utilizador utilizador = sistema.procuraUtilizador(email);
+        List<Fatura> faturas;
+        //faturas = utilizador.getListaFaturas(Atributos.VENDIDO);
+
+        do {
+            switch (x) {
+                case 0:
+                    apresentacao.printMenu(s,5,"");
+                    x = ler.nextInt();
+                    break;
+
+                case 1:
+
+            }
+
+        } while (x != 3);
+
 
         return 0;
     }
@@ -1476,7 +1504,7 @@ public class Main {
 
                 case 4:
                     encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-                    paginateFinalizadas(encomendas,5, email);
+                    paginateDevolvidas(encomendas,5, email);
                     x = 0;
                     break;
 
@@ -2147,7 +2175,7 @@ public class Main {
             int currentPage = 1;
             int startIndex, endIndex;
 
-            apresentacao.printPendentes();
+            apresentacao.printFinalizadas();
             startIndex = (currentPage - 1) * pageSize;
             endIndex = Math.min(startIndex + pageSize, menuItems.length);
 
@@ -2322,7 +2350,7 @@ public class Main {
             int currentPage = 1;
             int startIndex, endIndex;
 
-            apresentacao.printPendentes();
+            apresentacao.printDevolvidas();
             startIndex = (currentPage - 1) * pageSize;
             endIndex = Math.min(startIndex + pageSize, menuItems.length);
 
@@ -2370,6 +2398,85 @@ public class Main {
 
         } while (true);
     }
+
+    public void paginateFaturas(List<Encomenda> encomendas, int pageSize, String email) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
+        Utilizador utilizador = sistema.procuraUtilizador(email);
+
+        if (encomendas.isEmpty()) {
+            System.out.println();
+            System.out.println();
+            apresentacao.printBox();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(apresentacao.YELLOW + "                                                                                        NAO EXISTEM ENCOMENDAS DEVOLVIDAS!!" + apresentacao.RESET);
+            System.out.println();
+            System.out.println();
+            System.out.println("                                                                                        Pressione enter para retroceder...");
+            System.out.println();
+            System.out.print("                                                                                                        ");
+            Scanner ler = new Scanner(System.in);
+            String c = ler.nextLine();
+            return;
+        }
+
+        do {
+            encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
+            Encomenda[] menuItems = new Encomenda[encomendas.size()];
+            encomendas.toArray(menuItems);
+            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
+            int currentPage = 1;
+            int startIndex, endIndex;
+
+            apresentacao.printDevolvidas();
+            startIndex = (currentPage - 1) * pageSize;
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
+
+            System.out.println(apresentacao.RED + "[ENCOMENDAS]\n" + apresentacao.RESET);
+
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Encomenda encomenda = menuItems[i];
+                System.out.println(encomenda.showEncomenda());
+            }
+            System.out.println();
+            System.out.println();
+            System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
+            System.out.println();
+
+            System.out.println(apresentacao.CYAN_BOLD + "                             Pressione" + apresentacao.RESET + " '+' " +
+                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + apresentacao.RESET + " 'v' " + apresentacao.CYAN_BOLD + "para ver um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
+                    "para sair" + apresentacao.RESET);
+            System.out.println();
+            System.out.print("                                                                                                      ");
+
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().toLowerCase();
+
+            if (input.equals("+") && currentPage < numPages) {
+                currentPage++;
+            } else if (input.equals("-") && currentPage > 1) {
+                currentPage--;
+            } else if (input.equals("v")) {
+
+                System.out.println();
+                System.out.println(apresentacao.RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA EDITAR"+ apresentacao.RESET);
+                System.out.println();
+                System.out.print("                                                                                                      ");
+
+                int id = scanner.nextInt();
+
+                Encomenda encomenda = sistema.procuraEncomenda(id);
+
+                paginateEncFinalizadaseDevolvidas(encomenda, 2, email, id);
+            }
+            else if (input.equals("s")) {
+                break;
+            }
+
+        } while (true);
+    }
+
 
     public void paginateCompradorVendedor(List<Utilizador> lista, int pageSize ) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
         Utilizador[] menuItems = lista.toArray(new Utilizador[0]);

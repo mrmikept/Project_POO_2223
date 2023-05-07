@@ -232,7 +232,8 @@ public class Utilizador implements Serializable {
                 this.getMorada().equals(utilizador.getMorada()) &&
                 this.getNrFiscal() == utilizador.getNrFiscal() &&
                 this.getListaArtigos().equals(utilizador.getListaArtigos()) &&
-                this.getListaEncomendas().equals(utilizador.getListaEncomendas()));
+                this.getListaEncomendas().equals(utilizador.getListaEncomendas())) &&
+                this.getListaFaturas().equals(utilizador.getListaFaturas());
     }
 
     public Utilizador clone() {

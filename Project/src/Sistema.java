@@ -288,24 +288,6 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
-     * Cria o estado de um artigo.
-     * @param estadoArtigo Estado de um artigo
-     * @param avaliacao Avaliação do Artigo, caso seja usado
-     * @param nrDonos Numero de donos de um Artigo, caso seja usado
-     * @return EstadoArtigo
-     */
-    private EstadoArtigo criaEstado(int estadoArtigo, double avaliacao, int nrDonos)
-    {
-        if (estadoArtigo == Atributos.NOVO) {
-            return new EstadoNovo(Atributos.NOVO);
-        }
-        else
-        {
-            return new EstadoUsado(Atributos.USADO,avaliacao,nrDonos);
-        }
-    }
-
-    /**
      * Adiciona um tshirt ao sistema
      * @param id id da Tshirt
      * @param email Email do vendedor
@@ -322,12 +304,11 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, int estadoArtigo, double avaliacao, int nrDonos, String transportadora, int tamanho, int padrao) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int padrao) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            EstadoArtigo estado = criaEstado(estadoArtigo,avaliacao,nrDonos);
-            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estado, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
+            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
             this.listaArtigos.put(id,tshirt);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         } else {
@@ -355,11 +336,10 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, int estadoArtigo, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id)) {
             Utilizador utilizador = this.procuraUtilizador(email);
-            EstadoArtigo estado = criaEstado(estadoArtigo,avaliacao,nrDonos);
-            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estado, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
+            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
             this.listaArtigos.put(id, sapatilha);
             utilizador.adicionaArtigo(sapatilha);
         } else {
@@ -386,12 +366,11 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, int estadoArtigo, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            EstadoArtigo estado = criaEstado(estadoArtigo,avaliacao,nrDonos);
-            Mala mala = new Mala(id, utilizador, descricao,marca,precoBase, estado, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
+            Mala mala = new Mala(id, utilizador, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
             this.listaArtigos.put(id,mala);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         } else {

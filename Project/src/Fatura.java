@@ -122,7 +122,7 @@ public class Fatura
         + Apresentacao.CYAN_BOLD + "Valor Taxas sobre Artigos Novos e Usados: " + Apresentacao.RESET + this.getValorTaxas() + Apresentacao.YELLOW + " | "
         + Apresentacao.CYAN_BOLD + "Valor Taxa de expedição: " + Apresentacao.RESET + this.getValorExpedicao() + Apresentacao.YELLOW + " | "
         + Apresentacao.CYAN_BOLD + "Valor total: " + Apresentacao.RESET + this.getValorTotal() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Data de Faturacao: " + Apresentacao.RESET + this.getDataFaturacao());
+        + Apresentacao.CYAN_BOLD + "Data de Faturacao: " + Apresentacao.RESET + this.getDataFaturacao() + "\n");
 
         return string.toString();
     }

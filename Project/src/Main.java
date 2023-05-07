@@ -1,5 +1,8 @@
 import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class Main {
 
                 case 1:
                     try {
+                        sistema.atualizaSistema();
                         x = runIN();
                         x = 0;
                     } catch (UtilizadorException a) {
@@ -67,21 +71,24 @@ public class Main {
                     System.out.print("                                                               ");
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
-                    CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
+                    if (input.contains("../")) {
+                        CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
 
-                    apresentacao.clear();
-                    apresentacao.printGuardar();
-                    apresentacao.yellow();
-                    System.out.println("                                                                                            ESTADO GRAVADO COM SUCESSO!!");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                          Pressione enter para continuar...");
-                    System.out.println();
-                    System.out.print("                                                                                                         ");
-                    ler = new Scanner(System.in);
-                    ler.nextLine();
-                    x = 0;
-                    break;
+                        apresentacao.clear();
+                        apresentacao.printGuardar();
+                        apresentacao.yellow();
+                        System.out.println("                                                                                            ESTADO GRAVADO COM SUCESSO!!");
+                        apresentacao.resetColor();
+                        System.out.println();
+                        System.out.println("                                                                                          Pressione enter para continuar...");
+                        System.out.println();
+                        System.out.print("                                                                                                         ");
+                        ler = new Scanner(System.in);
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    else {x = 2; break;}
 
                 case 3:
                     apresentacao.printLoad();
@@ -91,21 +98,31 @@ public class Main {
                     System.out.print("                                                               ");
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
-                    this.sistema = CarregamentoFicheiro.lerFicheiro(input);
 
-                    apresentacao.clear();
-                    apresentacao.printLoad();
-                    apresentacao.yellow();
-                    System.out.println("                                                                                         ESTADO CARREGADO COM SUCESSO!!");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                        Pressione enter para continuar...");
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
-                    ler = new Scanner(System.in);
-                    ler.nextLine();
-                    x = 0;
-                    break;
+                    if (input.contains("../")) {
+                        Path path = Paths.get(input);
+                        boolean existe = Files.exists(path);
+                        if (existe) {
+
+                            this.sistema = CarregamentoFicheiro.lerFicheiro(input);
+
+                            apresentacao.clear();
+                            apresentacao.printLoad();
+                            apresentacao.yellow();
+                            System.out.println("                                                                                         ESTADO CARREGADO COM SUCESSO!!");
+                            apresentacao.resetColor();
+                            System.out.println();
+                            System.out.println("                                                                                        Pressione enter para continuar...");
+                            System.out.println();
+                            System.out.print("                                                                                                       ");
+                            ler = new Scanner(System.in);
+                            ler.nextLine();
+                            x = 0;
+                            break;
+                        }
+                        else {x = 3; break;}
+                    }
+                    else {x = 3; break;}
 
                 case 4 :
                     apresentacao.printBackup();

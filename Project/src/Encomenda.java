@@ -226,9 +226,14 @@ public class Encomenda {
         this.setDataAtualizacao(dataAtualizacao);
     }
 
+    public LocalDate getDataPrevistaEntrega()
+    {
+        return this.getDataAtualizacao().plusDays(this.getTransportadora().getTempoExpedicao());
+    }
+
     public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
-        LocalDate dataPrevistaEntrega = this.getDataAtualizacao().plusDays(this.getTransportadora().getTempoExpedicao());
+        LocalDate dataPrevistaEntrega = this.getDataPrevistaEntrega();
         if (dataPrevistaEntrega.isBefore(dataAtualizacao))
         {
             this.estado = Atributos.FINALIZADA;

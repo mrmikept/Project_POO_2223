@@ -1,4 +1,4 @@
-public class Atributos
+public interface Atributos
 {
     public static final int PENDENTE = 0;
     public static final int EXPEDIDA = 1;

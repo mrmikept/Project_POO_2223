@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * Descrição classe
@@ -25,7 +26,7 @@ public abstract class Artigo implements Serializable
         this.descricao = "";
         this.marca = "";
         this.precoBase = 0.0;
-        this.estado = new EstadoArtigo();
+        this.estado = new EstadoNovo();
         this.transportadora = new Transportadora();
         this.estadoVenda = Atributos.VENDA;
     }
@@ -155,7 +156,7 @@ public abstract class Artigo implements Serializable
         string.append("Descrição: " + this.getDescricao() + " | ");
         string.append("Marca: " + this.getMarca() + " | ");
         string.append("Preço Base: " + this.getPrecoBase() + " | ");
-        string.append("Correção Preço: " + this.getCorrecaoPreco() + " | ");
+        //string.append("Correção Preço: " + this.getCorrecaoPreco() + " | ");
         string.append("Estado: " + this.getEstado().toString() + " | ");
         string.append("Transportadora: " + this.getTransportadora().toString());
         string.append("Estado Venda: " + this.getEstadoVenda() + " | ");

@@ -8,11 +8,9 @@ import java.util.List;
 
 public class Automatizacao {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     private String path;
     private List<String> excecoes;
-
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public Automatizacao(){
 
         this.path = "";

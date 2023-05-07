@@ -97,7 +97,7 @@ public class Automatizacao {
     }
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
-        String[] camposUtil = aux[1].split(",");
+        String[] camposUtil = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposUtil[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
@@ -115,7 +115,7 @@ public class Automatizacao {
     
 
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
-        String[] camposArt = aux[1].split(",");
+        String[] camposArt = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArt[0]);
         if (sistema.getDataAtual().isBefore(data)){
            int ano = data.getYear();
@@ -183,7 +183,7 @@ public class Automatizacao {
     }
 
     public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException, SistemaException {
-        String[] camposArtComp = aux[1].split(",");
+        String[] camposArtComp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArtComp[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
@@ -198,7 +198,7 @@ public class Automatizacao {
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
-        String[] camposTransp = aux[1].split(",");
+        String[] camposTransp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposTransp[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
@@ -218,7 +218,7 @@ public class Automatizacao {
     }
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
-        String[] camposEncom = aux[1].split(",");
+        String[] camposEncom = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposEncom[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();

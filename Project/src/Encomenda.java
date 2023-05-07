@@ -190,8 +190,8 @@ public class Encomenda {
 
     public double calculaTaxaArtigos()
     {
-        double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.USADO).count()) * 0.25;
-        double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.getEstado().getTipoEstado() == Atributos.NOVO).count()) * 0.5;
+        double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> !artigo.verificaNovo()).count()) * 0.25;
+        double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.verificaNovo()).count()) * 0.5;
         return valorArtigosNovos + valorArtigosUsados;
     }
 

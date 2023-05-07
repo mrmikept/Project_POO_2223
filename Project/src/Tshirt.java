@@ -1,5 +1,6 @@
 import javax.swing.plaf.PanelUI;
 import java.security.PublicKey;
+import java.time.LocalDate;
 
 /**
  * Descrição classe
@@ -26,9 +27,9 @@ public class Tshirt extends Artigo
         this.padrao = LISA;
     }
 
-    public Tshirt(int id, Utilizador utilizador, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int padrao)
+    public Tshirt(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int padrao)
     {
-        super(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda);
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.tamanho = tamanho;
         this.padrao = padrao;
     }
@@ -58,11 +59,16 @@ public class Tshirt extends Artigo
 
     @Override
     public double getCorrecaoPreco() {
-        if (this.getEstado().getTipoEstado() == Atributos.USADO && this.getPadrao() != Tshirt.LISA)
+        if (!this.verificaNovo() && this.getPadrao() != Tshirt.LISA)
         {
             return (this.getPrecoBase() * (-0.5));
         }
         return 0;
+    }
+
+    public double getPrecoFinal(LocalDate date)
+    {
+        return this.getPrecoBase() + this.getCorrecaoPreco();
     }
 
     public boolean equals(Object o)
@@ -97,13 +103,6 @@ public class Tshirt extends Artigo
             return "L";
         }
         return "XL";
-    }
-
-    private String estadoToString(){
-        if (this.getEstado().getTipoEstado() == Atributos.NOVO){
-            return "NOVO";
-        }
-            return "USADO"; // (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado().getNrDonos() + ")";
     }
 
     private String padraoToString()

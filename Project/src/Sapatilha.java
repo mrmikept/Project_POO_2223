@@ -27,8 +27,8 @@ public class Sapatilha extends Artigo implements Premium {
         this.tipo = Atributos.NORMAL;
     }
 
-    public Sapatilha(int id, Utilizador utilizador, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
-        super(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda);
+    public Sapatilha(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.tamanho = tamanho;
         this.tipoCordao = tipoCordao;
         this.cor = cor;
@@ -88,28 +88,32 @@ public class Sapatilha extends Artigo implements Premium {
 
     public double getValorizacaoPremium(LocalDate date)
     {
-        return (0.6 * (date.getYear() - this.getDataLancamento().getYear()) * this.getPrecoBase()) * this.getPrecoBase();
+        return (0.6 * (date.getYear() - this.getDataLancamento().getYear()) * this.getPrecoBase());
     }
 
     public double getCorrecaoPreco()
     {
-        if (this.getTipo() == Atributos.PREMIUM)
-        {
-            return getValorizacaoPremium(LocalDate.now());
-        }
-        else
-        {
-            if (this.getEstado().getClass().getSimpleName() == "EstadoNovo" && this.getTamanho() > 45)
+            if (this.verificaNovo() && this.getTamanho() > 45)
             {
                 return this.getPrecoBase() * (-0.2);
             }
-            if (this.getEstado().getClass().getSimpleName() == "EstadoUsado")
+            if (!this.verificaNovo())
             {
-                EstadoUsado estadoUsado = (EstadoUsado) this.getEstado();
-                return  -this.getPrecoBase() * (double) Math.round((((1 - (estadoUsado.getAvaliacao() / 5.0)) * 0.6) + ((Math.pow((2),(-estadoUsado.getNrDonos())) * (-1) + 1) * 0.4)) * 100.0) / 100.0;
+                return  -this.getPrecoBase() * (double) Math.round((((1 - (this.getAvaliacao() / 5.0)) * 0.6) + ((Math.pow((2),(-this.getNrDonos())) * (-1) + 1) * 0.4)) * 100.0) / 100.0;
             }
+            return 0;
+    }
+
+    public double getPrecoFinal(LocalDate data)
+    {
+        if (this.getTipo() == Atributos.PREMIUM)
+        {
+            return this.getPrecoBase() + this.getValorizacaoPremium(data);
         }
-        return 0;
+        else
+        {
+            return this.getPrecoBase() + this.getCorrecaoPreco();
+        }
     }
 
     private String tipoCordaoToString()
@@ -119,13 +123,6 @@ public class Sapatilha extends Artigo implements Premium {
             return "Cordão";
         }
         return "Atilho";
-    }
-
-    private String estadoToString(){
-        if (this.getEstado().getTipoEstado() == Atributos.NOVO){
-            return "NOVO";
-        }
-        return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().toString() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado() + ")";
     }
 
     public boolean equals(Object o)
@@ -156,7 +153,7 @@ public class Sapatilha extends Artigo implements Premium {
                 Apresentacao.YELLOW + "                                                                                                             Descrição: " + Apresentacao.RESET + this.getDescricao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠟⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣾⠿⢦⣴⠏⠀⠀⣴⢿⡄⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⢀⣀⣀⣤⣴⡶⢻⣏⠻⡦⠙⠇⠀⠉⠻⠶⠞⠫⡼⣧⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "\n" + //"Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⢀⣀⣀⣤⣴⡶⢻⣏⠻⡦⠙⠇⠀⠉⠻⠶⠞⠫⡼⣧⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
                 Apresentacao.CYAN + "                                                                           ⣴⠞⠛⠛⠋⠉⠉⠀⠀⠋⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⣦⡀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Estado: " + Apresentacao.RESET + this.estadoToString() + "\n" +
                 Apresentacao.CYAN + "                                                                           ⣿⣷⡶⠶⣤⣤⣤⣤⣤⠶⠶⠶⠛⠛⠛⠛⢛⣠⣴⣾⣏⣀⡾⠁⠀⢀⣶⡄ ⠀    "   + Apresentacao.YELLOW + "Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠉⠙⠛⠳⠶⠶⠶⣤⠀⠀⢀⣀⣤⣴⡾⢻⣍⠻⣦⠈⠙⢷⣤⣴⠟⣩⣷ ⠀    "   + Apresentacao.YELLOW + "Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +

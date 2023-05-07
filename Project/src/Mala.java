@@ -23,9 +23,9 @@ public class Mala extends Artigo implements Premium
         this.tipo = Atributos.NORMAL;
     }
 
-    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, EstadoArtigo estado, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
     {
-        super(id, utilizador, descricao, marca, precoBase, estado, transportadora, estadoVenda);
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.dimensao = dimensao;
         this.material = material;
         this.anoLancamento = anoLancamento;
@@ -80,15 +80,20 @@ public class Mala extends Artigo implements Premium
 
     public double getCorrecaoPreco()
     {
-        if (this.getEstado().getTipoEstado() == Atributos.PREMIUM)
-        {
-            return this.getValorizacaoPremium(LocalDate.now());
-        }
-        if (this.getEstado().getTipoEstado() == Atributos.USADO && this.getTipo() == Atributos.NORMAL)
+        if (!this.verificaNovo() && this.getTipo() == Atributos.NORMAL)
         {
             return (this.getPrecoBase() / this.getDimensao()) * -1;
         }
         return 0;
+    }
+
+    public double getPrecoFinal(LocalDate data)
+    {
+        if (this.getTipo() == Atributos.PREMIUM)
+        {
+            return this.getValorizacaoPremium(data);
+        }
+        else return this.getPrecoBase() + this.getCorrecaoPreco();
     }
 
     public boolean equals(Object o)
@@ -118,13 +123,6 @@ public class Mala extends Artigo implements Premium
         return "Normal";
     }
 
-    private String estadoToString(){
-        if (this.getEstado().getTipoEstado() == Atributos.NOVO){
-            return "NOVO";
-        }
-        return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado() + ")";
-    }
-
     public String showArtigo() {
         String tipo = "PREMIUM";
         int x = this.getTransportadora().getTipo();
@@ -134,7 +132,7 @@ public class Mala extends Artigo implements Premium
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣸⢡⡏⠀⠀⠀⠀⠀⠀⠀⠀⢹⡌⣇⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Descrição: " + Apresentacao.RESET + this.getDescricao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "\n" +//"       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + this.estadoToString() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⣿⢸⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⡇⣿⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⠛⠛⠀⠀⢸⡯⠅⠈⢽⡇⠀⠀⠛⠛⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +

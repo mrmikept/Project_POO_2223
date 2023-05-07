@@ -25,19 +25,28 @@ public class Main {
         String c;
         String[] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
         Scanner ler = new Scanner(System.in);
+        String eq;
         String input, input_backup;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s, x, "");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, x, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                        if (eq.equals("6")) { x = 6; break;}
+                    } while (true);
+
                     break;
 
                 case 1:
                     try {
-                        //sistema.adicionaUtilizador("r","r","r","r",1);
-                        //x = runUtilizador("r");
                         x = runIN();
                         x = 0;
                     } catch (UtilizadorException a) {

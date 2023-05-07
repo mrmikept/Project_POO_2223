@@ -481,18 +481,6 @@ public class Main {
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
 
-        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
-        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20, 0, 0,"ctt" , Atributos.L,Tshirt.LISA);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,0, 0,"ctt", Atributos.L,Tshirt.RISCAS);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
-
-        sistema.adicionaArtigoEncomenda(1,"r");
-        sistema.adicionaArtigoEncomenda(2,"r");
-        sistema.adicionaArtigoEncomenda(3,"r");
-        sistema.adicionaArtigoEncomenda(4,"r");
-
         do {
             switch (x) {
                 case 0:

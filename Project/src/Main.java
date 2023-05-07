@@ -25,19 +25,28 @@ public class Main {
         String c;
         String[] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro para o sistema", "Estatísticas", "Sair"};
         Scanner ler = new Scanner(System.in);
+        String eq;
         String input, input_backup;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s, x, "");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, x, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                        if (eq.equals("6")) { x = 6; break;}
+                    } while (true);
+
                     break;
 
                 case 1:
                     try {
-                        //sistema.adicionaUtilizador("r","r","r","r",1);
-                        //x = runUtilizador("r");
                         x = runIN();
                         x = 0;
                     } catch (UtilizadorException a) {
@@ -480,18 +489,6 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
-
-        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
-        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,Atributos.NOVO , 0, 0,"ctt" , Atributos.L,Tshirt.LISA);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,Atributos.NOVO,0, 0,"ctt", Atributos.L,Tshirt.RISCAS);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,Atributos.NOVO,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, Atributos.NOVO, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
-
-        sistema.adicionaArtigoEncomenda(1,"r");
-        sistema.adicionaArtigoEncomenda(2,"r");
-        sistema.adicionaArtigoEncomenda(3,"r");
-        sistema.adicionaArtigoEncomenda(4,"r");
 
         do {
             switch (x) {

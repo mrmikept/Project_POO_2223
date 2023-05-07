@@ -489,6 +489,9 @@ public class Main {
         sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,Atributos.NOVO,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
         sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, Atributos.NOVO, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
 
+        sistema.adicionaArtigoEncomenda(2,"r");
+        sistema.adicionaArtigoEncomenda(3,"r");
+        sistema.adicionaArtigoEncomenda(4,"r");
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
@@ -505,17 +508,6 @@ public class Main {
                     break;
 
                 case 1:
-
-                    sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
-                    sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-                    sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
-                    sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
-                    sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
-                    sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
-
-                    sistema.adicionaArtigoEncomenda(2,"r");
-                    sistema.adicionaArtigoEncomenda(3,"r");
-                    sistema.adicionaArtigoEncomenda(4,"r");
 
                     sistema.confirmaEncomenda(1,email);
                     apresentacao.printLogin();
@@ -2549,22 +2541,6 @@ public class Main {
         String d1,d2,c, email;
         LocalDate data1, data2;
         Scanner ler = new Scanner(System.in);
-
-        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
-        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,Atributos.NOVO , 0, 0,"ctt" , Atributos.L,Tshirt.LISA);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,Atributos.NOVO,0, 0,"ctt", Atributos.L,Tshirt.RISCAS);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,Atributos.NOVO,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, Atributos.NOVO, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
-
-        sistema.adicionaArtigoEncomenda(1,"r");
-        sistema.adicionaArtigoEncomenda(2, "r");
-        sistema.adicionaArtigoEncomenda(3, "r");
-        sistema.adicionaArtigoEncomenda(4, "r");
-
-        sistema.confirmaEncomenda(1, "r");
-
-
 
         do {
             switch (x){

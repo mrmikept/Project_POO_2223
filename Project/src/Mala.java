@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Mala extends Artigo
+public class Mala extends Artigo implements Premium
 {
     private double dimensao;
     private String material;
@@ -73,13 +73,21 @@ public class Mala extends Artigo
         this.tipo = tipo;
     }
 
+    public double getValorizacaoPremium(LocalDate date)
+    {
+        return (date.getYear() - this.getAnoLancamento().getYear()) * 0.2;
+    }
+
     public double getCorrecaoPreco()
     {
+        if (this.getEstado().getTipoEstado() == Atributos.PREMIUM)
+        {
+            return this.getValorizacaoPremium(LocalDate.now());
+        }
         if (this.getEstado().getTipoEstado() == Atributos.USADO && this.getTipo() == Atributos.NORMAL)
         {
             return (this.getPrecoBase() / this.getDimensao()) * -1;
         }
-        //TODO Acrescimo tipo Premium
         return 0;
     }
 
@@ -114,7 +122,7 @@ public class Mala extends Artigo
         if (this.getEstado().getTipoEstado() == Atributos.NOVO){
             return "NOVO";
         }
-        return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado().getNrDonos() + ")";
+        return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado() + ")";
     }
 
     public String showArtigo() {
@@ -126,7 +134,7 @@ public class Mala extends Artigo
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣸⢡⡏⠀⠀⠀⠀⠀⠀⠀⠀⢹⡌⣇⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Descrição: " + Apresentacao.RESET + this.getDescricao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "\n" +//"       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + this.estadoToString() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⣿⢸⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⡇⣿⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⠛⠛⠀⠀⢸⡯⠅⠈⢽⡇⠀⠀⠛⠛⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +

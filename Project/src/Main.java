@@ -482,6 +482,13 @@ public class Main {
         Scanner ler = new Scanner(System.in);
 
 
+        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
+        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,Atributos.NOVO , 0, 0,"ctt" , Atributos.L,Tshirt.LISA);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,Atributos.NOVO,0, 0,"ctt", Atributos.L,Tshirt.RISCAS);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,Atributos.NOVO,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, Atributos.NOVO, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
+
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
@@ -730,14 +737,13 @@ public class Main {
                         opcao = ler.nextInt();
 
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoArtigo();
+                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printTshirt();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, tamanho, padrao);
+                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estadoNovo, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -759,7 +765,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, tamanho, padrao);
+                                sistema.adicionaArtigo(tshirt);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -797,14 +803,13 @@ public class Main {
                             ler = new Scanner(System.in);
                             nrDonos = ler.nextInt();
 
-                            EstadoArtigo estadoUsado = new EstadoArtigo(Atributos.USADO, avaliacao, nrDonos);
+                            EstadoArtigo estadoUsado = new EstadoUsado(Atributos.USADO, avaliacao, nrDonos);
                             apresentacao.printTshirt();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, tamanho, padrao);
+                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, estadoUsado, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -826,7 +831,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, tamanho, padrao);
+                                sistema.adicionaArtigo(tshirt);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -938,14 +943,13 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoArtigo();
+                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, dimensao, material, dataLancamento, tipo);
+                            Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, estadoNovo, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, dimensao, material, dataLancamento, tipo);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -967,7 +971,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, dimensao, material, dataLancamento, tipo);
+                                sistema.adicionaArtigo(mala);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -1004,14 +1008,13 @@ public class Main {
                             ler = new Scanner(System.in);
                             nrDonos = ler.nextInt();
 
-                            EstadoArtigo estadoUsado = new EstadoArtigo(Atributos.USADO, avaliacao, nrDonos);
+                            EstadoArtigo estadoUsado = new EstadoUsado(Atributos.USADO, avaliacao, nrDonos);
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, dimensao, material, dataLancamento, tipo);
+                            Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, estadoUsado, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, dimensao, material, dataLancamento, tipo);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -1033,7 +1036,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, dimensao, material, dataLancamento, tipo);
+                                sistema.adicionaArtigo(mala);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -1151,14 +1154,13 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoArtigo();
+                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estadoNovo, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -1180,7 +1182,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, estadoNovo, transportadora, Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                                sistema.adicionaArtigo(sapatilha);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -1217,14 +1219,13 @@ public class Main {
                             ler = new Scanner(System.in);
                             nrDonos = ler.nextInt();
 
-                            EstadoArtigo estadoUsado = new EstadoArtigo(Atributos.USADO, avaliacao, nrDonos);
+                            EstadoArtigo estadoUsado = new EstadoUsado(Atributos.USADO, avaliacao, nrDonos);
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();
                             String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                            Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                            Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, estadoUsado, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
                             apresentacao.clear();
                             System.out.println();
                             System.out.println();
@@ -1246,7 +1247,7 @@ public class Main {
                             x = ler.nextInt();
 
                             if (x == 1) {
-                                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, estadoUsado, transportadora, Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                                sistema.adicionaArtigo(sapatilha);
                                 System.out.println();
                                 System.out.println();
                                 System.out.println();
@@ -2551,10 +2552,10 @@ public class Main {
 
         sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
         sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,Atributos.NOVO , 0, 0,"ctt" , Atributos.L,Tshirt.LISA);
+        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,Atributos.NOVO,0, 0,"ctt", Atributos.L,Tshirt.RISCAS);
+        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,Atributos.NOVO,0, 0,"tcc", Atributos.L,Tshirt.PALMEIRAS);
+        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, Atributos.NOVO, 0, 0,"tcc" , 43, 0,"Branca", LocalDate.now(), 0);
 
         sistema.adicionaArtigoEncomenda(1,"r");
         sistema.adicionaArtigoEncomenda(2, "r");

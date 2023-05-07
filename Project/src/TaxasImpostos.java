@@ -63,6 +63,17 @@ public class TaxasImpostos implements Serializable
         this.taxaEncGrande = taxaEncGrande;
     }
 
+    public String toString()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("[Taxas]\n");
+        string.append("Taxa de imposto: " + this.getImposto());
+        string.append("\nTaxa sobre encomendas pequenas: " + this.getTaxaEncPequena());
+        string.append("\nTaxa sobre encomendas medias: " + this.getTaxaEncMedia());
+        string.append("\nTaxa sobre encomendas grandes: " + this.getTaxaEncGrande());
+        return string.toString();
+    }
+
     public boolean equals(Object o)
     {
         if (this == o)

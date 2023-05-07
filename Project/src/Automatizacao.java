@@ -51,7 +51,7 @@ public class Automatizacao {
                     try {
                         util(aux, sistema);
                     }
-                    catch(UtilizadorException a){
+                    catch(UtilizadorException | SistemaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -60,7 +60,7 @@ public class Automatizacao {
                     try{
                         artVenda(aux, sistema);
                     }
-                    catch(ArtigoException| TransportadoraException| UtilizadorException a){
+                    catch(ArtigoException | TransportadoraException | UtilizadorException | SistemaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -69,7 +69,7 @@ public class Automatizacao {
                     try{
                         artCompra(aux, sistema);
                     }
-                    catch(ArtigoException| UtilizadorException| EncomendaException a){
+                    catch(ArtigoException | UtilizadorException | EncomendaException | SistemaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -78,7 +78,7 @@ public class Automatizacao {
                     try{
                         transp(aux, sistema);
                     }
-                    catch(TransportadoraException a){
+                    catch(TransportadoraException | SistemaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -87,7 +87,8 @@ public class Automatizacao {
                     try {
                         encom(aux, sistema);
                     }
-                    catch (EncomendaException| ArtigoException| TransportadoraException| UtilizadorException a){
+                    catch (EncomendaException | ArtigoException | TransportadoraException | UtilizadorException |
+                           SistemaException a){
                         this.excecoes.add(a.getMessage());
                     }
                 }
@@ -96,9 +97,15 @@ public class Automatizacao {
         comeco.close();
     }
 
-    public void util(String[] aux, Sistema sistema) throws UtilizadorException{
+    public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
         String[] camposUtil = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposUtil[0], formatter);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
         String email = camposUtil[1];
         String palavraPasse = camposUtil[2];
         String nome = camposUtil[3];
@@ -108,62 +115,114 @@ public class Automatizacao {
     }
     
 
-    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException{
+    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArt[0], formatter);
-        String email = camposArt[1];
+        if (sistema.getDataAtual().isBefore(data)){
+           int ano = data.getYear();
+           int mes = data.getMonthValue();
+           int dia = data.getDayOfMonth();
+           sistema.saltaTempo(ano, mes, dia);
+        }
+        String email = camposArt[2];
         int id = Integer.valueOf(camposArt[3]);
         String descricao = camposArt[4];
         String marca = camposArt[5];
         double precoBase = Double.parseDouble(camposArt[6]);
-        EstadoArtigo estado = new EstadoArtigo(Integer.valueOf(camposArt[7]), Double.parseDouble(camposArt[8]), Integer.valueOf(camposArt[9]));
-        String nomeTransportadora = camposArt[10];
-        Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
-        int estadoVenda = Integer.valueOf(camposArt[11]);
+        if (camposArt[7].contains("NOVO")){
 
-        if(camposArt[1].contains("Mala")){
-            double dimensao = Double.parseDouble(camposArt[12]);
-            String material = camposArt[13];
-            LocalDate anoLancamento = LocalDate.parse(camposArt[14]);
-            int tipo = Integer.valueOf(camposArt[15]);
-            sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, dimensao, material, anoLancamento, tipo);
+            String nomeTransportadora = camposArt[8];
+
+            if(camposArt[1].contains("Mala")){
+                double dimensao = Double.parseDouble(camposArt[9]);
+                String material = camposArt[10];
+                LocalDate anoLancamento = LocalDate.parse(camposArt[11]);
+                int tipo = Integer.valueOf(camposArt[12]);
+                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, dimensao, material, anoLancamento, tipo);
+            }
+            else if(camposArt[1].contains("Sapatilha")){
+                int tamanho = Integer.valueOf(camposArt[9]);
+                int tipoCordao = Integer.valueOf(camposArt[10]);
+                String cor = camposArt[11];
+                LocalDate dataLancamento = LocalDate.parse(camposArt[12]);
+                int tipo = Integer.valueOf(camposArt[13]);
+                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
+            }
+            else if(camposArt[1].contains("Tshirt")){
+                int tamanho = Integer.valueOf(camposArt[9]);
+                int padrao = Integer.valueOf(camposArt[10]);
+                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, padrao);
+            }
         }
-        else if(camposArt[1].contains("Sapatilha")){
-            int tamanho = Integer.valueOf(camposArt[13]);
-            int tipoCordao = Integer.valueOf(camposArt[14]);
-            String cor = camposArt[15];
-            LocalDate dataLancamento = LocalDate.parse(camposArt[16]);
-            int tipo = Integer.valueOf(camposArt[17]);
-            sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, tipoCordao, cor, dataLancamento, tipo);
-        }
-        else if(camposArt[1].contains("Tshirt")){
-            int tamanho = Integer.valueOf(camposArt[13]);
-            int padrao = Integer.valueOf(camposArt[14]);
-            sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, estado, transportadora, estadoVenda, tamanho, padrao);
+        else if (camposArt[7].contains("USADO")){
+
+            Double avaliacao = Double.parseDouble(camposArt[8]);
+            int nrDonos = Integer.valueOf(camposArt[9]);
+            String nomeTransportadora = camposArt[10];
+
+            if(camposArt[1].contains("Mala")){
+                double dimensao = Double.parseDouble(camposArt[11]);
+                String material = camposArt[12];
+                LocalDate anoLancamento = LocalDate.parse(camposArt[13]);
+                int tipo = Integer.valueOf(camposArt[14]);
+                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, dimensao, material, anoLancamento, tipo);
+            }
+            else if(camposArt[1].contains("Sapatilha")){
+                int tamanho = Integer.valueOf(camposArt[11]);
+                int tipoCordao = Integer.valueOf(camposArt[12]);
+                String cor = camposArt[13];
+                LocalDate dataLancamento = LocalDate.parse(camposArt[14]);
+                int tipo = Integer.valueOf(camposArt[15]);
+                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
+            }
+            else if(camposArt[1].contains("Tshirt")){
+                int tamanho = Integer.valueOf(camposArt[11]);
+                int padrao = Integer.valueOf(camposArt[12]);
+                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, padrao);
+            }
         }
     }
 
-    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException{
+    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException, SistemaException {
         String[] camposArtComp = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposArtComp[0], formatter);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
         String email = camposArtComp[1];
         int idArtigo = Integer.valueOf(camposArtComp[2]);
         Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
         sistema.adicionaArtigoEncomenda(artigo, email);
     }
 
-    public void transp(String[] aux, Sistema sistema) throws TransportadoraException{
+    public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
         String[] camposTransp = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposTransp[0], formatter);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
         int tipo = Integer.valueOf(camposTransp[3]);
-        sistema.adicionaTransportadora(nome, margemLucro, tipo, 2);
+        int tempoExpedicao = Integer.valueOf(camposTransp[4]);
+        sistema.adicionaTransportadora(nome, margemLucro, tipo, tempoExpedicao);
     }
 
-    public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException{
+    public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposEncom = aux[1].split(",");
         LocalDate data = LocalDate.parse(camposEncom[0], formatter);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
         String email = camposEncom[1];
         String nomeTransportadora = camposEncom[2];
         Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);

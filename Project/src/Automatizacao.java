@@ -16,7 +16,7 @@ public class Automatizacao {
         this.path = "";
         this.excecoes = new ArrayList<>();
     }
-Ar
+
     public Automatizacao(String path){
 
         this.path = path;

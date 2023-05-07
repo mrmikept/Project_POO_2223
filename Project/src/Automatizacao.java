@@ -137,7 +137,7 @@ public class Automatizacao {
                 String material = camposArt[10];
                 LocalDate anoLancamento = LocalDate.parse(camposArt[11]);
                 int tipo = retornaTipo(camposArt[12]);
-                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, dimensao, material, anoLancamento, tipo);
+                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, 0, 0, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
             else if(camposArt[1].contains("Sapatilha")){
                 int tamanho = Integer.valueOf(camposArt[9]);
@@ -145,12 +145,12 @@ public class Automatizacao {
                 String cor = camposArt[11];
                 LocalDate dataLancamento = LocalDate.parse(camposArt[12]);
                 int tipo = retornaTipo(camposArt[13]);
-                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase,  0, 0, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }
             else if(camposArt[1].contains("Tshirt")){
                 int tamanho = retornaTamanho(camposArt[9]);
                 int padrao = retornaPadrao(camposArt[10]);
-                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, padrao);
+                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase,  0, 0, nomeTransportadora, tamanho, padrao);
             }
         }
         else if (camposArt[7].contains("Usado")){
@@ -164,7 +164,7 @@ public class Automatizacao {
                 String material = camposArt[12];
                 LocalDate anoLancamento = LocalDate.parse(camposArt[13]);
                 int tipo = retornaTipo(camposArt[14]);
-                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, dimensao, material, anoLancamento, tipo);
+                sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase,  avaliacao, nrDonos, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
             else if(camposArt[1].contains("Sapatilha")){
                 int tamanho = Integer.valueOf(camposArt[11]);
@@ -172,12 +172,12 @@ public class Automatizacao {
                 String cor = camposArt[13];
                 LocalDate dataLancamento = LocalDate.parse(camposArt[14]);
                 int tipo = retornaTipo(camposArt[15]);
-                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
+                sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, avaliacao, nrDonos, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }
             else if(camposArt[1].contains("Tshirt")){
                 int tamanho = retornaTamanho(camposArt[11]);
                 int padrao = retornaPadrao(camposArt[12]);
-                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, padrao);
+                sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, avaliacao, nrDonos, nomeTransportadora, tamanho, padrao);
             }
         }
     }

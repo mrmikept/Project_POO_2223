@@ -7,68 +7,44 @@ import java.io.Serializable;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class EstadoArtigo implements Serializable
+public abstract class EstadoArtigo implements Serializable
 {
     private int tipoEstado;
-    private double avaliacao;
-    private int nrDonos;
-
 
     public EstadoArtigo()
     {
         this.tipoEstado = Atributos.NOVO;
-        this.avaliacao = 0.0;
-        this.nrDonos = 0;
     }
 
-    public EstadoArtigo(int tipoEstado, double avaliacao, int nrDonos)
+    public EstadoArtigo(int tipoEstado)
     {
         this.tipoEstado = tipoEstado;
-        this.avaliacao = avaliacao;
-        this.nrDonos = nrDonos;
     }
 
     public EstadoArtigo(EstadoArtigo estado)
     {
         this.tipoEstado = estado.getTipoEstado();
-        this.avaliacao = estado.getAvaliacao();
-        this.nrDonos = estado.getNrDonos();
     }
 
     public void setTipoEstado(int tipoEstado){
         this.tipoEstado = tipoEstado;
-    }
-    public void setAvaliacao(double avaliacao) {
-        this.avaliacao = avaliacao;
-    }
-
-    public void setNrDonos(int nrDonos) {
-        this.nrDonos = nrDonos;
     }
 
     public int getTipoEstado()
     {
         return tipoEstado;
     }
-    public double getAvaliacao() {
-        return avaliacao;
-    }
 
-    public int getNrDonos() {
-        return nrDonos;
-    }
 
     public String toString()
     {
         if (this.tipoEstado == Atributos.NOVO)
         {
-            return "NOVO";
+            return "NOVO\n";
         }
         else
         {
-            return "USADO" + "\n" +
-                    "Avaliação Artigo: " + this.getAvaliacao() + "\n" +
-                    "Número de Donos: " + this.getNrDonos();
+            return "USADO\n";
         }
     }
 
@@ -83,13 +59,8 @@ public class EstadoArtigo implements Serializable
             return false;
         }
         EstadoArtigo estadoArtigo = (EstadoArtigo) o;
-        return (this.getTipoEstado() == estadoArtigo.getTipoEstado() &&
-                this.getAvaliacao() == estadoArtigo.getAvaliacao() &&
-                this.getNrDonos() == estadoArtigo.getNrDonos());
+        return (this.getTipoEstado() == estadoArtigo.getTipoEstado());
     }
 
-    public EstadoArtigo clone()
-    {
-        return new EstadoArtigo(this);
-    }
+    public abstract EstadoArtigo clone();
 }

@@ -8,17 +8,15 @@ import java.util.List;
 
 public class Automatizacao {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     private String path;
     private List<String> excecoes;
-
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public Automatizacao(){
 
         this.path = "";
         this.excecoes = new ArrayList<>();
     }
-
+Ar
     public Automatizacao(String path){
 
         this.path = path;

@@ -111,6 +111,10 @@ public class Transportadora implements Serializable {
 
     public double calculaValorExpedicao(int tamanhoEnc)
     {
+        if (this.getTipo() == Atributos.PREMIUM)
+        {
+            return 5 * (double) Math.round((this.getTxExpedicao(tamanhoEnc) * 2) + (this.getTxExpedicao(tamanhoEnc) * (this.getMargemLucro() * 1.5) * (1 + ((double)this.getTaxasImpostos().getImposto() / 100))) * 100) / 100;
+        }
        return (double) Math.round((this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + ((double)this.getTaxasImpostos().getImposto() / 100)))) * 100) / 100;
     }
 
@@ -128,9 +132,9 @@ public class Transportadora implements Serializable {
         return "Premium";
     }
 
-    public String showTransportadora(int i)
+    public String showTransportadora(int indice)
     {
-        return "                                                                               " + i +") " + Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + this.getNome() + Apresentacao.CYAN_BOLD + ", Margem de Lucro: " + Apresentacao.RESET + this.getMargemLucro() + Apresentacao.CYAN_BOLD + ", Tipo: " + Apresentacao.RESET + this.tipotoString() + "\n";
+        return "                                                                               " + indice +") " + Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + this.getNome() + Apresentacao.CYAN_BOLD + ", Margem de Lucro: " + Apresentacao.RESET + this.getMargemLucro() + Apresentacao.CYAN_BOLD + ", Tipo: " + Apresentacao.RESET + this.tipotoString() + "\n";
     }
 
     public String toString()

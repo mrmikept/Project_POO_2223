@@ -103,7 +103,7 @@ public class Tshirt extends Artigo
         if (this.getEstado().getTipoEstado() == Atributos.NOVO){
             return "NOVO";
         }
-            return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado().getNrDonos() + ")";
+            return "USADO"; // (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getEstado().getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getEstado().getNrDonos() + ")";
     }
 
     private String padraoToString()

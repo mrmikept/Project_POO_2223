@@ -24,6 +24,8 @@ public interface Atributos
     public static final int M = 1;
     public static final int L = 2;
     public static final int XL = 3;
+    public static final int CORDAO = 0;
+    public static final int ATILHO = 1;
 
 
 }

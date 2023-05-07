@@ -10,7 +10,6 @@ public class Automatizacao {
 
     private String path;
     private List<String> excecoes;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public Automatizacao(){
 
         this.path = "";
@@ -99,7 +98,7 @@ public class Automatizacao {
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
         String[] camposUtil = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposUtil[0], formatter);
+        LocalDate data = LocalDate.parse(camposUtil[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
@@ -117,7 +116,7 @@ public class Automatizacao {
 
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposArt[0], formatter);
+        LocalDate data = LocalDate.parse(camposArt[0]);
         if (sistema.getDataAtual().isBefore(data)){
            int ano = data.getYear();
            int mes = data.getMonthValue();
@@ -129,7 +128,7 @@ public class Automatizacao {
         String descricao = camposArt[4];
         String marca = camposArt[5];
         double precoBase = Double.parseDouble(camposArt[6]);
-        if (camposArt[7].contains("NOVO")){
+        if (camposArt[7].contains("Novo")){
 
             String nomeTransportadora = camposArt[8];
 
@@ -137,24 +136,24 @@ public class Automatizacao {
                 double dimensao = Double.parseDouble(camposArt[9]);
                 String material = camposArt[10];
                 LocalDate anoLancamento = LocalDate.parse(camposArt[11]);
-                int tipo = Integer.valueOf(camposArt[12]);
+                int tipo = retornaTipo(camposArt[12]);
                 sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
             else if(camposArt[1].contains("Sapatilha")){
                 int tamanho = Integer.valueOf(camposArt[9]);
-                int tipoCordao = Integer.valueOf(camposArt[10]);
+                int tipoCordao = retornaCordao(camposArt[10]);
                 String cor = camposArt[11];
                 LocalDate dataLancamento = LocalDate.parse(camposArt[12]);
-                int tipo = Integer.valueOf(camposArt[13]);
+                int tipo = retornaTipo(camposArt[13]);
                 sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }
             else if(camposArt[1].contains("Tshirt")){
-                int tamanho = Integer.valueOf(camposArt[9]);
-                int padrao = Integer.valueOf(camposArt[10]);
+                int tamanho = retornaTamanho(camposArt[9]);
+                int padrao = retornaPadrao(camposArt[10]);
                 sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.NOVO, 0, 0, nomeTransportadora, tamanho, padrao);
             }
         }
-        else if (camposArt[7].contains("USADO")){
+        else if (camposArt[7].contains("Usado")){
 
             Double avaliacao = Double.parseDouble(camposArt[8]);
             int nrDonos = Integer.valueOf(camposArt[9]);
@@ -164,20 +163,20 @@ public class Automatizacao {
                 double dimensao = Double.parseDouble(camposArt[11]);
                 String material = camposArt[12];
                 LocalDate anoLancamento = LocalDate.parse(camposArt[13]);
-                int tipo = Integer.valueOf(camposArt[14]);
+                int tipo = retornaTipo(camposArt[14]);
                 sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
             else if(camposArt[1].contains("Sapatilha")){
                 int tamanho = Integer.valueOf(camposArt[11]);
-                int tipoCordao = Integer.valueOf(camposArt[12]);
+                int tipoCordao = retornaCordao(camposArt[12]);
                 String cor = camposArt[13];
                 LocalDate dataLancamento = LocalDate.parse(camposArt[14]);
-                int tipo = Integer.valueOf(camposArt[15]);
+                int tipo = retornaTipo(camposArt[15]);
                 sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }
             else if(camposArt[1].contains("Tshirt")){
-                int tamanho = Integer.valueOf(camposArt[11]);
-                int padrao = Integer.valueOf(camposArt[12]);
+                int tamanho = retornaTamanho(camposArt[11]);
+                int padrao = retornaPadrao(camposArt[12]);
                 sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, Atributos.USADO, avaliacao, nrDonos, nomeTransportadora, tamanho, padrao);
             }
         }
@@ -185,7 +184,7 @@ public class Automatizacao {
 
     public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException, SistemaException {
         String[] camposArtComp = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposArtComp[0], formatter);
+        LocalDate data = LocalDate.parse(camposArtComp[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
@@ -200,7 +199,7 @@ public class Automatizacao {
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
         String[] camposTransp = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposTransp[0], formatter);
+        LocalDate data = LocalDate.parse(camposTransp[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
@@ -209,14 +208,18 @@ public class Automatizacao {
         }
         String nome = camposTransp[1];
         double margemLucro = Double.parseDouble(camposTransp[2]);
-        int tipo = Integer.valueOf(camposTransp[3]);
-        int tempoExpedicao = Integer.valueOf(camposTransp[4]);
-        sistema.adicionaTransportadora(nome, margemLucro, tipo, tempoExpedicao);
+        if (camposTransp[3].contains("Normal")){
+            int tempoExpedicao = Integer.valueOf(camposTransp[4]);
+            sistema.adicionaTransportadora(nome, margemLucro, Atributos.NORMAL, tempoExpedicao);
+        } else if (camposTransp[3].contains("Premium")) {
+            int tempoExpedicao = Integer.valueOf(camposTransp[4]);
+            sistema.adicionaTransportadora(nome, margemLucro, Atributos.PREMIUM, tempoExpedicao);
+        }
     }
 
     public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposEncom = aux[1].split(",");
-        LocalDate data = LocalDate.parse(camposEncom[0], formatter);
+        LocalDate data = LocalDate.parse(camposEncom[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
@@ -236,5 +239,46 @@ public class Automatizacao {
             x++;
         }
         sistema.adicionaEncomenda(encomenda, email);
+    }
+
+    public int retornaTamanho(String tamanho){
+        if (tamanho.contains("S")){
+            return Atributos.S;
+        } else if (tamanho.contains("L")) {
+            return Atributos.L;
+        } else if (tamanho.contains("M")) {
+            return Atributos.M;
+        } else if (tamanho.contains("XL")) {
+            return Atributos.XL;
+        }
+        return 4;
+    }
+
+    public int retornaTipo(String tipo){
+        if (tipo.contains("Normal")){
+            return Atributos.NORMAL;
+        } else if (tipo.contains("Premium")) {
+            return Atributos.PREMIUM;
+        }
+        return 2;
+    }
+    public int retornaPadrao(String padrao){
+        if (padrao.contains("Lisa")){
+            return Tshirt.LISA;
+        } else if (padrao.contains("Riscas")) {
+            return Tshirt.RISCAS;
+        } else if (padrao.contains("Palmeiras")) {
+            return Tshirt.PALMEIRAS;
+        }
+        return 3;
+    }
+
+    public int retornaCordao(String cordao){
+        if (cordao.contains("Cordao")){
+            return Atributos.CORDAO;
+        } else if (cordao.contains("Atilho")) {
+            return Atributos.ATILHO;
+        }
+        return 2;
     }
 }

@@ -436,7 +436,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Artigo procuraArtigo(int id) throws ArtigoException {
         if (listaArtigos.containsKey(id)) {
-            return listaArtigos.get(id);
+            return listaArtigos.get(id).clone();
 
         } else {
             throw new ArtigoException("O artigo com o id" + id + "não existe");
@@ -747,10 +747,9 @@ public class Sistema implements Serializable,Atributos {
     /**
      * Função que atualiza as encomendas
      */
-    public void atualizaEncomendas() {
-        for (Encomenda encomenda : listaEncomendas) {
-            encomenda.alteraEstadoFinalizado(this.getDataAtual());
-        }
+    public void atualizaEncomendas()
+    {
+        this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).forEach(encomenda -> encomenda.alteraEstadoFinalizado(this.getDataAtual()));
     }
 
     /**

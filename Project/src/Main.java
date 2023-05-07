@@ -481,16 +481,7 @@ public class Main {
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
 
-        sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
-        sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
-        sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
-        sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
 
-        sistema.adicionaArtigoEncomenda(2,"r");
-        sistema.adicionaArtigoEncomenda(3,"r");
-        sistema.adicionaArtigoEncomenda(4,"r");
 
         //sistema.adicionaSapatilhaVenda(3,"teste","teste",30,0,new EstadoArtigo(),ctt,46,Sapatilha.CORDAO,"teste", LocalDate.now(),0);
         //sistema.adicionaMalaVenda(5,"teste", "teste", 20,0, new EstadoArtigo(), ctt, 1,"teste", LocalDate.now(), 0);
@@ -507,6 +498,19 @@ public class Main {
                     break;
 
                 case 1:
+
+                    sistema.adicionaTransportadora("ctt",0.3, Atributos.PREMIUM,2);
+                    sistema.adicionaTransportadora("tcc",0.3,Atributos.NORMAL,2);
+                    sistema.adicionaTshirtVenda(1, "m","tshirt","something",20,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA , Atributos.L,Atributos.M);
+                    sistema.adicionaTshirtVenda(2, "m","tshirt1","something1",10,new EstadoArtigo(),sistema.procuraTransportadora("ctt"), Atributos.VENDA, Atributos.L,Atributos.M);
+                    sistema.adicionaTshirtVenda(3, "m","tshirt2","something2",10,new EstadoArtigo(),sistema.procuraTransportadora("tcc"), Atributos.VENDA, Atributos.L,Atributos.M);
+                    sistema.adicionaSapatilhaVenda(4, "m","sapatilha", "NIKE", 30, new EstadoArtigo(), sistema.procuraTransportadora("tcc"), Atributos.VENDA , 43, 0,"Branca", LocalDate.now(), 0);
+
+                    sistema.adicionaArtigoEncomenda(2,"r");
+                    sistema.adicionaArtigoEncomenda(3,"r");
+                    sistema.adicionaArtigoEncomenda(4,"r");
+
+                    sistema.confirmaEncomenda(1,email);
                     apresentacao.printLogin();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                        ID: " + Apresentacao.RESET + utilizador.getId());
                     System.out.println();
@@ -563,8 +567,8 @@ public class Main {
         int x = 0;
         Scanner ler = new Scanner(System.in);
         Utilizador utilizador = sistema.procuraUtilizador(email);
-        List<Fatura> faturas;
-        //faturas = utilizador.getListaFaturas(Atributos.VENDIDO);
+        List<Fatura> faturasCompras = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDIDO).collect(Collectors.toList());
+        List<Fatura> faturasVenda = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).collect(Collectors.toList());
 
         do {
             switch (x) {
@@ -575,6 +579,7 @@ public class Main {
 
                 case 1:
 
+
             }
 
         } while (x != 3);
@@ -582,6 +587,7 @@ public class Main {
 
         return 0;
     }
+    
 
     public int runVendas(String email) throws UtilizadorException, ArtigoException, TransportadoraException {
         int id, opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
@@ -2191,7 +2197,7 @@ public class Main {
             System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
             System.out.println();
 
-            System.out.println(apresentacao.CYAN_BOLD + "                             Pressione" + apresentacao.RESET + " '+' " +
+            System.out.println(apresentacao.CYAN_BOLD + "                                 Pressione" + apresentacao.RESET + " '+' " +
                     apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'd' " + apresentacao.CYAN_BOLD +
                     "para devolver encomenda," + apresentacao.RESET + " 'v' " + apresentacao.CYAN_BOLD + "para ver um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
                     "para sair" + apresentacao.RESET);
@@ -2208,7 +2214,7 @@ public class Main {
             } else if (input.equals("d")) {
 
                 System.out.println();
-                System.out.println(apresentacao.RED +"                                                                              INTRODUZA O ID DA ENCOMENDA QUE DESEJA DEVOLVER"+ apresentacao.RESET);
+                System.out.println(apresentacao.RED +"                                                                               INTRODUZA O ID DA ENCOMENDA QUE DESEJA DEVOLVER"+ apresentacao.RESET);
                 System.out.println();
                 System.out.print("                                                                                                      ");
 
@@ -2243,7 +2249,7 @@ public class Main {
 
                 System.out.println();
                 System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD +"                                                                                      DESEJA DEVOLVER MAIS ENCOMENDAS?"+ apresentacao.RESET);
+                System.out.println(apresentacao.CYAN_BOLD + "                                                                                      DESEJA DEVOLVER MAIS ENCOMENDAS?"+ apresentacao.RESET);
                 System.out.println();
                 System.out.println("                                                                                                   1 - SIM");
                 System.out.println("                                                                                                   0 - NAO");
@@ -2366,7 +2372,7 @@ public class Main {
             System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
             System.out.println();
 
-            System.out.println(apresentacao.CYAN_BOLD + "                             Pressione" + apresentacao.RESET + " '+' " +
+            System.out.println(apresentacao.CYAN_BOLD + "                                                 Pressione" + apresentacao.RESET + " '+' " +
                     apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + apresentacao.RESET + " 'v' " + apresentacao.CYAN_BOLD + "para ver um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
                     "para sair" + apresentacao.RESET);
             System.out.println();

@@ -42,7 +42,6 @@ public class Main {
                         if (eq.equals("5")) { x = 5; break;}
                         if (eq.equals("6")) { x = 6; break;}
                     } while (true);
-
                     break;
 
                 case 1:
@@ -153,13 +152,24 @@ public class Main {
         double lucro;
         String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
+        String eq;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s, x, "");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, x, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                        if (eq.equals("6")) { x = 6; break;}
+                    } while (true);
                     break;
+
                 case 1: //Iniciar sessao
                     apresentacao.printLogin();
                     apresentacao.cyan();
@@ -485,16 +495,26 @@ public class Main {
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Encomendas", "Faturas", "Retroceder"};
         int x = 0;
-        String c;
+        String c, eq;
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
+        apresentacao.printMenu(s, 1, nome);
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s, 1, nome);
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, 1, nome);
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                        if (eq.equals("6")) { x = 6; break;}
+                    } while (true);
                     break;
 
                 case 1:
@@ -558,12 +578,19 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         List<Fatura> faturasCompras = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDIDO).collect(Collectors.toList());
         List<Fatura> faturasVenda = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).collect(Collectors.toList());
+        String eq;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s,5,"");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s,5,"");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                    } while (true);
                     break;
 
                 case 1:
@@ -676,18 +703,23 @@ public class Main {
         String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         int x = 0;
+        String eq;
 
         do {
             switch (x) {
                 case 0:
-                    //apresentacao.printVendas();
-                    apresentacao.printMenu(s, 0, "");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, 0, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                    } while (true);
                     break;
 
                 case 1: //MINHA LISTA DE ARTIGOS A VENDA
                     apresentacao.printMinhaLista();
-                    //TODO: Retirar algum artigo à minha lista de vendas (pelo o ID)
 
                     if (sistema.getArtigosVendaUtilizador(email).isEmpty()) {
                         System.out.println(apresentacao.CYAN_BOLD + "                                                                                       NÃO POSSUI NENHUM ARTIGO À VENDA!!");
@@ -1371,14 +1403,22 @@ public class Main {
         String [] s = {"Avancar no tempo", "Alterar taxas e impostos", "Alterar tempo de devolucao", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         int opcao, dia, mes, ano;
-        String c;
+        String c, eq;
 
         do {
             switch (x) {
                 case 0:
-                    apresentacao.printMenu(s, 2, "");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s, 2, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                    } while (true);
                     break;
+
                 case 1: // MENU AVANCAR NO TEMPO
                     apresentacao.printSaltaTempo();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                  Selecione o metodo para avancar no tempo:");
@@ -1548,12 +1588,21 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         List<Encomenda> encomendas;
         Scanner ler = new Scanner(System.in);
+        String eq;
 
         do {
             switch (x) {
                 case 0: // MENU ENCOMENDAS
-                    apresentacao.printMenu(s,3,"");
-                    x = ler.nextInt();
+
+                    do {
+                        apresentacao.printMenu(s,3,"");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                    } while (true);
                     break;
 
                 case 1: // MENU PENDENTES
@@ -2535,14 +2584,23 @@ public class Main {
         String d1,d2,c, email;
         LocalDate data1, data2;
         Scanner ler = new Scanner(System.in);
+        String eq;
 
         do {
             switch (x){
                 case 0:
-                    apresentacao.printMenu(s, 4, "");
-                    x = ler.nextInt();
-                    break;
 
+                    do {
+                        apresentacao.printMenu(s, 4, "");
+                        eq = ler.nextLine().toLowerCase();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
+                        if (eq.equals("6")) { x = 6; break;}
+                    } while (true);
+                    break;
 
                 case 1:
                     apresentacao.printVendedorDinheiro();

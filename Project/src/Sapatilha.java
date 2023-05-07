@@ -14,14 +14,12 @@ public class Sapatilha extends Artigo implements Premium {
     private LocalDate dataLancamento;
     private int tipo;
 
-    private static final Integer CORDAO = 0;
-    private static final Integer ATILHO = 1;
 
 
     public Sapatilha() {
         super();
         this.tamanho = 0;
-        this.tipoCordao = CORDAO;
+        this.tipoCordao = Atributos.CORDAO;
         this.cor = "";
         this.dataLancamento = LocalDate.now();
         this.tipo = Atributos.NORMAL;
@@ -114,7 +112,7 @@ public class Sapatilha extends Artigo implements Premium {
 
     private String tipoCordaoToString()
     {
-        if (this.getTipoCordao() == Sapatilha.CORDAO)
+        if (this.getTipoCordao() == Atributos.CORDAO)
         {
             return "Cordão";
         }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class Sistema implements Serializable,Atributos {
     private Map<String, Utilizador> listaUtilizadores;
     private Map<String, Transportadora> listaTransportadoras;
-    private Map<Integer, Artigo> listaArtigos;
+    private Map<String, Artigo> listaArtigos;
     private List<Encomenda> listaEncomendas;
     private List<Fatura> listaFaturas;
     private LocalDate dataCriacao;
@@ -42,7 +42,7 @@ public class Sistema implements Serializable,Atributos {
         this.tempoDevolucao = TEMPODEVOLUCAO_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<Integer, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, LocalDate dataUltimoAcesso, TaxasImpostos taxas, int tempoDevolucao) {
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<String, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, LocalDate dataUltimoAcesso, TaxasImpostos taxas, int tempoDevolucao) {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigos = listaArtigos;
@@ -89,11 +89,11 @@ public class Sistema implements Serializable,Atributos {
         ;
     }
 
-    public Map<Integer, Artigo> getListaArtigos() {
+    public Map<String, Artigo> getListaArtigos() {
         return this.listaArtigos.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
-    public void setListaArtigos(Map<Integer, Artigo> listaArtigos) {
+    public void setListaArtigos(Map<String, Artigo> listaArtigos) {
         this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
@@ -161,7 +161,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Hashmap Artigos à venda
      * @throws UtilizadorException Caso o utilizador não exista.
      */
-    public Map<Integer, Artigo> getArtigosVenda(String email) throws UtilizadorException {
+    public Map<String, Artigo> getArtigosVenda(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
         return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() != utilizador.getId()).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
@@ -172,7 +172,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Hashmap de Artigos à venda
      * @throws UtilizadorException Caso o utilizador não exista.
      */
-    public Map<Integer, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
+    public Map<String, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
         return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
@@ -278,7 +278,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws ArtigoException Caso o Artigo não exista
      */
-    public void removeArtigo(int id) throws UtilizadorException, ArtigoException {
+    public void removeArtigo(String id) throws UtilizadorException, ArtigoException {
         if (this.listaArtigos.containsKey(id)) {
             Artigo artigo = this.procuraArtigo(id);
             Utilizador utilizador = this.procuraUtilizador(artigo.getVendedor().getEmail());
@@ -304,7 +304,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaTshirtVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int padrao) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaTshirtVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int padrao) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
@@ -336,7 +336,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaSapatilhaVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id)) {
             Utilizador utilizador = this.procuraUtilizador(email);
             Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
@@ -366,7 +366,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaMalaVenda(int id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaMalaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
@@ -413,9 +413,9 @@ public class Sistema implements Serializable,Atributos {
      * @return Um artigo
      * @throws ArtigoException Caso o artigo não exista
      */
-    public Artigo procuraArtigo(int id) throws ArtigoException {
+    public Artigo procuraArtigo(String id) throws ArtigoException {
         if (listaArtigos.containsKey(id)) {
-            return listaArtigos.get(id).clone();
+            return listaArtigos.get(id);
 
         } else {
             throw new ArtigoException("O artigo com o id" + id + "não existe");
@@ -428,7 +428,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Um artigo
      * @throws ArtigoException Caso o artigo não exista ou não esteja à venda.
      */
-    public Artigo procuraArtigoVenda(int id) throws ArtigoException
+    public Artigo procuraArtigoVenda(String id) throws ArtigoException
     {
         if(listaArtigos.containsKey(id)){
             Artigo artigo = this.listaArtigos.get(id);
@@ -458,7 +458,7 @@ public class Sistema implements Serializable,Atributos {
      * @return True caso o artigo esteja à venda, False se o artigo não estiver à venda.
      * @throws ArtigoException Caso o artigo não exista.
      */
-    public boolean verificaArtigoVenda(int id) throws ArtigoException
+    public boolean verificaArtigoVenda(String id) throws ArtigoException
     {
         if(listaArtigos.containsKey(id)){
             Artigo artigo = this.listaArtigos.get(id);
@@ -573,7 +573,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws ArtigoException Caso o artigo não exista
      */
-    public void adicionaArtigoEncomenda(int idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
+    public void adicionaArtigoEncomenda(String idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
@@ -626,7 +626,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws ArtigoException Caso o artigo não exista
      */
-    public void removeArtigoEncomenda(int idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
+    public void removeArtigoEncomenda(String idArtigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
@@ -660,6 +660,7 @@ public class Sistema implements Serializable,Atributos {
             Encomenda encomenda = this.procuraEncomenda(idEncomenda);
             if (encomenda.getEstado() == Atributos.PENDENTE)
             {
+
                 encomenda.alteraEstadoExpedido(this.getDataAtual());
                 this.emiteFatura(encomenda,email);
                 this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());

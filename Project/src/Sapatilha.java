@@ -25,7 +25,7 @@ public class Sapatilha extends Artigo implements Premium {
         this.tipo = Atributos.NORMAL;
     }
 
-    public Sapatilha(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
+    public Sapatilha(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
         super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.tamanho = tamanho;
         this.tipoCordao = tipoCordao;

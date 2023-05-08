@@ -143,7 +143,7 @@ public class Automatizacao {
            sistema.saltaTempo(ano, mes, dia);
         }
         String email = camposArt[2];
-        int id = Integer.valueOf(camposArt[3]);
+        String id = camposArt[3];
         String descricao = camposArt[4];
         String marca = camposArt[5];
         double precoBase = Double.parseDouble(camposArt[6]);
@@ -211,7 +211,7 @@ public class Automatizacao {
             sistema.saltaTempo(ano, mes, dia);
         }
         String email = camposArtComp[1];
-        int idArtigo = Integer.valueOf(camposArtComp[2]);
+        String idArtigo = camposArtComp[2];
         Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
         sistema.adicionaArtigoEncomenda(artigo, email);
     }
@@ -252,7 +252,7 @@ public class Automatizacao {
         encomenda.setTransportadora(transportadora);
         int x = 3;
         while (camposEncom[x] != null){
-            int idArtigo = Integer.valueOf(camposEncom[x]);
+            String idArtigo = camposEncom[x];
             Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
             encomenda.adicionaArtigo(artigo);
             x++;

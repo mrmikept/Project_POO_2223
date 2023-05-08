@@ -91,6 +91,25 @@ public class Automatizacao {
                         this.excecoes.add(a.getMessage());
                     }
                 }
+
+                if(linha.contains("Confirma Encomenda:")){
+                    try {
+                        confEncomenda(aux, sistema);
+                    }
+                    catch (EncomendaException | SistemaException | UtilizadorException | TransportadoraException a){
+                        this.excecoes.add(a.getMessage());
+                    }
+
+                }
+
+                if(linha.contains("Devolve Encomenda:")){
+                    try {
+                        devolEncomenda(aux, sistema);
+                    }
+                    catch (EncomendaException | SistemaException | UtilizadorException a){
+                        this.excecoes.add(a.getMessage());
+                    }
+                }
             }
         }
         comeco.close();
@@ -239,6 +258,34 @@ public class Automatizacao {
             x++;
         }
         sistema.adicionaEncomenda(encomenda, email);
+    }
+
+    public void confEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
+        String[] camposConfEncom = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposConfEncom[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        int idEncomenda = Integer.valueOf(camposConfEncom[1]);
+        String email = camposConfEncom[2];
+        sistema.confirmaEncomenda(idEncomenda, email);
+    }
+
+    public void devolEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
+        String[] camposDevolEncom = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposDevolEncom[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        String email = camposDevolEncom[1];
+        int idEncomenda = Integer.valueOf(camposDevolEncom[2]);
+        sistema.devolveEncomenda(email, idEncomenda);
     }
 
     public int retornaTamanho(String tamanho){

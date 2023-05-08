@@ -1,4 +1,3 @@
-import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,8 +46,7 @@ public class Main {
                 case 1:
                     try {
                         sistema.atualizaSistema();
-                        x = runIN();
-                        x = 0;
+                        x = runPrograma();
                     } catch (UtilizadorException a) {
                         System.out.println(a.getMessage());
                     } catch (SistemaException e) {
@@ -56,95 +54,50 @@ public class Main {
                     } catch (EncomendaException e) {
                         throw new RuntimeException(e);
                     }
-
-
                     break;
 
                 case 2:
-                    apresentacao.printGuardar();
-                    apresentacao.cyan();
-                    System.out.println("                                                               Indique o caminho para a pasta onde pertende guardar o estado (../\"ficheiro\"):");
-                    apresentacao.resetColor();
-                    System.out.print("                                                               ");
+                    apresentacao.printMenuGuardar();
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
-                    if (input.contains("../")) {
-                        CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
+                    CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
+                    apresentacao.printGuardar();
+                    apresentacao.printEnter("ESTADO GUARDADO COM SUCESSO!!");
+                    ler = new Scanner(System.in);
+                    ler.nextLine();
+                    x = 0;
+                    break;
 
-                        apresentacao.clear();
-                        apresentacao.printGuardar();
-                        apresentacao.yellow();
-                        System.out.println("                                                                                            ESTADO GRAVADO COM SUCESSO!!");
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println("                                                                                          Pressione enter para continuar...");
-                        System.out.println();
-                        System.out.print("                                                                                                         ");
+                case 3:
+                    apresentacao.printMenuCarregarEstado();
+                    ler = new Scanner(System.in);
+                    input = ler.nextLine();
+                    Path path = Paths.get(input);
+                    boolean existe = Files.exists(path);
+                    if (existe) {
+                        this.sistema = CarregamentoFicheiro.lerFicheiro(input);
+                        apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
                         ler = new Scanner(System.in);
                         ler.nextLine();
                         x = 0;
                         break;
                     }
-                    else {x = 2; break;}
-
-                case 3:
-                    apresentacao.printLoad();
-                    apresentacao.cyan();
-                    System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o estado (../\"ficheiro\"):");
-                    apresentacao.resetColor();
-                    System.out.print("                                                               ");
-                    ler = new Scanner(System.in);
-                    input = ler.nextLine();
-
-                    if (input.contains("../")) {
-                        Path path = Paths.get(input);
-                        boolean existe = Files.exists(path);
-                        if (existe) {
-
-                            this.sistema = CarregamentoFicheiro.lerFicheiro(input);
-
-                            apresentacao.clear();
-                            apresentacao.printLoad();
-                            apresentacao.yellow();
-                            System.out.println("                                                                                         ESTADO CARREGADO COM SUCESSO!!");
-                            apresentacao.resetColor();
-                            System.out.println();
-                            System.out.println("                                                                                        Pressione enter para continuar...");
-                            System.out.println();
-                            System.out.print("                                                                                                       ");
-                            ler = new Scanner(System.in);
-                            ler.nextLine();
-                            x = 0;
-                            break;
-                        }
-                        else {x = 3; break;}
-                    }
-                    else {x = 3; break;}
+                    else {x = 3; break;} //TODO Verificar mensagem erro quando ficheiro não existe!
 
                 case 4 :
-                    apresentacao.printBackup();
-                    apresentacao.cyan();
-                    System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o backup (../\"ficheiro\"):");
-                    apresentacao.resetColor();
-                    System.out.print("                                                               ");
+                    apresentacao.printMenuAutomatizacao();
                     ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
                     Automatizacao backup = new Automatizacao(input_backup);
                     backup.carregaFicheiro(this.sistema);
                     if (!backup.getExcecoes().isEmpty()) {
-                        apresentacao.printErros(backup.getExcecoes());
+                        apresentacao.printErrosAutomatizcao(backup.getExcecoes());
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                     }
                     apresentacao.clear();
                     apresentacao.printBackup();
-                    apresentacao.yellow();
-                    System.out.println("                                                                                        BACKUP CARREGADO COM SUCESSO!!");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.println("                                                                                       Pressione enter para continuar...");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                    apresentacao.printEnter("AUTOMATIZAÇÃO EXECUTADA COM SUCESSO!!");
                     ler = new Scanner(System.in);
                     ler.nextLine();
                     x = 0;
@@ -158,9 +111,9 @@ public class Main {
         apresentacao.clear();
     }
 
-    private int runIN() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
+    private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans, c;
+        String email, pass, nome, morada, nomeTrans;
         int nif;
         int tipo = 0;
         double lucro;
@@ -186,10 +139,7 @@ public class Main {
 
                 case 1: //Iniciar sessao
                     apresentacao.printLogin();
-                    apresentacao.cyan();
-                    System.out.println("                                                                                       Insira o seu email:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                       ");
+                    apresentacao.printMensagem("Insira o seu email:");
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if (sistema.verificaUtilizador(email)) {
@@ -344,7 +294,7 @@ public class Main {
                     System.out.println();
                     System.out.print("                                                                                                     ");
                     ler = new Scanner(System.in);
-                    c = ler.nextLine();
+                    String c = ler.nextLine();
                     x = 0;
                     break;
 
@@ -502,7 +452,7 @@ public class Main {
             }
         } while (x != 6);
 
-        return x;
+        return 0;
     }
 
     private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException, SistemaException //MENU UTILIZADOR

@@ -4,10 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -536,7 +533,6 @@ public class Main {
 
                 case 1:
 
-                    sistema.confirmaEncomenda(1,email);
                     apresentacao.printLogin();
                     System.out.println(apresentacao.CYAN_BOLD + "                                                                                        ID: " + Apresentacao.RESET + utilizador.getId());
                     System.out.println();
@@ -774,9 +770,9 @@ public class Main {
 
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
 
-        int id, opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
+        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
         double precoBase, avaliacao, dimensao;
-        String descricao, marca, material, data, cor;
+        String id, descricao, marca, material, data, cor;
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
@@ -792,7 +788,7 @@ public class Main {
                     System.out.println();
                     System.out.println();
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                            ESCOLHA O ARTIGO QUE DESEJA VENDER OU PRESSIONE 0 PARA SAIR!");
+                    System.out.println(apresentacao.CYAN_BOLD + "                                                                            ESCOLHA O ARTIGO QUE DESEJA VENDER OU PRESSIONE 4 PARA SAIR!");
                     apresentacao.resetColor();
                     System.out.println();
                     System.out.print("                                                                                                         ");
@@ -806,7 +802,7 @@ public class Main {
                     apresentacao.resetColor();
                     System.out.print("                                                                                    ");
                     ler = new Scanner(System.in);
-                    id = ler.nextInt();
+                    id = ler.nextLine();
                     if (!sistema.verificaArtigoVenda(id)) {
 
                         System.out.println();
@@ -1004,7 +1000,7 @@ public class Main {
                     apresentacao.resetColor();
                     System.out.print("                                                                                    ");
                     ler = new Scanner(System.in);
-                    id = ler.nextInt();
+                    id = ler.nextLine();
                     if (!sistema.verificaArtigoVenda(id)) {
 
                         System.out.println();
@@ -1206,7 +1202,7 @@ public class Main {
                     apresentacao.resetColor();
                     System.out.print("                                                                                    ");
                     ler = new Scanner(System.in);
-                    id = ler.nextInt();
+                    id = ler.nextLine();
                     if (!sistema.verificaArtigoVenda(id)) {
 
                         System.out.println();
@@ -1653,7 +1649,7 @@ public class Main {
         return 0;
     }
 
-    public void paginateMenuVendas(Map<Integer, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void paginateMenuVendas(Map<String, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException {
         Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
         String c;
         int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
@@ -1706,7 +1702,7 @@ public class Main {
                     System.out.println();
                     System.out.print("                                                                                                       ");
 
-                    int id = scanner.nextInt();
+                    String id = scanner.nextLine();
 
                     Utilizador utilizador = sistema.procuraUtilizador(email);
                     if(utilizador.getListaArtigos().containsKey(id)){
@@ -1748,13 +1744,24 @@ public class Main {
         } while (true);
     }
 
-    public void paginateMenuCompras(Map<Integer, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException, EncomendaException {
+    public void paginateMenuCompras(Map<String, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException, EncomendaException, SistemaException {
         Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
         String c;
         int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
         int currentPage = 1;
         int startIndex, endIndex;
-
+        if (lista.isEmpty())
+        {
+            System.out.println("                                                                                        Não existem artigos para comprar!");
+            System.out.println();
+            System.out.println();
+            System.out.println(apresentacao.YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
+            System.out.println();
+            System.out.print("                                                                                                       ");
+            Scanner ler = new Scanner(System.in);
+            c = ler.nextLine();
+            runUtilizador(email);
+        }
         do {
             apresentacao.printComprar();
             startIndex = (currentPage - 1) * pageSize;
@@ -1802,7 +1809,7 @@ public class Main {
                     System.out.println();
                     System.out.print("                                                                                                       ");
 
-                    int id = scanner.nextInt();
+                    String id = scanner.nextLine();
 
                     Artigo artigo = sistema.procuraArtigoVenda(id);
                     apresentacao.clear();
@@ -2116,7 +2123,7 @@ public class Main {
                 System.out.println();
                 System.out.print("                                                                                                       ");
 
-                int id = scanner.nextInt();
+                String id = scanner.nextLine();
 
                 if (menuItems.length == 1) {
                     sistema.removeArtigoEncomenda(id,email);

@@ -10,7 +10,7 @@ import java.time.LocalDate;
  */
 public abstract class Artigo implements Serializable
 {
-    private int id;
+    private String id;
     private Utilizador vendedor;
     private String descricao;
     private String marca;
@@ -22,7 +22,7 @@ public abstract class Artigo implements Serializable
 
     public Artigo()
     {
-        this.id = 0;
+        this.id = "";
         this.vendedor = new Utilizador();
         this.descricao = "";
         this.marca = "";
@@ -33,7 +33,7 @@ public abstract class Artigo implements Serializable
         this.estadoVenda = Atributos.VENDA;
     }
 
-    public Artigo(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda)
+    public Artigo(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda)
     {
         this.id = id;
         this.vendedor = utilizador;
@@ -59,7 +59,7 @@ public abstract class Artigo implements Serializable
         this.estadoVenda = artigo.getEstadoVenda();
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -95,7 +95,7 @@ public abstract class Artigo implements Serializable
         this.transportadora = transportadora;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

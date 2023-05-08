@@ -20,7 +20,7 @@ public class Utilizador implements Serializable {
     private String nome;
     private String morada;
     private int nrFiscal;
-    private Map<Integer, Artigo> listaArtigos;
+    private Map<String, Artigo> listaArtigos;
     private List<Encomenda> listaEncomendas;
     private List<Fatura> listaFaturas;
 
@@ -38,7 +38,7 @@ public class Utilizador implements Serializable {
         this.listaFaturas = new ArrayList<>();
     }
 
-    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<Integer, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas, ArrayList<Fatura> listaFaturas) {
+    public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<String, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas, ArrayList<Fatura> listaFaturas) {
 
         this.id = id;
         this.email = email;
@@ -115,11 +115,11 @@ public class Utilizador implements Serializable {
         this.nrFiscal = nrFiscal;
     }
 
-    public Map<Integer, Artigo> getListaArtigos(){
+    public Map<String, Artigo> getListaArtigos(){
         return listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaArtigos(Map<Integer, Artigo> listaArtigos){
+    public void setListaArtigos(Map<String, Artigo> listaArtigos){
         this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 

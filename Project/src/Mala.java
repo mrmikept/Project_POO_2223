@@ -23,7 +23,7 @@ public class Mala extends Artigo implements Premium
         this.tipo = Atributos.NORMAL;
     }
 
-    public Mala(int id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public Mala(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
     {
         super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.dimensao = dimensao;

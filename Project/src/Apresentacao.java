@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.security.PublicKey;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
@@ -507,6 +508,7 @@ public class Apresentacao
         System.out.println("                                                                                                  ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           ");
         System.out.println("                                                                                                  ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           ");
         System.out.println("                                                                                                  ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           ");
+        System.out.println();
     }
 
     public void printMala(){
@@ -526,6 +528,7 @@ public class Apresentacao
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀");
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀");
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀");
+        System.out.println();
     }
 
     public void printSapatilhas(){
@@ -540,6 +543,7 @@ public class Apresentacao
         System.out.println("                                                                                           ⠀⠀⠀⢀⣴⠶⠶⠶⠚⠛⠋⠉⠻⠂⠙⠀⠉⠀⠀⠀⠀⠀⠀⣠⡞⠉⣿ ⠀    ");
         System.out.println("                                                                                           ⠀⠀⠀⣿⣧⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣤⠶⠶⠶⠶⠶⠶⠶⠿⠶⢶⣏ ⠀    ");
         System.out.println("                                                                                           ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿ ⠀    ");
+        System.out.println();
     }
 
     public void printConfiguracoes() {
@@ -998,6 +1002,32 @@ public class Apresentacao
         resetColor();
     }
 
+    public void printMensagemLocaldate(String mensagem, int x, int cor, LocalDate localdate){
+        if (cor == 1) cyanBold();
+        if (cor == 2) red();
+        if (cor == 3) yellow();
+        if (cor == 4) cyan();
+
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print(mensagem + RESET + localdate);
+    }
+
+    public void printFaturacao(String mensagem, int x, int cor, double faturacao){
+        if (cor == 1) cyanBold();
+        if (cor == 2) red();
+        if (cor == 3) yellow();
+        if (cor == 4) cyan();
+
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print(mensagem + RESET + faturacao);
+    }
+
     public void printEnter(String mensagem)
     {
         printMensagemCentrada(mensagem,0);
@@ -1006,6 +1036,26 @@ public class Apresentacao
         System.out.println("                                                                                          Pressione enter para continuar...");
         System.out.println();
         System.out.print("                                                                                                         ");
+    }
+
+    public void printEnterSair(){
+        System.out.println();
+        System.out.println();
+        System.out.println("                                                                                          Pressione enter para sair...");
+        System.out.println();
+        System.out.print("                                                                                                     ");
+    }
+
+    public void printOpcoes(String mensagem, String[] opcoes){
+        printMensagem(mensagem,86,1);
+        int i = 1;
+        printClear(2);
+        for (String s : opcoes) {
+            printOpcao(i, s);
+            i++;
+        }
+        printClear(1);
+
     }
 
     public void printMenuCarregarEstado()
@@ -1099,16 +1149,24 @@ public class Apresentacao
         printMensagem("INDIQUE O SEU ESTADO:",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "NOVO");
         System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "USADO");
-        System.out.println();
         printEspacos(84);
     }
+    
+    public void printArtigoPremiumOuNormal() {
+        printMensagem("INDIQUE O SEU TIPO",84,1);
+        printMensagem("1 - PREMIUM",84,1);
+        printMensagem("0 - NORMAL",84,1);
+        System.out.println();
+        printEspacos(88);
+    }
 
-
-
-
-
-
-
+    public void printTipoCordao() {
+        printMensagem("INDIQUE O TIPO DE CORDÃO",84,1);
+        printMensagem("1 - ATILHO",84,0);
+        printMensagem("0 - CORDÃO",84,0);
+        System.out.println();
+        printEspacos(87);
+    }
 
     public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
         Utilizador utilizador = sistema.procuraUtilizador(email);
@@ -1616,7 +1674,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
+                System.out.println(showEncomenda(encomenda, sistema.getTempoDevolucao()));
             }
             System.out.println();
             System.out.println();
@@ -1833,7 +1891,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
+                System.out.println(showEncomenda(encomenda, sistema.getTempoDevolucao()));
             }
             System.out.println();
             System.out.println();
@@ -1954,7 +2012,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
+                System.out.println(showEncomenda(encomenda, sistema.getTempoDevolucao()));
             }
             System.out.println();
             System.out.println();
@@ -2083,7 +2141,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
+                System.out.println(showEncomenda(encomenda, sistema.getTempoDevolucao()));
             }
             System.out.println();
             System.out.println();
@@ -2121,6 +2179,33 @@ public class Apresentacao
             }
 
         } while (true);
+    }
+
+    public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {
+        StringBuilder string = new StringBuilder();
+        string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + encomenda.getId() + Apresentacao.YELLOW + " | " +
+                Apresentacao.CYAN_BOLD + "Artigos: " + Apresentacao.RESET);
+        for(Artigo artigo: encomenda.getListaArtigos())
+        {
+            string.append(artigo.showArtigoLinha());
+        }
+        string.append(Apresentacao.YELLOW + "| " + Apresentacao.CYAN_BOLD + "Transportadora: " + Apresentacao.RESET + encomenda.getTransportadora().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + encomenda.getVendedor().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + encomenda.getPrecoFinal());
+        if (encomenda.getEstado() == Atributos.EXPEDIDA){
+            string.append(Apresentacao.YELLOW + " | " + Apresentacao.CYAN_BOLD + "Data Prevista: " + Apresentacao.RESET + encomenda.getDataPrevistaEntrega() + Apresentacao.YELLOW + " | " +
+                    Apresentacao.CYAN_BOLD + "Data da Atualizaçao de estado: " + Apresentacao.RESET + encomenda.getDataAtualizacao() + "\n");
+        }
+        else if (encomenda.getEstado() == Atributos.FINALIZADA){
+            string.append(Apresentacao.YELLOW + " | " + Apresentacao.CYAN_BOLD + "Data Máxima para devolver: " + Apresentacao.RESET + encomenda.getDataDevolucao(tempoDevolucao) + Apresentacao.YELLOW + " | " +
+                    Apresentacao.CYAN_BOLD + "Data da Atualizaçao de estado: " + Apresentacao.RESET + encomenda.getDataAtualizacao() + "\n");
+        } else if (encomenda.getEstado() == Atributos.DEVOLVIDA) {
+            string.append(Apresentacao.YELLOW + " | " + Apresentacao.CYAN_BOLD + "Data da Devolucao: " + Apresentacao.RESET + encomenda.getDataAtualizacao() + "\n");
+        } else {
+            string.append("\n");
+        }
+
+        return string.toString();
     }
 
 

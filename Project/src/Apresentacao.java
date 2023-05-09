@@ -508,6 +508,7 @@ public class Apresentacao
         System.out.println("                                                                                                  ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           ");
         System.out.println("                                                                                                  ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           ");
         System.out.println("                                                                                                  ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           ");
+        System.out.println();
     }
 
     public void printMala(){
@@ -527,6 +528,7 @@ public class Apresentacao
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀");
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀");
         System.out.println(Apresentacao.CYAN + "                                                                                             ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀");
+        System.out.println();
     }
 
     public void printSapatilhas(){
@@ -541,6 +543,7 @@ public class Apresentacao
         System.out.println("                                                                                           ⠀⠀⠀⢀⣴⠶⠶⠶⠚⠛⠋⠉⠻⠂⠙⠀⠉⠀⠀⠀⠀⠀⠀⣠⡞⠉⣿ ⠀    ");
         System.out.println("                                                                                           ⠀⠀⠀⣿⣧⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣤⠶⠶⠶⠶⠶⠶⠶⠿⠶⢶⣏ ⠀    ");
         System.out.println("                                                                                           ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿ ⠀    ");
+        System.out.println();
     }
 
     public void printConfiguracoes() {
@@ -1147,8 +1150,23 @@ public class Apresentacao
         printMensagem("INDIQUE O SEU ESTADO:",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "NOVO");
         System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "USADO");
-        System.out.println();
         printEspacos(84);
+    }
+    
+    public void printArtigoPremiumOuNormal() {
+        printMensagem("INDIQUE O SEU TIPO",84,1);
+        printMensagem("1 - PREMIUM",84,1);
+        printMensagem("0 - NORMAL",84,1);
+        System.out.println();
+        printEspacos(88);
+    }
+
+    public void printTipoCordao() {
+        printMensagem("INDIQUE O TIPO DE CORDÃO",84,1);
+        printMensagem("1 - ATILHO",84,0);
+        printMensagem("0 - CORDÃO",84,0);
+        System.out.println();
+        printEspacos(87);
     }
 
     public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {

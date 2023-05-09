@@ -46,6 +46,7 @@ public class Automatizacao {
             if(!linha.contains("--")){
                 String[] aux = linha.split(":");
 
+
                 if(linha.contains("Adiciona Utilizador:")){
                     try {
                         util(aux, sistema);
@@ -136,6 +137,7 @@ public class Automatizacao {
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArt[0]);
+        System.out.println(data.toString());
         if (sistema.getDataAtual().isBefore(data)){
            int ano = data.getYear();
            int mes = data.getMonthValue();
@@ -150,7 +152,6 @@ public class Automatizacao {
         if (camposArt[7].contains("Novo")){
 
             String nomeTransportadora = camposArt[8];
-
             if(camposArt[1].contains("Mala")){
                 double dimensao = Double.parseDouble(camposArt[9]);
                 String material = camposArt[10];

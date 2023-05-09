@@ -14,9 +14,6 @@ public class Sapatilha extends Calcado implements Premium {
     private int dataLancamento;
     private int tipo;
 
-
-
-
     public Sapatilha() {
         super();
         this.tipoCordao = Atributos.CORDAO;

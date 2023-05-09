@@ -58,19 +58,16 @@ public class Main {
 
                 case 2:
                     apresentacao.printMenuGuardar();
-                    ler = new Scanner(System.in);
                     input = ler.nextLine();
                     CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
                     apresentacao.printGuardar();
                     apresentacao.printEnter("ESTADO GUARDADO COM SUCESSO!!");
-                    ler = new Scanner(System.in);
                     ler.nextLine();
                     x = 0;
                     break;
 
                 case 3:
                     apresentacao.printMenuCarregarEstado();
-                    ler = new Scanner(System.in);
                     input = ler.nextLine();
                     Path path = Paths.get(input);
                     boolean existe = Files.exists(path);
@@ -78,7 +75,6 @@ public class Main {
                         this.sistema = CarregamentoFicheiro.lerFicheiro(input);
                         apresentacao.printLoad();
                         apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
-                        ler = new Scanner(System.in);
                         ler.nextLine();
                         x = 0;
                         break;
@@ -87,19 +83,16 @@ public class Main {
 
                 case 4 :
                     apresentacao.printMenuAutomatizacao();
-                    ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
                     Automatizacao backup = new Automatizacao(input_backup);
                     backup.carregaFicheiro(this.sistema);
                     if (!backup.getExcecoes().isEmpty()) {
                         apresentacao.printErrosAutomatizcao(backup.getExcecoes());
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
+                        ler.nextLine();
                     }
                     apresentacao.clear();
                     apresentacao.printBackup();
                     apresentacao.printEnter("AUTOMATIZAÇÃO EXECUTADA COM SUCESSO!!");
-                    ler = new Scanner(System.in);
                     ler.nextLine();
                     x = 0;
                     break;
@@ -142,12 +135,10 @@ public class Main {
                     apresentacao.printLogin();
                     apresentacao.printMensagem("Insira o seu email:", 88, 1);
                     apresentacao.printEspacos(88);
-                    ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if (sistema.verificaUtilizador(email)) {
                         apresentacao.printMensagem("Insira a sua password:", 88, 1);
                         apresentacao.printEspacos(88);
-                        ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         if (sistema.verificaPassword(email, pass)) {
                             x = runUtilizador(email);
@@ -169,7 +160,6 @@ public class Main {
                                 apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                 apresentacao.printEspacos(88);
 
-                                ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if (sistema.verificaPassword(email, pass)) {
                                     x = runUtilizador(email);
@@ -190,7 +180,6 @@ public class Main {
                             apresentacao.printMensagem("Insira o seu email:", 88, 1);
                             apresentacao.printEspacos(88);
 
-                            ler = new Scanner(System.in);
                             email = ler.nextLine();
 
                             if (sistema.verificaUtilizador(email)) {
@@ -198,7 +187,6 @@ public class Main {
                                 apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                 apresentacao.printEspacos(88);
 
-                                ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if (sistema.verificaPassword(email, pass)) {
                                     x = runUtilizador(email);
@@ -221,7 +209,6 @@ public class Main {
                                         apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                         apresentacao.printEspacos(88);
 
-                                        ler = new Scanner(System.in);
                                         pass = ler.nextLine();
                                         if (sistema.verificaPassword(email, pass)) {
                                             x = runUtilizador(email);
@@ -236,12 +223,10 @@ public class Main {
 
                 case 2:
                     apresentacao.printProcuraTrans();
-                    ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
                     Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
                     apresentacao.printDadosTransportadora(transportadora);
-                    ler = new Scanner(System.in);
-                    c = ler.nextLine();
+                    ler.nextLine();
                     x = 0;
                     break;
 
@@ -249,13 +234,11 @@ public class Main {
                     apresentacao.printReg();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
                     apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if (!sistema.verificaUtilizador(email)) {
                         apresentacao.printClear(1);
                         apresentacao.printMensagem("Insira a password:", 86, 1);
                         apresentacao.printEspacos(86);
-                        ler = new Scanner(System.in);
                         pass = ler.nextLine();
 
                         apresentacao.printClear(1);
@@ -263,7 +246,6 @@ public class Main {
                         apresentacao.printMensagem("Insira o seu primeiro e ultimo nome:", 86, 1);
                         apresentacao.printEspacos(86);
 
-                        ler = new Scanner(System.in);
                         nome = ler.nextLine();
 
                         apresentacao.printClear(1);
@@ -271,7 +253,6 @@ public class Main {
                         apresentacao.printMensagem("Insira a sua morada:", 86, 1);
                         apresentacao.printEspacos(86);
 
-                        ler = new Scanner(System.in);
                         morada = ler.nextLine();
 
                         apresentacao.printClear(1);
@@ -279,7 +260,6 @@ public class Main {
                         apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
                         apresentacao.printEspacos(86);
 
-                        ler = new Scanner(System.in);
                         nif = ler.nextInt();
                         sistema.adicionaUtilizador(email, pass, nome, morada, nif);
 
@@ -290,7 +270,6 @@ public class Main {
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(100);
 
-                        ler = new Scanner(System.in);
                         x = ler.nextInt();
 
                         if (x == 1) x = 3;
@@ -300,7 +279,7 @@ public class Main {
                         apresentacao.printMensagem("ESTE EMAIL JÁ EXISTE!! DESEJA TENTAR DE NOVO?",81,2);
                         apresentacao.printClear(2);
                         apresentacao.printMensagemSimOuNao(99);
-                        ler = new Scanner(System.in);
+
                         x = ler.nextInt();
                         if (x == 1) x = 3;
                         else x = 0;
@@ -311,7 +290,6 @@ public class Main {
                     apresentacao.printRegTrans();
                     apresentacao.printMensagem("Insira o nome da transportadora:",86,1);
                     apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
                     if (!sistema.verificaTransportadora(nomeTrans)) {
 
@@ -320,7 +298,6 @@ public class Main {
                         apresentacao.printMensagem("Insira a margem de lucro que pretende obter:",86,1);
                         apresentacao.printEspacos(86);
 
-                        ler = new Scanner(System.in);
                         lucro = ler.nextDouble();
 
                         apresentacao.printClear(1);
@@ -328,7 +305,6 @@ public class Main {
                         apresentacao.printMensagem("Insira 1-\"Normal\" ou 2-\"Premium\":", 86,1);
                         apresentacao.printEspacos(86);
 
-                        ler = new Scanner(System.in);
                         tipo = ler.nextInt();
 
                         sistema.adicionaTransportadora(nomeTrans, lucro, tipo,2);
@@ -339,7 +315,6 @@ public class Main {
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(100);
 
-                        ler = new Scanner(System.in);
                         x = ler.nextInt();
 
                         if (x == 1) x = 4;
@@ -350,7 +325,6 @@ public class Main {
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(98);
 
-                        ler = new Scanner(System.in);
                         x = ler.nextInt();
                         if (x == 1) x = 4;
                         else x = 0;
@@ -396,7 +370,6 @@ public class Main {
 
                     apresentacao.printLogin();
                     apresentacao.printPerfil(utilizador);
-                    ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
                     break;
@@ -735,7 +708,6 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
@@ -944,7 +916,6 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();

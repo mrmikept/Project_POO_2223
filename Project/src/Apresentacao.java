@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.security.PublicKey;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
@@ -1003,6 +1004,19 @@ public class Apresentacao
         resetColor();
     }
 
+    public void printMensagemLocaldate(String mensagem, int x, int cor, LocalDate localdate){
+        if (cor == 1) cyanBold();
+        if (cor == 2) red();
+        if (cor == 3) yellow();
+        if (cor == 4) cyan();
+
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print(mensagem + RESET + localdate);
+    }
+
     public void printEnter(String mensagem)
     {
         printMensagemCentrada(mensagem,0);
@@ -1011,6 +1025,26 @@ public class Apresentacao
         System.out.println("                                                                                          Pressione enter para continuar...");
         System.out.println();
         System.out.print("                                                                                                         ");
+    }
+
+    public void printEnterSair(){
+        System.out.println();
+        System.out.println();
+        System.out.println("                                                                                          Pressione enter para sair...");
+        System.out.println();
+        System.out.print("                                                                                                     ");
+    }
+
+    public void printOpcoes(String mensagem, String[] opcoes){
+        printMensagem(mensagem,86,1);
+        int i = 1;
+        printClear(2);
+        for (String s : opcoes) {
+            printOpcao(i, s);
+            i++;
+        }
+        printClear(1);
+
     }
 
     public void printMenuCarregarEstado()

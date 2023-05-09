@@ -821,7 +821,6 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
@@ -1030,7 +1029,6 @@ public class Main {
                         ler = new Scanner(System.in);
                         opcao = ler.nextInt();
                         if (opcao == 1) {
-                            EstadoArtigo estadoNovo = new EstadoNovo();
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();
@@ -1195,53 +1193,47 @@ public class Main {
 
                 case 1: // MENU AVANCAR NO TEMPO
                     apresentacao.printSaltaTempo();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                  Selecione o metodo para avancar no tempo:");
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW + "                                                                                       1 - Avancar para uma data");
-                    System.out.println(                      "                                                                                       2 - Adicionar dias à data atual" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                    String[] o ={"Avançar para uma data", "Adicionar dias à data atual"};
+                    apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", o);
+                    apresentacao.printEspacos(103);
                     ler = new Scanner(System.in);
                     opcao = ler.nextInt();
                     LocalDate localDate;
 
                     if (opcao == 1) { // PARA UMA DATA
                         apresentacao.printSaltaTempo();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                            Introduza o dia (DD)" + apresentacao.RESET);
+                        apresentacao.printMensagem("Introduza o dia (DD)",87,1);
                         System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printEspacos(87);
                         ler = new Scanner(System.in);
                         dia = ler.nextInt();
 
                         System.out.println();
 
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                            Introduza o mes (MM)" + apresentacao.RESET);
+                        apresentacao.printMensagem("Introduza o mês (MM)",87,1);
                         System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printEspacos(87);
                         ler = new Scanner(System.in);
                         mes = ler.nextInt();
 
                         System.out.println();
 
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                           Introduza o ano (AAAA)" + apresentacao.RESET);
+                        apresentacao.printMensagem("Introduza o ano (AAAA)",87,1);
                         System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printEspacos(87);
                         ler = new Scanner(System.in);
                         ano = ler.nextInt();
 
                         sistema.saltaTempo(ano, mes, dia);
                         localDate = this.sistema.getDataAtual();
+                        System.out.println();
+                    apresentacao.printEnterSair();
 
                         apresentacao.printSaltaTempo();
-                        System.out.println(apresentacao.YELLOW + "                                                                                    SALTO NO TEMPO REALIZADO COM SUCESSO!!");
+                        apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!", 84,3);
                         System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                      Data atual do sistema: " + apresentacao.RESET + localDate);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println("                                                                                        Pressione enter para sair...");
-                        System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
+                        apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -1250,9 +1242,9 @@ public class Main {
 
                     if (opcao == 2) { // ADICIONAR DIAS A DATA ATUAL
                         apresentacao.printSaltaTempo();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                            Introduza o numero de dias que pretende avancar (DD)" + apresentacao.RESET);
+                        apresentacao.printMensagem("Introduza o numero de dias que pretende avançar (DD)",78,1);
                         System.out.println();
-                        System.out.print("                                                                                                      ");
+                        apresentacao.printEspacos(78);
                         ler = new Scanner(System.in);
                         dia = ler.nextInt();
 
@@ -1260,21 +1252,15 @@ public class Main {
                         localDate = this.sistema.getDataAtual();
 
                         apresentacao.printSaltaTempo();
-                        System.out.println(apresentacao.YELLOW + "                                                                                    SALTO NO TEMPO REALIZADO COM SUCESSO!!");
+                        apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!",84,3);
                         System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                      Data atual do sistema: " + apresentacao.RESET + localDate);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println("                                                                                        Pressione enter para sair...");
-                        System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
+                        apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
                         break;
                     }
-
                     x = 0;
                     break;
 
@@ -1283,46 +1269,41 @@ public class Main {
                     int imposto;
                     double taxa;
 
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                           Defina a taxa de imposto" + apresentacao.RESET);
+                    apresentacao.printMensagem("Defina a taxa de imposto",86,1);
                     System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     imposto = ler.nextInt();
                     sistema.getTaxas().setImposto(imposto);
 
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda pequena" + apresentacao.RESET);
+                    apresentacao.printMensagem("Defina a taxa de uma encomenda pequena",86,1);
                     System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
                     sistema.getTaxas().setTaxaEncPequena(taxa);
 
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda media" + apresentacao.RESET);
+                    apresentacao.printMensagem("Defina a taxa de uma encomenda media",86,1);
                     System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
                     sistema.getTaxas().setTaxaEncMedia(taxa);
 
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                     Defina a taxa de uma encomanda grande" + apresentacao.RESET);
+                    apresentacao.printMensagem("Defina a taxa de uma encomenda grande",86,1);
                     System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     taxa = ler.nextDouble();
                     sistema.getTaxas().setTaxaEncGrande(taxa);
 
                     apresentacao.printTax();
 
-                    System.out.println(apresentacao.YELLOW + "                                                                                       ALTERACAO REALIZADA COM SUCESSO!!" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println("                                                                                         Pressione enter para sair...");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
+                    apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!",87,3);
+                    apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
@@ -1330,27 +1311,21 @@ public class Main {
 
                 case 3:
                     apresentacao.printReturnTime();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                            Defina o limite de dias para a devolucao de uma encomenda" + apresentacao.RESET);
+                    apresentacao.printMensagem("Defina o limite de dias para a devolucao de uma encomenda",77,1);
                     System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printEspacos(77);
                     ler = new Scanner(System.in);
                     x = ler.nextInt();
 
                     sistema.setTempoDevolucao(x);
 
                     apresentacao.printReturnTime();
-                    System.out.println(apresentacao.YELLOW + "                                                                                       ALTERACAO REALIZADA COM SUCESSO!!" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println("                                                                                          Pressione enter para sair...");
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
+                    apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!",87,3);
+                    apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
                     break;
-
             }
         } while (x != 4);
 

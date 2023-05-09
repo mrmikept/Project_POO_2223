@@ -1092,14 +1092,13 @@ public class Apresentacao
         System.out.println(CYAN_BOLD + "                                                                                    2 - " + RESET + "PALMEIRAS");
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "RISCAS");
         System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "LISA");
-        System.out.println();
         printEspacos(84);
     }
 
     public void printEstadoArtigo() {
         printMensagem("INDIQUE O SEU ESTADO:",84,1);
-        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    1 - " + apresentacao.RESET + "NOVO");
-        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    0 - " + apresentacao.RESET + "USADO");
+        System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "NOVO");
+        System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "USADO");
         System.out.println();
         printEspacos(84);
     }

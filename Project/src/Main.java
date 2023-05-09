@@ -490,9 +490,9 @@ public class Main {
 
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
 
-        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao, dataLancamento;
-        double precoBase, avaliacao, dimensao;
-        String id, descricao, marca, material, cor;
+        int opcao, nrDonos = 0, tamanho, padrao, tipo, tipoCordao, dataLancamento;
+        double precoBase, avaliacao = 0, dimensao;
+        String id = "", descricao, marca, material, cor;
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
@@ -506,25 +506,31 @@ public class Main {
                     break;
 
                 case 1:
+                    Tshirt tshirt = new Tshirt();
                     apresentacao.printTshirt();
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("INTRODUZA O ID DA T-SHIRT (CÓDIGO DE BARRAS)",84,1);
+                    ler = new Scanner(System.in);
                     apresentacao.printEspacos(84);
                     id = ler.nextLine();
 
                     if (!sistema.verificaArtigoVenda(id)) {
+
+                        tshirt.setId(id);
 
                         apresentacao.printClear(1);
 
                         apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO",84,1);
                         apresentacao.printEspacos(84);
                         descricao = ler.nextLine();
+                        tshirt.setDescricao(descricao);
 
                         apresentacao.printClear(1);
 
                         apresentacao.printMensagem("INTRODUZA A MARCA",84,1);
                         apresentacao.printEspacos(84);
                         marca = ler.nextLine();
+                        tshirt.setMarca(marca);
 
                         apresentacao.printClear(1);
 
@@ -532,56 +538,27 @@ public class Main {
                         apresentacao.printEspacos(84);
 
                         precoBase = ler.nextDouble();
+                        tshirt.setPrecoBase(precoBase);
 
                         apresentacao.printClear(1);
 
                         apresentacao.printTamanhosTshirt();
                         tamanho = ler.nextInt();
+                        tshirt.setTamanho(tamanho);
 
                         apresentacao.printClear(1);
 
                         apresentacao.printPadroesTshirt();
                         padrao = ler.nextInt();
+                        tshirt.setPadrao(padrao);
 
                         apresentacao.printClear(1);
 
                         apresentacao.printEstadoArtigo();
                         opcao = ler.nextInt();
 
-                        if (opcao == 1) {
-                            apresentacao.printTshirt();
-                            apresentacao.printClear(2);
-                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
-                            Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, 0,0, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
-                            apresentacao.clear();
-                            apresentacao.printClear(5);
-                            System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
-                            apresentacao.printClear(3);
-                            apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagemSimOuNao(99);
-
-                            x = ler.nextInt();
-
-                            if (x == 1) {
-                                sistema.adicionaArtigo(tshirt);
-                                apresentacao.printClear(3);
-                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?",76,3);
-                                apresentacao.printClear(1);
-                                apresentacao.printMensagemSimOuNao(100);
-
-                                x = ler.nextInt();
-
-                                if (x == 1) {
-                                    x = 0;
-                                    break;
-
-                                } else if (x == 0) {x = 4; break;}
-
-                            } else if (x == 0) {x = 4; break;}
-
-                        } else {
+                        if (opcao == 0)
+                        {
                             apresentacao.printClear(1);
                             apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO",84,1);
                             apresentacao.printEspacos(84);
@@ -593,54 +570,53 @@ public class Main {
                             apresentacao.printEspacos(84);
                             nrDonos = ler.nextInt();
 
-                            apresentacao.printTshirt();
-                            apresentacao.printClear(2);
-                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
-                            Utilizador utilizador = sistema.procuraUtilizador(email);
-                            Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
-
-                            apresentacao.clear();
-                            apresentacao.printClear(5);
-                            System.out.println(tshirt.showArtigo()); //TODO: TAMBEMMMMMMM
-                            apresentacao.printClear(3);
-
-                            apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagemSimOuNao(99);
-
-                            x = ler.nextInt();
-
-                            if (x == 1) {
-                                sistema.adicionaArtigo(tshirt);
-                                apresentacao.printClear(3);
-                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?",76,3);
-                                apresentacao.printClear(1);
-                                apresentacao.printMensagemSimOuNao(100);
-
-                                x = ler.nextInt();
-
-                                if (x == 1) {
-                                    x = 0;
-                                    break;
-                                } else if (x == 0) {x = 4; break;}
-
-                            } else if (x == 0) {x = 4; break;}
-
                         }
-                    } else {
+                        tshirt.setAvaliacao(avaliacao);
+                        tshirt.setNrDonos(nrDonos);
+
+                        apresentacao.printTshirt();
                         apresentacao.printClear(2);
-                        apresentacao.printMensagem("ESTE ARTIGO JÁ ESTÁ A VENDA!",94,2);
+                        String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
+                        tshirt.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+
+                        Utilizador utilizador = sistema.procuraUtilizador(email);
+                        tshirt.setVendedor(utilizador);
+
+                        apresentacao.clear();
+                        apresentacao.printClear(5);
+                        System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                         apresentacao.printClear(1);
-                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?",86,1);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagemSimOuNao(014);
+                        apresentacao.printMensagemSimOuNao(99);
 
                         x = ler.nextInt();
 
-                        if (x == 1) {
-                            x = 1;
-                            break;
-                        } else if (x == 0) {x = 4; break;}
+                        if (x == 1)
+                        {
+                            sistema.adicionaArtigo(tshirt);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!!",87,3);
+                        }
+                    } else {
+                        apresentacao.printClear(2);
+                        apresentacao.printMensagem("ESTE ARTIGO JÁ ESTÁ A VENDA!",87,2);
+                        apresentacao.printClear(1);
+                    }
+                    apresentacao.printMensagem("DESEJA ADICIONAR OUTRO ARTIGO?",87,3);
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagemSimOuNao(99);
+
+                    x = ler.nextInt();
+
+                    if (x == 1)
+                    {
+                        x = 0;
+                        break;
+                    } else if (x == 0)
+                    {
+                        x = 4;
+                        break;
                     }
 
                 case 2:

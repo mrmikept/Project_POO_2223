@@ -741,7 +741,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public void atualizaEncomendas()
     {
-        this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).forEach(encomenda -> encomenda.alteraEstadoFinalizado(this.getDataAtual()));
+        this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() == Atributos.EXPEDIDA).forEach(encomenda -> encomenda.alteraEstadoFinalizado(this.getDataAtual()));
     }
 
     /**

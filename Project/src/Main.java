@@ -102,6 +102,7 @@ public class Main {
                     break;
             }
         } while (x != 6);
+        apresentacao.clear();
     }
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
@@ -147,7 +148,6 @@ public class Main {
                                 apresentacao.printClear(2);
                                 apresentacao.printMensagemCentrada("PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?",2);
                                 apresentacao.printMensagemSimOuNao(102);
-                                apresentacao.printEspacos(104);
 
                                 x = ler.nextInt();
                                 if (x == 0) break;
@@ -171,7 +171,6 @@ public class Main {
                         while (x == 1) {
                             apresentacao.printMensagem("EMAIL INCORRETO OU NAO EXISTE!! DESEJA CONTINUAR A TENTAR?",74,2);
                             apresentacao.printMensagemSimOuNao(100);
-                            apresentacao.printEspacos(102);
 
                             x = ler.nextInt();
 
@@ -198,7 +197,6 @@ public class Main {
                                         apresentacao.printMensagemCentrada("PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR",2);
                                         apresentacao.printClear(1);
                                         apresentacao.printMensagemSimOuNao(101);
-                                        apresentacao.printEspacos(103);
                                         x = ler.nextInt();
 
                                         if (x == 0) break;
@@ -271,7 +269,6 @@ public class Main {
 
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(100);
-                        apresentacao.printEspacos(102);
 
                         x = ler.nextInt();
 
@@ -282,7 +279,7 @@ public class Main {
                         apresentacao.printMensagem("ESTE EMAIL JÁ EXISTE!! DESEJA TENTAR DE NOVO?",81,2);
                         apresentacao.printClear(2);
                         apresentacao.printMensagemSimOuNao(99);
-                        apresentacao.printEspacos(102);
+
                         x = ler.nextInt();
                         if (x == 1) x = 3;
                         else x = 0;
@@ -317,7 +314,6 @@ public class Main {
 
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(100);
-                        apresentacao.printEspacos(102);
 
                         x = ler.nextInt();
 
@@ -328,7 +324,6 @@ public class Main {
                         apresentacao.printMensagem("ESTA TRANSPORTADORA JÁ EXISTE!! DESEJA TENTAR DE NOVO?",77,2);
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(98);
-                        apresentacao.printEspacos(101);
 
                         x = ler.nextInt();
                         if (x == 1) x = 4;
@@ -439,16 +434,11 @@ public class Main {
                     break;
             }
         } while (x != 3);
+
         return 0;
     }
 
-
-    
-
     public int runVendas(String email) throws UtilizadorException, ArtigoException, TransportadoraException {
-        int id, opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
-        double precoBase, avaliacao, dimensao;
-        String descricao, marca, material, data, cor;
         String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         int x = 0;
@@ -471,16 +461,11 @@ public class Main {
                     apresentacao.printMinhaLista();
 
                     if (sistema.getArtigosVendaUtilizador(email).isEmpty()) {
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                       NÃO POSSUI NENHUM ARTIGO À VENDA!!");
-                        System.out.println();
-                        System.out.println("                                                                               DESEJA ADICONAR ALGUM ARTIGO À SUA LISTA DE VENDAS?");
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println("                                                                                                    1 - SIM");
-                        System.out.println("                                                                                                    0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                       ");
+                        apresentacao.printMensagem("NÃO POSSUI NENHUM ARTIGO À VENDA!!",87,1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("DESEJA ADICONAR ALGUM ARTIGO À SUA LISTA DE VENDAS?",79,0);
+                        apresentacao.printClear(2);
+                        apresentacao.printMensagemSimOuNao(100);
 
                         ler = new Scanner(System.in);
                         x = ler.nextInt();
@@ -516,121 +501,76 @@ public class Main {
             switch (x) {
 
                 case 0:
-                    apresentacao.printAdicionaArtigoVenda();
-                    apresentacao.printArtigosVenda();
-                    System.out.println("                                        (1)                                                              (2)                                                                 (3)");
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                            ESCOLHA O ARTIGO QUE DESEJA VENDER OU PRESSIONE 4 PARA SAIR!");
-                    apresentacao.resetColor();
-                    System.out.println();
-                    System.out.print("                                                                                                         ");
+                    apresentacao.printRunArtigosVendaCase0();
                     x = ler.nextInt();
                     break;
 
                 case 1:
                     apresentacao.printTshirt();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA O ID DA T-SHIRT (CÓDIGO DE BARRAS)");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                    ");
-                    ler = new Scanner(System.in);
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("INTRODUZA O ID DA T-SHIRT (CÓDIGO DE BARRAS)",84,1);
+                    apresentacao.printEspacos(84);
                     id = ler.nextLine();
+
                     if (!sistema.verificaArtigoVenda(id)) {
 
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA UMA DESCRIÇÃO");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+                        apresentacao.printClear(1);
+
+                        apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO",84,1);
+                        apresentacao.printEspacos(84);
                         descricao = ler.nextLine();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA A MARCA");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+
+                        apresentacao.printClear(1);
+
+                        apresentacao.printMensagem("INTRODUZA A MARCA",84,1);
+                        apresentacao.printEspacos(84);
                         marca = ler.nextLine();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA O PREÇO BASE");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+
+                        apresentacao.printClear(1);
+
+                        apresentacao.printMensagem("INTRODUZA O PREÇO BASE",84,1);
+                        apresentacao.printEspacos(84);
+
                         precoBase = ler.nextDouble();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O TAMANHO");
-                        apresentacao.resetColor();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    3 - " + apresentacao.RESET + "XL");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    2 - " + apresentacao.RESET + "L");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    1 - " + apresentacao.RESET + "M");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    0 - " + apresentacao.RESET + "S");
-                        System.out.println();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+
+                        apresentacao.printClear(1);
+
+                        apresentacao.printTamanhosTshirt();
                         tamanho = ler.nextInt();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O PADRAO");
-                        apresentacao.resetColor();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    2 - " + apresentacao.RESET + "PALMEIRAS");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    1 - " + apresentacao.RESET + "RISCAS");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    0 - " + apresentacao.RESET + "LISA");
-                        System.out.println();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+
+                        apresentacao.printClear(1);
+
+                        apresentacao.printPadroesTshirt();
                         padrao = ler.nextInt();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O SEU ESTADO:");
-                        apresentacao.resetColor();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    1 - " + apresentacao.RESET + "NOVO");
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    0 - " + apresentacao.RESET + "USADO");
-                        System.out.println();
-                        System.out.print("                                                                                    ");
-                        ler = new Scanner(System.in);
+
+                        apresentacao.printClear(1);
+
+                        apresentacao.printEstadoArtigo();
                         opcao = ler.nextInt();
 
                         if (opcao == 1) {
                             apresentacao.printTshirt();
-                            System.out.println();
-                            System.out.println();
+                            apresentacao.printClear(2);
                             String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, 0,0, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
                             apresentacao.clear();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println(tshirt.showArtigo());
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println(apresentacao.CYAN_BOLD + "                                                                                 TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?" + apresentacao.RESET);
-                            System.out.println();
-                            System.out.println("                                                                                                   1 - SIM");
-                            System.out.println("                                                                                                   0 - NÃO");
-                            System.out.println();
-                            System.out.print("                                                                                                      ");
+                            apresentacao.printClear(5);
+                            System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
+                            apresentacao.printClear(3);
+                            apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemSimOuNao(99);
 
-                            ler = new Scanner(System.in);
                             x = ler.nextInt();
 
                             if (x == 1) {
                                 sistema.adicionaArtigo(tshirt);
-                                System.out.println();
-                                System.out.println();
-                                System.out.println();
-                                apresentacao.yellow();
-                                System.out.println("                                                                            ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?");
-                                apresentacao.resetColor();
-                                System.out.println();
-                                System.out.println("                                                                                                    1 - SIM");
-                                System.out.println("                                                                                                    0 - NAO");
-                                System.out.println();
-                                System.out.print("                                                                                                      ");
+                                apresentacao.printClear(3);
+                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?",76,3);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagemSimOuNao(100);
 
-                                ler = new Scanner(System.in);
                                 x = ler.nextInt();
 
                                 if (x == 1) {
@@ -642,60 +582,41 @@ public class Main {
                             } else if (x == 0) {x = 4; break;}
 
                         } else {
-                            System.out.println();
-                            System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA A SUA AVALIAÇÃO");
-                            apresentacao.resetColor();
-                            System.out.print("                                                                                    ");
-                            ler = new Scanner(System.in);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO",84,1);
+                            apresentacao.printEspacos(84);
                             avaliacao = ler.nextDouble();
-                            System.out.println();
-                            System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE");
-                            apresentacao.resetColor();
-                            System.out.print("                                                                                    ");
-                            ler = new Scanner(System.in);
+
+                            apresentacao.printClear(1);
+
+                            apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE",84,1);
+                            apresentacao.printEspacos(84);
                             nrDonos = ler.nextInt();
 
                             apresentacao.printTshirt();
-                            System.out.println();
-                            System.out.println();
+                            apresentacao.printClear(2);
                             String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
-                            apresentacao.clear();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println(tshirt.showArtigo());
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            System.out.println(apresentacao.CYAN_BOLD + "                                                                                 TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?" + apresentacao.RESET);
-                            System.out.println();
-                            System.out.println("                                                                                                   1 - SIM");
-                            System.out.println("                                                                                                   0 - NÃO");
-                            System.out.println();
-                            System.out.print("                                                                                                      ");
 
-                            ler = new Scanner(System.in);
+                            apresentacao.clear();
+                            apresentacao.printClear(5);
+                            System.out.println(tshirt.showArtigo()); //TODO: TAMBEMMMMMMM
+                            apresentacao.printClear(3);
+
+                            apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemSimOuNao(99);
+
                             x = ler.nextInt();
 
                             if (x == 1) {
                                 sistema.adicionaArtigo(tshirt);
-                                System.out.println();
-                                System.out.println();
-                                System.out.println();
-                                apresentacao.yellow();
-                                System.out.println("                                                                            ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?");
-                                apresentacao.resetColor();
-                                System.out.println();
-                                System.out.println("                                                                                                    1 - SIM");
-                                System.out.println("                                                                                                    0 - NAO");
-                                System.out.println();
-                                System.out.print("                                                                                                      ");
+                                apresentacao.printClear(3);
+                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!! DESEJA ADICIONAR OUTRO?",76,3);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagemSimOuNao(100);
 
-                                ler = new Scanner(System.in);
                                 x = ler.nextInt();
 
                                 if (x == 1) {
@@ -707,25 +628,19 @@ public class Main {
 
                         }
                     } else {
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.RED + "                                                                                              ESTE ARTIGO JÁ ESTÁ A VENDA!" + apresentacao.RESET);
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                                DESEJA TENTAR NOVAMENTE?" + apresentacao.RESET);
-                        System.out.println();
-                        System.out.println("                                                                                                        1 - SIM");
-                        System.out.println("                                                                                                        0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                          ");
+                        apresentacao.printClear(2);
+                        apresentacao.printMensagem("ESTE ARTIGO JÁ ESTÁ A VENDA!",94,2);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?",86,1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(014);
 
-                        ler = new Scanner(System.in);
                         x = ler.nextInt();
 
                         if (x == 1) {
                             x = 1;
                             break;
                         } else if (x == 0) {x = 4; break;}
-
                     }
 
                 case 2:

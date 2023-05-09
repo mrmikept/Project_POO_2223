@@ -489,6 +489,7 @@ public class Apresentacao
         System.out.println("                            ⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀                                       ⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼                                          ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿⠀  ");
         System.out.println("                            ⠀⠀⠀⠀⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃⠀⠀⠀⠀⠀                                        ⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇                                          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀  ");
         resetColor();
+        System.out.println("                                        (1)                                                              (2)                                                                 (3)");
     }
 
     public void printTshirt(){
@@ -974,19 +975,13 @@ public class Apresentacao
 
     public void printMensagemSimOuNao(int x) {
         System.out.println();
-        for (int i = 0; i < x; i++)
-        {
-            System.out.print(" ");
-        }
-        System.out.print("1-SIM");
+        printEspacos(x);
+        System.out.print("1 - SIM");
         System.out.println();
-        for (int i = 0; i < x; i++)
-        {
-            System.out.print(" ");
-        }
-        System.out.print("0-NAO");
-        System.out.println();
-        System.out.println();
+        printEspacos(x);
+        System.out.print("0 - NAO");
+        printClear(2);
+        printEspacos(x+3);
     }
 
     public void printMensagem(String mensagem, int x, int cor) {
@@ -1073,6 +1068,48 @@ public class Apresentacao
         System.out.println();
         System.out.print("                                                                                                     ");
     }
+
+    public void printRunArtigosVendaCase0() {
+        printAdicionaArtigoVenda();
+        printArtigosVenda();
+        printClear(4);
+        printMensagem("ESCOLHA O ARTIGO QUE DESEJA VENDER OU PRESSIONE 4 PARA SAIR!",76,1);
+        printClear(1);
+        printEspacos(105);
+    }
+
+    public void printTamanhosTshirt() {
+        printMensagem("INDIQUE O TAMANHO",84,1);
+        System.out.println(CYAN_BOLD + "                                                                                    3 - " + RESET + "XL");
+        System.out.println(CYAN_BOLD + "                                                                                    2 - " + RESET + "L");
+        System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "M");
+        System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "S");
+        printEspacos(84);
+    }
+
+    public void printPadroesTshirt() {
+        printMensagem("INDIQUE O PADRAO",84,1);
+        System.out.println(CYAN_BOLD + "                                                                                    2 - " + RESET + "PALMEIRAS");
+        System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "RISCAS");
+        System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "LISA");
+        System.out.println();
+        printEspacos(84);
+    }
+
+    public void printEstadoArtigo() {
+        printMensagem("INDIQUE O SEU ESTADO:",84,1);
+        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    1 - " + apresentacao.RESET + "NOVO");
+        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    0 - " + apresentacao.RESET + "USADO");
+        System.out.println();
+        printEspacos(84);
+    }
+
+
+
+
+
+
+
 
     public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
         Utilizador utilizador = sistema.procuraUtilizador(email);

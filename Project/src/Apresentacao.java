@@ -1142,7 +1142,6 @@ public class Apresentacao
         System.out.println(CYAN_BOLD + "                                                                                    2 - " + RESET + "PALMEIRAS");
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "RISCAS");
         System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "LISA");
-        System.out.println();
         printEspacos(84);
     }
 

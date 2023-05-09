@@ -118,7 +118,7 @@ public abstract class Artigo implements Serializable
 
     public abstract double getCorrecaoPreco();
 
-    public abstract double getPrecoFinal(LocalDate data);
+    public abstract double getPrecoFinal(int data);
 
     public int getNrDonos()
     {

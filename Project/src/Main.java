@@ -720,9 +720,9 @@ public class Main {
 
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
 
-        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
+        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao, dataLancamento;
         double precoBase, avaliacao, dimensao;
-        String id, descricao, marca, material, data, cor;
+        String id, descricao, marca, material, cor;
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
@@ -984,12 +984,11 @@ public class Main {
                         ler = new Scanner(System.in);
                         material = ler.nextLine();
                         System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA A SUA DATA DE LANÇAMENTO (EX: ANO-MÊS-DIA)");
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2023)");
                         apresentacao.resetColor();
                         System.out.print("                                                                                    ");
                         ler = new Scanner(System.in);
-                        data = ler.nextLine();
-                        LocalDate dataLancamento = stringParaData(data);
+                        dataLancamento = ler.nextInt();
                         System.out.println();
                         System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O SEU TIPO");
                         apresentacao.resetColor();
@@ -1198,8 +1197,7 @@ public class Main {
                         apresentacao.resetColor();
                         System.out.print("                                                                                    ");
                         ler = new Scanner(System.in);
-                        data = ler.nextLine();
-                        LocalDate dataLancamento = stringParaData(data);
+                        dataLancamento = ler.nextInt();
                         System.out.println();
                         System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O SEU TIPO");
                         apresentacao.resetColor();

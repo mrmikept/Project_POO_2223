@@ -7,27 +7,25 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Sapatilha extends Artigo implements Premium {
-    private int tamanho;
+public class Sapatilha extends Calcado implements Premium {
+
     private int tipoCordao;
     private String cor;
-    private LocalDate dataLancamento;
+    private int dataLancamento;
     private int tipo;
+
 
 
 
     public Sapatilha() {
         super();
-        this.tamanho = 0;
         this.tipoCordao = Atributos.CORDAO;
         this.cor = "";
-        this.dataLancamento = LocalDate.now();
-        this.tipo = Atributos.NORMAL;
+        this.dataLancamento = 0;
     }
 
-    public Sapatilha(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, LocalDate dataLancamento, int tipo) {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
-        this.tamanho = tamanho;
+    public Sapatilha(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, int dataLancamento, int tipo) {
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
         this.tipoCordao = tipoCordao;
         this.cor = cor;
         this.dataLancamento = dataLancamento;
@@ -36,20 +34,11 @@ public class Sapatilha extends Artigo implements Premium {
 
     public Sapatilha(Sapatilha sapatilha) {
         super(sapatilha);
-        this.tamanho = sapatilha.getTamanho();
         this.tipoCordao = sapatilha.getTipoCordao();
         this.cor = sapatilha.getCor();
         this.dataLancamento = sapatilha.getDataLancamento();
         this.tipo = sapatilha.getTipo();
 
-    }
-
-    public int getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(int tamanho) {
-        this.tamanho = tamanho;
     }
 
     public int getTipoCordao() {
@@ -68,11 +57,11 @@ public class Sapatilha extends Artigo implements Premium {
         this.cor = cor;
     }
 
-    public LocalDate getDataLancamento() {
+    public int getDataLancamento() {
         return dataLancamento;
     }
 
-    public void setDataLancamento(LocalDate dataLancamento) {
+    public void setDataLancamento(int dataLancamento) {
         this.dataLancamento = dataLancamento;
     }
 
@@ -84,9 +73,9 @@ public class Sapatilha extends Artigo implements Premium {
         this.tipo = tipo;
     }
 
-    public double getValorizacaoPremium(LocalDate date)
+    public double getValorizacaoPremium(int date)
     {
-        return (0.6 * (date.getYear() - this.getDataLancamento().getYear()) * this.getPrecoBase());
+        return (0.6 * (date - this.getDataLancamento()) * this.getPrecoBase());
     }
 
     public double getCorrecaoPreco()
@@ -102,7 +91,7 @@ public class Sapatilha extends Artigo implements Premium {
             return 0;
     }
 
-    public double getPrecoFinal(LocalDate data)
+    public double getPrecoFinal(int data)
     {
         if (this.getTipo() == Atributos.PREMIUM)
         {
@@ -138,7 +127,7 @@ public class Sapatilha extends Artigo implements Premium {
                 this.getTamanho() == sapatilha.getTamanho() &&
                 this.getTipoCordao() == sapatilha.getTipoCordao() &&
                 this.getCor().equals(sapatilha.getCor()) &&
-                this.getDataLancamento().equals(sapatilha.getDataLancamento()) &&
+                this.getDataLancamento() == sapatilha.getDataLancamento() &&
                 this.getTipo() == sapatilha.getTipo());
     }
 
@@ -159,7 +148,7 @@ public class Sapatilha extends Artigo implements Premium {
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⣿⣧⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣤⠶⠶⠶⠶⠶⠶⠶⠿⠶⢶⣏ ⠀    "   + Apresentacao.YELLOW + "Tamanho: " + Apresentacao.RESET + this.getTamanho() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿ ⠀    "   + Apresentacao.YELLOW + "Tipo Cordão: " + Apresentacao.RESET + this.tipoCordaoToString() +  "\n" +
                 Apresentacao.YELLOW + "                                                                                                             Cor: " + Apresentacao.RESET + this.getCor() + "\n" +
-                Apresentacao.YELLOW + "                                                                                                             Data Lançamento: " + Apresentacao.RESET + this.getDataLancamento().toString() + "\n" +
+                Apresentacao.YELLOW + "                                                                                                             Data Lançamento: " + Apresentacao.RESET + this.getDataLancamento() + "\n" +
                 Apresentacao.YELLOW + "                                                                                                             Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
     }
 
@@ -184,7 +173,7 @@ public class Sapatilha extends Artigo implements Premium {
         string.append("Tamanho: " + this.getTamanho() + " | ");
         string.append("Tipo Cordão: " + this.tipoCordaoToString() + " | ");
         string.append("Cor: " + this.getCor() + " | ");
-        string.append("Data Lançamento: " + this.getDataLancamento().toString() + " | ");
+        string.append("Data Lançamento: " + this.getDataLancamento() + " | ");
         string.append("Tipo: " + this.tipoToString() + "\n");
         return string.toString();
     }

@@ -9,11 +9,9 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Tshirt extends Artigo
+public class Tshirt extends Vestuario
 {
-    private int tamanho;
     private int padrao;
-    private double correcaoPreco;
 
     public static final int LISA = 0;
     public static final int RISCAS = 1;
@@ -23,30 +21,19 @@ public class Tshirt extends Artigo
     public Tshirt()
     {
         super();
-        this.tamanho = Atributos.S;
         this.padrao = LISA;
     }
 
     public Tshirt(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int padrao)
     {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
-        this.tamanho = tamanho;
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
         this.padrao = padrao;
     }
 
     public Tshirt(Tshirt tshirt)
     {
         super(tshirt);
-        this.tamanho = tshirt.getTamanho();
         this.padrao = tshirt.getPadrao();
-    }
-
-    public int getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(int tamanho) {
-        this.tamanho = tamanho;
     }
 
     public int getPadrao() {
@@ -66,7 +53,7 @@ public class Tshirt extends Artigo
         return 0;
     }
 
-    public double getPrecoFinal(LocalDate date)
+    public double getPrecoFinal(int date)
     {
         return this.getPrecoBase() + this.getCorrecaoPreco();
     }
@@ -82,28 +69,10 @@ public class Tshirt extends Artigo
             return false;
         }
         Tshirt tshirt = (Tshirt) o;
-        return (super.equals(tshirt) &&
-                this.getTamanho() == tshirt.getTamanho() &&
-                this.getPadrao() == tshirt.getPadrao() &&
-                this.getCorrecaoPreco() == tshirt.getCorrecaoPreco());
+        return super.equals(tshirt) &&
+                this.getPadrao() == tshirt.getPadrao();
     }
 
-    private String tamanhoToString()
-    {
-        if (this.getTamanho() == Atributos.S)
-        {
-            return "S";
-        }
-        if (this.getTamanho() == Atributos.M)
-        {
-            return "M";
-        }
-        if (this.getTamanho() == Atributos.L)
-        {
-            return "L";
-        }
-        return "XL";
-    }
 
     private String padraoToString()
     {
@@ -146,7 +115,6 @@ public class Tshirt extends Artigo
         StringBuilder string = new StringBuilder();
         string.append("[Tshirt]" + " | ");
         string.append(super.toString());
-        string.append("Tamanho: " + this.tamanhoToString() + " | ");
         string.append("Padrão: " + this.padraoToString() + "\n");
         return string.toString();
     }

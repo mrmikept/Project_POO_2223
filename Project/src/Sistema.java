@@ -294,7 +294,6 @@ public class Sistema implements Serializable,Atributos {
      * @param descricao Descrição do artigo
      * @param marca Marca do artigo
      * @param precoBase Preço Base do artigo
-     * @param estadoArtigo Estado do artigo, 0 = NOVO, 1 = USADO
      * @param avaliacao Avaliação do artigo
      * @param nrDonos Numero de donos do artigo
      * @param transportadora Nome da transportadora
@@ -323,7 +322,6 @@ public class Sistema implements Serializable,Atributos {
      * @param descricao Descrição do artigo
      * @param marca Marca do artigo
      * @param precoBase Preço Base do artigo
-     * @param estadoArtigo Estado do artigo, 0 = NOVO, 1 = USADO
      * @param avaliacao Avaliação do artigo
      * @param nrDonos Numero de donos do artigo
      * @param transportadora Nome da transportadora
@@ -336,7 +334,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, LocalDate data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, int data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id)) {
             Utilizador utilizador = this.procuraUtilizador(email);
             Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
@@ -354,7 +352,6 @@ public class Sistema implements Serializable,Atributos {
      * @param descricao Descrição do artigo
      * @param marca Marca do artigo
      * @param precoBase Preço Base do artigo
-     * @param estadoArtigo Estado do artigo, 0 = NOVO, 1 = USADO
      * @param avaliacao Avaliação do artigo
      * @param nrDonos Numero de donos do artigo
      * @param transportadora Nome da transportadora
@@ -366,7 +363,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaMalaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, LocalDate anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaMalaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, double dimensao, String material, int anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);

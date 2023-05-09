@@ -969,21 +969,6 @@ public class Apresentacao
         resetColor();
     }
 
-    public void printMensagemLado(String mensagem, int j)
-    {
-        cyanBold();
-        for (int i = 0; i < j; i++)
-        {
-            System.out.print(" ");
-        }
-        System.out.println(mensagem);
-        resetColor();
-        for (int i = 0; i < j; i++)
-        {
-            System.out.print(" ");
-        }
-    }
-
     public void printMensagemSimOuNao(int x) {
         System.out.println();
         for (int i = 0; i < x; i++)

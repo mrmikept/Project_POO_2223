@@ -180,8 +180,8 @@ public class Main {
                     } else {
                         while (x == 1) {
                             apresentacao.printMensagem("EMAIL INCORRETO OU NAO EXISTE!! DESEJA CONTINUAR A TENTAR?",74,2);
-                            apresentacao.printMensagemSimOuNao(102);
-                            apresentacao.printEspacos(104);
+                            apresentacao.printMensagemSimOuNao(100);
+                            apresentacao.printEspacos(102);
 
                             x = ler.nextInt();
 
@@ -195,7 +195,7 @@ public class Main {
                             email = ler.nextLine();
 
                             if (sistema.verificaUtilizador(email)) {
-                                System.out.println();
+                                apresentacao.printClear(1);
                                 apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                 apresentacao.printEspacos(88);
 
@@ -207,30 +207,21 @@ public class Main {
                                 } else {
                                     while (x == 1) {
                                         apresentacao.printClear(3);
-                                        apresentacao.red();
-                                        System.out.println("                                                                               PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?");
-                                        apresentacao.resetColor();
-                                        System.out.println();
-                                        System.out.println("                                                                                                    1 - SIM");
-                                        System.out.println("                                                                                                    0 - NAO");
-                                        System.out.println();
-                                        System.out.print("                                                                                                      ");
+                                        apresentacao.printMensagemCentrada("PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR",2);
+                                        apresentacao.printClear(1);
+                                        apresentacao.printMensagemSimOuNao(101);
+                                        apresentacao.printEspacos(103);
                                         x = ler.nextInt();
 
                                         if (x == 0) break;
 
-                                        apresentacao.clear();
                                         apresentacao.printLogin();
-                                        apresentacao.cyan();
-                                        System.out.println("                                                                                       Insira o seu email:");
-                                        apresentacao.resetColor();
-                                        System.out.print("                                                                                       " + email);
-                                        System.out.println();
-                                        apresentacao.cyan();
-                                        System.out.println("                                                                                       Insira a sua password:");
-
-                                        apresentacao.resetColor();
-                                        System.out.print("                                                                                       ");
+                                        apresentacao.printMensagem("Insira o seu email:", 88, 1);
+                                        apresentacao.printEspacos(88);
+                                        System.out.print(email);
+                                        apresentacao.printClear(1);
+                                        apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                                        apresentacao.printEspacos(88);
 
                                         ler = new Scanner(System.in);
                                         pass = ler.nextLine();

@@ -113,7 +113,7 @@ public class Main {
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans;
+        String email, pass, nome, morada, nomeTrans, c;
         int nif;
         int tipo = 0;
         double lucro;
@@ -238,88 +238,60 @@ public class Main {
 
                 case 2:
                     apresentacao.printProcuraTrans();
-
-                    System.out.println(apresentacao.YELLOW + "                                                                             Introduza a transportadora que pretende procurar:" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                             ");
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
                     Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
-                    apresentacao.printProcuraTrans();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                  Nome: " + apresentacao.RESET + transportadora.getNome());
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                      Margem Lucro: " + apresentacao.RESET + transportadora.getMargemLucro() + apresentacao.CYAN_BOLD +
-
-                            " | Tipo: " + apresentacao.RESET + transportadora.getTipo() +  apresentacao.CYAN_BOLD + " | Imposto: " + apresentacao.RESET + sistema.getTaxas().getImposto() + apresentacao.CYAN_BOLD + " | Taxas: " + apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() + apresentacao.CYAN_BOLD + " (Pequena), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() + apresentacao.CYAN_BOLD+ " (Média), " + apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande() + apresentacao.CYAN_BOLD + " (Grande)" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                Encomendas:" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW + "                                                                                      Pressione enter para continuar..." + Apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                     ");
+                    apresentacao.printDadosTransportadora(transportadora);
                     ler = new Scanner(System.in);
-                    String c = ler.nextLine();
+                    c = ler.nextLine();
                     x = 0;
                     break;
 
                 case 3: //Registar utilizador
                     apresentacao.printReg();
-
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira o email:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
+                    apresentacao.printMensagem("Insira o email:", 86, 1);
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if (!sistema.verificaUtilizador(email)) {
-                        System.out.println();
-
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira a password:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("Insira a password:", 86, 1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
 
-                        System.out.println();
+                        apresentacao.printClear(1);
 
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira o seu primeiro e ultimo nome:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
+                        apresentacao.printMensagem("Insira o seu primeiro e ultimo nome:", 86, 1);
+                        apresentacao.printEspacos(86);
+
                         ler = new Scanner(System.in);
                         nome = ler.nextLine();
 
-                        System.out.println();
+                        apresentacao.printClear(1);
 
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira a sua morada:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
+                        apresentacao.printMensagem("Insira a sua morada:", 86, 1);
+                        apresentacao.printEspacos(86);
 
                         ler = new Scanner(System.in);
                         morada = ler.nextLine();
 
-                        System.out.println();
+                        apresentacao.printClear(1);
 
+                        apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
+                        apresentacao.printEspacos(86);
 
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira o seu numero fiscal:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
                         ler = new Scanner(System.in);
                         nif = ler.nextInt();
                         sistema.adicionaUtilizador(email, pass, nome, morada, nif);
 
                         apresentacao.printReg();
-                        apresentacao.yellow();
-                        System.out.println("                                                                        UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println("                                                                                                    1 - SIM");
-                        System.out.println("                                                                                                    0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                      ");
+
+                        apresentacao.printMensagem("UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?",72,3);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(100);
+                        apresentacao.printEspacos(102);
 
                         ler = new Scanner(System.in);
                         x = ler.nextInt();
@@ -327,64 +299,50 @@ public class Main {
                         if (x == 1) x = 3;
                         else x = 0;
                     } else {
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.RED + "                                                                                 ESTE EMAIL JÁ EXISTE!! DESEJA TENTAR DE NOVO?");
-                        System.out.println();
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println("                                                                                                   1 - SIM");
-                        System.out.println("                                                                                                   0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                      ");
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("ESTE EMAIL JÁ EXISTE!! DESEJA TENTAR DE NOVO?",81,2);
+                        apresentacao.printClear(2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        apresentacao.printEspacos(102);
                         ler = new Scanner(System.in);
                         x = ler.nextInt();
                         if (x == 1) x = 3;
                         else x = 0;
                     }
-
                     break;
 
                 case 4:
                     apresentacao.printRegTrans();
-                    apresentacao.cyan();
-                    System.out.println("                                                                                      Insira o nome da transportadora:");
-                    apresentacao.resetColor();
-                    System.out.print("                                                                                      ");
+                    apresentacao.printMensagem("Insira o nome da transportadora:",86,1);
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
                     if (!sistema.verificaTransportadora(nomeTrans)) {
 
-                        System.out.println();
+                        apresentacao.printClear(1);
 
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira a margem de lucro que pretende obter:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
+                        apresentacao.printMensagem("Insira a margem de lucro que pretende obter:",86,1);
+                        apresentacao.printEspacos(86);
+
                         ler = new Scanner(System.in);
                         lucro = ler.nextDouble();
 
-                        System.out.println();
+                        apresentacao.printClear(1);
 
-                        apresentacao.cyan();
-                        System.out.println("                                                                                      Insira 1-\"Normal\" ou 2-\"Premium\":");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                      ");
+                        apresentacao.printMensagem("Insira 1-\"Normal\" ou 2-\"Premium\":", 86,1);
+                        apresentacao.printEspacos(86);
+
                         ler = new Scanner(System.in);
                         tipo = ler.nextInt();
 
                         sistema.adicionaTransportadora(nomeTrans, lucro, tipo,2);
 
                         apresentacao.printRegTrans();
-                        apresentacao.yellow();
-                        System.out.println("                                                                       TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?");
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println("                                                                                                    1 - SIM");
-                        System.out.println("                                                                                                    0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                      ");
+                        apresentacao.printMensagem("TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?",71,3);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(100);
+                        apresentacao.printEspacos(102);
 
                         ler = new Scanner(System.in);
                         x = ler.nextInt();
@@ -392,17 +350,12 @@ public class Main {
                         if (x == 1) x = 4;
                         else x = 0;
                     } else {
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.RED + "                                                                             ESTA TRANSPORTADORA JÁ EXISTE!! DESEJA TENTAR DE NOVO?");
-                        System.out.println();
-                        apresentacao.resetColor();
-                        System.out.println();
-                        System.out.println("                                                                                                  1 - SIM");
-                        System.out.println("                                                                                                  0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                     ");
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("ESTA TRANSPORTADORA JÁ EXISTE!! DESEJA TENTAR DE NOVO?",77,2);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(98);
+                        apresentacao.printEspacos(101);
+
                         ler = new Scanner(System.in);
                         x = ler.nextInt();
                         if (x == 1) x = 4;
@@ -1456,7 +1409,7 @@ public class Main {
 
         return 0;
     }
-
+    
     public int runEstatisticas() throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException, SistemaException {
         int x = 0;
         String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
@@ -1667,10 +1620,6 @@ public class Main {
     }
 
 }
-
-
-
-
 
 
 //MENU - UTILIZADOR

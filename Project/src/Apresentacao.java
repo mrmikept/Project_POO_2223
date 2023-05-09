@@ -168,7 +168,7 @@ public class Apresentacao
         System.out.println();
     }
 
-    public void printProcuraTrans() {
+    public void printTrans() {
         clear();
         System.out.println();
         System.out.println();
@@ -1049,6 +1049,28 @@ public class Apresentacao
         System.out.println(YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
         System.out.println();
         System.out.print("                                                                                                       ");
+    }
+
+    public void printProcuraTrans() {
+        printTrans();
+        printMensagem("Introduza a transportadora que pretende procurar:",77,3);
+        printClear(1);
+        printEspacos(77);
+    }
+
+    public void printDadosTransportadora(Transportadora transportadora) {
+        printTrans();
+        System.out.println(CYAN_BOLD + "                                                                                                  Nome: " + RESET + transportadora.getNome());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                      Margem Lucro: " + RESET + transportadora.getMargemLucro() + CYAN_BOLD +
+
+                " | Tipo: " + RESET + transportadora.getTipo() +  CYAN_BOLD + " | Imposto: " + RESET + transportadora.getTaxasImpostos().getImposto() + CYAN_BOLD + " | Taxas: " + RESET + transportadora.getTaxasImpostos().getTaxaEncPequena() + CYAN_BOLD + " (Pequena)"+ RESET + ", " +  transportadora.getTaxasImpostos().getTaxaEncMedia() + CYAN_BOLD+ " (Média)"+ RESET + ", " +  transportadora.getTaxasImpostos().getTaxaEncGrande() + CYAN_BOLD + "(Grande)" + RESET);
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                                Encomendas:" + RESET);
+        System.out.println();
+        System.out.println(YELLOW + "                                                                                      Pressione enter para continuar..." + Apresentacao.RESET);
+        System.out.println();
+        System.out.print("                                                                                                     ");
     }
 
     public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {

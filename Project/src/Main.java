@@ -1186,14 +1186,9 @@ public class Main {
 
                 case 1:
                     apresentacao.printVendedorDinheiro();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                             INDIQUE A OPÇÃO QUE PRETENDE" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                 1 - DE SEMPRE");
-                    System.out.println("                                                                                                 0 - PERÍODO DE TEMPO");
-                    System.out.println();
-                    System.out.print("                                                                                                           ");
-
+                    String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO"};
+                    apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE",o);
+                    apresentacao.printEspacos(93);
                     ler = new Scanner(System.in);
                     x = ler.nextInt();
 
@@ -1202,11 +1197,10 @@ public class Main {
                         System.out.println();
                         Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
                         System.out.println(utilizador.toString());
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        //System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
                         System.out.println();
-                        System.out.println(apresentacao.YELLOW +"                                                                                           Pressione enter para sair..." + apresentacao.RESET);
-                        System.out.println();
-                        System.out.print("                                                                                                      ");
+                        apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -1278,7 +1272,7 @@ public class Main {
                     listaEncomendas.toArray(lista);
                     for (i = 0; i < lista.length; i++){
                         Encomenda encomenda = lista[i];
-                        System.out.println("                                                                                          " + encomenda.showEncomenda());
+                        System.out.println("                                                                                          " + apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
                     }
 
 

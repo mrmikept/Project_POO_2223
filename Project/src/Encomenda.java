@@ -231,6 +231,13 @@ public class Encomenda {
         return this.getDataAtualizacao().plusDays(this.getTransportadora().getTempoExpedicao());
     }
 
+    public LocalDate getDataDevolucao(int tempoDevolucao) throws EncomendaException {
+        if (this.getEstado() == Atributos.FINALIZADA){
+            return this.getDataAtualizacao().plusDays(tempoDevolucao);
+        }
+        else throw new EncomendaException("Esta encomenda não se encontra finalizada");
+    }
+
     public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
         LocalDate dataPrevistaEntrega = this.getDataPrevistaEntrega();
@@ -284,21 +291,6 @@ public class Encomenda {
             return "EXPEDIDA";
         }
         return "FINALIZADA";
-    }
-
-    public String showEncomenda() {
-        StringBuilder string = new StringBuilder();
-        string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + this.getId() + Apresentacao.YELLOW + " | " +
-                Apresentacao.CYAN_BOLD + "Artigos: " + Apresentacao.RESET);
-        for(Artigo artigo:listaArtigos)
-        {
-            string.append(artigo.showArtigoLinha());
-        }
-        string.append(Apresentacao.YELLOW + "| " + Apresentacao.CYAN_BOLD + "Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + Apresentacao.YELLOW + " | "
-                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + getVendedor().getNome() + Apresentacao.YELLOW + " | "
-                + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + this.getPrecoFinal() + "\n");
-
-        return string.toString();
     }
 
     @Override

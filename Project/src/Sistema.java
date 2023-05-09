@@ -174,7 +174,22 @@ public class Sistema implements Serializable,Atributos {
      */
     public Map<String, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
-        return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+    }
+
+    /**
+     * Verifica se um utilizador possui artigos há venda
+     * @param email Email de um utilizador
+     * @return true se o utilizador tiver artigos há venda, false se não tiver artigos há venda.
+     * @throws UtilizadorException Caso o utilizador não exista.
+     */
+    public boolean verificaArtigosVendaUtilizador(String email) throws UtilizadorException {
+        return (!this.getArtigosVendaUtilizador(email).isEmpty());
+    }
+
+    public boolean verificaArtigosVenda(String email)
+    {
+        return (!this.listaArtigos.entrySet().stream().filter(artigo -> !artigo.getValue().getVendedor().getEmail().equals(email)).collect(Collectors.toList()).isEmpty());
     }
 
 

@@ -7,27 +7,24 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Mala extends Artigo implements Premium
+public class Mala extends Acessorio implements Premium
 {
     private double dimensao;
-    private String material;
-    private LocalDate anoLancamento;
+    private int anoLancamento;
     private int tipo;
 
     public Mala()
     {
         super();
         this.dimensao = 0.0;
-        this.material = "";
-        this.anoLancamento = LocalDate.now();
+        this.anoLancamento = 0;
         this.tipo = Atributos.NORMAL;
     }
 
-    public Mala(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, double dimensao, String material, LocalDate anoLancamento, int tipo)
+    public Mala(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, double dimensao, String material, int anoLancamento, int tipo)
     {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
+        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, material);
         this.dimensao = dimensao;
-        this.material = material;
         this.anoLancamento = anoLancamento;
         this.tipo = tipo;
     }
@@ -36,7 +33,6 @@ public class Mala extends Artigo implements Premium
     {
         super(mala);
         this.dimensao = mala.getDimensao();
-        this.material = mala.getMaterial();
         this.anoLancamento = mala.getAnoLancamento();
         this.tipo = mala.getTipo();
     }
@@ -49,19 +45,11 @@ public class Mala extends Artigo implements Premium
         this.dimensao = dimensao;
     }
 
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public LocalDate getAnoLancamento() {
+    public int getAnoLancamento() {
         return anoLancamento;
     }
 
-    public void setAnoLancamento(LocalDate anoLancamento) {
+    public void setAnoLancamento(int anoLancamento) {
         this.anoLancamento = anoLancamento;
     }
 
@@ -73,9 +61,9 @@ public class Mala extends Artigo implements Premium
         this.tipo = tipo;
     }
 
-    public double getValorizacaoPremium(LocalDate date)
+    public double getValorizacaoPremium(int date)
     {
-        return (date.getYear() - this.getAnoLancamento().getYear()) * 0.2;
+        return (date - this.getAnoLancamento()) * 0.2;
     }
 
     public double getCorrecaoPreco()
@@ -87,7 +75,7 @@ public class Mala extends Artigo implements Premium
         return 0;
     }
 
-    public double getPrecoFinal(LocalDate data)
+    public double getPrecoFinal(int data)
     {
         if (this.getTipo() == Atributos.PREMIUM)
         {
@@ -111,7 +99,7 @@ public class Mala extends Artigo implements Premium
                 this.getTipo() == mala.getTipo() &&
                 this.getMaterial().equals(mala.getMaterial()) &&
                 this.getDimensao() == mala.getDimensao()) &&
-                this.getAnoLancamento().equals(mala.getAnoLancamento());
+                this.getAnoLancamento() == mala.getAnoLancamento();
     }
 
     private String tipoToString()
@@ -139,7 +127,7 @@ public class Mala extends Artigo implements Premium
                 Apresentacao.CYAN + "                                                                            ⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀"   + Apresentacao.YELLOW + "       Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀"   + Apresentacao.YELLOW + "       Dimensão: " + Apresentacao.RESET + this.getDimensao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀"   + Apresentacao.YELLOW + "       Material: " + Apresentacao.RESET + this.getMaterial() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + Apresentacao.RESET + this.getAnoLancamento().toString() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + Apresentacao.RESET + this.getAnoLancamento() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
     }
 
@@ -154,7 +142,7 @@ public class Mala extends Artigo implements Premium
         string.append(super.toString());
         string.append("Dimensão: " + this.getDimensao() + " | ");
         string.append("Material: " + this.getMaterial() + " | ");
-        string.append("Data Lançamento: " + this.getAnoLancamento().toString() + " | ");
+        string.append("Data Lançamento: " + this.getAnoLancamento() + " | ");
         string.append("Tipo: " + this.tipoToString());
         return string.toString();
     }

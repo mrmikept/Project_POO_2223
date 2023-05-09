@@ -372,7 +372,7 @@ public class Main {
         return 0;
     }
 
-    private int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException, SistemaException //MENU UTILIZADOR
+    public int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException, SistemaException //MENU UTILIZADOR
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Encomendas", "Faturas", "Retroceder"};
         int x = 0;
@@ -408,8 +408,7 @@ public class Main {
                     break;
 
                 case 2: // MENU COMPRAR
-                    apresentacao.printComprar();
-                    paginateMenuCompras(sistema.getArtigosVenda(email), 2, email);
+                    apresentacao.paginateMenuCompras(sistema.getArtigosVenda(email), 2, email, sistema);
                     x = 0;
                     break;
 
@@ -517,8 +516,7 @@ public class Main {
                         if (x == 1) runArtigosVender(email);
                         else if (x == 0) {x=0; break;}
                     } else {
-                        paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email);
-
+                        apresentacao.paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email, sistema);
                         x =0;
                         break;
                     }
@@ -535,9 +533,9 @@ public class Main {
 
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
 
-        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao;
+        int opcao, nrDonos, tamanho, padrao, tipo, tipoCordao, dataLancamento;
         double precoBase, avaliacao, dimensao;
-        String id, descricao, marca, material, data, cor;
+        String id, descricao, marca, material, cor;
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
@@ -623,7 +621,7 @@ public class Main {
                             apresentacao.printTshirt();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, 0,0, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
                             apresentacao.clear();
@@ -688,7 +686,7 @@ public class Main {
                             apresentacao.printTshirt();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Tshirt tshirt = new Tshirt(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, padrao);
                             apresentacao.clear();
@@ -799,12 +797,11 @@ public class Main {
                         ler = new Scanner(System.in);
                         material = ler.nextLine();
                         System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA A SUA DATA DE LANÇAMENTO (EX: ANO-MÊS-DIA)");
+                        System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2023)");
                         apresentacao.resetColor();
                         System.out.print("                                                                                    ");
                         ler = new Scanner(System.in);
-                        data = ler.nextLine();
-                        LocalDate dataLancamento = stringParaData(data);
+                        dataLancamento = ler.nextInt();
                         System.out.println();
                         System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O SEU TIPO");
                         apresentacao.resetColor();
@@ -828,7 +825,7 @@ public class Main {
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, 0,0, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, dimensao, material, dataLancamento, tipo);
                             apresentacao.clear();
@@ -892,7 +889,7 @@ public class Main {
                             apresentacao.printMala();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Mala mala = new Mala(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, dimensao, material, dataLancamento, tipo);
                             apresentacao.clear();
@@ -1013,8 +1010,7 @@ public class Main {
                         apresentacao.resetColor();
                         System.out.print("                                                                                    ");
                         ler = new Scanner(System.in);
-                        data = ler.nextLine();
-                        LocalDate dataLancamento = stringParaData(data);
+                        dataLancamento = ler.nextInt();
                         System.out.println();
                         System.out.println(apresentacao.CYAN_BOLD + "                                                                                    INDIQUE O SEU TIPO");
                         apresentacao.resetColor();
@@ -1038,7 +1034,7 @@ public class Main {
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, 0,0, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
                             apresentacao.clear();
@@ -1102,7 +1098,7 @@ public class Main {
                             apresentacao.printSapatilhas();
                             System.out.println();
                             System.out.println();
-                            String nomeTransportadora = paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
+                            String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
                             Utilizador utilizador = sistema.procuraUtilizador(email);
                             Sapatilha sapatilha = new Sapatilha(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.sistema.procuraTransportadora(nomeTransportadora), Atributos.VENDA, tamanho, tipoCordao, cor, dataLancamento, tipo);
                             apresentacao.clear();
@@ -1385,25 +1381,25 @@ public class Main {
 
                 case 1: // MENU PENDENTES
                     encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
-                    paginatePendentes(encomendas,5, email);
+                    apresentacao.paginatePendentes(encomendas,5, email, sistema);
                     x = 0;
                     break;
 
                 case 2: //MENU EXPEDIDAS
                     encomendas = utilizador.getListaEncomendas(Atributos.EXPEDIDA);
-                    paginateExpedidas(encomendas,5, email);
+                    apresentacao.paginateExpedidas(encomendas,5, email, sistema);
                     x = 0;
                     break;
 
                 case 3: //MENU FINALIZADAS
                     encomendas = utilizador.getListaEncomendas(Atributos.FINALIZADA);
-                    paginateFinalizadas(encomendas,5, email);
+                    apresentacao.paginateFinalizadas(encomendas,5, email, sistema);
                     x = 0;
                     break;
 
                 case 4:
                     encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-                    paginateDevolvidas(encomendas,5, email);
+                    apresentacao.paginateDevolvidas(encomendas,5, email, sistema);
                     x = 0;
                     break;
 
@@ -1413,915 +1409,7 @@ public class Main {
 
         return 0;
     }
-
-    public void paginateMenuVendas(Map<String, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException {
-        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
-        String c;
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-
-        do {
-            apresentacao.printVendas();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
-            }
-
-            if (numPages == 1){
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-                Scanner ler = new Scanner(System.in);
-                c = ler.nextLine();
-                runVendas(email);
-            }
-
-            if (numPages > 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                           Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'r' " + apresentacao.CYAN_BOLD +
-                                "para remover artigo e" + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (input.equals("r")) {
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
-
-                    String id = scanner.nextLine();
-
-                    Utilizador utilizador = sistema.procuraUtilizador(email);
-                    if(utilizador.getListaArtigos().containsKey(id)){
-                        Artigo artigo = sistema.procuraArtigoVenda(id);
-                        apresentacao.clear();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(artigo.showArtigo());
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                           DESEJA REMOVER ESTE ARTIGO?"+ apresentacao.RESET);
-                        sistema.removeArtigo(artigo);
-                        System.out.println();
-                        System.out.println("                                                                                                     1 - SIM");
-                        System.out.println("                                                                                                     0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                        ");
-
-                        int opcao = scanner.nextInt();
-                        if (opcao == 1) {
-                            sistema.removeArtigo(artigo);
-                            System.out.println();
-                            System.out.println(apresentacao.YELLOW +"                                                                                          ARTIGO REMOVIDO COM SUCESSO!" + apresentacao.RESET);
-                            System.out.println();
-                            System.out.println("                                                                                        Pressione enter para continuar...");
-                            System.out.println();
-                            System.out.print("                                                                                                       ");
-                            Scanner ler = new Scanner(System.in);
-                            c = ler.nextLine();
-                            break;
-                        }
-                    }
-                } else if (input.equals("s")) {
-                    break;
-                }
-            }
-        } while (true);
-    }
-
-    public void paginateMenuCompras(Map<String, Artigo> lista, int pageSize, String email) throws ArtigoException, UtilizadorException, TransportadoraException, EncomendaException, SistemaException {
-        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
-        String c;
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-        if (lista.isEmpty())
-        {
-            System.out.println("                                                                                        Não existem artigos para comprar!");
-            System.out.println();
-            System.out.println();
-            System.out.println(apresentacao.YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                       ");
-            Scanner ler = new Scanner(System.in);
-            c = ler.nextLine();
-            runUtilizador(email);
-        }
-        do {
-            apresentacao.printComprar();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
-            }
-
-            if (numPages == 1){
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-                Scanner ler = new Scanner(System.in);
-                c = ler.nextLine();
-                runVendas(email);
-            }
-
-            if (numPages > 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                           Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'c' " + apresentacao.CYAN_BOLD +
-                        "para comprar artigo e" + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD + "para sair" + apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (input.equals("c")) {
-
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA COMPRAR"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
-
-                    String id = scanner.nextLine();
-
-                    Artigo artigo = sistema.procuraArtigoVenda(id);
-                    apresentacao.clear();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(artigo.showArtigo());
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                           DESEJA COMPRAR ESTE ARTIGO?"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                     1 - SIM");
-                    System.out.println("                                                                                                     0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                        ");
-
-                    int opcao = scanner.nextInt();
-                    if (opcao == 1) {
-                        sistema.adicionaArtigoEncomenda(artigo, email);
-                        System.out.println();
-                        System.out.println(apresentacao.YELLOW +"                                                                                          ARTIGO COMPRADO COM SUCESSO!" + apresentacao.RESET);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                           DESEJA COMPRAR OUTRO ARTIGO?"+ apresentacao.RESET);
-                        System.out.println();
-                        System.out.println("                                                                                                     1 - SIM");
-                        System.out.println("                                                                                                     0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                        ");
-
-                        int opcao2 = scanner.nextInt();
-                        if (opcao2 == 1){
-                            input.equals("c");
-                        }
-                        else if (opcao2 == 0) { break;}
-                    }
-                } else if (input.equals("s")) {
-                    break;
-                }
-            }
-        } while (true);
-    }
-
-    public String paginateTransportadora(Map<String, Transportadora> lista, int pageSize, String email) throws TransportadoraException, UtilizadorException, ArtigoException {
-        Transportadora[] menuItems = lista.values().toArray(new Transportadora[0]);
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-        do {
-            apresentacao.printTrans();
-            System.out.println();
-            System.out.println();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Transportadora transportadora = menuItems[i];
-                System.out.println();
-                System.out.println(transportadora.showTransportadora(key));
-            }
-
-            if (numPages > 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                                               Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar e" + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder ");
-                System.out.println("                                                                              Para selecionar a transportadora, digite o nome dela");
-                apresentacao.resetColor();
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (!sistema.verificaTransportadora(input)) {
-                    System.out.println();
-                    System.out.println(apresentacao.RED + "                                                        A TRANSPORTADORA COM O NOME "+ apresentacao.RESET + input + apresentacao.RED + " NÃO EXISTE" + apresentacao.RESET);
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                            DESEJA TENTAR NOVAMENTE?" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                            1 - SIM");
-                    System.out.println("                                                                                                            0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                              ");
-
-                    Scanner ler = new Scanner(System.in);
-                    int op = ler.nextInt();
-
-                    if (op == 1) paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                    else runVendas(email);
-
-                }
-                else
-                {
-                    return input;
-                }
-            } else if (numPages == 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                 Para selecionar a transportadora, digite o nome dela");
-                System.out.println();
-                System.out.print("                                                                                                        ");
-
-                Scanner scanner = new Scanner(System.in);
-                String nomeTransportadora = scanner.nextLine();
-                if (!sistema.verificaTransportadora(nomeTransportadora)){
-
-                    System.out.println();
-                    System.out.println(apresentacao.RED + "                                                        A TRANSPORTADORA COM O NOME "+ apresentacao.RESET + nomeTransportadora + apresentacao.RED + " NÃO EXISTE" + apresentacao.RESET);
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                            DESEJA TENTAR NOVAMENTE?" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                            1 - SIM");
-                    System.out.println("                                                                                                            0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                              ");
-
-                    Scanner ler = new Scanner(System.in);
-                    int op = ler.nextInt();
-
-                    if (op == 1) paginateTransportadora(sistema.getListaTransportadoras(), 1, email);
-                    else runVendas(email);
-
-                }
-                else
-                {
-                    return nomeTransportadora;
-                }
-            }
-        } while (true);
-    }
-
-    public void paginatePendentes(List<Encomenda> encomendas, int pageSize, String email) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
-        Utilizador utilizador = sistema.procuraUtilizador(email);
-
-        if (encomendas.isEmpty()) {
-            System.out.println();
-            System.out.println();
-            apresentacao.printBox();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(apresentacao.YELLOW + "                                                                                        NAO EXISTEM ENCOMENDAS PENDENTES!!" + apresentacao.RESET);
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                        Pressione enter para retroceder...");
-            System.out.println();
-            System.out.print("                                                                                                        ");
-            Scanner ler = new Scanner(System.in);
-            String c = ler.nextLine();
-            return;
-        }
-
-        do {
-            encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
-            Encomenda[] menuItems = new Encomenda[encomendas.size()];
-            encomendas.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printPendentes();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            System.out.println(apresentacao.RED + "[ENCOMENDAS]\n" + apresentacao.RESET);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
-            }
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                
-                System.out.println(apresentacao.CYAN_BOLD + "                             Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'c' " + apresentacao.CYAN_BOLD +
-                        "para confirmar encomenda," + apresentacao.RESET + " 'r' " + apresentacao.CYAN_BOLD + "para ver/remover um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                        "para sair" + apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                    } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (input.equals("c")) {
-
-                    System.out.println();
-                    System.out.println(apresentacao.RED +"                                                                              INTRODUZA O ID DA ENCOMENDA QUE DESEJA CONFIRMAR"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
-
-                    int id = scanner.nextInt();
-
-                    if (menuItems.length == 1) {
-                        sistema.confirmaEncomenda(id,email);
-                        System.out.println();
-                        System.out.println();
-                        apresentacao.printBox();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(apresentacao.YELLOW + "                                                                                        ENCOMENDA CONFIRMADA COM SUCESSO!!");
-                        System.out.println();
-                        System.out.println();
-                        System.out.println("                                                                                        NAO EXISTEM ENCOMENDAS PENDENTES!!" + apresentacao.RESET);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println("                                                                                        Pressione enter para retroceder...");
-                        System.out.println();
-                        System.out.print("                                                                                                        ");
-                        Scanner ler = new Scanner(System.in);
-                        String c = ler.nextLine();
-                        break;
-                    }
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW + "                                                                                      ENCOMENDA CONFIRMADA COM SUCESSO!!" + apresentacao.RESET);
-
-                    sistema.confirmaEncomenda(id,email);
-
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                      DESEJA CONFIRMAR MAIS ENCOMENDAS?"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                   1 - SIM");
-                    System.out.println("                                                                                                   0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
-
-                    Scanner ler = new Scanner(System.in);
-                    int op = ler.nextInt();
-
-                    if (op == 1) {
-                    }
-                    else break;
-                } else if (input.equals("r")) {
-
-                    System.out.println();
-                    System.out.println(apresentacao.RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA EDITAR"+ apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                      ");
-
-                    int id = scanner.nextInt();
-
-                    Encomenda encomenda = sistema.procuraEncomenda(id);
-
-                    paginateEncPendentes(encomenda, 2, email, id);
-                }
-                else if (input.equals("s")) {
-                    break;
-                }
-
-        } while (true);
-    }
-
-    public void paginateEncPendentes(Encomenda encomenda, int pageSize, String email, int id_encomenda) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
-
-        do {
-            encomenda = sistema.procuraEncomenda(id_encomenda);
-            List<Artigo> lista = encomenda.getListaArtigos();
-            Artigo[] menuItems = new Artigo[lista.size()];
-            lista.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printBox();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
-            }
-
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-            System.out.println();
-            System.out.println(apresentacao.CYAN_BOLD + "                                               Pressione" + apresentacao.RESET + " '+' " +
-                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET +
-                    " 'r' " + apresentacao.CYAN_BOLD + "para remover um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                    "para sair" + apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                       ");
-
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().toLowerCase();
-
-            if (input.equals("+") && currentPage < numPages) {
-                currentPage++;
-            } else if (input.equals("-") && currentPage > 1) {
-                currentPage--;
-            } else if (input.equals("r")) {
-                System.out.println();
-                System.out.println(apresentacao.RED +"                                                                                  INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER"+ apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                String id = scanner.nextLine();
-
-                if (menuItems.length == 1) {
-                    sistema.removeArtigoEncomenda(id,email);
-                    apresentacao.printBox();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW + "                                                                                          ESTA ENCOMENDA FOI REMOVIDA!!" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println();
-                    System.out.println("                                                                                        Pressione enter para retroceder...");
-                    System.out.println();
-                    System.out.print("                                                                                                        ");
-                    Scanner ler = new Scanner(System.in);
-                    String c = ler.nextLine();
-                    break;
-                }
-
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.YELLOW + "                                                                                         ARTIGO REMOVIDO COM SUCESSO!!" + apresentacao.RESET);
-                System.out.println();
-
-                sistema.removeArtigoEncomenda(id,email);
-
-                System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD +"                                                                                   DESEJA CONTINUAR A REMOVER MAIS ARTIGOS?"+ apresentacao.RESET);
-                System.out.println();
-                System.out.println("                                                                                                    1 - SIM");
-                System.out.println("                                                                                                    0 - NAO");
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner ler = new Scanner(System.in);
-                int op = ler.nextInt();
-
-                if (op == 1) {
-                }
-                else {
-                    break;
-                }
-            } else if (input.equals("s")) {
-                break;
-            }
-        } while (true);
-     }
-
-    public void paginateExpedidas(List<Encomenda> encomendas, int pageSize, String email) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
-
-        if (encomendas.isEmpty()) {
-            System.out.println();
-            System.out.println();
-            apresentacao.printBox();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(apresentacao.YELLOW + "                                                                                        NAO EXISTEM ENCOMENDAS EXPEDIDAS!!" + apresentacao.RESET);
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                        Pressione enter para retroceder...");
-            System.out.println();
-            System.out.print("                                                                                                        ");
-            Scanner ler = new Scanner(System.in);
-            String c = ler.nextLine();
-            return;
-        }
-
-        do {
-            Encomenda[] menuItems = new Encomenda[encomendas.size()];
-            encomendas.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printExpedidas();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            System.out.println(apresentacao.RED + "[ENCOMENDAS]\n" + apresentacao.RESET);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
-            }
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-            System.out.println();
-
-            System.out.println(apresentacao.CYAN_BOLD + "                                               Pressione" + apresentacao.RESET + " '+' " +
-                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + "'v' " + apresentacao.CYAN_BOLD + "para ver os artigos de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                    "para sair" + apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                      ");
-
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().toLowerCase();
-
-            if (input.equals("+") && currentPage < numPages) {
-                currentPage++;
-            } else if (input.equals("-") && currentPage > 1) {
-                currentPage--;
-            } else if (input.equals("v")) {
-                System.out.println();
-                System.out.println(apresentacao.RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER"+ apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                int id = scanner.nextInt();
-
-                Encomenda encomenda = sistema.procuraEncomenda(id);
-
-                paginateEncExpedidas(encomenda, 2, email, id);
-            }
-            else if (input.equals("s")) {
-                break;
-            }
-        } while (true);
-    }
-
-    public void paginateEncExpedidas(Encomenda encomenda, int pageSize, String email, int id_encomenda) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
-
-        do {
-            encomenda = sistema.procuraEncomenda(id_encomenda);
-            List<Artigo> lista = encomenda.getListaArtigos();
-            Artigo[] menuItems = new Artigo[lista.size()];
-            lista.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printBox();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
-            }
-
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-            System.out.println();
-            System.out.println(apresentacao.CYAN_BOLD + "                                                                      Pressione" + apresentacao.RESET + " '+' " +
-                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET +
-                    " 's' " + apresentacao.CYAN_BOLD +
-                    "para sair" + apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                       ");
-
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().toLowerCase();
-
-            if (input.equals("+") && currentPage < numPages) {
-                currentPage++;
-            } else if (input.equals("-") && currentPage > 1) {
-                currentPage--;
-            } else if (input.equals("s")) {
-                break;
-            }
-        } while (true);
-    }
-
-    public void paginateFinalizadas(List<Encomenda> encomendas, int pageSize, String email) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
-        Utilizador utilizador = sistema.procuraUtilizador(email);
-
-        if (encomendas.isEmpty()) {
-            System.out.println();
-            System.out.println();
-            apresentacao.printBox();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(apresentacao.YELLOW + "                                                                                       NAO EXISTEM ENCOMENDAS FINALIZADAS!!" + apresentacao.RESET);
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                        Pressione enter para retroceder...");
-            System.out.println();
-            System.out.print("                                                                                                        ");
-            Scanner ler = new Scanner(System.in);
-            String c = ler.nextLine();
-            return;
-        }
-
-        do {
-            encomendas = utilizador.getListaEncomendas(Atributos.FINALIZADA);
-            Encomenda[] menuItems = new Encomenda[encomendas.size()];
-            encomendas.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printFinalizadas();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            System.out.println(apresentacao.RED + "[ENCOMENDAS]\n" + apresentacao.RESET);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
-            }
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-            System.out.println();
-
-            System.out.println(apresentacao.CYAN_BOLD + "                                 Pressione" + apresentacao.RESET + " '+' " +
-                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + " 'd' " + apresentacao.CYAN_BOLD +
-                    "para devolver encomenda," + apresentacao.RESET + " 'v' " + apresentacao.CYAN_BOLD + "para ver um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                    "para sair" + apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                      ");
-
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().toLowerCase();
-
-            if (input.equals("+") && currentPage < numPages) {
-                currentPage++;
-            } else if (input.equals("-") && currentPage > 1) {
-                currentPage--;
-            } else if (input.equals("d")) {
-
-                System.out.println();
-                System.out.println(apresentacao.RED +"                                                                               INTRODUZA O ID DA ENCOMENDA QUE DESEJA DEVOLVER"+ apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                int id = scanner.nextInt();
-
-                if (menuItems.length == 1) {
-                    sistema.devolveEncomenda(email,id);
-                    System.out.println();
-                    System.out.println();
-                    apresentacao.printBox();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW + "                                                                                        ENCOMENDA DEVOLVIDA COM SUCESSO!!");
-                    System.out.println();
-                    System.out.println();
-                    System.out.println("                                                                                        NAO EXISTEM ENCOMENDAS DEVOLVIDAS!!" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println();
-                    System.out.println("                                                                                        Pressione enter para retroceder...");
-                    System.out.println();
-                    System.out.print("                                                                                                        ");
-                    Scanner ler = new Scanner(System.in);
-                    String c = ler.nextLine();
-                    break;
-                }
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.YELLOW + "                                                                                      ENCOMENDA DEVOLVIDA COM SUCESSO!!" + apresentacao.RESET);
-
-                sistema.devolveEncomenda(email,id);
-
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.CYAN_BOLD + "                                                                                      DESEJA DEVOLVER MAIS ENCOMENDAS?"+ apresentacao.RESET);
-                System.out.println();
-                System.out.println("                                                                                                   1 - SIM");
-                System.out.println("                                                                                                   0 - NAO");
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                Scanner ler = new Scanner(System.in);
-                int op = ler.nextInt();
-
-                if (op == 1) {
-                }
-                else break;
-            } else if (input.equals("v")) {
-
-                System.out.println();
-                System.out.println(apresentacao.RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER"+ apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                int id = scanner.nextInt();
-
-                Encomenda encomenda = sistema.procuraEncomenda(id);
-
-                apresentacao.paginateEncFinalizadaseDevolvidas(encomenda, 2, email, id, sistema);
-            }
-            else if (input.equals("s")) {
-                break;
-            }
-
-        } while (true);
-    }
-
-
-
-    public void paginateDevolvidas(List<Encomenda> encomendas, int pageSize, String email) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
-        Utilizador utilizador = sistema.procuraUtilizador(email);
-
-        if (encomendas.isEmpty()) {
-            System.out.println();
-            System.out.println();
-            apresentacao.printBox();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(apresentacao.YELLOW + "                                                                                        NAO EXISTEM ENCOMENDAS DEVOLVIDAS!!" + apresentacao.RESET);
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                        Pressione enter para retroceder...");
-            System.out.println();
-            System.out.print("                                                                                                        ");
-            Scanner ler = new Scanner(System.in);
-            String c = ler.nextLine();
-            return;
-        }
-
-        do {
-            encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-            Encomenda[] menuItems = new Encomenda[encomendas.size()];
-            encomendas.toArray(menuItems);
-            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-            int currentPage = 1;
-            int startIndex, endIndex;
-
-            apresentacao.printDevolvidas();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            System.out.println(apresentacao.RED + "[ENCOMENDAS]\n" + apresentacao.RESET);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Encomenda encomenda = menuItems[i];
-                System.out.println(encomenda.showEncomenda());
-            }
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-            System.out.println();
-
-            System.out.println(apresentacao.CYAN_BOLD + "                                                 Pressione" + apresentacao.RESET + " '+' " +
-                    apresentacao.CYAN_BOLD + "para avancar," + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder," + apresentacao.RESET + apresentacao.RESET + " 'v' " + apresentacao.CYAN_BOLD + "para ver um artigo de uma encomenda," + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                    "para sair" + apresentacao.RESET);
-            System.out.println();
-            System.out.print("                                                                                                      ");
-
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().toLowerCase();
-
-            if (input.equals("+") && currentPage < numPages) {
-                currentPage++;
-            } else if (input.equals("-") && currentPage > 1) {
-                currentPage--;
-            } else if (input.equals("v")) {
-
-                System.out.println();
-                System.out.println(apresentacao.RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA EDITAR"+ apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                      ");
-
-                int id = scanner.nextInt();
-
-                Encomenda encomenda = sistema.procuraEncomenda(id);
-
-                apresentacao.paginateEncFinalizadaseDevolvidas(encomenda, 2, email, id, sistema);
-            }
-            else if (input.equals("s")) {
-                break;
-            }
-
-        } while (true);
-    }
-
-    public void paginateCompradorVendedor(List<Utilizador> lista, int pageSize ) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
-        Utilizador[] menuItems = lista.toArray(new Utilizador[0]);
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-        do {
-            apresentacao.printCompradorVendedor();
-            System.out.println();
-            System.out.println();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Utilizador utilizador = menuItems[i];
-                System.out.println();
-                System.out.println("                                                                                                        (" + key + ")");
-                System.out.println(utilizador.toString());
-            }
-
-            if (numPages > 1) {
-            System.out.println();
-            System.out.println();
-            System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-            System.out.println();
-            System.out.println(apresentacao.CYAN_BOLD + "                                                                               Pressione" + apresentacao.RESET + " '+' " +
-                        apresentacao.CYAN_BOLD + "para avancar, " + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder e " + apresentacao.RESET + " 's' " + apresentacao.CYAN_BOLD +
-                        "para sair");
-                apresentacao.resetColor();
-                System.out.println();
-                System.out.print("                                                                                                    ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-
-                } else if (input.equals("s")) {
-                    break;
-                }
-            } else if (numPages == 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println(apresentacao.YELLOW +"                                                                                               Pressione enter para sair..." + apresentacao.RESET);
-                System.out.println();
-                System.out.print("                                                                                                          ");
-
-                Scanner scanner = new Scanner(System.in);
-                String c = scanner.nextLine();
-                break;
-            }
-        } while (true);
-    }
-
+    
     public int runEstatisticas() throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException, SistemaException {
         int x = 0;
         String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
@@ -2476,7 +1564,7 @@ public class Main {
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
 
-                        paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
+                        apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
                         x = 0;
                         break;
                     }
@@ -2494,7 +1582,7 @@ public class Main {
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
 
-                        paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
+                        apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
                         x = 0;
                         break;
 
@@ -2532,10 +1620,6 @@ public class Main {
     }
 
 }
-
-
-
-
 
 
 //MENU - UTILIZADOR

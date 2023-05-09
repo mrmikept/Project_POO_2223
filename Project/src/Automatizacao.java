@@ -154,7 +154,7 @@ public class Automatizacao {
             if(camposArt[1].contains("Mala")){
                 double dimensao = Double.parseDouble(camposArt[9]);
                 String material = camposArt[10];
-                LocalDate anoLancamento = LocalDate.parse(camposArt[11]);
+                int anoLancamento = Integer.parseInt(camposArt[11]);
                 int tipo = retornaTipo(camposArt[12]);
                 sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase, 0, 0, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
@@ -162,7 +162,7 @@ public class Automatizacao {
                 int tamanho = Integer.valueOf(camposArt[9]);
                 int tipoCordao = retornaCordao(camposArt[10]);
                 String cor = camposArt[11];
-                LocalDate dataLancamento = LocalDate.parse(camposArt[12]);
+                int dataLancamento = Integer.parseInt(camposArt[12]);
                 int tipo = retornaTipo(camposArt[13]);
                 sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase,  0, 0, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }
@@ -181,7 +181,7 @@ public class Automatizacao {
             if(camposArt[1].contains("Mala")){
                 double dimensao = Double.parseDouble(camposArt[11]);
                 String material = camposArt[12];
-                LocalDate anoLancamento = LocalDate.parse(camposArt[13]);
+                int anoLancamento = Integer.parseInt(camposArt[13]);
                 int tipo = retornaTipo(camposArt[14]);
                 sistema.adicionaMalaVenda(id, email, descricao, marca, precoBase,  avaliacao, nrDonos, nomeTransportadora, dimensao, material, anoLancamento, tipo);
             }
@@ -189,7 +189,7 @@ public class Automatizacao {
                 int tamanho = Integer.valueOf(camposArt[11]);
                 int tipoCordao = retornaCordao(camposArt[12]);
                 String cor = camposArt[13];
-                LocalDate dataLancamento = LocalDate.parse(camposArt[14]);
+                int dataLancamento = Integer.parseInt(camposArt[14]);
                 int tipo = retornaTipo(camposArt[15]);
                 sistema.adicionaSapatilhaVenda(id, email, descricao, marca, precoBase, avaliacao, nrDonos, nomeTransportadora, tamanho, tipoCordao, cor, dataLancamento, tipo);
             }

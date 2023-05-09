@@ -76,6 +76,7 @@ public class Main {
                     boolean existe = Files.exists(path);
                     if (existe) {
                         this.sistema = CarregamentoFicheiro.lerFicheiro(input);
+                        apresentacao.printLoad();
                         apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
                         ler = new Scanner(System.in);
                         ler.nextLine();
@@ -108,7 +109,6 @@ public class Main {
                     break;
             }
         } while (x != 6);
-        apresentacao.clear();
     }
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
@@ -139,14 +139,13 @@ public class Main {
 
                 case 1: //Iniciar sessao
                     apresentacao.printLogin();
-                    apresentacao.printMensagem("Insira o seu email:");
+                    apresentacao.printMensagem("Insira o seu email:", 88, 1);
+                    apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     if (sistema.verificaUtilizador(email)) {
-                        apresentacao.cyan();
-                        System.out.println("                                                                                       Insira a sua password:");
-                        apresentacao.resetColor();
-                        System.out.print("                                                                                       ");
+                        apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                        apresentacao.printEspacos(88);
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         if (sistema.verificaPassword(email, pass)) {
@@ -154,32 +153,21 @@ public class Main {
                             break;
                         } else {
                             while (x == 1) {
-                                System.out.println();
-                                System.out.println();
-                                System.out.println();
-                                apresentacao.red();
-                                System.out.println("                                                                               PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?");
-                                apresentacao.resetColor();
-                                System.out.println();
-                                System.out.println("                                                                                                    1 - SIM");
-                                System.out.println("                                                                                                    0 - NAO");
-                                System.out.println();
-                                System.out.print("                                                                                                      ");
-                                x = ler.nextInt();
+                                apresentacao.printClear(2);
+                                apresentacao.printMensagemCentrada("PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?",2);
+                                apresentacao.printMensagemSimOuNao(102);
+                                apresentacao.printEspacos(104);
 
+                                x = ler.nextInt();
                                 if (x == 0) break;
 
-                                apresentacao.clear();
                                 apresentacao.printLogin();
-                                apresentacao.cyan();
-                                System.out.println("                                                                                       Insira o seu email:");
-                                apresentacao.resetColor();
-                                System.out.print("                                                                                       " + email);
-                                System.out.println();
-                                apresentacao.cyan();
-                                System.out.println("                                                                                       Insira a sua password:");
-                                apresentacao.resetColor();
-                                System.out.print("                                                                                       ");
+                                apresentacao.printMensagem("Insira o seu email:", 88, 1);
+                                apresentacao.printEspacos(88);
+                                System.out.print(email);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                                apresentacao.printEspacos(88);
 
                                 ler = new Scanner(System.in);
                                 pass = ler.nextLine();
@@ -191,39 +179,26 @@ public class Main {
                         }
                     } else {
                         while (x == 1) {
-                            System.out.println();
-                            System.out.println();
-                            System.out.println();
-                            apresentacao.red();
-                            System.out.println("                                                                         EMAIL INCORRETO OU NAO EXISTE!! DESEJA CONTINUAR A TENTAR?");
-                            apresentacao.resetColor();
-                            System.out.println();
-                            System.out.println("                                                                                                   1 - SIM");
-                            System.out.println("                                                                                                   0 - NAO");
-                            System.out.println();
-                            System.out.print("                                                                                                      ");
+                            apresentacao.printMensagem("EMAIL INCORRETO OU NAO EXISTE!! DESEJA CONTINUAR A TENTAR?",74,2);
+                            apresentacao.printMensagemSimOuNao(102);
+                            apresentacao.printEspacos(104);
 
                             x = ler.nextInt();
 
                             if (x == 0) break;
 
-                            apresentacao.clear();
                             apresentacao.printLogin();
-                            apresentacao.cyan();
-                            System.out.println("                                                                                       Insira o seu email:");
-                            apresentacao.resetColor();
-                            System.out.print("                                                                                       ");
+                            apresentacao.printMensagem("Insira o seu email:", 88, 1);
+                            apresentacao.printEspacos(88);
 
                             ler = new Scanner(System.in);
                             email = ler.nextLine();
 
                             if (sistema.verificaUtilizador(email)) {
                                 System.out.println();
-                                apresentacao.cyan();
-                                System.out.println("                                                                                       Insira a sua password:");
+                                apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                                apresentacao.printEspacos(88);
 
-                                apresentacao.resetColor();
-                                System.out.print("                                                                                       ");
                                 ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if (sistema.verificaPassword(email, pass)) {
@@ -231,9 +206,7 @@ public class Main {
                                     break;
                                 } else {
                                     while (x == 1) {
-                                        System.out.println();
-                                        System.out.println();
-                                        System.out.println();
+                                        apresentacao.printClear(3);
                                         apresentacao.red();
                                         System.out.println("                                                                               PASSWORD INCORRETA!! DESEJA CONTINUAR A TENTAR?");
                                         apresentacao.resetColor();

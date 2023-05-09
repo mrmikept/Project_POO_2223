@@ -1,4 +1,6 @@
 import javax.swing.plaf.PanelUI;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.PublicKey;
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
@@ -27,6 +29,9 @@ public class Apresentacao
 
     public void line(int numeroDeLinhas){
         for (int i=0;i<numeroDeLinhas;i++) System.out.println(LINE);
+    }
+    public void printEspacos(int x) {
+        for (int i = 0; i< x; i++) System.out.print(" ");
     }
 
     public void cyan(){
@@ -234,21 +239,21 @@ public class Apresentacao
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println("                                                                                           ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣬       ");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡟⢿⣷⣄⠀⠀⠀⠀");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⣾⣷⠀⢸⣿⡇⠀⠙⢿⣿⣦⡀⠀");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠈⠻⣿⣦");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠀⠀⠸⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⠇⠀⠀⠀⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢰⣿⡿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⢿⣿⡆⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢸⣿⡇⠀⠰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⢸⣿⡇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢸⣿⡇⠀⠠⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⠄⠀⢸⣿⡇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠸⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⠇⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⣿⣿");
-        System.out.println("                                                                                           ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿");
+        System.out.println("                                                                                         ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣬       ");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡟⢿⣷⣄⠀⠀⠀⠀");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⣾⣷⠀⢸⣿⡇⠀⠙⢿⣿⣦⡀⠀");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⠈⠻⣿⣦");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠀⠀⠸⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⠇⠀⠀⠀⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢰⣿⡿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⢿⣿⡆⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢸⣿⡇⠀⠰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⢸⣿⡇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢸⣿⡇⠀⠠⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⠄⠀⢸⣿⡇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠸⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⠇⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⣿⣿");
+        System.out.println("                                                                                         ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿");
         System.out.println();
         System.out.println();
         System.out.println();
@@ -948,25 +953,71 @@ public class Apresentacao
         System.out.print("                                                               ");
     }
 
-    public void printMensagem(String mensagem)
+    public void printMensagemCentrada(String mensagem, int cor)
     {
-        cyanBold();
+        if (cor == 1) cyanBold();
+        if (cor == 2) red();
+        if (cor == 3) yellow();
+        if (cor == 4) cyan();
+
         int x = 105 - ((mensagem.length())/2);
         for (int i = 0; i < x; i++)
         {
             System.out.print(" ");
         }
+        System.out.print(mensagem);
+        resetColor();
+    }
+
+    public void printMensagemLado(String mensagem, int j)
+    {
+        cyanBold();
+        for (int i = 0; i < j; i++)
+        {
+            System.out.print(" ");
+        }
         System.out.println(mensagem);
         resetColor();
-        for (int i = 0; i < x; i++)
+        for (int i = 0; i < j; i++)
         {
             System.out.print(" ");
         }
     }
 
+    public void printMensagemSimOuNao(int x) {
+        System.out.println();
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print("1-SIM");
+        System.out.println();
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print("0-NAO");
+        System.out.println();
+        System.out.println();
+    }
+
+    public void printMensagem(String mensagem, int x, int cor) {
+        if (cor == 1) cyanBold();
+        if (cor == 2) red();
+        if (cor == 3) yellow();
+        if (cor == 4) cyan();
+
+        for (int i = 0; i < x; i++)
+        {
+            System.out.print(" ");
+        }
+        System.out.print(mensagem);
+        resetColor();
+    }
+
     public void printEnter(String mensagem)
     {
-        printMensagem(mensagem);
+        printMensagemCentrada(mensagem,0);
         resetColor();
         System.out.println();
         System.out.println("                                                                                          Pressione enter para continuar...");

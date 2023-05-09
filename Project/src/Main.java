@@ -21,6 +21,17 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
+    private boolean verificaInputInt(int input)
+    {
+        if (input < 0) return false;
+        return true;
+    }
+
+    private boolean verificaInputString(String c) {
+        return true;
+    }
+
+
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         int x = 0;
         String c;
@@ -162,6 +173,7 @@ public class Main {
                                 apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                 apresentacao.printEspacos(88);
 
+                                ler = new Scanner(System.in);
                                 pass = ler.nextLine();
                                 if (sistema.verificaPassword(email, pass)) {
                                     x = runUtilizador(email);
@@ -182,6 +194,7 @@ public class Main {
                             apresentacao.printMensagem("Insira o seu email:", 88, 1);
                             apresentacao.printEspacos(88);
 
+                            ler = new Scanner(System.in);
                             email = ler.nextLine();
 
                             if (sistema.verificaUtilizador(email)) {
@@ -210,7 +223,8 @@ public class Main {
                                         apresentacao.printClear(1);
                                         apresentacao.printMensagem("Insira a sua password:", 88, 1);
                                         apresentacao.printEspacos(88);
-
+                                        
+                                        ler = new Scanner(System.in);
                                         pass = ler.nextLine();
                                         if (sistema.verificaPassword(email, pass)) {
                                             x = runUtilizador(email);

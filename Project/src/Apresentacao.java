@@ -5,6 +5,8 @@ import java.security.PublicKey;
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Apresentacao
 {
@@ -1041,6 +1043,157 @@ public class Apresentacao
         System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar de Automatização (../\"ficheiro\"):");
         resetColor();
         System.out.print("                                                               ");
+    }
+
+    public void printPerfil(Utilizador utilizador)
+    {
+        System.out.println(CYAN_BOLD + "                                                                                        ID: " + Apresentacao.RESET + utilizador.getId());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                        Nome: " + Apresentacao.RESET + utilizador.getNome());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                        Email: " + Apresentacao.RESET + utilizador.getEmail());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                        Morada: " + Apresentacao.RESET + utilizador.getMorada());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                        Nr. Fiscal: " + Apresentacao.RESET + utilizador.getNrFiscal());
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(YELLOW + "                                                                                        Pressione enter para continuar..." + Apresentacao.RESET);
+        System.out.println();
+        System.out.print("                                                                                                       ");
+    }
+
+    public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
+        Utilizador utilizador = sistema.procuraUtilizador(email);
+
+        if (faturas.isEmpty()) {
+            System.out.println();
+            System.out.println();
+            printFatura();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(YELLOW + "                                                                                          NAO EXISTEM FATURAS !!" + RESET);
+            System.out.println();
+            System.out.println();
+            System.out.println("                                                                                     Pressione enter para retroceder...");
+            System.out.println();
+            System.out.print("                                                                                                     ");
+            Scanner ler = new Scanner(System.in);
+            String c = ler.nextLine();
+            return;
+        }
+
+        do {
+            if (k == 0) {
+                faturas = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDIDO).collect(Collectors.toList());
+                printCompras();
+            }
+            else {
+                faturas = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).collect(Collectors.toList());
+                printVendas();
+            }
+
+            Fatura[] menuItems = new Fatura[faturas.size()];
+            faturas.toArray(menuItems);
+            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
+            int currentPage = 1;
+            int startIndex, endIndex;
+
+            startIndex = (currentPage - 1) * pageSize;
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
+
+            System.out.println(RED + "[FATURAS]\n" + RESET);
+
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Fatura fatura = menuItems[i];
+                System.out.println(fatura.showFatura());
+            }
+            System.out.println();
+            System.out.println();
+            System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
+            System.out.println();
+
+            System.out.println(CYAN_BOLD + "                                                 Pressione" + RESET + " '+' " +
+                    CYAN_BOLD + "para avancar," + RESET + " '-' " + CYAN_BOLD + "para a retroceder," + RESET + " 'v' " + CYAN_BOLD + "para ver um artigo de uma encomenda," + RESET + " 's' " + CYAN_BOLD +
+                    "para sair" + RESET);
+            System.out.println();
+            System.out.print("                                                                                                      ");
+
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().toLowerCase();
+
+            if (input.equals("+") && currentPage < numPages) {
+                currentPage++;
+            } else if (input.equals("-") && currentPage > 1) {
+                currentPage--;
+            } else if (input.equals("v")) {
+
+                System.out.println();
+                System.out.println(RED +"                                                                                INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER"+ RESET);
+                System.out.println();
+                System.out.print("                                                                                                      ");
+
+                int id = scanner.nextInt();
+
+                Encomenda encomenda = sistema.procuraEncomenda(id);
+
+                paginateEncFinalizadaseDevolvidas(encomenda, 2, email, id, sistema);
+            }
+            else if (input.equals("s")) {
+                break;
+            }
+
+        } while (true);
+    }
+
+    public void paginateEncFinalizadaseDevolvidas(Encomenda encomenda, int pageSize, String email, int id_encomenda, Sistema sistema) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
+
+        do {
+            encomenda = sistema.procuraEncomenda(id_encomenda);
+            List<Artigo> lista = encomenda.getListaArtigos();
+            Artigo[] menuItems = new Artigo[lista.size()];
+            lista.toArray(menuItems);
+            int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
+            int currentPage = 1;
+            int startIndex, endIndex;
+
+            printBox();
+            startIndex = (currentPage - 1) * pageSize;
+            endIndex = Math.min(startIndex + pageSize, menuItems.length);
+
+            for (int i = startIndex; i < endIndex; i++) {
+                int key = i + 1;
+                Artigo artigo = menuItems[i];
+                System.out.println(artigo.showArtigo());
+            }
+
+            System.out.println();
+            System.out.println();
+            System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
+            System.out.println();
+            System.out.println(CYAN_BOLD + "                                                                      Pressione" + RESET + " '+' " +
+                    CYAN_BOLD + "para avancar," + RESET + " '-' " + CYAN_BOLD + "para a retroceder," + RESET +
+                    " 's' " + CYAN_BOLD +
+                    "para sair" + RESET);
+            System.out.println();
+            System.out.print("                                                                                                       ");
+
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().toLowerCase();
+
+            if (input.equals("+") && currentPage < numPages) {
+                currentPage++;
+            } else if (input.equals("-") && currentPage > 1) {
+                currentPage--;
+            } else if (input.equals("s")) {
+                break;
+            }
+        } while (true);
     }
 }
 

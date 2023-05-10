@@ -544,7 +544,8 @@ public class Main {
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
-                        System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
+                        apresentacao.showArtigo(tshirt,sistema.getDataAtual().getYear());
+                        //System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                         apresentacao.printClear(3);
                         apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                         apresentacao.printClear(1);
@@ -668,7 +669,8 @@ public class Main {
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
-                        System.out.println(mala.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
+                        apresentacao.showArtigo(mala,sistema.getDataAtual().getYear());
+                        //System.out.println(mala.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                         apresentacao.printClear(3);
                         apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                         apresentacao.printClear(1);
@@ -800,7 +802,8 @@ public class Main {
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
-                        System.out.println(sapatilha.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
+                        apresentacao.showArtigo(sapatilha,sistema.getDataAtual().getYear());
+                        //System.out.println(sapatilha.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                         apresentacao.printClear(3);
                         apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                         apresentacao.printClear(1);
@@ -840,7 +843,121 @@ public class Main {
 
         return 0;
     }
-    
+
+    public int runMenuImpostos()
+    {
+        int imposto, flag = 0;
+        double taxa;
+        String escolha;
+        String [] opcoes = {"Alterar taxa de Imposto", "Alterar taxa encomendas pequenas","Alterar taxa encomendas médias","Alterar taxa encomendas grandes","Retroceder"};
+        Scanner ler = new Scanner(System.in);
+
+        do {
+            switch (flag) {
+                case 0:
+                    do {
+                        apresentacao.printTax();
+                        apresentacao.printEspacos(60);
+                        System.out.println(Apresentacao.CYAN_BOLD + "Taxa de imposto: " + Apresentacao.RESET + sistema.getTaxas().getImposto() +
+                                Apresentacao.CYAN_BOLD + " | Taxa enc. Peq.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() +
+                                Apresentacao.CYAN_BOLD + " | Taxa enc. Med.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() +
+                                Apresentacao.CYAN_BOLD + " | Taxa enc. Grd.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande());
+                        apresentacao.printMenu(opcoes, 100, "");
+                        escolha = ler.nextLine().toLowerCase();
+                        if (escolha.equals("1")) {
+                            flag = 1;
+                            break;
+                        }
+                        if (escolha.equals("2")) {
+                            flag = 2;
+                            break;
+                        }
+                        if (escolha.equals("3")) {
+                            flag = 3;
+                            break;
+                        }
+                        if (escolha.equals("4")) {
+                            flag = 4;
+                            break;
+                        }
+                        if (escolha.equals("5")) {
+                            flag = 5;
+                            break;
+                        }
+                        if (escolha.equals("6")) {
+                            flag = 6;
+                            break;
+                        }
+                    } while (true);
+                    break;
+                case 1: //Alterar imposto
+                    apresentacao.printTax();
+                    apresentacao.printEspacos(86);
+                    System.out.println(Apresentacao.CYAN_BOLD + "Taxa de imposto atual: " + Apresentacao.RESET + +sistema.getTaxas().getImposto());
+                    System.out.println();
+                    apresentacao.printMensagem("Defina a taxa de imposto", 86, 1);
+                    System.out.println();
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    imposto = ler.nextInt();
+                    sistema.getTaxas().setImposto(imposto);
+                    flag = 6;
+                    break;
+                case 2:
+                    apresentacao.printTax();
+                    apresentacao.printEspacos(86);
+                    System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena());
+                    System.out.println();
+                    apresentacao.printMensagem("Defina a Taxa de uma Encomenda Pequena", 86, 1);
+                    System.out.println();
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncPequena(taxa);
+                    flag = 6;
+                    break;
+                case 3:
+                    apresentacao.printTax();
+                    apresentacao.printEspacos(86);
+                    System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia());
+                    System.out.println();
+                    apresentacao.printMensagem("Defina a Taxa de uma Encomenda Média", 86, 1);
+                    System.out.println();
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncMedia(taxa);
+                    flag = 6;
+                    break;
+                case 4:
+                    apresentacao.printTax();
+                    apresentacao.printEspacos(86);
+                    System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande());
+                    System.out.println();
+                    apresentacao.printMensagem("Defina a Taxa de uma Encomenda Grande", 86, 1);
+                    System.out.println();
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    taxa = ler.nextDouble();
+                    sistema.getTaxas().setTaxaEncGrande(taxa);
+                    flag = 6;
+                    break;
+                case 5:
+                    flag = 5;
+                    break;
+                case 6:
+                    apresentacao.printTax();
+                    apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!", 87, 3);
+                    apresentacao.printEnterSair();
+                    ler = new Scanner(System.in);
+                    escolha = ler.nextLine();
+                    flag = 0;
+                    break;
+            }
+        } while (flag != 5);
+        return 0;
+    }
+
     public int runConfig() throws SistemaException {
         int x = 0;
         String [] s = {"Avancar no tempo", "Alterar taxas e impostos", "Alterar tempo de devolucao", "Retroceder"};
@@ -936,50 +1053,8 @@ public class Main {
                     break;
 
                 case 2: // MENU ALTERAR IMPOSTO E TAXAS
-                    apresentacao.printTax();
-                    int imposto;
-                    double taxa;
-
-                    apresentacao.printMensagem("Defina a taxa de imposto",86,1);
-                    System.out.println();
-                    apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
-                    imposto = ler.nextInt();
-                    sistema.getTaxas().setImposto(imposto);
-
-                    System.out.println();
-                    apresentacao.printMensagem("Defina a taxa de uma encomenda pequena",86,1);
-                    System.out.println();
-                    apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncPequena(taxa);
-
-                    System.out.println();
-                    apresentacao.printMensagem("Defina a taxa de uma encomenda media",86,1);
-                    System.out.println();
-                    apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncMedia(taxa);
-
-                    System.out.println();
-                    apresentacao.printMensagem("Defina a taxa de uma encomenda grande",86,1);
-                    System.out.println();
-                    apresentacao.printEspacos(86);
-                    ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncGrande(taxa);
-
-                    apresentacao.printTax();
-
-                    apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!",87,3);
-                    apresentacao.printEnterSair();
-                    ler = new Scanner(System.in);
-                    c = ler.nextLine();
-                    x = 0;
+                    x = runMenuImpostos();
                     break;
-
                 case 3:
                     apresentacao.printReturnTime();
                     apresentacao.printMensagem("Defina o limite de dias para a devolucao de uma encomenda",77,1);

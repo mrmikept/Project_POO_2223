@@ -66,8 +66,12 @@ public class Apresentacao
         System.out.println("                                                                                       "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
+
     public void printMenu(String[] opcoes, int x, String nome){
-        clear();
+        if (x != 100)
+        {
+            clear();
+        }
 
         if (x == 0) {
             printVintage();
@@ -1344,7 +1348,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
+                showArtigo(artigo,sistema.getDataAtual().getYear());
             }
 
             if (numPages == 1){
@@ -1392,7 +1396,7 @@ public class Apresentacao
                         System.out.println();
                         System.out.println();
                         System.out.println();
-                        System.out.println(artigo.showArtigo());
+                        showArtigo(artigo,sistema.getDataAtual().getYear());
                         System.out.println();
                         System.out.println();
                         System.out.println(CYAN_BOLD +"                                                                                           DESEJA REMOVER ESTE ARTIGO?"+ RESET);
@@ -1450,7 +1454,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
+                showArtigo(artigo,sistema.getDataAtual().getYear());
             }
 
                 System.out.println();
@@ -1485,7 +1489,7 @@ public class Apresentacao
                     System.out.println();
                     System.out.println();
                     System.out.println();
-                    System.out.println(artigo.showArtigo());
+                    showArtigo(artigo,sistema.getDataAtual().getYear());
                     System.out.println();
                     System.out.println();
                     System.out.println(CYAN_BOLD + "                                                                                           DESEJA COMPRAR ESTE ARTIGO?"+ RESET);
@@ -1880,7 +1884,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Artigo artigo = menuItems[i];
-                System.out.println(artigo.showArtigo());
+                showArtigo(artigo,sistema.getDataAtual().getYear());
             }
 
             printClear(2);
@@ -1968,6 +1972,81 @@ public class Apresentacao
             }
 
         } while (true);
+    }
+
+    public void showTshirt(Tshirt tshirt, int date) ///TODO VERIFICAR SE PODE SER PRIVATE
+    {
+        String tipo = "PREMIUM";
+        int x = tshirt.getTransportadora().getTipo();
+        if (x == 0) tipo = "NORMAL";
+        System.out.println (Apresentacao.CYAN + "                                                                                   ⢀⣀⣠⣀⡀⠀⠀⠀⠀⢀⣀⣄⣀⡀            "  + Apresentacao.RED + "[Artigo Tshirt]" + Apresentacao.RESET + "\n" +
+                            Apresentacao.CYAN + "                                                                           ⡀⣀⣀⣤⠴⠖⠛⠋⠉⠸⣏⠙⠛⠛⠛⠛⠋⣹⠇⠉⠙⠛⠲⠦⣤⣀⣀       "  + Apresentacao.YELLOW + "Identificador: " + Apresentacao.RESET + tshirt.getId() + "\n" +
+                            Apresentacao.CYAN + "                                                                           ⣿⠉⠁⠀⠀⠀⠀⠀⠀⠀⠈⠳⢦⣤⣤⡴⠞⠁⠀⠀⠀⠀⠀⠀⠀⠈⠉⣿      "  + Apresentacao.YELLOW + "Descrição: " + Apresentacao.RESET + tshirt.getDescricao() + "\n" +
+                            Apresentacao.CYAN + "                                                                           ⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟      "  + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + tshirt.getMarca() + "\n" +
+                            Apresentacao.CYAN + "                                                                           ⢿⣇⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣸⡇      "  + Apresentacao.YELLOW + "Preço Base: " + Apresentacao.RESET + tshirt.getPrecoBase() + "\n" +
+                            Apresentacao.CYAN + "                                                                            ⠉⠉⠉⠉⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⠉⠉⠉⠉       " + Apresentacao.YELLOW + "Correção Preço: " + Apresentacao.RESET + tshirt.getCorrecaoPreco() + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           " + Apresentacao.YELLOW + "Preço Final: " + Apresentacao.RESET + tshirt.getPrecoFinal(date) + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           " + Apresentacao.YELLOW + "Estado: " + Apresentacao.RESET + tshirt.estadoToString() + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           " + Apresentacao.YELLOW + "Transportadora: " + Apresentacao.RESET + tshirt.getTransportadora().getNome() + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           " + Apresentacao.YELLOW + "Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇           " + Apresentacao.YELLOW + "Tamanho: " + Apresentacao.RESET + tshirt.tamanhoToString() + "\n" +
+                            Apresentacao.CYAN + "                                                                                ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           " + Apresentacao.YELLOW + "Padrão: " + Apresentacao.RESET + tshirt.padraoToString() + "\n\n");
+    }
+
+    public void showMala(Mala mala, int date) {
+        String tipo = "PREMIUM";
+        int x = mala.getTransportadora().getTipo();
+        if (x == 0) tipo = "NORMAL";
+        System.out.println (Apresentacao.CYAN + "                                                                                     ⡤⠷⣿⣯⣽⣿⠶⢤           "   + Apresentacao.RED +    "     [Artigo Mala]\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⡴⢋⡴⠋⠉⠀⠀⠉⠙⢦⡙⢦⠀⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Identificador: " + Apresentacao.RESET + mala.getId() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣸⢡⡏⠀⠀⠀⠀⠀⠀⠀⠀⢹⡌⣇⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Descrição: " + Apresentacao.RESET + mala.getDescricao() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + mala.getMarca() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Preço Base: " + Apresentacao.RESET + mala.getPrecoBase() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "       Correção Preço: " + Apresentacao.RESET + (mala.getTipo() == 0 ? mala.getCorrecaoPreco() : mala.getValorizacaoPremium(date)) + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Preço Final: " + Apresentacao.RESET + mala.getPrecoFinal(date) + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⣿⢸⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⡇⣿⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + mala.estadoToString() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⠛⠛⠀⠀⢸⡯⠅⠈⢽⡇⠀⠀⠛⠛⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Transportadora: " + Apresentacao.RESET + mala.getTransportadora().getNome() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀"   + Apresentacao.YELLOW + "       Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀"   + Apresentacao.YELLOW + "       Dimensão: " + Apresentacao.RESET + mala.getDimensao() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀"   + Apresentacao.YELLOW + "       Material: " + Apresentacao.RESET + mala.getMaterial() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + Apresentacao.RESET + mala.getAnoLancamento() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + (mala.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
+    }
+
+    public void showSapatilha(Sapatilha sapatilha, int date) { //TODO VERIFICAR SE PODE SER PRIVATE
+        String tipo = "PREMIUM";
+        int x = sapatilha.getTransportadora().getTipo();
+        if (x == 0) tipo = "NORMAL";
+        System.out.println (Apresentacao.RED +    "                                                                                                             [Artigo Sapatilha]\n" +
+                Apresentacao.YELLOW + "                                                                                                             Identificador: " + Apresentacao.RESET + sapatilha.getId() + "\n" +
+                Apresentacao.YELLOW + "                                                                                                             Descrição: " + Apresentacao.RESET + sapatilha.getDescricao() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠟⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + sapatilha.getMarca() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣾⠿⢦⣴⠏⠀⠀⣴⢿⡄⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Preço Base: " + Apresentacao.RESET + sapatilha.getPrecoBase() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⢀⣀⣀⣤⣴⡶⢻⣏⠻⡦⠙⠇⠀⠉⠻⠶⠞⠫⡼⣧⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Correção Preço: " + Apresentacao.RESET + (sapatilha.getTipo() == 0 ? sapatilha.getCorrecaoPreco() : sapatilha.getValorizacaoPremium(date)) + "\n" +
+                Apresentacao.CYAN + "                                                                           ⣴⠞⠛⠛⠋⠉⠉⠀⠀⠋⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⣦⡀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Preço Final:: " + Apresentacao.RESET + sapatilha.getPrecoFinal(date) + "\n" +
+                Apresentacao.CYAN + "                                                                           ⣿⣷⡶⠶⣤⣤⣤⣤⣤⠶⠶⠶⠛⠛⠛⠛⢛⣠⣴⣾⣏⣀⡾⠁⠀⢀⣶⡄ ⠀    "   + Apresentacao.YELLOW + "Estado: " + Apresentacao.RESET + sapatilha.estadoToString() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠉⠙⠛⠳⠶⠶⠶⣤⠀⠀⢀⣀⣤⣴⡾⢻⣍⠻⣦⠈⠙⢷⣤⣴⠟⣩⣷ ⠀    "   + Apresentacao.YELLOW + "Transportadora: " + Apresentacao.RESET + sapatilha.getTransportadora().getNome() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⢀⣴⠶⠶⠶⠚⠛⠋⠉⠻⠂⠙⠀⠉⠀⠀⠀⠀⠀⠀⣠⡞⠉⣿ ⠀    "   + Apresentacao.YELLOW + "Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⣿⣧⣤⣤⣀⣀⣀⣀⣀⣀⣤⣤⣤⠶⠶⠶⠶⠶⠶⠶⠿⠶⢶⣏ ⠀    "   + Apresentacao.YELLOW + "Tamanho: " + Apresentacao.RESET + sapatilha.getTamanho() + "\n" +
+                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠉⠛⠳⠶⢯⣭⣭⣍⣉⣉⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡿ ⠀    "   + Apresentacao.YELLOW + "Tipo Cordão: " + Apresentacao.RESET +  (sapatilha.getTipoCordao() == 0 ? "Cordão" : "Atacadores") +  "\n" +
+                Apresentacao.YELLOW + "                                                                                                             Cor: " + Apresentacao.RESET + sapatilha.getCor() + "\n" +
+                Apresentacao.YELLOW + "                                                                                                             Data Lançamento: " + Apresentacao.RESET + sapatilha.getDataLancamento() + "\n" +
+                Apresentacao.YELLOW + "                                                                                                             Tipo: " + Apresentacao.RESET + (sapatilha.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
+    }
+
+
+    public void showArtigo(Artigo artigo, int date)
+    {
+        if (artigo.getClass().getSimpleName().equals("Tshirt"))
+        {
+            showTshirt((Tshirt) artigo,date);
+        }
+        if (artigo.getClass().getSimpleName().equals("Mala")) {
+            showMala((Mala) artigo, date);
+        }
+        if (artigo.getClass().getSimpleName().equals("Sapatilha")) {
+            showSapatilha((Sapatilha) artigo, date);
+        }
     }
 
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {

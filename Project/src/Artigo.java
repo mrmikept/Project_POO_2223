@@ -172,8 +172,6 @@ public abstract class Artigo implements Serializable
 
     public abstract Artigo clone();
 
-    public abstract String showArtigo();
-
     public abstract String showArtigoLinha();
 
     public String estadoToString()

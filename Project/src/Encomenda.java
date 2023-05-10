@@ -241,7 +241,7 @@ public class Encomenda {
     public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
         LocalDate dataPrevistaEntrega = this.getDataPrevistaEntrega();
-        if (dataPrevistaEntrega.equals(dataAtualizacao))
+        if (dataPrevistaEntrega.equals(dataAtualizacao) || dataPrevistaEntrega.isBefore(dataAtualizacao))
         {
             this.estado = Atributos.FINALIZADA;
             this.setDataAtualizacao(dataPrevistaEntrega);

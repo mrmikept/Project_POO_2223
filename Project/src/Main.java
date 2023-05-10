@@ -1102,28 +1102,27 @@ public class Main {
 
                 case 1: // MENU PENDENTES
                     encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
-                    apresentacao.paginatePendentes(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,1);
                     x = 0;
                     break;
 
                 case 2: //MENU EXPEDIDAS
                     encomendas = utilizador.getListaEncomendas(Atributos.EXPEDIDA);
-                    apresentacao.paginateExpedidas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,2);
                     x = 0;
                     break;
 
                 case 3: //MENU FINALIZADAS
                     encomendas = utilizador.getListaEncomendas(Atributos.FINALIZADA);
-                    apresentacao.paginateFinalizadas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,3);
                     x = 0;
                     break;
 
                 case 4:
                     encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-                    apresentacao.paginateDevolvidas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,4);
                     x = 0;
                     break;
-
             }
 
         } while (x != 5);
@@ -1168,10 +1167,8 @@ public class Main {
                         apresentacao.printVendedorDinheiro();
                         System.out.println();
                         Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
-                        System.out.println(utilizador.toString());
+                        System.out.print(utilizador.toString());
                         apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                        //System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                        System.out.println();
                         apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
@@ -1180,29 +1177,24 @@ public class Main {
                     } else if (x == 0) {
                         apresentacao.printVendedorDinheiro();
                         System.out.println();
-                        LocalDate dataagr = LocalDate.now();
-                        System.out.println("Data agr: " + sistema.getDataAtual());
 
                         ler = new Scanner(System.in);
 
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",87,1);
+                        apresentacao.printEspacos(87);
                         d1 = ler.nextLine();
                         data1 = stringParaData(d1);
                         System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD",87,1);
+                        apresentacao.printEspacos(87);
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
                         Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
                         apresentacao.printVendedorDinheiro();
                         System.out.println();
-                        System.out.println(utilizador.toString());
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                                   Faturou: "+ Apresentacao.RESET + utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                        System.out.println();
-                        System.out.println(apresentacao.YELLOW +"                                                                                           Pressione enter para sair..." + apresentacao.RESET);
-                        System.out.println();
-                        System.out.print("                                                                                                      ");
+                        System.out.print(utilizador.toString());
+                        apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -1216,10 +1208,7 @@ public class Main {
                     Transportadora transportadora = sistema.transportadoraMaiorFaturacao();
                     System.out.println();
                     System.out.println(transportadora.toString());
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW +"                                                                                                   Pressione enter para sair..." + apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                            ");
+                    apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
@@ -1228,53 +1217,58 @@ public class Main {
                 case 3:
                     apresentacao.printEncomendasVendedor();
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                   INTRODUZA O EMAIL DO VENDEDOR" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                   ");
-
+                    apresentacao.printMensagem("INTRODUZA O EMAIL DO VENDEDOR",88,1);
+                    apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
 
                     List<Encomenda> listaEncomendas = sistema.listaEncomendasVendedor(email);
+                    if (listaEncomendas.isEmpty()){
+                        apresentacao.printMensagem("NÃO EXISTEM ENCOMENDAS PARA ESTE UTILIZADOR!",82,2);
+                        apresentacao.printEnterSair();
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
                     Encomenda[] lista = new Encomenda[listaEncomendas.size()];
-
                     int i;
                     System.out.println();
-
                     listaEncomendas.toArray(lista);
                     for (i = 0; i < lista.length; i++){
                         Encomenda encomenda = lista[i];
-                        System.out.println("                                                                                          " + apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
+                        apresentacao.printEspacos(10);
+                        System.out.print(apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
+                        apresentacao.printEnterSair();
                     }
-
-
                     ler = new Scanner(System.in);
-                    x = ler.nextInt();
-
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
 
                 case 4:
                     apresentacao.printCompradorVendedor();
-                    System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD +"                                                                                                  INDIQUE A SUA ESCOLHA" + apresentacao.RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                     1 - COMPRADOR");
-                    System.out.println("                                                                                                     0 - VENDEDOR");
-                    System.out.println();
-                    System.out.print("                                                                                                          ");
+                    String[] ops = {"COMPRADOR", "VENDEDOR"};
+                    apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA",ops);
+                    //System.out.println();
+                    //System.out.println(apresentacao.CYAN_BOLD +"                                                                                                  INDIQUE A SUA ESCOLHA" + apresentacao.RESET);
+                    //System.out.println();
+                    //System.out.println("                                                                                                     1 - COMPRADOR");
+                    //System.out.println("                                                                                                     0 - VENDEDOR");
+                    //System.out.println();
+                    apresentacao.printEspacos(86);
+                    //System.out.print("                                                                                                          ");
 
                     ler = new Scanner(System.in);
                     int op = ler.nextInt();
 
                     if (op == 1){
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d1 = ler.nextLine();
                         data1 = stringParaData(d1);
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
@@ -1284,15 +1278,13 @@ public class Main {
                         break;
                     }
                     else if (op == 0){
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA INICIAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d1 = ler.nextLine();
                         data1 = stringParaData(d1);
-                        System.out.println();
-                        System.out.println(apresentacao.CYAN_BOLD +"                                                                                         INSIRA A DATA FINAL (AAAA-MM-DD)" + apresentacao.RESET);
-                        System.out.print("                                                                                                   ");
+                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
@@ -1308,13 +1300,9 @@ public class Main {
                     System.out.println();
                     System.out.println();
                     System.out.println();
-                    System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
-                    System.out.println();
-                    System.out.println(apresentacao.YELLOW +"                                                                                                  Pressione enter para sair..." + apresentacao.RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                             ");
-
-
+                    apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());
+                    //System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
+                    apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;

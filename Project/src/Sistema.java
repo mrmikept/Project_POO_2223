@@ -829,7 +829,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public List<Encomenda> listaEncomendasVendedor(String emailVendedor) // Querie 3
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().getEmail().equals(emailVendedor)).collect(Collectors.toList());
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().getEmail().equals(emailVendedor) && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());
     }
 
     /**

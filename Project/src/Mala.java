@@ -79,7 +79,7 @@ public class Mala extends Acessorio implements Premium
     {
         if (this.getTipo() == Atributos.PREMIUM)
         {
-            return this.getValorizacaoPremium(data);
+            return this.getPrecoBase() + this.getValorizacaoPremium(data);
         }
         else return this.getPrecoBase() + this.getCorrecaoPreco();
     }
@@ -111,25 +111,6 @@ public class Mala extends Acessorio implements Premium
         return "Normal";
     }
 
-    public String showArtigo() {
-        String tipo = "PREMIUM";
-        int x = this.getTransportadora().getTipo();
-        if (x == 0) tipo = "NORMAL";
-        return (Apresentacao.CYAN + "                                                                                     ⡤⠷⣿⣯⣽⣿⠶⢤           "   + Apresentacao.RED +    "     [Artigo Mala]\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⡴⢋⡴⠋⠉⠀⠀⠉⠙⢦⡙⢦⠀⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Identificador: " + Apresentacao.RESET + this.getId() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣸⢡⡏⠀⠀⠀⠀⠀⠀⠀⠀⢹⡌⣇⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Descrição: " + Apresentacao.RESET + this.getDescricao() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + this.getMarca() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Preço Base: " + Apresentacao.RESET + this.getPrecoBase() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡤⠤⠤⠤⠤⣿⢸⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⡇⣿⠤⠤⠤⠤⢤⠀"   + Apresentacao.YELLOW + "       Correção Preço: " + Apresentacao.RESET + this.getCorrecaoPreco() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡏⠉⠉⠉⠉⣿⢾⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⡷⣿⠉⠉⠉⠉⢹⠀"   + Apresentacao.YELLOW + "       Estado: " + Apresentacao.RESET + this.estadoToString() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⣿⢸⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⡇⣿⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Transportadora: " + Apresentacao.RESET + this.getTransportadora().getNome() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⡇⠀⠀⠀⠀⠛⠛⠀⠀⢸⡯⠅⠈⢽⡇⠀⠀⠛⠛⠀⠀⠀⠀⢸⠀"   + Apresentacao.YELLOW + "       Margem Lucro: " + Apresentacao.RESET + this.getTransportadora().getMargemLucro() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀"   + Apresentacao.YELLOW + "       Tipo de Transportadora: " + Apresentacao.RESET + tipo + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀"   + Apresentacao.YELLOW + "       Dimensão: " + Apresentacao.RESET + this.getDimensao() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀"   + Apresentacao.YELLOW + "       Material: " + Apresentacao.RESET + this.getMaterial() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠀⠀"   + Apresentacao.YELLOW + "       Data Lançamento: " + Apresentacao.RESET + this.getAnoLancamento() + "\n" +
-                Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + this.tipoToString() + "\n\n");
-    }
 
     public String showArtigoLinha() {
         return ("[Mala]");

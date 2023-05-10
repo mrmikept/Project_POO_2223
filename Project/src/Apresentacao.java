@@ -952,6 +952,12 @@ public class Apresentacao
         System.out.println();
     }
 
+    public void printMenuLogin()
+    {
+        printLogin();
+        printMensagem("Insira o seu email:", 88, 1);
+    }
+
     public void printMenuGuardar()
     {
         this.printGuardar();

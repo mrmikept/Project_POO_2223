@@ -1162,11 +1162,14 @@ public class Main {
                     listaEncomendas.toArray(lista);
                     for (i = 0; i < lista.length; i++){
                         Encomenda encomenda = lista[i];
-                        apresentacao.printEspacos(30);
+                        apresentacao.printEspacos(10);
                         System.out.print(apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
+                        apresentacao.printEnterSair();
                     }
                     ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
 
                 case 4:
                     apresentacao.printCompradorVendedor();
@@ -1185,12 +1188,12 @@ public class Main {
                     int op = ler.nextInt();
 
                     if (op == 1){
-                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD",86,1);
+                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
                         apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d1 = ler.nextLine();
                         data1 = stringParaData(d1);
-                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD",86,1);
+                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
                         apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d2 = ler.nextLine();
@@ -1201,12 +1204,12 @@ public class Main {
                         break;
                     }
                     else if (op == 0){
-                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD",86,1);
+                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
                         apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d1 = ler.nextLine();
                         data1 = stringParaData(d1);
-                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD",86,1);
+                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
                         apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         d2 = ler.nextLine();
@@ -1223,7 +1226,7 @@ public class Main {
                     System.out.println();
                     System.out.println();
                     System.out.println();
-                    apresentacao.printGanhos("$GANHOS$ : ",86,1, sistema.ganhoVintage());
+                    apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());
                     //System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
                     apresentacao.printEnterSair();
                     ler = new Scanner(System.in);

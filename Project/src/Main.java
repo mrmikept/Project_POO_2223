@@ -1027,28 +1027,27 @@ public class Main {
 
                 case 1: // MENU PENDENTES
                     encomendas = utilizador.getListaEncomendas(Atributos.PENDENTE);
-                    apresentacao.paginatePendentes(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,1);
                     x = 0;
                     break;
 
                 case 2: //MENU EXPEDIDAS
                     encomendas = utilizador.getListaEncomendas(Atributos.EXPEDIDA);
-                    apresentacao.paginateExpedidas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,2);
                     x = 0;
                     break;
 
                 case 3: //MENU FINALIZADAS
                     encomendas = utilizador.getListaEncomendas(Atributos.FINALIZADA);
-                    apresentacao.paginateFinalizadas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,3);
                     x = 0;
                     break;
 
                 case 4:
                     encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-                    apresentacao.paginateDevolvidas(encomendas,5, email, sistema);
+                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,4);
                     x = 0;
                     break;
-
             }
 
         } while (x != 5);

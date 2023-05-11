@@ -415,7 +415,7 @@ public class Sistema implements Serializable,Atributos {
         if (listaTransportadoras.containsKey(nome)) {
             return listaTransportadoras.get(nome).clone();
         } else {
-            throw new TransportadoraException("A Transportadora com o nome, " + nome + "não existe!");
+            throw new TransportadoraException("A Transportadora com o nome, " + nome + " não existe!");
         }
     }
 
@@ -881,8 +881,13 @@ public class Sistema implements Serializable,Atributos {
      * @param email Email de um utilizador
      * @return True se o utilizdor existir, False se o utilizador não existir
      */
-    public boolean verificaUtilizador(String email) {
-        return (listaUtilizadores.containsKey(email));
+    public boolean verificaUtilizador(String email) throws UtilizadorException {
+
+        if (listaUtilizadores.containsKey(email)){
+            return true;
+        }
+        else throw new UtilizadorException("Este Utilizador ou email não existe!!");
+
     }
 
     /**
@@ -905,7 +910,10 @@ public class Sistema implements Serializable,Atributos {
     public boolean verificaPassword(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
-        return (password.equals(utilizador.getPalavraPasse()));
+        if (password.equals(utilizador.getPalavraPasse())){
+            return true;
+        }
+        else throw new UtilizadorException("Password Incorreta!!");
     }
 
 

@@ -478,6 +478,7 @@ public class Sistema implements Serializable,Atributos {
                 return true;
             }
         }
+        else throw new ArtigoException("ESTE ARTIGO NÃO ESTÁ À VENDA!!");
         return false;
     }
 
@@ -887,7 +888,6 @@ public class Sistema implements Serializable,Atributos {
             return true;
         }
         else throw new UtilizadorException("Este Utilizador ou email não existe!!");
-
     }
 
     /**

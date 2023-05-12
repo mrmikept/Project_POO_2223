@@ -962,6 +962,10 @@ public class Apresentacao
         printMensagem("Insira o seu email:", 88, 1);
     }
 
+    public void printErroFicheiro(){
+        printMensagem("ERRO AO CARREGAR/GUARDAR O FICHEIRO",86,2);
+    }
+
     public void printMenuGuardar()
     {
         this.printGuardar();
@@ -1065,7 +1069,7 @@ public class Apresentacao
         System.out.println();
         System.out.println("                                                                                          Pressione enter para sair...");
         System.out.println();
-        System.out.print("                                                                                                     ");
+        System.out.print("                                                                                                        ");
     }
 
     public void printOpcoes(String mensagem, String[] opcoes){

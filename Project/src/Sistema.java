@@ -482,6 +482,7 @@ public class Sistema implements Serializable,Atributos {
                 return true;
             }
         }
+        else throw new ArtigoException("ESTE ARTIGO NÃO ESTÁ À VENDA!!");
         return false;
     }
 
@@ -885,8 +886,12 @@ public class Sistema implements Serializable,Atributos {
      * @param email Email de um utilizador
      * @return True se o utilizdor existir, False se o utilizador não existir
      */
-    public boolean verificaUtilizador(String email) {
-        return (listaUtilizadores.containsKey(email));
+    public boolean verificaUtilizador(String email) throws UtilizadorException {
+
+        if (listaUtilizadores.containsKey(email)){
+            return true;
+        }
+        else throw new UtilizadorException("Este Utilizador ou email não existe!!");
     }
 
     /**
@@ -909,7 +914,10 @@ public class Sistema implements Serializable,Atributos {
     public boolean verificaPassword(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
-        return (password.equals(utilizador.getPalavraPasse()));
+        if (password.equals(utilizador.getPalavraPasse())){
+            return true;
+        }
+        else throw new UtilizadorException("Password Incorreta!!");
     }
 
 

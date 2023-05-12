@@ -188,7 +188,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     public boolean verificaArtigoUtilizador(String email, String id) throws UtilizadorException {
-        return (!this.procuraUtilizador(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).toList().isEmpty());
+        return (!this.procuraUtilizador(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).collect(Collectors.toList()).isEmpty());
     }
 
     public boolean verificaArtigosVenda(String email)

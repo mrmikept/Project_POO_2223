@@ -779,7 +779,7 @@ public class Sistema implements Serializable,Atributos {
      * Função que procura o vendedor que mais faturou desde sempre
      * @return Um utilizador
      */
-    public Utilizador vendedorMaisFaturouSempre() //Querie 1
+    public Utilizador vendedorMaisFaturouSempre() throws SistemaException//Querie 1
     {
         Comparator<Utilizador> comparador = (Utilizador utilizador1, Utilizador utilizador2) -> {
             if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum() >
@@ -788,7 +788,10 @@ public class Sistema implements Serializable,Atributos {
                     utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum()) return 1;
             return 0;
         };
-        return listaUtilizadores.values().stream().sorted(comparador).collect(Collectors.toList()).get(0);
+        if(!listaUtilizadores.values().stream().sorted(comparador).collect(Collectors.toList()).isEmpty())
+        {
+            return listaUtilizadores.values().stream().sorted(comparador).collect(Collectors.toList()).get(0);
+        } else throw new SistemaException("Não existem utilizadores com faturação!!");
     }
 
     /**
@@ -811,15 +814,17 @@ public class Sistema implements Serializable,Atributos {
      * Proura a transportadora que mais faturou
      * @return Uma transportadora
      */
-    public Transportadora transportadoraMaiorFaturacao() //Querie 2
+    public Transportadora transportadoraMaiorFaturacao() throws SistemaException//Querie 2
     {
         Comparator<Transportadora> comparator = (Transportadora trans1, Transportadora trans2) -> {
             if (trans1.getValorFaturado() > trans2.getValorFaturado()) return -1;
             if (trans1.getValorFaturado() < trans2.getValorFaturado()) return  1;
             return 0;
         };
-        //TODO Verificação se não houver transportadora com faturação.
-        return this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).get(0);
+        if (!this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).isEmpty()){
+            return this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).get(0);
+        }
+        else throw new SistemaException("Não existem transportadoras com faturação!!");
     }
 
 

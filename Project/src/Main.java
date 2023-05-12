@@ -64,7 +64,7 @@ public class Main {
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         int x = 0;
         String c;
-        String[] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro de Automatização", "Estatísticas", "Sair"};
+        String[] s = {"Entrar no programa", "Guardar estado", "Carregar estado anterior", "Carregar ficheiro de Automatização", "Sair"};
         Scanner ler = new Scanner(System.in);
         String eq;
         String input, input_backup;
@@ -81,7 +81,6 @@ public class Main {
                         if (eq.equals("3")) { x = 3; break;}
                         if (eq.equals("4")) { x = 4; break;}
                         if (eq.equals("5")) { x = 5; break;}
-                        if (eq.equals("6")) { x = 6; break;}
                     } while (true);
                     break;
 
@@ -174,8 +173,9 @@ public class Main {
                         if (!backup.getExcecoes().isEmpty()) {
                             apresentacao.printErrosAutomatizcao(backup.getExcecoes());
                             ler.nextLine();
+                            x = 0;
+                            break;
                         }
-                        apresentacao.clear();
                         apresentacao.printBackup();
                         apresentacao.printEnter("AUTOMATIZAÇÃO EXECUTADA COM SUCESSO!!");
                         ler.nextLine();
@@ -202,19 +202,18 @@ public class Main {
                             break;
                         }
                     }
-
-                case 5:
-                    x = runEstatisticas();
-                    break;
             }
-        } while (x != 6);
+        } while (x != 5);
         apresentacao.clear();
     }
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans, nif, c, lucro, tipo;
-        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Configuracoes", "Retroceder"};
+        String email, pass, nome, morada, nomeTrans, c;
+        int nif;
+        int tipo = 0;
+        double lucro;
+        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         String eq;
 
@@ -246,6 +245,10 @@ public class Main {
                         }
                         if (eq.equals("6")) {
                             x = 6;
+                            break;
+                        }
+                        if (eq.equals("7")){
+                            x = 7;
                             break;
                         }
                     } while (true);
@@ -432,12 +435,16 @@ public class Main {
                     }
                     break;
 
-                case 5: // MENU CONFIGURACOES
+                case 5: // MENU ESTATISTICAS
+                    x = runEstatisticas();
+                    break;
+
+                case 6: // MENU CONFIGURACOES
                     x = runConfig();
                     break;
             }
 
-            }while (x != 6);
+            }while (x != 7);
         return 0;
         }
 
@@ -839,7 +846,6 @@ public class Main {
                         apresentacao.clear();
                         apresentacao.printClear(5);
                         apresentacao.showArtigo(tshirt, sistema.getDataAtual().getYear());
-                        //System.out.println(tshirt.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                         apresentacao.printClear(3);
                         apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
                         apresentacao.printClear(1);
@@ -979,7 +985,6 @@ public class Main {
                     apresentacao.clear();
                     apresentacao.printClear(5);
                     apresentacao.showArtigo(mala,sistema.getDataAtual().getYear());
-                    //System.out.println(mala.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                     apresentacao.printClear(3);
                     apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                     apresentacao.printClear(1);
@@ -1125,7 +1130,6 @@ public class Main {
                     apresentacao.clear();
                     apresentacao.printClear(5);
                     apresentacao.showArtigo(sapatilha,sistema.getDataAtual().getYear());
-                    //System.out.println(sapatilha.showArtigo()); //TODO: Passar para o showArtigo para a Apresentação
                     apresentacao.printClear(3);
                     apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
                     apresentacao.printClear(1);

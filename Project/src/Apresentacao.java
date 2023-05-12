@@ -970,7 +970,7 @@ public class Apresentacao
     {
         this.printGuardar();
         cyan();
-        System.out.println("                                                               Indique o caminho para a pasta onde pertende guardar o estado (../\"ficheiro\"):");
+        System.out.println("                                                               Indique o nome do ficheiro que pretende guardar:");
         resetColor();
         System.out.print("                                                               ");
     }
@@ -1099,7 +1099,7 @@ public class Apresentacao
     {
         printLoad();
         cyan();
-        System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar o estado (../\"ficheiro\"):");
+        System.out.println("                                                               Indique o nome do ficheiro estado que pretende carregar:");
         resetColor();
         System.out.print("                                                               ");
     }
@@ -1108,7 +1108,7 @@ public class Apresentacao
     {
         printBackup();
         cyan();
-        System.out.println("                                                               Indique o caminho para a pasta de onde pertende carregar de Automatização (../\"ficheiro\"):");
+        System.out.println("                                                               Indique o nome do ficheiro que pretende carregar a automatizacao:");
         resetColor();
         System.out.print("                                                               ");
     }

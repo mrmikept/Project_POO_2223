@@ -1,10 +1,13 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Automatizacao {
 
@@ -38,82 +41,163 @@ public class Automatizacao {
         this.excecoes = excecoes;
     }
 
-    public void carregaFicheiro(Sistema sistema) throws IOException{
-        BufferedReader comeco = new BufferedReader(new FileReader(this.path));
+    public void carregaFicheiro(Sistema sistema) throws IOException, AutomatizacaoException {
+        String pasta = Paths.get(this.path).toAbsolutePath().getParent().toString();
+        String pasta2 = pasta.replace("/src", "/Automatizacao");
+        File dir = new File(pasta2);
+        if (dir.exists()) {
+            File ficheiro = new File(pasta2 + File.separator + this.path);
+            if (ficheiro.exists()) {
+                BufferedReader comeco = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
 
-        while(comeco.ready()){
-            String linha = comeco.readLine();
-            if(!linha.contains("--")){
-                String[] aux = linha.split(":");
+                while (comeco.ready()) {
+                    String linha = comeco.readLine();
+                    if (!linha.contains("--")) {
+                        String[] aux = linha.split(":");
 
 
-                if(linha.contains("Adiciona Utilizador:")){
-                    try {
-                        util(aux, sistema);
-                    }
-                    catch(UtilizadorException | SistemaException a){
-                        this.excecoes.add(a.getMessage());
+                        if (linha.contains("Adiciona Utilizador:")) {
+                            try {
+                                util(aux, sistema);
+                            } catch (UtilizadorException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Venda:")) {
+                            try {
+                                artVenda(aux, sistema);
+                            } catch (ArtigoException | TransportadoraException | UtilizadorException |
+                                     SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Compra:")) {
+                            try {
+                                artCompra(aux, sistema);
+                            } catch (ArtigoException | UtilizadorException | EncomendaException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Transportadora:")) {
+                            try {
+                                transp(aux, sistema);
+                            } catch (TransportadoraException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Encomenda:")) {
+                            try {
+                                encom(aux, sistema);
+                            } catch (EncomendaException | ArtigoException | TransportadoraException |
+                                     UtilizadorException |
+                                     SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Confirma Encomenda:")) {
+                            try {
+                                confEncomenda(aux, sistema);
+                            } catch (EncomendaException | SistemaException | UtilizadorException |
+                                     TransportadoraException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+
+                        }
+
+                        if (linha.contains("Devolve Encomenda:")) {
+                            try {
+                                devolEncomenda(aux, sistema);
+                            } catch (EncomendaException | SistemaException | UtilizadorException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
                     }
                 }
-
-                if(linha.contains("Adiciona Venda:")){
-                    try{
-                        artVenda(aux, sistema);
-                    }
-                    catch(ArtigoException | TransportadoraException | UtilizadorException | SistemaException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-                }
-
-                if(linha.contains("Adiciona Compra:")){
-                    try{
-                        artCompra(aux, sistema);
-                    }
-                    catch(ArtigoException | UtilizadorException | EncomendaException | SistemaException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-                }
-
-                if(linha.contains("Adiciona Transportadora:")){
-                    try{
-                        transp(aux, sistema);
-                    }
-                    catch(TransportadoraException | SistemaException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-                }
-
-                if(linha.contains("Adiciona Encomenda:")){
-                    try {
-                        encom(aux, sistema);
-                    }
-                    catch (EncomendaException | ArtigoException | TransportadoraException | UtilizadorException |
-                           SistemaException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-                }
-
-                if(linha.contains("Confirma Encomenda:")){
-                    try {
-                        confEncomenda(aux, sistema);
-                    }
-                    catch (EncomendaException | SistemaException | UtilizadorException | TransportadoraException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-
-                }
-
-                if(linha.contains("Devolve Encomenda:")){
-                    try {
-                        devolEncomenda(aux, sistema);
-                    }
-                    catch (EncomendaException | SistemaException | UtilizadorException a){
-                        this.excecoes.add(a.getMessage());
-                    }
-                }
-            }
+                comeco.close();
+            } else throw new AutomatizacaoException("O ficheiro não existe!");
         }
-        comeco.close();
+        else {
+            dir.mkdirs();
+            File ficheiro = new File(pasta2 + File.separator + this.path);
+            if (ficheiro.exists()) {
+                BufferedReader comeco = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
+
+                while (comeco.ready()) {
+                    String linha = comeco.readLine();
+                    if (!linha.contains("--")) {
+                        String[] aux = linha.split(":");
+
+
+                        if (linha.contains("Adiciona Utilizador:")) {
+                            try {
+                                util(aux, sistema);
+                            } catch (UtilizadorException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Venda:")) {
+                            try {
+                                artVenda(aux, sistema);
+                            } catch (ArtigoException | TransportadoraException | UtilizadorException |
+                                     SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Compra:")) {
+                            try {
+                                artCompra(aux, sistema);
+                            } catch (ArtigoException | UtilizadorException | EncomendaException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Transportadora:")) {
+                            try {
+                                transp(aux, sistema);
+                            } catch (TransportadoraException | SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Adiciona Encomenda:")) {
+                            try {
+                                encom(aux, sistema);
+                            } catch (EncomendaException | ArtigoException | TransportadoraException |
+                                     UtilizadorException |
+                                     SistemaException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Confirma Encomenda:")) {
+                            try {
+                                confEncomenda(aux, sistema);
+                            } catch (EncomendaException | SistemaException | UtilizadorException |
+                                     TransportadoraException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+
+                        }
+
+                        if (linha.contains("Devolve Encomenda:")) {
+                            try {
+                                devolEncomenda(aux, sistema);
+                            } catch (EncomendaException | SistemaException | UtilizadorException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+                    }
+                }
+                comeco.close();
+            } else throw new AutomatizacaoException("O ficheiro não existe!");
+        }
     }
 
     public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {

@@ -77,6 +77,7 @@ public class Main {
 
                 case 2:
                     apresentacao.printMenuGuardar();
+                    ler = new Scanner(System.in);
                     input = ler.nextLine();
                     try {
                         CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
@@ -87,16 +88,31 @@ public class Main {
                         break;
                     }
                     catch (IOException e){
-                        apresentacao.printMensagem("ERRO AO GUARDAR FICHEIRO",86,2);
+                        apresentacao.printGuardar();
+                        apresentacao.printEnter("ERRO AO GUARDAR O FICHEIRO!!");
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    catch (CarregamentoFicheiroException a){
+                        apresentacao.printMensagem(a.getMessage(),87,2);
+                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemSimOuNao(102);
+                        x = ler.nextInt();
+                        if (x == 1) {
+                            x = 2;
+                            break;
+                        } else if (x == 0) {
+                            x = 0;
+                            break;
+                        }
                     }
 
 
                 case 3:
                     apresentacao.printMenuCarregarEstado();
+                    ler = new Scanner(System.in);
                     input = ler.nextLine();
-                    Path path = Paths.get(input);
-                    boolean existe = Files.exists(path);
-                    if (existe) {
                         try {
                             this.sistema = CarregamentoFicheiro.lerFicheiro(input);
                             apresentacao.printLoad();
@@ -111,12 +127,23 @@ public class Main {
                             ler.nextLine();
                             x = 0;
                             break;
+                        } catch (CarregamentoFicheiroException e) {
+                            apresentacao.printMensagem(e.getMessage(),95,2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(102);
+                            x = ler.nextInt();
+                            if (x == 1) {
+                                x = 3;
+                                break;
+                            } else if (x == 0) {
+                                x = 0;
+                                break;
+                            }
                         }
-                    }
-                    else {x = 3; break;} //TODO Verificar mensagem erro quando ficheiro não existe!
 
                 case 4 :
                     apresentacao.printMenuAutomatizacao();
+                    ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
                     try {
                         Automatizacao backup = new Automatizacao(input_backup);
@@ -138,6 +165,19 @@ public class Main {
                         ler.nextLine();
                         x = 0;
                         break;
+                    }
+                    catch (AutomatizacaoException a){
+                        apresentacao.printMensagem(a.getMessage(),95,2);
+                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemSimOuNao(102);
+                        x = ler.nextInt();
+                        if (x == 1) {
+                            x = 4;
+                            break;
+                        } else if (x == 0) {
+                            x = 0;
+                            break;
+                        }
                     }
 
                 case 5:
@@ -1571,15 +1611,33 @@ public class Main {
                     if (x == 1){
                         apresentacao.printVendedorDinheiro();
                         System.out.println();
-                        Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
-                        System.out.print(utilizador.toString());
-                        apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                        apresentacao.printEnterSair();
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
-                        x = 0;
-                        break;
-                    } else if (x == 0) {
+                        try {
+                            Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
+                            System.out.print(utilizador.toString());
+                            apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                            apresentacao.printEnterSair();
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            x = 0;
+                            break;
+                        }
+                        catch (SistemaException a){
+                            apresentacao.printMensagem(a.getMessage(),86,2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+                            x = ler.nextInt();
+
+                            if (x == 1) {
+                                x = 1;
+                                break;
+                            } else if (x == 0) {
+                                x = 0;
+                                break;
+                            }
+                        }
+
+                    } else if (x == 2) {
                         apresentacao.printVendedorDinheiro();
                         System.out.println();
 
@@ -1594,30 +1652,66 @@ public class Main {
                         apresentacao.printEspacos(87);
                         d2 = ler.nextLine();
                         data2 = stringParaData(d2);
-                        Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
-                        apresentacao.printVendedorDinheiro();
-                        System.out.println();
-                        System.out.print(utilizador.toString());
-                        apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                        apresentacao.printEnterSair();
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
-                        x = 0;
-                        break;
+                        try {
+                            Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
+                            apresentacao.printVendedorDinheiro();
+                            System.out.println();
+                            System.out.print(utilizador.toString());
+                            apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                            apresentacao.printEnterSair();
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            x = 0;
+                            break;
+                        }
+                        catch (SistemaException a){
+                            apresentacao.printMensagem(a.getMessage(),86,2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+                            x = ler.nextInt();
+
+                            if (x == 1) {
+                                x = 1;
+                                break;
+                            } else if (x == 0) {
+                                x = 0;
+                                break;
+                            }
+                        }
                     }
                     break;
 
                 case 2:
                     apresentacao.printTransportadoraDinheiro();
                     System.out.println();
-                    Transportadora transportadora = sistema.transportadoraMaiorFaturacao();
-                    System.out.println();
-                    System.out.println(transportadora.toString());
-                    apresentacao.printEnterSair();
-                    ler = new Scanner(System.in);
-                    c = ler.nextLine();
-                    x = 0;
+                    try {
+                        Transportadora transportadora = sistema.transportadoraMaiorFaturacao();
+                        System.out.println();
+                        System.out.println(transportadora.toString());
+                        apresentacao.printEnterSair();
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    catch (SistemaException a){
+                        apresentacao.printMensagem(a.getMessage(),86,2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+
+                        if (x == 1) {
+                            x = 2;
+                            break;
+                        } else if (x == 0) {
+                            x = 0;
+                            break;
+                        }
+                    }
                     break;
+
 
                 case 3:
                     apresentacao.printEncomendasVendedor();
@@ -1654,14 +1748,7 @@ public class Main {
                     apresentacao.printCompradorVendedor();
                     String[] ops = {"COMPRADOR", "VENDEDOR"};
                     apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA",ops);
-                    //System.out.println();
-                    //System.out.println(apresentacao.CYAN_BOLD +"                                                                                                  INDIQUE A SUA ESCOLHA" + apresentacao.RESET);
-                    //System.out.println();
-                    //System.out.println("                                                                                                     1 - COMPRADOR");
-                    //System.out.println("                                                                                                     0 - VENDEDOR");
-                    //System.out.println();
                     apresentacao.printEspacos(86);
-                    //System.out.print("                                                                                                          ");
 
                     ler = new Scanner(System.in);
                     int op = ler.nextInt();
@@ -1704,7 +1791,6 @@ public class Main {
                     apresentacao.printVintageDinheiro();
                     apresentacao.printClear(3);
                     apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());
-                    //System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
                     apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();

@@ -163,7 +163,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Map<String, Artigo> getArtigosVenda(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
-        return this.listaArtigos = listaArtigos.entrySet().stream().filter(encomenda -> encomenda.getValue().getVendedor().getId() != utilizador.getId()).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() != utilizador.getId() && artigo.getValue().getEstadoVenda() != Atributos.VENDIDO).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
     /**
@@ -174,7 +174,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Map<String, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
-        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() == utilizador.getId()).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() == utilizador.getId() && artigo.getValue().getEstadoVenda() != Atributos.VENDIDO).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     /**
@@ -185,6 +185,10 @@ public class Sistema implements Serializable,Atributos {
      */
     public boolean verificaArtigosVendaUtilizador(String email) throws UtilizadorException {
         return (!this.getArtigosVendaUtilizador(email).isEmpty());
+    }
+
+    public boolean verificaArtigoUtilizador(String email, String id) throws UtilizadorException {
+        return (!this.procuraUtilizador(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).toList().isEmpty());
     }
 
     public boolean verificaArtigosVenda(String email)
@@ -256,9 +260,9 @@ public class Sistema implements Serializable,Atributos {
      * @throws TransportadoraException Caso a Transportadora já exista
      */
     public void adicionaTransportadora(String nome, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
-        if (!this.listaTransportadoras.containsKey(nome)) {
-            Transportadora transportadora = new Transportadora(nome, lucro, tipo, tempExpedicao, 0, this.getTaxas());
-            this.listaTransportadoras.put(nome, transportadora);
+        if (!this.listaTransportadoras.containsKey(nome.toUpperCase())) {
+            Transportadora transportadora = new Transportadora(nome.toUpperCase(), lucro, tipo, tempExpedicao, 0, this.getTaxas());
+            this.listaTransportadoras.put(nome.toUpperCase(), transportadora);
         } else {
             throw new TransportadoraException("A Transportadora " + nome + " já existe!");
         }
@@ -419,7 +423,7 @@ public class Sistema implements Serializable,Atributos {
         if (listaTransportadoras.containsKey(nome)) {
             return listaTransportadoras.get(nome).clone();
         } else {
-            throw new TransportadoraException("A Transportadora com o nome, " + nome + "não existe!");
+            throw new TransportadoraException("A Transportadora com o nome, " + nome + " não existe!");
         }
     }
 
@@ -482,6 +486,7 @@ public class Sistema implements Serializable,Atributos {
                 return true;
             }
         }
+        else throw new ArtigoException("ESTE ARTIGO NÃO ESTÁ À VENDA!!");
         return false;
     }
 
@@ -885,12 +890,16 @@ public class Sistema implements Serializable,Atributos {
      * @param email Email de um utilizador
      * @return True se o utilizdor existir, False se o utilizador não existir
      */
-    public boolean verificaUtilizador(String email) {
-        return (listaUtilizadores.containsKey(email));
+    public boolean verificaUtilizador(String email) throws UtilizadorException {
+
+        if (listaUtilizadores.containsKey(email)){
+            return true;
+        }
+        else throw new UtilizadorException("Este Utilizador ou email não existe!!");
     }
 
     /**
-     * Verifica se uma transportadora exista
+     * Verifica se uma transportadora existe
      * @param nome Nome da transportadora
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
@@ -909,7 +918,10 @@ public class Sistema implements Serializable,Atributos {
     public boolean verificaPassword(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
-        return (password.equals(utilizador.getPalavraPasse()));
+        if (password.equals(utilizador.getPalavraPasse())){
+            return true;
+        }
+        else throw new UtilizadorException("Password Incorreta!!");
     }
 
 

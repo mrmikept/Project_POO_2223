@@ -151,7 +151,7 @@ public class Automatizacao {
         double precoBase = Double.parseDouble(camposArt[6]);
         if (camposArt[7].contains("Novo")){
 
-            String nomeTransportadora = camposArt[8];
+            String nomeTransportadora = camposArt[8].toUpperCase();
             if(camposArt[1].contains("Mala")){
                 double dimensao = Double.parseDouble(camposArt[9]);
                 String material = camposArt[10];
@@ -177,7 +177,7 @@ public class Automatizacao {
 
             Double avaliacao = Double.parseDouble(camposArt[8]);
             int nrDonos = Integer.valueOf(camposArt[9]);
-            String nomeTransportadora = camposArt[10];
+            String nomeTransportadora = camposArt[10].toUpperCase();
 
             if(camposArt[1].contains("Mala")){
                 double dimensao = Double.parseDouble(camposArt[11]);
@@ -226,7 +226,7 @@ public class Automatizacao {
             int dia = data.getDayOfMonth();
             sistema.saltaTempo(ano, mes, dia);
         }
-        String nome = camposTransp[1];
+        String nome = camposTransp[1].toUpperCase();
         double margemLucro = Double.parseDouble(camposTransp[2]);
         if (camposTransp[3].contains("Normal")){
             int tempoExpedicao = Integer.valueOf(camposTransp[4]);
@@ -247,7 +247,7 @@ public class Automatizacao {
             sistema.saltaTempo(ano, mes, dia);
         }
         String email = camposEncom[1];
-        String nomeTransportadora = camposEncom[2];
+        String nomeTransportadora = camposEncom[2].toUpperCase();
         Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
         Encomenda encomenda = new Encomenda();
         encomenda.setTransportadora(transportadora);

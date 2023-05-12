@@ -209,10 +209,7 @@ public class Main {
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans, c;
-        int nif;
-        int tipo = 0;
-        double lucro;
+        String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro;
         String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         String eq;

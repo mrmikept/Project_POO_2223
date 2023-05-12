@@ -1123,7 +1123,7 @@ public class Apresentacao
         printTrans();
         printMensagem("Introduza a transportadora que pretende procurar:",77,3);
         printClear(1);
-        printEspacos(77);
+        //printEspacos(77);
     }
 
     public void printDadosTransportadora(Transportadora transportadora) {
@@ -1188,6 +1188,16 @@ public class Apresentacao
         printMensagem("0 - CORDÃO",84,0);
         System.out.println();
         printEspacos(87);
+    }
+
+    public void paginacao(List<String> lista, int indice, int quantidade)
+    {
+        int fim = indice + quantidade;
+        for (int i = indice;i < fim || i >= lista.size() - 1; i++)
+        {
+            System.out.println("indice: " + indice + " FIm: " + fim);
+            System.out.println(lista.get(i));
+        }
     }
 
     public void paginateFaturas(List<Fatura> faturas, int pageSize, String email, int k, Sistema sistema) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
@@ -1333,273 +1343,15 @@ public class Apresentacao
         } while (true);
     }
 
-    public void paginateMenuVendas(Map<String, Artigo> lista, int pageSize, String email, Sistema sistema) throws ArtigoException, UtilizadorException, TransportadoraException {
-        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
-        String c;
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-
-        do {
-            printVendas();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                showArtigo(artigo,sistema.getDataAtual().getYear());
-            }
-
-            if (numPages == 1){
-                System.out.println();
-                System.out.println();
-                System.out.println(YELLOW + "                                                                                        Pressione enter para continuar..." + RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-                Scanner ler = new Scanner(System.in);
-                c = ler.nextLine();
-                break;
-            }
-
-            if (numPages > 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(CYAN_BOLD + "                                                           Pressione" + RESET + " '+' " +
-                        CYAN_BOLD + "para avancar," + RESET + " '-' " + CYAN_BOLD + "para a retroceder," + RESET + " 'r' " + CYAN_BOLD +
-                        "para remover artigo e" + RESET + " 's' " + CYAN_BOLD + "para sair" + RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (input.equals("r")) {
-                    System.out.println();
-                    System.out.println(CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER"+ RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
-
-                    String id = scanner.nextLine();
-
-                    Utilizador utilizador = sistema.procuraUtilizador(email);
-                    if(utilizador.getListaArtigos().containsKey(id)){
-                        Artigo artigo = sistema.procuraArtigoVenda(id);
-                        clear();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        showArtigo(artigo,sistema.getDataAtual().getYear());
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(CYAN_BOLD +"                                                                                           DESEJA REMOVER ESTE ARTIGO?"+ RESET);
-                        sistema.removeArtigo(artigo);
-                        System.out.println();
-                        System.out.println("                                                                                                     1 - SIM");
-                        System.out.println("                                                                                                     0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                        ");
-
-                        int opcao = scanner.nextInt();
-                        if (opcao == 1) {
-                            sistema.removeArtigo(artigo);
-                            System.out.println();
-                            System.out.println(YELLOW +"                                                                                          ARTIGO REMOVIDO COM SUCESSO!" + RESET);
-                            System.out.println();
-                            System.out.println("                                                                                        Pressione enter para continuar...");
-                            System.out.println();
-                            System.out.print("                                                                                                       ");
-                            Scanner ler = new Scanner(System.in);
-                            c = ler.nextLine();
-                            break;
-                        }
-                    }
-                } else if (input.equals("s")) {
-                    break;
-                }
-            }
-        } while (true);
-    }
-
-    public void paginateMenuCompras(Map<String, Artigo> lista, int pageSize, String email, Sistema sistema) throws ArtigoException, UtilizadorException, TransportadoraException, EncomendaException, SistemaException {
-        Artigo[] menuItems = lista.values().toArray(new Artigo[0]);
-        String c;
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-        do {
-            printComprar();
-            if (lista.isEmpty())
+    public void paginateMenu(List<String> lista, int quantidade, int paginaAtual, int numPaginas, int inicio, int fim)
+    {
+            inicio = (paginaAtual - 1) * quantidade;
+            fim = Math.min(inicio + quantidade, lista.size());
+            for (int i = inicio; i < fim; i++)
             {
-                System.out.println("                                                                                        Não existem artigos para comprar!");
-                System.out.println();
-                System.out.println();
-                System.out.println(YELLOW + "                                                                                        Pressione enter para continuar..." + RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-                Scanner ler = new Scanner(System.in);
-                c = ler.nextLine();
-                break;
+                System.out.println(lista.get(i));
             }
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Artigo artigo = menuItems[i];
-                showArtigo(artigo,sistema.getDataAtual().getYear());
-            }
-
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                  Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(CYAN_BOLD + "                                                           Pressione" + RESET + " '+' " +
-                        CYAN_BOLD + "para avancar," + RESET + " '-' " + CYAN_BOLD + "para a retroceder," + RESET + " 'c' " + CYAN_BOLD +
-                        "para comprar artigo e" + RESET + " 's' " + CYAN_BOLD + "para sair" + RESET);
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (input.equals("c")) {
-
-                    System.out.println();
-                    System.out.println(CYAN_BOLD +"                                                                                   INTRODUZA O ID DO ARTIGO QUE DESEJA COMPRAR"+ RESET);
-                    System.out.println();
-                    System.out.print("                                                                                                       ");
-
-                    String id = scanner.nextLine();
-
-                    Artigo artigo = sistema.procuraArtigoVenda(id);
-                    clear();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    showArtigo(artigo,sistema.getDataAtual().getYear());
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(CYAN_BOLD + "                                                                                           DESEJA COMPRAR ESTE ARTIGO?"+ RESET);
-                    System.out.println();
-                    System.out.println("                                                                                                     1 - SIM");
-                    System.out.println("                                                                                                     0 - NAO");
-                    System.out.println();
-                    System.out.print("                                                                                                        ");
-
-                    int opcao = scanner.nextInt();
-                    if (opcao == 1) {
-                        sistema.adicionaArtigoEncomenda(artigo, email);
-                        System.out.println();
-                        System.out.println(YELLOW +"                                                                                          ARTIGO COMPRADO COM SUCESSO!" + RESET);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println(CYAN_BOLD +"                                                                                           DESEJA COMPRAR OUTRO ARTIGO?"+ RESET);
-                        System.out.println();
-                        System.out.println("                                                                                                     1 - SIM");
-                        System.out.println("                                                                                                     0 - NAO");
-                        System.out.println();
-                        System.out.print("                                                                                                        ");
-
-                        int opcao2 = scanner.nextInt();
-                        if (opcao2 == 1){
-                            input.equals("c");
-                        }
-                        else if (opcao2 == 0) { break;}
-                    }
-                } else if (input.equals("s")) {
-                    break;
-                }
-
-        } while (true);
-    }
-
-    public String paginateTransportadora(Map<String, Transportadora> lista, int pageSize, String email, Sistema sistema) throws TransportadoraException, UtilizadorException, ArtigoException {
-        Transportadora[] menuItems = lista.values().toArray(new Transportadora[0]);
-        int numPages = (int) Math.ceil((double) menuItems.length / pageSize);
-        int currentPage = 1;
-        int startIndex, endIndex;
-        do {
-            printProcuraTrans();
-            System.out.println();
-            System.out.println();
-            startIndex = (currentPage - 1) * pageSize;
-            endIndex = Math.min(startIndex + pageSize, menuItems.length);
-
-            for (int i = startIndex; i < endIndex; i++) {
-                int key = i + 1;
-                Transportadora transportadora = menuItems[i];
-                System.out.println();
-                System.out.println(transportadora.showTransportadora(key));
-            }
-
-            if (numPages > 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                                 Pag." + currentPage + " de " + numPages);
-                System.out.println();
-                System.out.println(CYAN_BOLD + "                                                                               Pressione" + RESET + " '+' " +
-                        CYAN_BOLD + "para avancar e" + RESET + " '-' " + CYAN_BOLD + "para a retroceder ");
-                System.out.println("                                                                              Para selecionar a transportadora, digite o nome dela");
-                resetColor();
-                System.out.println();
-                System.out.print("                                                                                                       ");
-
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine().toLowerCase();
-
-                if (input.equals("+") && currentPage < numPages) {
-                    currentPage++;
-                } else if (input.equals("-") && currentPage > 1) {
-                    currentPage--;
-                } else if (!sistema.verificaTransportadora(input)) {
-                    System.out.println();
-                    System.out.println(RED + "                                                        A TRANSPORTADORA COM O NOME "+ RESET + input + RED + " NÃO EXISTE" + RESET);
-                    Scanner ler = new Scanner(System.in);
-                    String c = ler.nextLine();
-                    paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
-                }
-                else
-                {
-                    return input;
-                }
-            } else if (numPages == 1) {
-                System.out.println();
-                System.out.println();
-                System.out.println("                                                                                 Para selecionar a transportadora, digite o nome dela");
-                System.out.println();
-                System.out.print("                                                                                                        ");
-
-                Scanner scanner = new Scanner(System.in);
-                String nomeTransportadora = scanner.nextLine();
-                if (!sistema.verificaTransportadora(nomeTransportadora)){
-
-                    System.out.println();
-                    System.out.println(RED + "                                                        A TRANSPORTADORA COM O NOME "+ RESET + nomeTransportadora + RED + " NÃO EXISTE" + RESET);
-
-                    Scanner ler = new Scanner(System.in);
-                    String c = ler.nextLine();
-                    paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
-
-                }
-                else
-                {
-                    return nomeTransportadora;
-                }
-            }
-        } while (true);
+            System.out.println("                                                                                                  Pag." + paginaAtual + " de " + numPaginas);
     }
 
     public void paginateEncomendas(List<Encomenda> encomendas, int pageSize, String email, Sistema sistema, int x) throws UtilizadorException, EncomendaException, TransportadoraException, ArtigoException, SistemaException {
@@ -1974,12 +1726,17 @@ public class Apresentacao
         } while (true);
     }
 
-    public void showTshirt(Tshirt tshirt, int date) ///TODO VERIFICAR SE PODE SER PRIVATE
+    public String showTransportadora(int indice, Transportadora transportadora)
+    {
+        return "                                                                               " + indice +") " + Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + transportadora.getNome() + Apresentacao.CYAN_BOLD + ", Margem de Lucro: " + Apresentacao.RESET + transportadora.getMargemLucro() + Apresentacao.CYAN_BOLD + ", Tipo: " + Apresentacao.RESET + (transportadora.getTipo() == 0 ? "Normal" : "Premium") + "\n";
+    }
+
+    public String showTshirt(Tshirt tshirt, int date) ///TODO VERIFICAR SE PODE SER PRIVATE
     {
         String tipo = "PREMIUM";
         int x = tshirt.getTransportadora().getTipo();
         if (x == 0) tipo = "NORMAL";
-        System.out.println (Apresentacao.CYAN + "                                                                                   ⢀⣀⣠⣀⡀⠀⠀⠀⠀⢀⣀⣄⣀⡀            "  + Apresentacao.RED + "[Artigo Tshirt]" + Apresentacao.RESET + "\n" +
+        return  (Apresentacao.CYAN + "                                                                                   ⢀⣀⣠⣀⡀⠀⠀⠀⠀⢀⣀⣄⣀⡀            "  + Apresentacao.RED + "[Artigo Tshirt]" + Apresentacao.RESET + "\n" +
                             Apresentacao.CYAN + "                                                                           ⡀⣀⣀⣤⠴⠖⠛⠋⠉⠸⣏⠙⠛⠛⠛⠛⠋⣹⠇⠉⠙⠛⠲⠦⣤⣀⣀       "  + Apresentacao.YELLOW + "Identificador: " + Apresentacao.RESET + tshirt.getId() + "\n" +
                             Apresentacao.CYAN + "                                                                           ⣿⠉⠁⠀⠀⠀⠀⠀⠀⠀⠈⠳⢦⣤⣤⡴⠞⠁⠀⠀⠀⠀⠀⠀⠀⠈⠉⣿      "  + Apresentacao.YELLOW + "Descrição: " + Apresentacao.RESET + tshirt.getDescricao() + "\n" +
                             Apresentacao.CYAN + "                                                                           ⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟      "  + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + tshirt.getMarca() + "\n" +
@@ -1993,11 +1750,11 @@ public class Apresentacao
                             Apresentacao.CYAN + "                                                                                ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           " + Apresentacao.YELLOW + "Padrão: " + Apresentacao.RESET + tshirt.padraoToString() + "\n\n");
     }
 
-    public void showMala(Mala mala, int date) {
+    public String showMala(Mala mala, int date) {
         String tipo = "PREMIUM";
         int x = mala.getTransportadora().getTipo();
         if (x == 0) tipo = "NORMAL";
-        System.out.println (Apresentacao.CYAN + "                                                                                     ⡤⠷⣿⣯⣽⣿⠶⢤           "   + Apresentacao.RED +    "     [Artigo Mala]\n" +
+        return  (Apresentacao.CYAN + "                                                                                     ⡤⠷⣿⣯⣽⣿⠶⢤           "   + Apresentacao.RED +    "     [Artigo Mala]\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⡴⢋⡴⠋⠉⠀⠀⠉⠙⢦⡙⢦⠀⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Identificador: " + Apresentacao.RESET + mala.getId() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣸⢡⡏⠀⠀⠀⠀⠀⠀⠀⠀⢹⡌⣇⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Descrição: " + Apresentacao.RESET + mala.getDescricao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⣿⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⡇⣿⠀⠀⠀⠀⠀⠀"   + Apresentacao.YELLOW + "       Marca: " + Apresentacao.RESET + mala.getMarca() + "\n" +
@@ -2013,11 +1770,11 @@ public class Apresentacao
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + (mala.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
     }
 
-    public void showSapatilha(Sapatilha sapatilha, int date) { //TODO VERIFICAR SE PODE SER PRIVATE
+    public String showSapatilha(Sapatilha sapatilha, int date) { //TODO VERIFICAR SE PODE SER PRIVATE
         String tipo = "PREMIUM";
         int x = sapatilha.getTransportadora().getTipo();
         if (x == 0) tipo = "NORMAL";
-        System.out.println (Apresentacao.RED +    "                                                                                                             [Artigo Sapatilha]\n" +
+        return (Apresentacao.RED +    "                                                                                                             [Artigo Sapatilha]\n" +
                 Apresentacao.YELLOW + "                                                                                                             Identificador: " + Apresentacao.RESET + sapatilha.getId() + "\n" +
                 Apresentacao.YELLOW + "                                                                                                             Descrição: " + Apresentacao.RESET + sapatilha.getDescricao() + "\n" +
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠟⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀    "   + Apresentacao.YELLOW + "Marca: " + Apresentacao.RESET + sapatilha.getMarca() + "\n" +
@@ -2034,18 +1791,31 @@ public class Apresentacao
                 Apresentacao.YELLOW + "                                                                                                             Tipo: " + Apresentacao.RESET + (sapatilha.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
     }
 
-
+    public String showArtigoString(Artigo artigo, int date)
+    {
+        if (artigo.getClass().getSimpleName().equals("Tshirt"))
+        {
+            return (showTshirt((Tshirt) artigo,date));
+        }
+        if (artigo.getClass().getSimpleName().equals("Mala")) {
+            return (showMala((Mala) artigo, date));
+        }
+        if (artigo.getClass().getSimpleName().equals("Sapatilha")) {
+            return (showSapatilha((Sapatilha) artigo, date));
+        }
+        else return "";
+    }
     public void showArtigo(Artigo artigo, int date)
     {
         if (artigo.getClass().getSimpleName().equals("Tshirt"))
         {
-            showTshirt((Tshirt) artigo,date);
+            System.out.println(showTshirt((Tshirt) artigo,date));
         }
         if (artigo.getClass().getSimpleName().equals("Mala")) {
-            showMala((Mala) artigo, date);
+            System.out.println(showMala((Mala) artigo, date));
         }
         if (artigo.getClass().getSimpleName().equals("Sapatilha")) {
-            showSapatilha((Sapatilha) artigo, date);
+            System.out.println(showSapatilha((Sapatilha) artigo, date));
         }
     }
 

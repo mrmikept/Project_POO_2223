@@ -336,13 +336,11 @@ public class Main {
                     break;
 
                 case 2: // MENU COMPRAR
-                    apresentacao.paginateMenuCompras(sistema.getArtigosVenda(email), 2, email, sistema);
-                    x = 0;
+                    x = runMenuComprar(email);
                     break;
 
                 case 3: // MENU VENDAS
                     x = runVendas(email);
-                    x = 0;
                     break;
 
                 case 4: // MENU ENCOMENDAS
@@ -358,6 +356,66 @@ public class Main {
             }
         } while (x != 6);
 
+        return 0;
+    }
+
+    public int runMenuComprar(String email) throws UtilizadorException, ArtigoException, EncomendaException {
+        Scanner ler = new Scanner(System.in);
+        String opcao;
+        do {
+            List<Artigo> artigos = sistema.getArtigosVenda(email).values().stream().collect(Collectors.toList());
+            if (artigos.isEmpty()) {
+                apresentacao.printMensagem("Não existem artigos para comprar!", 88, 2);
+                apresentacao.printEnter("");
+                ler.nextLine();
+                break;
+            }
+            List<String> strings = new ArrayList<>();
+            for (Artigo artigo : artigos) {
+                strings.add(apresentacao.showArtigoString(artigo, sistema.getDataAtual().getYear()));
+            }
+            int quantidade = 2;
+            int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
+            int paginaAtual = 1;
+            int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
+            do {
+                apresentacao.printComprar();
+                apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                apresentacao.printClear(2);
+                System.out.println(Apresentacao.CYAN_BOLD + "                                                           Pressione" + Apresentacao.RESET + " '+' " +
+                        Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'c' " + Apresentacao.CYAN_BOLD +
+                        "para comprar artigo e" + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD + "para sair" + Apresentacao.RESET);
+                apresentacao.printEspacos(103);
+                opcao = ler.nextLine().toLowerCase();
+                if (opcao.equals("+") && paginaAtual < numPaginas) {
+                    paginaAtual++;
+                } else if (opcao.equals("-") && paginaAtual > 1) {
+                    paginaAtual--;
+                } else if (opcao.equals("c")) {
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA COMPRAR", 83, 1);
+                    apresentacao.printClear(2);
+                    apresentacao.printEspacos(103);
+                    String id = ler.nextLine();
+                    apresentacao.clear();
+                    apresentacao.printComprar();
+                    apresentacao.showArtigo(sistema.procuraArtigo(id), sistema.getDataAtual().getYear());
+                    apresentacao.printMensagem("DESEJA COMPRAR ESTE ARTIGO?", 91, 1);
+                    apresentacao.printMensagemSimOuNao(101);
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(103);
+                    if (ler.nextLine().equals("1")) {
+                        sistema.adicionaArtigoEncomenda(id, email);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("ARTIGO COMPRADO COM SUCESSO!", 90, 3);
+                        apresentacao.printEnter("");
+                        ler.nextLine();
+                        break;
+                    }
+                } else if (opcao.equals("s")) break;
+            } while (true);
+        break;
+        } while (true);
         return 0;
     }
 
@@ -419,26 +477,11 @@ public class Main {
                     break;
 
                 case 1: //MINHA LISTA DE ARTIGOS A VENDA
-                    apresentacao.printMinhaLista();
-
-                    if (sistema.getArtigosVendaUtilizador(email).isEmpty()) {
-                        apresentacao.printMensagem("NÃO POSSUI NENHUM ARTIGO À VENDA!!",87,1);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("DESEJA ADICONAR ALGUM ARTIGO À SUA LISTA DE VENDAS?",79,0);
-                        apresentacao.printClear(2);
-                        apresentacao.printMensagemSimOuNao(100);
-
-                        ler = new Scanner(System.in);
-                        x = ler.nextInt();
-
-                        if (x == 1) runArtigosVender(email);
-                        else if (x == 0) {x=0; break;}
-                    } else {
-                        apresentacao.paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email, sistema);
-                        x =0;
-                        break;
-                    }
-
+                    //apresentacao.printMinhaLista();
+                    runMenuUtilizadorArtigosVenda(email);
+                    //apresentacao.paginateMenuVendas(sistema.getArtigosVendaUtilizador(email), 2, email, sistema);
+                    x =0;
+                    break;
                 case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
                     x = runArtigosVender(email);
                     break;
@@ -447,6 +490,121 @@ public class Main {
         } while (x != 3);
 
         return 0;
+    }
+
+    public int runMenuUtilizadorArtigosVenda(String email) throws UtilizadorException, ArtigoException, TransportadoraException {
+        String opcao;
+        Scanner ler = new Scanner(System.in);
+        do {
+            List<Artigo> lista = sistema.getArtigosVendaUtilizador(email).values().stream().toList();
+            if (lista.isEmpty()) {
+                apresentacao.printMinhaLista();
+                apresentacao.printMensagem("NÃO POSSUI NENHUM ARTIGO À VENDA!!", 87, 1);
+                apresentacao.printClear(1);
+                apresentacao.printMensagem("DESEJA ADICONAR ALGUM ARTIGO À SUA LISTA DE VENDAS?", 79, 3);
+                apresentacao.printClear(2);
+                apresentacao.printMensagemSimOuNao(100);
+                opcao = ler.nextLine();
+                if (opcao.equals("1")) {
+                    runArtigosVender(email);
+                    break;
+                } else if (opcao.equals("0")) {
+                    break;
+                }
+
+            }
+            List<String> strings = new ArrayList<>();
+            for (Artigo artigo : lista) {
+                strings.add(apresentacao.showArtigoString(artigo, sistema.getDataAtual().getYear()));
+            }
+            int quantidade = 2;
+            int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
+            int paginaAtual = 1;
+            int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
+            do {
+                apresentacao.printMinhaLista();
+                apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                    apresentacao.printClear(2);
+                    System.out.println(Apresentacao.CYAN_BOLD + "                                                           Pressione" + Apresentacao.RESET + " '+' " +
+                            Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'r' " + Apresentacao.CYAN_BOLD +
+                            "para remover artigo e" + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD + "para sair" + Apresentacao.RESET);
+                    apresentacao.printEspacos(103);
+                    opcao = ler.nextLine();
+                    if (opcao.equals("+") && paginaAtual < numPaginas) {
+                        paginaAtual++;
+                    } else if (opcao.equals("-") && paginaAtual > 1) {
+                        paginaAtual--;
+                    } else if (opcao.equals("r"))
+                    {
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER",83,1);
+                        apresentacao.printClear(1);
+                        apresentacao.printEspacos(104);
+                        String id = ler.nextLine();
+                        if (sistema.verificaArtigoUtilizador(email,id))
+                        {
+                            apresentacao.clear();
+                            apresentacao.printMinhaLista();
+                            apresentacao.showArtigo(sistema.procuraArtigoVenda(id),sistema.getDataAtual().getYear());
+                            apresentacao.printClear(2);
+                            apresentacao.printMensagem("DESEJA REMOVER ESTE ARTIGO?", 91,1);
+                            apresentacao.printMensagemSimOuNao(101);
+                            opcao = ler.nextLine();
+                            if (opcao.equals("1"))
+                            {
+                                sistema.removeArtigo(id);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagem("ARTIGO REMOVIDO COM SUCESSO!",90,3);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                                break;
+                            }
+                        }
+                    } else if (opcao.equals("s")) break;
+            } while (true);
+            break;
+        } while (true);
+        return 0;
+    }
+
+    public String runEscolhaTransportadora(int tipoTransportadora) {
+        String opcao;
+        Scanner ler = new Scanner(System.in);
+        List<Transportadora> transportadoras = sistema.getListaTransportadoras().values().stream().filter(transportadora -> transportadora.getTipo() == tipoTransportadora).collect(Collectors.toList());
+        List<String> strings = new ArrayList<>();
+        int i = 1;
+        for (Transportadora transportadora : transportadoras) {
+            strings.add(apresentacao.showTransportadora(i, transportadora));
+            i++;
+        }
+        int quantidade = 1;
+        int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
+        int paginaAtual = 1;
+        int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
+        do {
+            apresentacao.printProcuraTrans();
+            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, i, fim);
+            apresentacao.printClear(2);
+            System.out.println(apresentacao.CYAN_BOLD + "                                                                               Pressione" + apresentacao.RESET + " '+' " +
+                    apresentacao.CYAN_BOLD + "para avancar e" + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder ");
+            apresentacao.printMensagem("Digite o nome da Transportadora para a selecionar!", 78, 3);
+            apresentacao.printClear(1);
+            apresentacao.printEspacos(103);
+            opcao = ler.nextLine().toUpperCase();
+            if (opcao.equals("+") && paginaAtual < numPaginas) {
+                paginaAtual++;
+            } else if (opcao.equals("-") && paginaAtual > 1) {
+                paginaAtual--;
+            } else if (sistema.verificaTransportadora(opcao)) {
+                break;
+            } else if (!(opcao.equals("+") || opcao.equals("-"))){
+            apresentacao.printClear(1);
+            apresentacao.printMensagem("COMANDO INVALIDO OU TRANSPORTADORA NÃO ENCONTRADA!",78,2);
+            apresentacao.printEnter("");
+            ler.nextLine();
+            }
+        }while (true);
+        return opcao;
     }
 
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
@@ -536,7 +694,7 @@ public class Main {
 
                         apresentacao.printTshirt();
                         apresentacao.printClear(2);
-                        String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
+                        String nomeTransportadora = runEscolhaTransportadora(0);
                         tshirt.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
 
                         Utilizador utilizador = sistema.procuraUtilizador(email);
@@ -661,7 +819,7 @@ public class Main {
 
                         apresentacao.printTshirt();
                         apresentacao.printClear(2);
-                        String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
+                        String nomeTransportadora = runEscolhaTransportadora(tipo);
                         mala.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
 
                         Utilizador utilizador = sistema.procuraUtilizador(email);
@@ -794,7 +952,7 @@ public class Main {
 
                         apresentacao.printTshirt();
                         apresentacao.printClear(2);
-                        String nomeTransportadora = apresentacao.paginateTransportadora(sistema.getListaTransportadoras(), 1, email, sistema);
+                        String nomeTransportadora = runEscolhaTransportadora(tipo);
                         sapatilha.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
 
                         Utilizador utilizador = sistema.procuraUtilizador(email);

@@ -132,11 +132,6 @@ public class Transportadora implements Serializable {
         return "Premium";
     }
 
-    public String showTransportadora(int indice)
-    {
-        return "                                                                               " + indice +") " + Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + this.getNome() + Apresentacao.CYAN_BOLD + ", Margem de Lucro: " + Apresentacao.RESET + this.getMargemLucro() + Apresentacao.CYAN_BOLD + ", Tipo: " + Apresentacao.RESET + this.tipotoString() + "\n";
-    }
-
     public String toString()
     {
         StringBuilder string = new StringBuilder();

@@ -1,0 +1,14 @@
+--Adiciona Utilizador: datal;email;password;nome;morada;nif
+--Adiciona Transportadora: data;nome;margem Lucro;tipo
+--Adiciona Venda:
+
+
+
+
+Adiciona Utilizador:2023-04-29;l;l;Lucas;Rua;20
+Adiciona Utilizador:2023-04-29;r;r;Rafael;Rua2;10
+Adiciona Transportadora:2023-04-29;ctt;10;Normal;3
+Adiciona Venda:2023-04-30;Tshirt;l;5;fixe;guci;50;Novo;ctt;M;Lisa
+Adiciona Venda:2023-04-30;Mala;l;6;boa;milano;100;Novo;ctt;6.3;couro;2019;Normal
+Adiciona Venda:2023-04-30;Sapatilha;l;7;ok;nike;40;Usado;4.2;3;ctt;42;Cordao;Branco;2020;Normal
+Adiciona Compra:2023-05-02;r;5

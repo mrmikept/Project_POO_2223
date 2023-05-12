@@ -66,6 +66,10 @@ public class Apresentacao
         System.out.println("                                                                                       "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
+    public void printDataAtual(){
+        System.out.println( CYAN_BOLD + "                                                                                          Data Atual: " + RESET + LocalDate.now());
+    }
+
 
     public void printMenu(String[] opcoes, int x, String nome){
         if (x != 100)
@@ -75,11 +79,14 @@ public class Apresentacao
 
         if (x == 0) {
             printVintage();
+            printDataAtual();
         }
 
         if (x == 1) {
             printVintage();
-            System.out.println("                                                                                           " + CYAN_BOLD +"Bem-vindo " + RESET + nome + "!!");
+            printDataAtual();
+            System.out.println();
+            System.out.println("                                                                                            " + CYAN_BOLD +"Bem-vindo " + RESET + nome + "!!");
         }
 
         if (x==2) printConfiguracoes();
@@ -1069,6 +1076,7 @@ public class Apresentacao
     public void printEnter(String mensagem)
     {
         resetColor();
+        printMensagem(mensagem,88,3);
         System.out.println();
         System.out.println("                                                                                          Pressione enter para continuar...");
         System.out.println();

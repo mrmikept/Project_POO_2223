@@ -4,10 +4,7 @@ import java.io.InputStreamReader;
 import java.security.PublicKey;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Apresentacao
@@ -1297,9 +1294,9 @@ public class Apresentacao
 
                 int id = scanner.nextInt();
 
-                Encomenda encomenda = sistema.procuraEncomenda(id);
+                //Encomenda encomenda = sistema.procuraEncomenda(id);
 
-                paginateArtigoEncomenda(encomenda, 2, email, id, sistema,1);
+                //paginateArtigoEncomenda(encomenda, 2, email, id, sistema,1);
             }
             else if (input.equals("s")) {
                 break;
@@ -1489,9 +1486,9 @@ public class Apresentacao
 
                     int id = scanner.nextInt();
 
-                    Encomenda encomenda = sistema.procuraEncomenda(id);
+                    //Encomenda encomenda = sistema.procuraEncomenda(id);
 
-                    paginateArtigoEncomenda(encomenda, 2, email, id, sistema,1);
+                    //paginateArtigoEncomenda(encomenda, 2, email, id, sistema,1);
                 } else if (input.equals("s")) {
                     break;
                 }
@@ -1520,9 +1517,9 @@ public class Apresentacao
 
                     int id = scanner.nextInt();
 
-                    Encomenda encomenda = sistema.procuraEncomenda(id);
+                    //Encomenda encomenda = sistema.procuraEncomenda(id);
 
-                    paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
+                    //paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
                 }
                 else if (input.equals("s")) {
                     break;
@@ -1597,9 +1594,9 @@ public class Apresentacao
 
                     int id = scanner.nextInt();
 
-                    Encomenda encomenda = sistema.procuraEncomenda(id);
+                    //Encomenda encomenda = sistema.procuraEncomenda(id);
 
-                    paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
+                    //paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
                 }
                 else if (input.equals("s")) {
                     break;
@@ -1629,9 +1626,9 @@ public class Apresentacao
 
                     int id = scanner.nextInt();
 
-                    Encomenda encomenda = sistema.procuraEncomenda(id);
+                    //Encomenda encomenda = sistema.procuraEncomenda(id);
 
-                    paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
+                    //paginateArtigoEncomenda(encomenda, 2, email, id, sistema,2);
                 }
                 else if (input.equals("s")) {
                     break;
@@ -1644,7 +1641,7 @@ public class Apresentacao
     public void paginateArtigoEncomenda(Encomenda encomenda, int pageSize, String email, int id_encomenda, Sistema sistema, int x) throws ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
 
         do {
-            encomenda = sistema.procuraEncomenda(id_encomenda);
+            //encomenda = sistema.procuraEncomenda(id_encomenda);
             List<Artigo> lista = encomenda.getListaArtigos();
             Artigo[] menuItems = new Artigo[lista.size()];
             lista.toArray(menuItems);
@@ -1840,6 +1837,27 @@ public class Apresentacao
         if (artigo.getClass().getSimpleName().equals("Sapatilha")) {
             System.out.println(showSapatilha((Sapatilha) artigo, date));
         }
+    }
+
+    public String estadoEncomendaString(int estado)
+    {
+        if (estado == Atributos.PENDENTE)
+        {
+            return "PENDENTES";
+        }
+        if (estado == Atributos.EXPEDIDA)
+        {
+            return "EXPEDIDAS";
+        }
+        if (estado == Atributos.FINALIZADA)
+        {
+            return "FINALIZADAS";
+        }
+        if (estado == Atributos.DEVOLVIDA)
+        {
+            return "DEVOLVIDAS";
+        }
+        return "";
     }
 
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {

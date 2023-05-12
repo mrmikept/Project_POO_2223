@@ -1155,7 +1155,7 @@ public class Apresentacao
         System.out.println();
         System.out.println(CYAN_BOLD + "                                                      Margem Lucro: " + RESET + transportadora.getMargemLucro() + CYAN_BOLD +
 
-                " | Tipo: " + RESET + transportadora.getTipo() +  CYAN_BOLD + " | Imposto: " + RESET + transportadora.getTaxasImpostos().getImposto() + CYAN_BOLD + " | Taxas: " + RESET + transportadora.getTaxasImpostos().getTaxaEncPequena() + CYAN_BOLD + " (Pequena)"+ RESET + ", " +  transportadora.getTaxasImpostos().getTaxaEncMedia() + CYAN_BOLD+ " (Média)"+ RESET + ", " +  transportadora.getTaxasImpostos().getTaxaEncGrande() + CYAN_BOLD + "(Grande)" + RESET);
+                " | Tipo: " + RESET + transportadora.getTipo());
         System.out.println();
         System.out.println(CYAN_BOLD + "                                                                                                Encomendas:" + RESET);
         System.out.println();

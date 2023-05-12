@@ -30,12 +30,35 @@ public class Main {
         }
     }
 
+    public boolean isDouble(String input) {
+        try {
+            // Attempt to parse the input string as a double
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException e) {
+            // The input string is not a valid double
+            return false;
+        }
+    }
+
     private static boolean isString(Object obj) {
         return obj instanceof String;
     }
 
     private static int stringToInt(String str) {
         return Integer.parseInt(str);
+    }
+
+    public double stringToDouble(String input) throws NumberFormatException {
+        return Double.parseDouble(input);
+    }
+
+    public boolean containsOnlyLetters(String input) {
+        // Regular expression to match one or more alphabetical characters
+        String regex = "[a-zA-Z ]+";
+
+        // Check if the input matches the regular expression
+        return input.matches(regex);
     }
 
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
@@ -150,10 +173,7 @@ public class Main {
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0;
-        String email, pass, nome, morada, nomeTrans, c;
-        int nif;
-        int tipo = 0;
-        double lucro;
+        String email, pass, nome, morada, nomeTrans, nif, c, lucro, tipo;
         String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         String eq;
@@ -199,10 +219,9 @@ public class Main {
                     try {
                         sistema.verificaUtilizador(email);
                     } catch (UtilizadorException a) {
-                        apresentacao.printMensagem(a.getMessage(), 74, 2);
-                        apresentacao.printMensagem("DESEJA CONTINUAR A TENTAR?", 74, 2);
-                        apresentacao.printMensagemSimOuNao(100);
-                        x = ler.nextInt();
+                        apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(0,1,0);
                         break;
                     }
                     int teste = 0;
@@ -219,12 +238,10 @@ public class Main {
                             x = runUtilizador(email);
                             break;
                         } catch (UtilizadorException a) {
-                            apresentacao.printMensagem(a.getMessage(),94,2);
-                            apresentacao.printMensagemCentrada("DESEJA CONTINUAR A TENTAR?", 2);
-                            apresentacao.printMensagemSimOuNao(102);
-                            x = ler.nextInt();
-
-                        }if (x==0){
+                            apresentacao.printMensagemCentrada(a.getMessage(),2);
+                            apresentacao.printClear(1);
+                            x = valorSimouNao(0,1,0);
+                        } if (x==0){
                             teste = 1;
                         }
                     }
@@ -233,7 +250,8 @@ public class Main {
                 case 2:
                     apresentacao.printProcuraTrans();
                     ler = new Scanner(System.in);
-                    nomeTrans = ler.nextLine();
+                    apresentacao.printEspacos(102);
+                    nomeTrans = ler.nextLine().toUpperCase();
                     try {
                         Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
                         apresentacao.printDadosTransportadora(transportadora);
@@ -242,19 +260,11 @@ public class Main {
                         break;
                     }
                     catch (TransportadoraException a){
-                        apresentacao.printMensagem(a.getMessage(),94,2);
-                        apresentacao.printMensagemCentrada("DESEJA CONTINUAR A TENTAR?", 2);
-                        apresentacao.printMensagemSimOuNao(102);
-                        x = ler.nextInt();
-
-                        if (x == 1){
-                            x = 2;
-                            break;
-                        }
+                        apresentacao.printMensagemCentrada(a.getMessage(),2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(1,2,0);
                     }
                     break;
-
-
 
                 case 3: //Registar utilizador
                     apresentacao.printReg();
@@ -274,6 +284,13 @@ public class Main {
 
                     nome = ler.nextLine();
 
+                    if (!containsOnlyLetters(nome)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADAS LETRAS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(2,3,0);
+                        break;
+                    }
+
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira a sua morada:", 86, 1);
                     apresentacao.printEspacos(86);
@@ -284,32 +301,36 @@ public class Main {
                     apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
                     apresentacao.printEspacos(86);
 
-                    nif = ler.nextInt();
+                    nif = ler.nextLine();
+
+                    if (!isInt(nif)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(2,3,0);
+                        break;
+                    }
+
+                    int nNif = stringToInt(nif);
 
                     try {
-                        sistema.adicionaUtilizador(email, pass, nome, morada, nif);
-                        apresentacao.printReg();
-                        apresentacao.printMensagem("UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?", 72, 3);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagemSimOuNao(100);
-
-                        x = ler.nextInt();
-
-                        if (x == 1) x = 3;
-                        else x = 0;
+                        sistema.adicionaUtilizador(email, pass, nome, morada, nNif);
+                        do {
+                            apresentacao.printReg();
+                            apresentacao.printMensagem("UTILIZADOR REGISTADO COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?", 72, 3);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemSimOuNao(100);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 3; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
                     }
                     catch (UtilizadorException a) {
 
                         apresentacao.printClear(1);
-                        apresentacao.printMensagem(a.getMessage(),81,2);
-                        apresentacao.printMensagem("DESEJA TENTAR DE NOVO?", 81, 2);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagemSimOuNao(99);
-
-                        x = ler.nextInt();
-                        if (x == 1) x = 3;
-                        else x = 0;
-
+                        apresentacao.printMensagemCentrada(a.getMessage(),2);
+                        x = valorSimouNao(2,3,0);
+                        break;
                     }
                     break;
 
@@ -324,36 +345,50 @@ public class Main {
                     apresentacao.printMensagem("Insira a margem de lucro que pretende obter:", 86, 1);
                     apresentacao.printEspacos(86);
 
-                    lucro = ler.nextDouble();
+                    lucro = ler.nextLine();
+
+                    if(!isDouble(lucro)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
+                    double nLucro = stringToDouble(lucro);
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira 1-\"Normal\" ou 2-\"Premium\":", 86, 1);
                     apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    tipo = ler.nextLine();
 
-                    tipo = ler.nextInt();
+                    if (!tipo.equals("1") && !tipo.equals("2")) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODE INSERIR 1 0U 2!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
+                    int nTipo = stringToInt(tipo);
 
                     try {
-                        sistema.adicionaTransportadora(nomeTrans, lucro, tipo, 2);
-                        apresentacao.printRegTrans();
-                        apresentacao.printMensagem("TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?", 71, 3);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagemSimOuNao(100);
+                        sistema.adicionaTransportadora(nomeTrans, nLucro, nTipo, 2);
 
-                        x = ler.nextInt();
-
-                        if (x == 1) x = 4;
-                        else x = 0;
+                        do {
+                            apresentacao.printRegTrans();
+                            apresentacao.printMensagemCentrada("TRANSPORTADORA REGISTADA COM SUCESSO!! DESEJA CONTINUAR A REGISTAR?", 3);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemSimOuNao(100);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 4; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
                     }
                     catch (TransportadoraException a){
                         apresentacao.printClear(3);
-                        apresentacao.printMensagem(a.getMessage(),86,2);
-                        apresentacao.printMensagem("DESEJA TENTAR DE NOVO?", 86, 2);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagemSimOuNao(98);
-
-                        x = ler.nextInt();
-                        if (x == 1) x = 4;
-                        else x = 0;
+                        apresentacao.printMensagemCentrada(a.getMessage(),2);
+                        x = valorSimouNao(3,4,0);
                     }
                     break;
 
@@ -415,9 +450,6 @@ public class Main {
                 case 5: // MENU FATURAS
                     x = runFaturas(email);
                     break;
-
-                case 6:
-
             }
         } while (x != 6);
 
@@ -1714,6 +1746,30 @@ public class Main {
         }while (x != 6);
 
         return 0;
+    }
+
+    public int valorSimouNao(int p, int y, int z) {
+        String c;
+        Scanner ler;
+        int x;
+        int u = p;
+        p = -1;
+
+        do {
+            if (p == 0) apresentacao.printLogin();
+            if (p == 1) apresentacao.printTrans();
+            if (p == 2) apresentacao.printReg();
+            if (p == 3) apresentacao.printRegTrans();
+            p = u;
+            apresentacao.printMensagemCentrada("DESEJA CONTINUAR A TENTAR?", 2);
+            apresentacao.printMensagemSimOuNao(101);
+            ler = new Scanner(System.in);
+            c = ler.nextLine();
+            if (c.equals("1")) { x = y; break;}
+            if (c.equals("0")) { x = z; break;}
+        } while (true);
+
+        return x;
     }
 
     public LocalDate stringParaData(String dma){

@@ -90,7 +90,7 @@ public class Mala extends Acessorio implements Premium
         {
             return true;
         }
-        if (o == null || this.getClass() == o.getClass())
+        if (o == null || this.getClass() != o.getClass())
         {
             return false;
         }

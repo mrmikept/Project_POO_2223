@@ -1012,6 +1012,17 @@ public class Apresentacao
         resetColor();
     }
 
+    public void printMensagemErro(int x) {
+        if (x == 1) {
+            printMensagemCentrada("ERRO!! APENAS PODE UTILIZAR DIGITOS",2);
+            System.out.println();
+            printMensagemCentrada("DESEJA TENTAR DE NOVO?",0);
+            printMensagemSimOuNao(102);
+        }
+        if (x == 2) printMensagemCentrada("ERRO!! APENAS PODE UTILIZAR CARACTERES",2);
+        //printEnter("");
+    }
+
     public void printMensagemLocaldate(String mensagem, int x, int cor, LocalDate localdate){
         if (cor == 1) cyanBold();
         if (cor == 2) red();

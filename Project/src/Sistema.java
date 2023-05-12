@@ -192,6 +192,10 @@ public class Sistema implements Serializable,Atributos {
         return (!this.listaArtigos.entrySet().stream().filter(artigo -> !artigo.getValue().getVendedor().getEmail().equals(email)).collect(Collectors.toList()).isEmpty());
     }
 
+    public boolean verificaArtigosID(String id)
+    {
+        return this.listaArtigos.containsKey(id);
+    }
 
     /**
      * Adiciona um utilizador à lista de utilizadores do Sistema.

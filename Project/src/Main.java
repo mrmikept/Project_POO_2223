@@ -21,16 +21,22 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    private boolean verificaInputInt(int input)
-    {
-        if (input < 0) return false;
-        return true;
+    public static boolean isInt(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
-    private boolean verificaInputString(String c) {
-        return true;
+    private static boolean isString(Object obj) {
+        return obj instanceof String;
     }
 
+    private static int stringToInt(String str) {
+        return Integer.parseInt(str);
+    }
 
     private void run() throws UtilizadorException, TransportadoraException, IOException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         int x = 0;
@@ -474,7 +480,7 @@ public class Main {
                     apresentacao.printEspacos(84);
                     id = ler.nextLine();
 
-                    if (!sistema.verificaArtigoVenda(id)) {
+                    if (!sistema.verificaArtigosID(id)) {
 
                         tshirt.setId(id);
 
@@ -962,7 +968,6 @@ public class Main {
         int x = 0;
         String [] s = {"Avancar no tempo", "Alterar taxas e impostos", "Alterar tempo de devolucao", "Retroceder"};
         Scanner ler = new Scanner(System.in);
-        int opcao, dia, mes, ano;
         String c, eq;
 
         do {
@@ -980,78 +985,8 @@ public class Main {
                     break;
 
                 case 1: // MENU AVANCAR NO TEMPO
-                    apresentacao.printSaltaTempo();
-                    String[] o ={"Avançar para uma data", "Adicionar dias à data atual"};
-                    apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", o);
-                    apresentacao.printEspacos(103);
-                    ler = new Scanner(System.in);
-                    opcao = ler.nextInt();
-                    LocalDate localDate;
-
-                    if (opcao == 1) { // PARA UMA DATA
-                        apresentacao.printSaltaTempo();
-                        apresentacao.printMensagem("Introduza o dia (DD)",87,1);
-                        System.out.println();
-                        apresentacao.printEspacos(87);
-                        ler = new Scanner(System.in);
-                        dia = ler.nextInt();
-
-                        System.out.println();
-
-                        apresentacao.printMensagem("Introduza o mês (MM)",87,1);
-                        System.out.println();
-                        apresentacao.printEspacos(87);
-                        ler = new Scanner(System.in);
-                        mes = ler.nextInt();
-
-                        System.out.println();
-
-                        apresentacao.printMensagem("Introduza o ano (AAAA)",87,1);
-                        System.out.println();
-                        apresentacao.printEspacos(87);
-                        ler = new Scanner(System.in);
-                        ano = ler.nextInt();
-
-                        sistema.saltaTempo(ano, mes, dia);
-                        localDate = this.sistema.getDataAtual();
-                        System.out.println();
-                    apresentacao.printEnterSair();
-
-                        apresentacao.printSaltaTempo();
-                        apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!", 84,3);
-                        System.out.println();
-                        apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
-                        apresentacao.printEnterSair();
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
-                        x = 0;
-                        break;
-                    }
-
-                    if (opcao == 2) { // ADICIONAR DIAS A DATA ATUAL
-                        apresentacao.printSaltaTempo();
-                        apresentacao.printMensagem("Introduza o numero de dias que pretende avançar (DD)",78,1);
-                        System.out.println();
-                        apresentacao.printEspacos(78);
-                        ler = new Scanner(System.in);
-                        dia = ler.nextInt();
-
-                        sistema.saltaTempo(dia);
-                        localDate = this.sistema.getDataAtual();
-
-                        apresentacao.printSaltaTempo();
-                        apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!",84,3);
-                        System.out.println();
-                        apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
-                        apresentacao.printEnterSair();
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
-                        x = 0;
-                        break;
-                    }
-                    x = 0;
+                    x = runAvancaTempo();
                     break;
-
                 case 2: // MENU ALTERAR IMPOSTO E TAXAS
                     x = runMenuImpostos();
                     break;
@@ -1061,7 +996,19 @@ public class Main {
                     System.out.println();
                     apresentacao.printEspacos(77);
                     ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    c = ler.nextLine();
+
+                    if (!isInt(c)) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
 
                     sistema.setTempoDevolucao(x);
 
@@ -1077,6 +1024,207 @@ public class Main {
 
         return 0;
     }
+
+    public int runAvancaTempo() throws SistemaException {
+        int x = 0, nDia, nMes, nAno;
+        String[] s ={"Avançar para uma data", "Adicionar dias à data atual", "Retroceder"};
+        String c, dia, mes, ano;
+        Scanner ler;
+        LocalDate localDate;
+
+        do {
+            switch (x) {
+                case 0:
+                    do {
+                        apresentacao.printSaltaTempo();
+                        apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", s);
+                        apresentacao.printEspacos(103);
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+
+                        if (c.equals("1")) { x = 1; break;}
+                        if (c.equals("2")) { x = 2; break;}
+                        if (c.equals("3")) { x = 3; break;}
+
+                    } while (true);
+                    break;
+
+                case 1:
+                    apresentacao.printSaltaTempo();
+                    apresentacao.printMensagem("Introduza o dia (DD)",87,1);
+                    System.out.println();
+                    apresentacao.printEspacos(87);
+                    ler = new Scanner(System.in);
+                    dia = ler.nextLine();
+
+                    if(!isInt(dia)){
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    nDia = stringToInt(dia);
+                    if (nDia < 1 || nDia > 31) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemCentrada("DIA INVALIDO!!",2);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR DE NOVO?",0);
+                            apresentacao.printMensagemSimOuNao(101);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    System.out.println();
+
+                    apresentacao.printMensagem("Introduza o mês (MM)",87,1);
+                    System.out.println();
+                    apresentacao.printEspacos(87);
+                    ler = new Scanner(System.in);
+                    mes = ler.nextLine();
+
+                    if(!isInt(mes)) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    nMes = stringToInt(mes);
+                    if (nMes < 1 || nMes > 12) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemCentrada("MES INVALIDO!!",2);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR DE NOVO?",0);
+                            apresentacao.printMensagemSimOuNao(101);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    System.out.println();
+
+                    apresentacao.printMensagem("Introduza o ano (AAAA)",87,1);
+                    System.out.println();
+                    apresentacao.printEspacos(87);
+                    ler = new Scanner(System.in);
+                    ano = ler.nextLine();
+
+                    if(!isInt(ano)) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    nAno = stringToInt(ano);
+
+                    try {
+                        sistema.saltaTempo(nAno, nMes, nDia);
+                        localDate = this.sistema.getDataAtual();
+                        System.out.println();
+                        apresentacao.printEnterSair();
+
+                        apresentacao.printSaltaTempo();
+                        apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!", 84,3);
+                        System.out.println();
+                        apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
+                        apresentacao.printEnterSair();
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    catch (SistemaException e) {
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagemCentrada(e.getMessage(),2);
+                        apresentacao.printEnter("");
+                        ler = new Scanner(System.in);
+                        c = ler.nextLine();
+                        x = 0;
+                    }
+                    break;
+
+                case 2:
+                    apresentacao.printSaltaTempo();
+                    apresentacao.printMensagem("Introduza o numero de dias que pretende avançar (DD)",78,1);
+                    System.out.println();
+                    apresentacao.printEspacos(78);
+                    ler = new Scanner(System.in);
+                    dia = ler.nextLine();
+
+                    if(!isInt(dia)){
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 2; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    nDia = stringToInt(dia);
+
+                    if (nDia < 0) {
+                        do {
+                            apresentacao.printSaltaTempo();
+                            apresentacao.printMensagemCentrada("IMPOSSIVEL VOLTAR ATRAS NO TEMPO!!",2);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR DE NOVO?",0);
+                            apresentacao.printMensagemSimOuNao(101);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 2; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    sistema.saltaTempo(nDia);
+                    localDate = this.sistema.getDataAtual();
+
+                    apresentacao.printSaltaTempo();
+                    apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!",84,3);
+                    System.out.println();
+                    apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
+                    apresentacao.printEnterSair();
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+                    x = 0;
+                    break;
+            }
+
+        } while (x!=3);
+
+        return 0;
+    }
+
     public int runEncomendas(String email) throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException, SistemaException {
         int x = 0;
         String [] s = {"Pendentes", "Expedidas", "Finalizadas", "Devolvidas", "Retroceder"};
@@ -1297,9 +1445,7 @@ public class Main {
 
                 case 5:
                     apresentacao.printVintageDinheiro();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
+                    apresentacao.printClear(3);
                     apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());
                     //System.out.println(apresentacao.CYAN_BOLD + "                                                                                                        $GANHOS$ : "+ apresentacao.RESET + sistema.ganhoVintage());
                     apresentacao.printEnterSair();

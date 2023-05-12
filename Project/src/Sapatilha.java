@@ -72,7 +72,7 @@ public class Sapatilha extends Calcado implements Premium {
 
     public double getValorizacaoPremium(int date)
     {
-        return (0.6 * (date - this.getDataLancamento()) * this.getPrecoBase());
+        return Math.round((0.6 * (date - this.getDataLancamento()) * this.getPrecoBase())* 100) / 100;
     }
 
     public double getCorrecaoPreco()

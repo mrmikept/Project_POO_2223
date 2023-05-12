@@ -145,7 +145,7 @@ public class Automatizacao {
            sistema.saltaTempo(ano, mes, dia);
         }
         String email = camposArt[2];
-        String id = camposArt[3];
+        String id = camposArt[3].toUpperCase();
         String descricao = camposArt[4];
         String marca = camposArt[5];
         double precoBase = Double.parseDouble(camposArt[6]);

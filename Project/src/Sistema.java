@@ -913,9 +913,11 @@ public class Sistema implements Serializable,Atributos {
      * @param nome Nome da transportadora
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
-    public boolean verificaTransportadora(String nome)
-    {
-        return (listaTransportadoras.containsKey(nome));
+    public boolean verificaTransportadora(String nome) throws TransportadoraException {
+        if (listaUtilizadores.containsKey(nome)){
+            return true;
+        }
+        else throw new TransportadoraException("Esta transportadora não existe!!");
     }
 
     /**

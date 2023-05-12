@@ -208,7 +208,7 @@ public class Main {
     }
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
-        int x = 0;
+        int x = 0, teste = 0;
         String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro;
         String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
@@ -264,7 +264,7 @@ public class Main {
                         x = valorSimouNao(0,1,0);
                         break;
                     }
-                    int teste = 0;
+                    teste = 0;
                     while (teste == 0) {
                         apresentacao.clear();
                         apresentacao.printMenuLogin();
@@ -278,6 +278,41 @@ public class Main {
                             x = runUtilizador(email);
                             break;
                         } catch (UtilizadorException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(),2);
+                            apresentacao.printClear(1);
+                            x = valorSimouNao(0,1,0);
+                        } if (x==0){
+                            teste = 1;
+                        }
+                    }
+                    break;
+
+                case 10: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
+                    apresentacao.printTrans();
+                    apresentacao.printEspacos(88);
+                    ler = new Scanner(System.in);
+                    email = ler.nextLine();
+                    try {
+                        sistema.verificaTransportadora(email);
+                    } catch (TransportadoraException a) {
+                        apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(0,1,0);
+                        break;
+                    }
+                    while (teste == 0) {
+                        apresentacao.clear();
+                        apresentacao.printMensagem("Insira o nome da transportadora:",88,1);
+                        apresentacao.printMensagem(email, 88, 0);
+                        apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                        apresentacao.printEspacos(88);
+                        ler = new Scanner(System.in);
+                        pass = ler.nextLine();
+                        try {
+                            sistema.verificaPassword(email, pass);
+                            x = runUtilizador(email);
+                            break;
+                        } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
                             apresentacao.printClear(1);
                             x = valorSimouNao(0,1,0);
@@ -461,7 +496,7 @@ public class Main {
 
                     do {
                         apresentacao.printMenu(s, 1, nome);
-                        eq = ler.nextLine().toLowerCase();
+                        eq = ler.nextLine();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
                         if (eq.equals("3")) { x = 3; break;}
@@ -496,6 +531,36 @@ public class Main {
                     break;
             }
         } while (x != 6);
+
+        return 0;
+    }
+
+    public int runTransportadora(String nome) throws TransportadoraException {
+        Transportadora transportadora = sistema.procuraTransportadora(nome);
+        int x = 0;
+        String [] s = {"Dados da transportadora", "Encomendas" ,"Alterar margem de lucro", "Retroceder"};
+        String eq;
+        Scanner ler = new Scanner(System.in);
+
+        do{
+            switch (x) {
+                case 0:
+                    do {
+                        apresentacao.printMenu(s, 1, nome);
+                        eq = ler.nextLine();
+                        if (eq.equals("1")) { x = 1; break;}
+                        if (eq.equals("2")) { x = 2; break;}
+                        if (eq.equals("3")) { x = 3; break;}
+                        if (eq.equals("4")) { x = 4; break;}
+                    } while (true);
+                    break;
+
+                case 1:
+                    apresentacao.printDadosTransportadora(transportadora);
+                    x=0;
+                    break;
+            }
+        } while(x != 4);
 
         return 0;
     }
@@ -709,7 +774,7 @@ public class Main {
         return 0;
     }
 
-    public String runEscolhaTransportadora(int tipoTransportadora) {
+    public String runEscolhaTransportadora(int tipoTransportadora) throws TransportadoraException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         List<Transportadora> transportadoras = sistema.getListaTransportadoras().values().stream().filter(transportadora -> transportadora.getTipo() == tipoTransportadora).collect(Collectors.toList());
@@ -2039,7 +2104,6 @@ public class Main {
                     }
                     break;
 
-
                 case 3:
                     apresentacao.printEncomendasVendedor();
                     System.out.println();
@@ -2111,7 +2175,6 @@ public class Main {
                         apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
                         x = 0;
                         break;
-
                     }
 
                 case 5:
@@ -2132,9 +2195,7 @@ public class Main {
     public int valorSimouNao(int p, int y, int z) {
         String c;
         Scanner ler;
-        int x;
-        int u = p;
-        p = -1;
+        int x, u = p; p = -1;
 
         do {
             if (p == 0) apresentacao.printLogin();

@@ -693,6 +693,7 @@ public class Main {
                 case 2: //TODO: FAZER UMA FUNCAO QUE DEVOLVA TODAS AS ENCOMENDAS DE UMA TRANSPORTADORA
                     
                 case 3:
+                    transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
                     apresentacao.printClear(1);
                     apresentacao.printEspacos(93);
@@ -720,16 +721,20 @@ public class Main {
                         break;
                     }
 
-                    transportadora.setMargemLucro(lucro);
+                    sistema.alteraMargemLucroTransportadora(email,lucro);
 
                     apresentacao.printTrans();
                     apresentacao.printMensagemCentrada("MARGEM DE LUCRO ALTERADA COM SUCESSO",3);
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(90);
+                    System.out.println(apresentacao.CYAN_BOLD + "Margem de lucro atual: "+ apresentacao.RESET + lucro);
                     apresentacao.printEnterSair();
                     ler.nextLine();
                     x = 0;
                     break;
 
                 case 4:
+                    transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
                     apresentacao.printClear(1);
                     apresentacao.printEspacos(89);
@@ -749,6 +754,7 @@ public class Main {
                     }
 
                     x = stringToInt(c);
+                    int n = x;
 
                     if (x <= 0) {
                         apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER VALORES POSITIVOS!!",2);
@@ -757,10 +763,13 @@ public class Main {
                         break;
                     }
 
-                    transportadora.setTempoExpedicao(x);
+                    sistema.alteraTempoExpedicaoTransportadora(email,x);
 
                     apresentacao.printTrans();
                     apresentacao.printMensagemCentrada("TEMPO DE EXPEDICÃO ALTERADO COM SUCESSO",3);
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(90);
+                    System.out.println(apresentacao.CYAN_BOLD + "Tempo de expedição atual: "+ apresentacao.RESET + n);
                     apresentacao.printEnterSair();
                     ler.nextLine();
                     x = 0;

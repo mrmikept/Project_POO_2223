@@ -1438,7 +1438,7 @@ public class Main {
 
                         try {
                             nomeTransportadora = runEscolhaTransportadora(0);
-                            tshirt.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                            tshirt.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
                         } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(), 2);
                             apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
@@ -2003,7 +2003,7 @@ public class Main {
 
                         try {
                             nomeTransportadora = runEscolhaTransportadora(tipo);
-                            mala.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                            mala.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
                         } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(), 2);
                             apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
@@ -2590,7 +2590,7 @@ public class Main {
 
                         try {
                             nomeTransportadora = runEscolhaTransportadora(tipo);
-                            sapatilha.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                            sapatilha.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
                         } catch (TransportadoraException a){
                             apresentacao.printMensagemCentrada(a.getMessage(), 2);
                             apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);

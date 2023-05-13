@@ -922,10 +922,9 @@ public class Sistema implements Serializable,Atributos {
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
     public boolean verificaTransportadora(String nome) throws TransportadoraException {
-        if (listaUtilizadores.containsKey(nome)){
+        if (listaTransportadoras.containsKey(nome)){
             return true;
-        }
-        else throw new TransportadoraException("Esta transportadora não existe!!");
+        } else throw new TransportadoraException("Esta transportadora não existe!!");
     }
 
     public boolean verificaLoginTransportadora(String email, String palavrapasse) //TODO ver esta e a proxima função! Colocar exceptions nesta
@@ -933,9 +932,9 @@ public class Sistema implements Serializable,Atributos {
         return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(palavrapasse)).collect(Collectors.toList()).isEmpty();
     }
 
-    private boolean verificaEmailTransportadora(String email)
-    {
-        return this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email)).collect(Collectors.toList()).isEmpty();
+    public boolean verificaEmailTransportadora(String nome) throws TransportadoraException {
+        if (this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList()).isEmpty()) return true;
+        else throw new TransportadoraException("Esta transportadora não existe!!");
     }
 
     /**
@@ -945,7 +944,7 @@ public class Sistema implements Serializable,Atributos {
      * @return True se a password é a mesma do utilizador
      * @throws UtilizadorException Caso o utilizador não exista
      */
-    public boolean verificaPassword(String email, String password) throws UtilizadorException
+    public boolean verificaPasswordUtilizador(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
         if (password.equals(utilizador.getPalavraPasse())){
@@ -954,6 +953,9 @@ public class Sistema implements Serializable,Atributos {
         else throw new UtilizadorException("Password Incorreta!!");
     }
 
+    public boolean verificaPasswordTransportadora(String email, String password) throws UtilizadorException, TransportadoraException {
+        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(password)).collect(Collectors.toList()).isEmpty();
+    }
 
     public boolean equals(Object o)
     {

@@ -1028,7 +1028,6 @@ public class Apresentacao
             printMensagemSimOuNao(102);
         }
         if (x == 2) printMensagemCentrada("ERRO!! APENAS PODE UTILIZAR CARACTERES",2);
-        //printEnter("");
     }
 
     public void printMensagemLocaldate(String mensagem, int x, int cor, LocalDate localdate){

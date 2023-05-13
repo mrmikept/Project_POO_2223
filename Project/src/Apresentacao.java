@@ -1267,7 +1267,7 @@ public class Apresentacao
             for (int i = startIndex; i < endIndex; i++) {
                 int key = i + 1;
                 Fatura fatura = menuItems[i];
-                System.out.println(fatura.showFatura());
+                //System.out.println(fatura.showFatura());
             }
             System.out.println();
             System.out.println();
@@ -1860,6 +1860,26 @@ public class Apresentacao
             return "DEVOLVIDAS";
         }
         return "";
+    }
+
+    public String showFatura(Fatura fatura) {
+        StringBuilder string = new StringBuilder();
+        if (fatura.getTipo() == Atributos.VENDA)
+        {
+            string.append(Apresentacao.CYAN_BOLD + "Fatura referente à Venda da encomenda: " + Apresentacao.RESET + fatura.getIdEncomenda() + Apresentacao.YELLOW + " | ");
+            string.append(Apresentacao.CYAN_BOLD + "Valor dos Artigos: " + Apresentacao.RESET + fatura.getValorArtigos() + Apresentacao.YELLOW + " | ");
+
+        }
+        else
+        {
+            string.append(Apresentacao.CYAN_BOLD + "Fatura referente à Compra da encomenda: " + Apresentacao.RESET + fatura.getIdEncomenda() + Apresentacao.YELLOW + " | ");
+            string.append(Apresentacao.CYAN_BOLD + "Valor dos Artigos: " + Apresentacao.RESET + fatura.getValorArtigos() + Apresentacao.YELLOW + " | ");
+            string.append(Apresentacao.CYAN_BOLD + "Valor Taxas sobre Artigos Novos e Usados: " + Apresentacao.RESET + fatura.getValorTaxas() + Apresentacao.YELLOW + " | ");
+            string.append(Apresentacao.CYAN_BOLD + "Valor Taxa de expedição: " + Apresentacao.RESET + fatura.getValorExpedicao() + Apresentacao.YELLOW + " | ");
+        }
+        string.append(Apresentacao.CYAN_BOLD + "Valor total: " + Apresentacao.RESET + fatura.getValorTotal() + Apresentacao.YELLOW + " | ");
+        string.append(Apresentacao.CYAN_BOLD + "Data de Faturacao: " + Apresentacao.RESET + fatura.getDataFaturacao() + "\n");
+        return string.toString();
     }
 
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {

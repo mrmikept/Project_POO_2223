@@ -19,16 +19,17 @@ Adiciona Utilizador:2023-04-15;jose.oliveira@email.com;pass123456;José Oliveira
 Adiciona Utilizador:2023-04-17;lara.rodrigues@email.com;securepassword;Lara Rodrigues;Travessa Inexistente, 285;908625137
 Adiciona Utilizador:2023-04-19;miguel.santos@email.com;testpassword;Miguel Santos;Rua Falsa, 654;432109876
 Adiciona Utilizador:2023-04-21;natalia.rodrigues@email.com;pass123;Natália Rodrigues;Avenida Imaginária, 147;765432109
-Adiciona Transportadora: 2023-03-17;enviaexpresso@exemplo.com;password123;Envia Expresso;Rua Veloz, 123;123456789;0.15;Normal;3
-Adiciona Transportadora: 2023-03-20;rapidodelivery@exemplo.com;password456;Rápido Delivery;Avenida Ágil, 456;987654321;0.12;Premium;2
-Adiciona Transportadora: 2023-03-22;superlogistica@exemplo.com;password789;Super Logística;Travessa Logística, 789;246813579;0.18;Normal;4
-Adiciona Transportadora: 2023-03-24;velocidadeexpress@exemplo.com;password1234;Velocidade Express;Praça Rápida, 987;135792468;0.1;Normal;3
-Adiciona Transportadora: 2023-03-26;entregamaxima@exemplo.com;password5678;Entrega Máxima;Largo Eficiente, 369;864209753;0.2;Premium;2
-Adiciona Transportadora: 2023-03-29;eficazlogistics@exemplo.com;passwordabcd;Eficaz Logistics;Rua Rápida, 258;975320864;0.14;Normal;4
-Adiciona Transportadora: 2023-04-02;entregapontual@exemplo.com;password12345;Entrega Pontual;Avenida Expressa, 741;753198642;0.17;Normal;3
-Adiciona Transportadora: 2023-04-04;transrapid@exemplo.com;password6789;Trans Rapid;Travessa Ágil, 963;486231975;0.13;Normal;4
-Adiciona Transportadora: 2023-04-06;ultralogistic@exemplo.com;passwordxyz;Ultra Logistic;Rua Suprema, 357;219735864;0.16;Premium;2
-Adiciona Transportadora: 2023-04-08;transveloz@exemplo.com;password7890;Trans Veloz;Praça Rápida, 582;639184275;0.11;Normal;3
+Adiciona Transportadora:2023-03-17;enviaexpresso@exemplo.com;password123;Envia Expresso;Rua Veloz, 123;123456789;0.15;Normal;3
+Adiciona Transportadora:2023-03-17;ctt@exemplo.com;1234;CTT;Rua Veloz, 123;123456789;0.15;Normal;3
+Adiciona Transportadora:2023-03-20;rapidodelivery@exemplo.com;password456;Rápido Delivery;Avenida Ágil, 456;987654321;0.12;Premium;2
+Adiciona Transportadora:2023-03-22;superlogistica@exemplo.com;password789;Super Logística;Travessa Logística, 789;246813579;0.18;Normal;4
+Adiciona Transportadora:2023-03-24;velocidadeexpress@exemplo.com;password1234;Velocidade Express;Praça Rápida, 987;135792468;0.1;Normal;3
+Adiciona Transportadora:2023-03-26;entregamaxima@exemplo.com;password5678;Entrega Máxima;Largo Eficiente, 369;864209753;0.2;Premium;2
+Adiciona Transportadora:2023-03-29;eficazlogistics@exemplo.com;passwordabcd;Eficaz Logistics;Rua Rápida, 258;975320864;0.14;Normal;4
+Adiciona Transportadora:2023-04-02;entregapontual@exemplo.com;password12345;Entrega Pontual;Avenida Expressa, 741;753198642;0.17;Normal;3
+Adiciona Transportadora:2023-04-04;transrapid@exemplo.com;password6789;Trans Rapid;Travessa Ágil, 963;486231975;0.13;Normal;4
+Adiciona Transportadora:2023-04-08;transveloz@exemplo.com;password7890;Trans Veloz;Praça Rápida, 582;639184275;0.11;Normal;3
+Adiciona Transportadora:2023-04-06;ultralogistic@exemplo.com;passwordxyz;Ultra Logistic;Rua Suprema, 357;219735864;0.16;Premium;2
 Adiciona Utilizador:2023-04-23;oliver.ferreira@email.com;securepass;Oliver Ferreira;Travessa Inexistente, 753;901234567
 Adiciona Utilizador:2023-04-25;paula.ribeiro@email.com;password123;Paula Ribeiro;Praça Falsa, 321;345678901
 Adiciona Utilizador:2023-04-27;quintino.lopes@email.com;pass456;Quintino Lopes;Largo Fictício, 963;789012345

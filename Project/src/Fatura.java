@@ -114,19 +114,6 @@ public class Fatura
         this.dataFaturacao = dataFaturacao;
     }
 
-    public String showFatura() {
-        StringBuilder string = new StringBuilder();
-
-        string.append(Apresentacao.CYAN_BOLD + "Fatura referente à encomenda: " + Apresentacao.RESET + this.getIdEncomenda() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Valor dos Artigos: " + Apresentacao.RESET + this.getValorArtigos() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Valor Taxas sobre Artigos Novos e Usados: " + Apresentacao.RESET + this.getValorTaxas() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Valor Taxa de expedição: " + Apresentacao.RESET + this.getValorExpedicao() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Valor total: " + Apresentacao.RESET + this.getValorTotal() + Apresentacao.YELLOW + " | "
-        + Apresentacao.CYAN_BOLD + "Data de Faturacao: " + Apresentacao.RESET + this.getDataFaturacao() + "\n");
-
-        return string.toString();
-    }
-
     public String toString()
     {
         StringBuilder string = new StringBuilder();

@@ -342,7 +342,7 @@ public class Automatizacao {
             encomenda.adicionaArtigo(artigo);
             x++;
         }
-        sistema.adicionaEncomenda(encomenda, email);
+        //sistema.adicionaEncomenda(encomenda, email);
     }
 
     public void confEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {

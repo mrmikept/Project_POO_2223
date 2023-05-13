@@ -918,9 +918,9 @@ public class Main {
                 apresentacao.printMensagemCentrada("INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER OS ARTIGOS",1);
                 apresentacao.printClear(1);
                 int id = ler.nextInt();
-                if (sistema.getListaEncomendas().stream().anyMatch(encomenda -> (encomenda.getVendedor().equals(email) || encomenda.getComprador().equals(email)) && encomenda.getEstado() != Atributos.PENDENTE))
+                if (sistema.verificaEncomenda(email,id))
                 {
-                    runVerArtigosEncomenda(id,email);
+                    runVerArtigosEncomenda(id,email,tipoFatura);
                 }
                 else
                 {
@@ -3487,24 +3487,24 @@ public class Main {
         }while (true);
     }
 
-    public void runVerArtigosEncomenda(int id, String email) throws EncomendaException {
+    public void runVerArtigosEncomenda(int id, String email, int tipoEncomenda) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
         List<String> strings = new ArrayList<>();
-        try {
-            Encomenda encomenda = sistema.procuraEncomendaVendedor(id,email);
-            List<Artigo> artigos = encomenda.getListaArtigos();
-            for (Artigo artigo : artigos)
-            {
-                strings.add(apresentacao.showArtigoString(artigo,encomenda.getDataCriacao().getYear()));
-            }
-        } catch (EncomendaException e)
+        Encomenda encomenda;
+        if (tipoEncomenda == Atributos.VENDA)
         {
-            apresentacao.printMensagemCentrada(e.getMessage(),2);
-            apresentacao.printEnter("");
-            ler.nextLine();
-            return;
+            encomenda = sistema.procuraEncomendaVendedor(id,email);
+        }
+        else
+        {
+            encomenda = sistema.procuraEncomendaComprador(id,email);
+        }
+        List<Artigo> artigos = encomenda.getListaArtigos();
+        for (Artigo artigo : artigos)
+        {
+            strings.add(apresentacao.showArtigoString(artigo,encomenda.getDataCriacao().getYear()));
         }
         int quantidade = 2;
         int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);

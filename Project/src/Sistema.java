@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -16,7 +17,7 @@ public class Sistema implements Serializable,Atributos {
     private Map<String, Utilizador> listaUtilizadores;
     private Map<String, Transportadora> listaTransportadoras;
     private Map<String, Artigo> listaArtigos;
-    private List<Encomenda> listaEncomendas;
+    private Map<Integer, Encomenda> listaEncomendas;
     private List<Fatura> listaFaturas;
     private LocalDate dataCriacao;
     private LocalDate dataUltimoAcesso;
@@ -33,7 +34,7 @@ public class Sistema implements Serializable,Atributos {
         this.listaUtilizadores = new HashMap<>();
         this.listaTransportadoras = new HashMap<>();
         this.listaArtigos = new HashMap<>();
-        this.listaEncomendas = new ArrayList<>();
+        this.listaEncomendas = new HashMap<>();
         this.listaFaturas = new ArrayList<>();
         this.dataCriacao = LocalDate.now();
         this.dataAtual = LocalDate.now();
@@ -42,7 +43,7 @@ public class Sistema implements Serializable,Atributos {
         this.tempoDevolucao = TEMPODEVOLUCAO_OMISSAO;
     }
 
-    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<String, Artigo> listaArtigos, List<Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, LocalDate dataUltimoAcesso, TaxasImpostos taxas, int tempoDevolucao) {
+    public Sistema(Map<String, Utilizador> listaUtilizadores, Map<String, Transportadora> listaTransportadoras, Map<String, Artigo> listaArtigos, Map<Integer,Encomenda> listaEncomendas, List<Fatura> listaFaturas, LocalDate dataCriacao, LocalDate dataAtual, LocalDate dataUltimoAcesso, TaxasImpostos taxas, int tempoDevolucao) {
         this.listaUtilizadores = listaUtilizadores;
         this.listaTransportadoras = listaTransportadoras;
         this.listaArtigos = listaArtigos;
@@ -97,12 +98,12 @@ public class Sistema implements Serializable,Atributos {
         this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
-    public List<Encomenda> getListaEncomendas() {
-        return listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
+    public Map<Integer, Encomenda> getListaEncomendas() {
+        return listaEncomendas.entrySet().stream().collect(Collectors.toMap(encomenda -> encomenda.getKey(), encomenda -> encomenda.getValue().clone()));
     }
 
-    public void setListaEncomendas(List<Encomenda> listaEncomendas) {
-        this.listaEncomendas = listaEncomendas.stream().map(Encomenda::clone).collect(Collectors.toList());
+    public void setListaEncomendas(Map<Integer, Encomenda> listaEncomendas) {
+        this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(encomenda -> encomenda.getKey(), encomenda -> encomenda.getValue().clone()));
     }
 
     public List<Fatura> getListaFaturas()
@@ -470,7 +471,7 @@ public class Sistema implements Serializable,Atributos {
     public List<Encomenda> getEncomendasTransportadora(String email) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(encomenda)).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(encomenda)).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 return encomendas;
@@ -516,8 +517,8 @@ public class Sistema implements Serializable,Atributos {
      * @throws EncomendaException Caso a encomenda não exista
      */
     public Encomenda procuraEncomendaComprador(Encomenda encomenda) throws EncomendaException {
-        if (this.listaEncomendas.contains(encomenda)) {
-            return this.listaEncomendas.stream().filter(enc -> enc.equals(encomenda)).collect(Collectors.toList()).get(0);
+        if (this.listaEncomendas.containsValue(encomenda)) {
+            return this.listaEncomendas.values().stream().filter(enc -> enc.equals(encomenda)).collect(Collectors.toList()).get(0);
         } else throw new EncomendaException("Esta encomenda não existe!");
     }
 
@@ -543,30 +544,35 @@ public class Sistema implements Serializable,Atributos {
      * Procura uma encomenda
      * @param id Id da encomenda
      * @return Uma encomenda
-     * @throws EncomendaException Caso a encomenda não exista
+     * @throws EncomendaException Caso a encomenda não pertença ao utilizador
      */
-    public Encomenda procuraEncomendaComprador(int id, String email) throws EncomendaException {
-        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == id).map(Encomenda::clone).collect(Collectors.toList());
-        if (!encomendas.isEmpty())
+    public Encomenda procuraEncomendaComprador(int id, String email) throws EncomendaException, UtilizadorException {
+        if (this.verificaEncomenda(email,id))
         {
-            return encomendas.get(0);
-        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!");
+            Encomenda encomenda = this.procuraEncomendaSistema(id,email);
+            if (encomenda.getComprador().equals(email))
+            {
+                return this.listaEncomendas.get(id).clone();
+            } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO LHE PERTENCE!");
+        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO LHE PERTENCE!");
     }
 
-    private Encomenda procuraEncomenda(int id, String email) throws EncomendaException {
-        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == id).collect(Collectors.toList());
-        if (!encomendas.isEmpty())
+    private Encomenda procuraEncomendaSistema(int id, String email) throws EncomendaException {
+        if (this.listaEncomendas.containsKey(id))
         {
-            return encomendas.get(0);
+            return this.listaEncomendas.get(id);
         } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!!");
     }
 
-    public Encomenda procuraEncomendaVendedor(int id, String email) throws EncomendaException {
-        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().equals(email) && encomenda.getId() == id).map(Encomenda::clone).collect(Collectors.toList());
-        if (!encomendas.isEmpty())
+    public Encomenda procuraEncomendaVendedor(int id, String email) throws EncomendaException, UtilizadorException {
+        if (this.verificaEncomenda(email,id))
         {
-            return encomendas.get(0);
-        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!!");
+            Encomenda encomenda = this.procuraEncomendaSistema(id,email);
+            if (encomenda.getVendedor().equals(email))
+            {
+                return this.listaEncomendas.get(id).clone();
+            } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO LHE PERTENCE!");
+        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO LHE PERTENCE!");
     }
 
     /**
@@ -576,10 +582,10 @@ public class Sistema implements Serializable,Atributos {
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws EncomendaException Caso a encomenda já exista no sistema
      */
-    public void adicionaEncomenda(Encomenda encomenda, String email) throws UtilizadorException, EncomendaException {
+    private void adicionaEncomenda(Encomenda encomenda, String email) throws UtilizadorException, EncomendaException {
         if (this.listaUtilizadores.containsKey(email)) {
-            if (!this.listaEncomendas.contains(encomenda)) {
-                this.listaEncomendas.add(encomenda);
+            if (!this.listaEncomendas.containsValue(encomenda)) {
+                this.listaEncomendas.put(encomenda.getId(),encomenda);
             } else throw new EncomendaException("Encomenda já existente!");
         } else throw new UtilizadorException("Utilizador não encontrado!");
     }
@@ -608,7 +614,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws EncomendaException Caso a encomenda não exista.
      */
     public void removeEncomenda(Encomenda encomenda) throws EncomendaException {
-        if (this.listaEncomendas.contains(encomenda)) {
+        if (this.listaEncomendas.containsValue(encomenda)) {
             this.listaEncomendas.remove(encomenda);
         } else throw new EncomendaException("Esta encomenda não existe no sistema!");
     }
@@ -635,7 +641,7 @@ public class Sistema implements Serializable,Atributos {
     public void adicionaArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -665,7 +671,7 @@ public class Sistema implements Serializable,Atributos {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -693,7 +699,7 @@ public class Sistema implements Serializable,Atributos {
     public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -721,7 +727,7 @@ public class Sistema implements Serializable,Atributos {
         if (this.listaUtilizadores.containsKey(email))
         {
             Artigo artigo = this.procuraArtigo(idArtigo);
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -749,13 +755,16 @@ public class Sistema implements Serializable,Atributos {
     public void confirmaEncomenda(int idEncomenda, String email) throws UtilizadorException, EncomendaException, TransportadoraException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            Encomenda encomenda = this.procuraEncomenda(idEncomenda, email);
-            if (encomenda.getEstado() == Atributos.PENDENTE)
+            if (this.verificaEncomenda(email,idEncomenda))
             {
-                encomenda.alteraEstadoExpedido(this.getDataAtual());
-                this.emiteFatura(encomenda,email);
-                this.procuraTransportadoraNome(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
-            } else throw new EncomendaException("A encomenda com o id '" + idEncomenda + "' não pode ser devolvida");
+                Encomenda encomenda = this.listaEncomendas.get(idEncomenda);
+                if (encomenda.getComprador().equals(email) && encomenda.getEstado() == Atributos.PENDENTE)
+                {
+                    encomenda.alteraEstadoExpedido(this.getDataAtual());
+                    this.emiteFatura(encomenda,email);
+                    this.procuraTransportadoraNome(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
+                } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO PODE SER CONFIRMADA!");
+            }
         } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 
@@ -769,7 +778,7 @@ public class Sistema implements Serializable,Atributos {
     public void devolveEncomenda(String email, int idEncomenda) throws UtilizadorException, EncomendaException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == idEncomenda && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());;
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == idEncomenda && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());;
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -825,7 +834,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public void atualizaEncomendas()
     {
-        this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() == Atributos.EXPEDIDA).forEach(encomenda -> encomenda.alteraEstadoFinalizado(this.getDataAtual()));
+        this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getEstado() == Atributos.EXPEDIDA).forEach(encomenda -> encomenda.alteraEstadoFinalizado(this.getDataAtual()));
     }
 
     /**
@@ -918,7 +927,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public List<Encomenda> listaEncomendasVendedor(String emailVendedor) // Querie 3
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().equals(emailVendedor) && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getVendedor().equals(emailVendedor) && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());
     }
 
     /**
@@ -927,7 +936,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Lista de Encomendas
      */
     public List<Encomenda> listaEncomendaTransportadoras(String nome){
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nome) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nome) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
     }
 
     /**
@@ -970,7 +979,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public double ganhoVintage() //Querie 5
     {
-        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).mapToDouble(encomenda -> encomenda.calculaTaxaArtigos()).sum();
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).mapToDouble(encomenda -> encomenda.calculaTaxaArtigos()).sum();
     }
 
 
@@ -1027,11 +1036,21 @@ public class Sistema implements Serializable,Atributos {
         else throw new UtilizadorException("Password Incorreta!!");
     }
 
-
-    public boolean verificaEncomenda(String email, int idEncomenda) throws UtilizadorException {
+    /**
+     * Verifica se uma encomenda do sistema pertecence a um comprador ou vendedor
+     * @param email Email de um utilizador/Vendedor
+     * @param idEncomenda Identificador de uma encomenda
+     * @return true se a encomenda pertencer ao utilizador, false caso contrario.
+     * @throws UtilizadorException Caso o utilizador não exista.
+     * @throws EncomendaException Caso a encomenda não exista.
+     */
+    public boolean verificaEncomenda(String email, int idEncomenda) throws UtilizadorException, EncomendaException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            return !this.procuraUtilizadorSistema(email).getListaEncomendas().stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList()).isEmpty();
+            if (this.listaEncomendas.containsKey(idEncomenda))
+            {
+                return (this.listaEncomendas.get(idEncomenda).getComprador().equals(email) || this.listaEncomendas.get(idEncomenda).getVendedor().equals(email));
+            } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!");
         } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 

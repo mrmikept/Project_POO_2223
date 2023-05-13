@@ -1173,14 +1173,22 @@ public class Apresentacao
         if (transportadora.getTipo() == 0) tipo = "NORMAL";
         else tipo = "PREMIUM";
         printTrans();
-        System.out.println(CYAN_BOLD + "                                                                                                  Nome: " + RESET + transportadora.getNome());
+        System.out.println(CYAN_BOLD + "                                                                                      ID: " + RESET + transportadora.getId());
         System.out.println();
-        System.out.println(CYAN_BOLD + "                                                      Margem Lucro: " + RESET + transportadora.getMargemLucro() + CYAN_BOLD +
-
-                " | Tipo: " + RESET + tipo);
+        System.out.println(CYAN_BOLD + "                                                                                      Nome: " + RESET + transportadora.getNome());
         System.out.println();
-        System.out.println(CYAN_BOLD + "                                                                                                Encomendas:" + RESET);
+        System.out.println(CYAN_BOLD + "                                                                                      Email: " + RESET + transportadora.getEmail());
         System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Morada: " + RESET + transportadora.getMorada());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Nr. Fiscal: " + RESET + transportadora.getNrFiscal());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Tipo: " + RESET + tipo);
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Margem de Lucro: " + RESET + transportadora.getMargemLucro());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Tempo de Expedição: " + RESET + transportadora.getTempoExpedicao());
+        printClear(2);
         System.out.println(YELLOW + "                                                                                      Pressione enter para continuar..." + RESET);
         System.out.println();
         System.out.print("                                                                                                     ");

@@ -259,9 +259,10 @@ public class Sistema implements Serializable,Atributos {
      * @param tipo  Tipo de transportadora
      * @throws TransportadoraException Caso a Transportadora já exista
      */
-    public void adicionaTransportadora(String nome, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
-        if (!this.listaTransportadoras.containsKey(nome.toUpperCase())) {
-            Transportadora transportadora = new Transportadora(nome.toUpperCase(), lucro, tipo, tempExpedicao, 0, this.getTaxas());
+    public void adicionaTransportadora(String email, String palavraPasse, String nome, String morada, int nrFiscal, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
+        if (!this.listaTransportadoras.containsKey(nome.toUpperCase()) && verificaEmailTransportadora(email)) {
+            int id = this.listaTransportadoras.size() + 1;
+            Transportadora transportadora = new Transportadora(id, email, palavraPasse, nome.toUpperCase(), morada, nrFiscal, lucro, tipo, tempExpedicao, 0, this.getTaxas());
             this.listaTransportadoras.put(nome.toUpperCase(), transportadora);
         } else {
             throw new TransportadoraException("A Transportadora " + nome + " já existe!");
@@ -925,6 +926,16 @@ public class Sistema implements Serializable,Atributos {
             return true;
         }
         else throw new TransportadoraException("Esta transportadora não existe!!");
+    }
+
+    public boolean verificaLoginTransportadora(String email, String palavrapasse) //TODO ver esta e a proxima função! Colocar exceptions nesta
+    {
+        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(palavrapasse)).collect(Collectors.toList()).isEmpty();
+    }
+
+    private boolean verificaEmailTransportadora(String email)
+    {
+        return this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email)).collect(Collectors.toList()).isEmpty();
     }
 
     /**

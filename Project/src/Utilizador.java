@@ -13,13 +13,8 @@ import java.util.stream.Collectors;
  * @author Rafael Gomes A96208
  */
 
-public class Utilizador implements Serializable {
-    private int id;
-    private String email;
-    private String palavraPasse;
-    private String nome;
-    private String morada;
-    private int nrFiscal;
+public class Utilizador extends Entidade implements Serializable {
+
     private Map<String, Artigo> listaArtigos;
     private List<Encomenda> listaEncomendas;
     private List<Fatura> listaFaturas;
@@ -27,25 +22,14 @@ public class Utilizador implements Serializable {
 
     public Utilizador()
     {
-        this.id = 0;
-        this.email = "";
-        this.palavraPasse = "";
-        this.nome = "";
-        this.morada = "";
-        this.nrFiscal = 0;
+        super();
         this.listaArtigos = new HashMap<>();
         this.listaEncomendas = new ArrayList<>();
         this.listaFaturas = new ArrayList<>();
     }
 
     public Utilizador(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, HashMap<String, Artigo> listaArtigos, ArrayList<Encomenda> listaEncomendas, ArrayList<Fatura> listaFaturas) {
-
-        this.id = id;
-        this.email = email;
-        this.palavraPasse = palavraPasse;
-        this.nome = nome;
-        this.morada = morada;
-        this.nrFiscal = nrFiscal;
+        super(id,email,palavraPasse,nome,morada, nrFiscal);
         this.listaArtigos = listaArtigos;
         this.listaEncomendas = listaEncomendas;
         this.listaFaturas = listaFaturas;
@@ -53,66 +37,11 @@ public class Utilizador implements Serializable {
 
     public Utilizador(Utilizador utilizador) {
 
-        this.id = utilizador.getId();
-        this.email = utilizador.getEmail();
-        this.palavraPasse = utilizador.getPalavraPasse();
-        this.nome = utilizador.getNome();
-        this.morada = utilizador.getMorada();
-        this.nrFiscal = utilizador.getNrFiscal();
+        super(utilizador);
         this.listaArtigos = utilizador.getListaArtigos();
         this.listaEncomendas = utilizador.getListaEncomendas();
 
 
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPalavraPasse()
-    {
-        return palavraPasse;
-    }
-
-    public void setPalavraPasse(String palavraPasse)
-    {
-        this.palavraPasse = palavraPasse;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getMorada() {
-        return this.morada;
-    }
-
-    public void setMorada(String morada) {
-        this.morada = morada;
-    }
-
-    public int getNrFiscal() {
-        return this.nrFiscal;
-    }
-
-    public void setNrFiscal(int nrFiscal) {
-        this.nrFiscal = nrFiscal;
     }
 
     public Map<String, Artigo> getListaArtigos(){
@@ -225,12 +154,7 @@ public class Utilizador implements Serializable {
             return false;
         }
         Utilizador utilizador = (Utilizador) o;
-        return (this.getId() == utilizador.getId() &&
-                this.getEmail().equals(utilizador.getEmail()) &&
-                this.getPalavraPasse().equals(utilizador.getPalavraPasse()) &&
-                this.getNome().equals(utilizador.getNome()) &&
-                this.getMorada().equals(utilizador.getMorada()) &&
-                this.getNrFiscal() == utilizador.getNrFiscal() &&
+        return (super.equals(utilizador) &&
                 this.getListaArtigos().equals(utilizador.getListaArtigos()) &&
                 this.getListaEncomendas().equals(utilizador.getListaEncomendas())) &&
                 this.getListaFaturas().equals(utilizador.getListaFaturas());

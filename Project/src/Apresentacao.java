@@ -1147,16 +1147,19 @@ public class Apresentacao
     }
 
     public void printDadosTransportadora(Transportadora transportadora) {
+        String tipo;
+        if (transportadora.getTipo() == 0) tipo = "NORMAL";
+        else tipo = "PREMIUM";
         printTrans();
         System.out.println(CYAN_BOLD + "                                                                                                  Nome: " + RESET + transportadora.getNome());
         System.out.println();
         System.out.println(CYAN_BOLD + "                                                      Margem Lucro: " + RESET + transportadora.getMargemLucro() + CYAN_BOLD +
 
-                " | Tipo: " + RESET + transportadora.getTipo());
+                " | Tipo: " + RESET + tipo);
         System.out.println();
         System.out.println(CYAN_BOLD + "                                                                                                Encomendas:" + RESET);
         System.out.println();
-        System.out.println(YELLOW + "                                                                                      Pressione enter para continuar..." + Apresentacao.RESET);
+        System.out.println(YELLOW + "                                                                                      Pressione enter para continuar..." + RESET);
         System.out.println();
         System.out.print("                                                                                                     ");
     }

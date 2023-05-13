@@ -213,8 +213,8 @@ public class Main {
     }
 
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
-        int x = 0, teste = 0;
-        String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro;
+        int x = 0, teste = 0, nNif;
+        String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro, tempoExpedicao;
         String[] s = {"Iniciar sessao - Utlizador", "Iniciar sessao - Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         String eq;
@@ -390,7 +390,7 @@ public class Main {
                         break;
                     }
 
-                    int nNif = stringToInt(nif);
+                    nNif = stringToInt(nif);
 
                     try {
                         sistema.adicionaUtilizador(email, pass, nome, morada, nNif);
@@ -416,10 +416,50 @@ public class Main {
 
                 case 4:
                     apresentacao.printRegTrans();
+                    apresentacao.printReg();
+                    apresentacao.printMensagem("Insira o email:", 86, 1);
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    email = ler.nextLine();
+
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("Insira a password:", 86, 1);
+                    apresentacao.printEspacos(86);
+                    pass = ler.nextLine();
+
+                    apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira o nome da transportadora:", 86, 1);
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     nomeTrans = ler.nextLine();
+
+                    if (!containsOnlyLetters(nomeTrans)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADAS LETRAS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("Insira a sua morada:", 86, 1);
+                    apresentacao.printEspacos(86);
+
+                    morada = ler.nextLine();
+
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
+                    apresentacao.printEspacos(86);
+
+                    nif = ler.nextLine();
+
+                    if (!isInt(nif)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
+                    nNif = stringToInt(nif);
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira a margem de lucro que pretende obter:", 86, 1);
@@ -451,8 +491,22 @@ public class Main {
 
                     int nTipo = stringToInt(tipo);
 
+                    apresentacao.printMensagem("Insira o tempo de expedição de uma encomenda:", 86, 1);
+                    apresentacao.printEspacos(86);
+                    ler = new Scanner(System.in);
+                    tempoExpedicao = ler.nextLine();
+
+                    if (!isInt(tempoExpedicao)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
+                    int nTempoExpedicao = stringToInt(tempoExpedicao);
+
                     try {
-                        sistema.adicionaTransportadora(nomeTrans, nLucro, nTipo, 2);
+                        sistema.adicionaTransportadora(email,pass,nomeTrans,morada,nNif,nLucro,nTipo,nTempoExpedicao);
 
                         do {
                             apresentacao.printRegTrans();

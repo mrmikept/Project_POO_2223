@@ -634,7 +634,7 @@ public class Main {
 
     public int runMenuComprar(String email) throws UtilizadorException, ArtigoException, EncomendaException {
         Scanner ler = new Scanner(System.in);
-        String opcao;
+        String opcao, c;
         int paginaAtual = 1;
         do {
             List<Artigo> artigos = sistema.getArtigosVenda(email).values().stream().collect(Collectors.toList());
@@ -687,11 +687,31 @@ public class Main {
                         continue;
                     }
                     if (ler.nextLine().equals("1")) {
-                        sistema.adicionaArtigoEncomenda(id, email);
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("ARTIGO COMPRADO COM SUCESSO!", 90, 3);
-                        apresentacao.printEnter("");
-                        ler.nextLine();
+                        try {
+                            sistema.adicionaArtigoEncomenda(id, email);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("ARTIGO COMPRADO COM SUCESSO!", 90, 3);
+                            apresentacao.printEnter("");
+                            ler.nextLine();
+                        } catch (EncomendaException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(),2);
+                            apresentacao.printEnterSair();
+                            ler.nextLine();
+                            continue;
+
+                        } catch (UtilizadorException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(),2);
+                            apresentacao.printEnterSair();
+                            ler.nextLine();
+                            continue;
+
+                        } catch (ArtigoException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(),2);
+                            apresentacao.printEnterSair();
+                            ler.nextLine();
+                            continue;
+
+                        }
                     }
                 } else if (opcao.equals("s"))
                 {
@@ -842,12 +862,27 @@ public class Main {
                             }
                             if (opcao.equals("1"))
                             {
-                                sistema.removeArtigo(id);
-                                apresentacao.printClear(1);
-                                apresentacao.printMensagem("ARTIGO REMOVIDO COM SUCESSO!",90,3);
-                                apresentacao.printEnter("");
-                                ler.nextLine();
-                                break;
+                                try {
+                                    sistema.removeArtigo(id);
+                                    apresentacao.printClear(1);
+                                    apresentacao.printMensagem("ARTIGO REMOVIDO COM SUCESSO!",90,3);
+                                    apresentacao.printEnter("");
+                                    ler.nextLine();
+                                    break;
+                                } catch (UtilizadorException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(),2);
+                                    apresentacao.printEnterSair();
+                                    ler.nextLine();
+                                    continue;
+
+                                } catch (ArtigoException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(),2);
+                                    apresentacao.printEnterSair();
+                                    ler.nextLine();
+                                    continue;
+
+                                }
+
                             }
                         }
                     } else if (opcao.equals("s")) break;

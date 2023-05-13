@@ -188,7 +188,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     public boolean verificaArtigoUtilizador(String email, String id) throws UtilizadorException {
-        return (!this.procuraUtilizador(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).collect(Collectors.toList()).isEmpty());
+            return (!this.procuraUtilizador(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).collect(Collectors.toList()).isEmpty());
     }
 
     public boolean verificaArtigosVenda(String email)
@@ -308,6 +308,7 @@ public class Sistema implements Serializable,Atributos {
             this.listaArtigos.remove(artigo.getId(), artigo);
             utilizador.removeArtigo(artigo);
         }
+        else throw new ArtigoException("Este artigo não existe!!");
     }
 
     /**

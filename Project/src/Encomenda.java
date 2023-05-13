@@ -220,9 +220,6 @@ public class Encomenda {
     public void alteraEstadoExpedido(LocalDate dataAtualizacao)
     {
         this.estado = Atributos.EXPEDIDA;
-        for (Artigo artigo: listaArtigos) {
-            artigo.setEstadoVenda(Atributos.VENDIDO);
-        }
         this.setDataAtualizacao(dataAtualizacao);
     }
 

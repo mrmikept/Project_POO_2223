@@ -63,12 +63,12 @@ public class Apresentacao
         System.out.println("                                                                                       "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
-    public void printDataAtual(){
-        System.out.println( CYAN_BOLD + "                                                                                          Data Atual: " + RESET + LocalDate.now());
+    public void printDataAtual(LocalDate data){
+        System.out.println( CYAN_BOLD + "                                                                                          Data Atual: " + RESET + data);
     }
 
 
-    public void printMenu(String[] opcoes, int x, String nome){
+    public void printMenu(String[] opcoes, int x, String nome, LocalDate data){
         if (x != 100)
         {
             clear();
@@ -76,12 +76,12 @@ public class Apresentacao
 
         if (x == 0) {
             printVintage();
-            printDataAtual();
+            printDataAtual(data);
         }
 
         if (x == 1) {
             printVintage();
-            printDataAtual();
+            printDataAtual(data);
             System.out.println();
             System.out.println("                                                                                            " + CYAN_BOLD +"Bem-vindo " + RESET + nome + "!!");
         }

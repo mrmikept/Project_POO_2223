@@ -16,7 +16,7 @@ public class Main {
         new Main().run();
     }
 
-    private Main() {
+    public Main() {
         this.sistema = new Sistema();
         this.apresentacao = new Apresentacao();
     }
@@ -74,7 +74,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, x, "");
+                        apresentacao.printMenu(s, x, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -218,7 +218,7 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-                        apresentacao.printMenu(s, x, "");
+                        apresentacao.printMenu(s, x, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) {
                             x = 1;
@@ -453,14 +453,14 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
-        apresentacao.printMenu(s, 1, nome);
+        apresentacao.printMenu(s, 1, nome, sistema.getDataAtual());
 
         do {
             switch (x) {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 1, nome);
+                        apresentacao.printMenu(s, 1, nome, sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -541,11 +541,19 @@ public class Main {
                     String id = ler.nextLine().toUpperCase();
                     apresentacao.clear();
                     apresentacao.printComprar();
-                    apresentacao.showArtigo(sistema.procuraArtigo(id.toUpperCase()), sistema.getDataAtual().getYear());
-                    apresentacao.printMensagem("DESEJA COMPRAR ESTE ARTIGO?", 91, 1);
-                    apresentacao.printMensagemSimOuNao(101);
-                    apresentacao.printClear(1);
-                    apresentacao.printEspacos(103);
+                    try {
+                        apresentacao.showArtigo(sistema.procuraArtigoVenda(id.toUpperCase()), sistema.getDataAtual().getYear());
+                        apresentacao.printMensagem("DESEJA COMPRAR ESTE ARTIGO?", 91, 1);
+                        apresentacao.printMensagemSimOuNao(101);
+                        apresentacao.printClear(1);
+                        apresentacao.printEspacos(103);
+                    } catch (ArtigoException e)
+                    {
+                        apresentacao.printMensagemCentrada(e.getMessage(),2);
+                        apresentacao.printEnter("");
+                        ler.nextLine();
+                        continue;
+                    }
                     if (ler.nextLine().equals("1")) {
                         sistema.adicionaArtigoEncomenda(id, email);
                         apresentacao.printClear(1);
@@ -563,7 +571,7 @@ public class Main {
 
     public int runFaturas(String email) throws UtilizadorException, ArtigoException, SistemaException, EncomendaException, TransportadoraException {
         String [] s = {"Faturas de compras", "Faturas de vendas", "Retroceder"};
-        apresentacao.printMenu(s,5,"");
+        apresentacao.printMenu(s,5,"", sistema.getDataAtual());
         int x = 0;
         Scanner ler = new Scanner(System.in);
         Utilizador utilizador = sistema.procuraUtilizador(email);
@@ -576,7 +584,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s,5,"");
+                        apresentacao.printMenu(s,5,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -610,7 +618,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 0, "");
+                        apresentacao.printMenu(s, 0, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -682,16 +690,23 @@ public class Main {
                         apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER",83,1);
                         apresentacao.printClear(1);
                         apresentacao.printEspacos(104);
-                        String id = ler.nextLine();
+                        String id = ler.nextLine().toUpperCase();
                         if (sistema.verificaArtigoUtilizador(email,id))
                         {
                             apresentacao.clear();
                             apresentacao.printMinhaLista();
-                            apresentacao.showArtigo(sistema.procuraArtigoVenda(id),sistema.getDataAtual().getYear());
-                            apresentacao.printClear(2);
-                            apresentacao.printMensagem("DESEJA REMOVER ESTE ARTIGO?", 91,1);
-                            apresentacao.printMensagemSimOuNao(101);
-                            opcao = ler.nextLine();
+                            try {
+                                apresentacao.showArtigo(sistema.procuraArtigoVenda(id),sistema.getDataAtual().getYear());
+                                apresentacao.printClear(2);
+                                apresentacao.printMensagem("DESEJA REMOVER ESTE ARTIGO?", 91,1);
+                                apresentacao.printMensagemSimOuNao(101);
+                                opcao = ler.nextLine();
+                            } catch (ArtigoException e)
+                            {
+                                apresentacao.printMensagemCentrada(e.getMessage(),2);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                            }
                             if (opcao.equals("1"))
                             {
                                 sistema.removeArtigo(id);
@@ -1199,7 +1214,7 @@ public class Main {
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Peq.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() +
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Med.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() +
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Grd.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande());
-                        apresentacao.printMenu(opcoes, 100, "");
+                        apresentacao.printMenu(opcoes, 100, "", sistema.getDataAtual());
                         escolha = ler.nextLine().toLowerCase();
                         if (escolha.equals("1")) {
                             flag = 1;
@@ -1306,7 +1321,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 2, "");
+                        apresentacao.printMenu(s, 2, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -1569,7 +1584,7 @@ public class Main {
                 case 0: // MENU ENCOMENDAS
 
                     do {
-                        apresentacao.printMenu(s,3,"");
+                        apresentacao.printMenu(s,3,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -1601,8 +1616,9 @@ public class Main {
                     break;
 
                 case 4:
-                    encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
-                    apresentacao.paginateEncomendas(encomendas,5, email, sistema,4);
+                    //encomendas = utilizador.getListaEncomendas(Atributos.DEVOLVIDA);
+                    //apresentacao.paginateEncomendas(encomendas,5, email, sistema,4);
+                    runListarEncomendas(email,Atributos.DEVOLVIDA);
                     x = 0;
                     break;
             }
@@ -1619,7 +1635,7 @@ public class Main {
         do {
             List<Artigo> artigos = sistema.procuraEncomenda(id, email).getListaArtigos();
             if (artigos.isEmpty()) {
-                apresentacao.printBox(); //90
+                apresentacao.printBox();
                 apresentacao.printMensagem("Esta encomenda não possui artigos!", 87, 2);
                 apresentacao.printEnter("");
                 ler.nextLine();
@@ -1655,11 +1671,19 @@ public class Main {
             } else if (opcao.equals("-") && paginaAtual > 1) {
                 paginaAtual--;
             } else if (opcao.equals("c")) {
-                sistema.confirmaEncomenda(id, email);
-                apresentacao.printMensagem("ENCOMENDA CONFIRMADA COM SUCESSO!!", 88, 3);
-                apresentacao.printEnter("");
-                ler.nextLine();
-                break;
+                try {
+                    sistema.confirmaEncomenda(id, email);
+                    apresentacao.printMensagem("ENCOMENDA CONFIRMADA COM SUCESSO!!", 88, 3);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                    break;
+                } catch (EncomendaException e)
+                {
+                    apresentacao.printMensagemCentrada(e.getMessage(),2);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                    break;
+                }
             } else if (opcao.equals("r")) {
                 apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER", 82, 2);
                 apresentacao.printEspacos(103);
@@ -1699,6 +1723,7 @@ public class Main {
             apresentacao.printExpedidas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
+            System.out.println(sistema.getArtigosVenda(email));
             System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomenda(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomenda(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomenda(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
@@ -1807,22 +1832,23 @@ public class Main {
             int quantidade = 2;
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
-            apresentacao.printPendentes();
+            apresentacao.printDevolvidas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
+            apresentacao.printEspacos(15);
             System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomenda(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomenda(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomenda(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomenda(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Preço Total: " + Apresentacao.RESET + sistema.procuraEncomenda(id,email).getPrecoFinal() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Data de Devolução: " + Apresentacao.RESET + sistema.procuraEncomenda(id, email).getDataAtualizacao().toString());
-            System.out.println(Apresentacao.CYAN_BOLD + "                                                        Pressione" + Apresentacao.RESET + " '+' " +
+            apresentacao.printEspacos(74);
+            System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
                     Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD +
                     "para sair" + Apresentacao.RESET);
             apresentacao.printClear(1);
             apresentacao.printEspacos(102);
             opcao = ler.nextLine().toLowerCase();
-
             if (opcao.equals("+") && paginaAtual < numPaginas) {
                 paginaAtual++;
             } else if (opcao.equals("-") && paginaAtual > 1) {
@@ -1916,7 +1942,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 4, "");
+                        apresentacao.printMenu(s, 4, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}

@@ -3,7 +3,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1999,7 +2004,7 @@ public class Main {
         int x = 0;
         String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
                 " em um período de tempo", "Ganhos Vintage", "Retroceder"};
-        String d1,d2,c, email;
+        String d1,d2,c, email, escolha;
         LocalDate data1, data2;
         Scanner ler = new Scanner(System.in);
         String eq;
@@ -2021,85 +2026,114 @@ public class Main {
                     break;
 
                 case 1:
-                    apresentacao.printVendedorDinheiro();
-                    String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO"};
-                    apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE",o);
-                    apresentacao.printEspacos(93);
-                    ler = new Scanner(System.in);
-                    x = ler.nextInt();
+                    x = 0;
+                    do {
+                        switch (x) {
+                            case 0:
+                                apresentacao.printVendedorDinheiro();
+                                String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
+                                apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE", o);
+                                apresentacao.printEspacos(93);
 
-                    if (x == 1){
-                        apresentacao.printVendedorDinheiro();
-                        System.out.println();
-                        try {
-                            Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
-                            System.out.print(utilizador.toString());
-                            apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                            apresentacao.printEnterSair();
-                            ler = new Scanner(System.in);
-                            c = ler.nextLine();
-                            x = 0;
-                            break;
-                        }
-                        catch (SistemaException a){
-                            apresentacao.printMensagem(a.getMessage(),86,2);
-                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                            apresentacao.printMensagemSimOuNao(87);
-                            ler = new Scanner(System.in);
-                            x = ler.nextInt();
-
-                            if (x == 1) {
-                                x = 1;
+                                ler = new Scanner(System.in);
+                                x = ler.nextInt();
                                 break;
-                            } else if (x == 0) {
-                                x = 0;
-                                break;
-                            }
-                        }
 
-                    } else if (x == 2) {
-                        apresentacao.printVendedorDinheiro();
-                        System.out.println();
+                            case 1:
+                                apresentacao.printVendedorDinheiro();
+                                System.out.println();
+                                try {
+                                    Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
+                                    System.out.print(utilizador.toString());
+                                    apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                                    apresentacao.printEnterSair();
+                                    ler = new Scanner(System.in);
+                                    c = ler.nextLine();
+                                    x = 0;
+                                    break;
+                                } catch (SistemaException a) {
+                                    apresentacao.printMensagem(a.getMessage(), 86, 2);
+                                    apresentacao.printEnterSair();
+                                    ler = new Scanner(System.in);
+                                    c = ler.nextLine();
+                                    x = 0;
+                                    break;
+                                }
 
-                        ler = new Scanner(System.in);
+                            case 2:
+                                apresentacao.printVendedorDinheiro();
+                                System.out.println();
 
-                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",87,1);
-                        apresentacao.printEspacos(87);
-                        d1 = ler.nextLine();
-                        data1 = stringParaData(d1);
-                        System.out.println();
-                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD",87,1);
-                        apresentacao.printEspacos(87);
-                        d2 = ler.nextLine();
-                        data2 = stringParaData(d2);
-                        try {
-                            Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
-                            apresentacao.printVendedorDinheiro();
-                            System.out.println();
-                            System.out.print(utilizador.toString());
-                            apresentacao.printFaturacao("Faturou: ",99,1,utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                            apresentacao.printEnterSair();
-                            ler = new Scanner(System.in);
-                            c = ler.nextLine();
-                            x = 0;
-                            break;
-                        }
-                        catch (SistemaException a){
-                            apresentacao.printMensagem(a.getMessage(),86,2);
-                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                            apresentacao.printMensagemSimOuNao(87);
-                            ler = new Scanner(System.in);
-                            x = ler.nextInt();
+                                ler = new Scanner(System.in);
 
-                            if (x == 1) {
-                                x = 1;
-                                break;
-                            } else if (x == 0) {
-                                x = 0;
-                                break;
-                            }
-                        }
-                    }
+                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 87, 1);
+                                apresentacao.printEspacos(87);
+                                d1 = ler.nextLine();
+                                try {
+                                    data1 = stringParaData(d1);
+
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
+
+                                    if (x == 0) {
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 2;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                System.out.println();
+                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 87, 1);
+                                apresentacao.printEspacos(87);
+                                d2 = ler.nextLine();
+                                try {
+                                    data2 = stringParaData(d2);
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
+
+                                    if (x == 0){
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 2;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                    try {
+                                        Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
+                                        apresentacao.printVendedorDinheiro();
+                                        System.out.println();
+                                        System.out.print(utilizador.toString());
+                                        apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                                        apresentacao.printEnterSair();
+                                        ler = new Scanner(System.in);
+                                        c = ler.nextLine();
+                                        x = 0;
+                                        break;
+                                    } catch (SistemaException e) {
+                                        apresentacao.printMensagem(e.getMessage(), 86, 2);
+                                        apresentacao.printEnterSair();
+                                        ler = new Scanner(System.in);
+                                        c = ler.nextLine();
+                                        x = 0;
+                                        break;
+                                    }
+                                }
+                    }while (x != 3);
+                    x = 0;
                     break;
 
                 case 2:
@@ -2117,20 +2151,12 @@ public class Main {
                     }
                     catch (SistemaException a){
                         apresentacao.printMensagem(a.getMessage(),86,2);
-                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                        apresentacao.printMensagemSimOuNao(87);
+                        apresentacao.printEnterSair();
                         ler = new Scanner(System.in);
-                        x = ler.nextInt();
-
-                        if (x == 1) {
-                            x = 2;
-                            break;
-                        } else if (x == 0) {
-                            x = 0;
-                            break;
-                        }
+                        c = ler.nextLine();
+                        x = 0;
+                        break;
                     }
-                    break;
 
                 case 3:
                     apresentacao.printEncomendasVendedor();
@@ -2164,46 +2190,131 @@ public class Main {
                     break;
 
                 case 4:
-                    apresentacao.printCompradorVendedor();
-                    String[] ops = {"COMPRADOR", "VENDEDOR"};
-                    apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA",ops);
-                    apresentacao.printEspacos(86);
+                    x = 0;
+                    do {
+                        switch (x){
+                            case 0:
+                                apresentacao.printCompradorVendedor();
+                                String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
+                                apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA",ops);
+                                apresentacao.printEspacos(86);
 
-                    ler = new Scanner(System.in);
-                    int op = ler.nextInt();
+                                ler = new Scanner(System.in);
+                                x = ler.nextInt();
+                                break;
+                            case 3:
+                                x = 3;
+                                break;
 
-                    if (op == 1){
-                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
-                        apresentacao.printEspacos(86);
-                        ler = new Scanner(System.in);
-                        d1 = ler.nextLine();
-                        data1 = stringParaData(d1);
-                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
-                        apresentacao.printEspacos(86);
-                        ler = new Scanner(System.in);
-                        d2 = ler.nextLine();
-                        data2 = stringParaData(d2);
+                            case 1:
+                                apresentacao.printCompradorVendedor();
+                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 86, 1);
+                                apresentacao.printEspacos(86);
+                                ler = new Scanner(System.in);
+                                d1 = ler.nextLine();
+                                try {
+                                    data1 = stringParaData(d1);
 
-                        apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
-                        x = 0;
-                        break;
-                    }
-                    else if (op == 0){
-                        apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)",86,1);
-                        apresentacao.printEspacos(86);
-                        ler = new Scanner(System.in);
-                        d1 = ler.nextLine();
-                        data1 = stringParaData(d1);
-                        apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)",86,1);
-                        apresentacao.printEspacos(86);
-                        ler = new Scanner(System.in);
-                        d2 = ler.nextLine();
-                        data2 = stringParaData(d2);
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
 
-                        apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
-                        x = 0;
-                        break;
-                    }
+                                    if (x == 0){
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 1;
+                                        break;
+                                    }
+                                    break;
+
+                                }
+                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 86, 1);
+                                apresentacao.printEspacos(86);
+                                ler = new Scanner(System.in);
+                                d2 = ler.nextLine();
+                                try {
+                                    data2 = stringParaData(d2);
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
+
+                                    if (x == 0){
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 1;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
+                                x = 0;
+                                break;
+
+                            case 2:
+                                apresentacao.printCompradorVendedor();
+                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 86, 1);
+                                apresentacao.printEspacos(86);
+                                ler = new Scanner(System.in);
+                                d1 = ler.nextLine();
+                                try {
+                                    data1 = stringParaData(d1);
+
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
+
+                                    if (x == 0){
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 1;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 86, 1);
+                                apresentacao.printEspacos(86);
+                                ler = new Scanner(System.in);
+                                d2 = ler.nextLine();
+                                try {
+                                    data2 = stringParaData(d2);
+                                } catch (DateTimeException a) {
+                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+                                    x = ler.nextInt();
+
+                                    if (x == 0){
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 1;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
+                                x = 0;
+                                break;
+                        }
+                    }while (x != 3);
+                    x = 0;
+                    break;
 
                 case 5:
                     apresentacao.printVintageDinheiro();
@@ -2242,11 +2353,29 @@ public class Main {
         return x;
     }
 
+    public static boolean dataValida(final String data){
+
+        boolean valido = false;
+
+        try {
+            LocalDate.parse(data, DateTimeFormatter.ofPattern("uuuu-M-d").withResolverStyle(ResolverStyle.STRICT));
+            valido = true;
+        }
+        catch (DateTimeParseException e) {
+            valido = false;
+        }
+        return valido;
+    }
+
     public LocalDate stringParaData(String dma){
-        String[] dataf = dma.split("-");
-        int ano = Integer.valueOf(dataf[0]);
-        int mes = Integer.valueOf(dataf[1]);
-        int dia = Integer.valueOf(dataf[2]);
-        return LocalDate.of(ano,mes,dia);
+
+        if (dataValida(dma)){
+            String[] dataf = dma.split("-");
+            int ano = Integer.valueOf(dataf[0]);
+            int mes = Integer.valueOf(dataf[1]);
+            int dia = Integer.valueOf(dataf[2]);
+            return LocalDate.of(ano, mes, dia);
+        }
+        else throw new DateTimeException("DATA INVÁLIDA");
     }
 }

@@ -850,6 +850,15 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
+     * Procura as encomendas de uma transportadora
+     * @param nome Nome de uma transportadora
+     * @return Lista de Encomendas
+     */
+    public List<Encomenda> listaEncomendaTransportadoras(String nome){
+        return this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nome) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
+    }
+
+    /**
      * Função que devolve uma lista dos utilizadores que mais faturaram entre datas
      * @param primeiraData Primeira data
      * @param segundaData Segunda data

@@ -7,8 +7,7 @@ import java.io.Serializable;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Transportadora implements Serializable {
-    private String nome;
+public class Transportadora extends Entidade implements Serializable {
     private double margemLucro;
     private int tipo;
     private int tempoExpedicao;
@@ -18,7 +17,7 @@ public class Transportadora implements Serializable {
 
     public Transportadora()
     {
-        this.nome = "";
+        super();
         this.margemLucro = 0.0;
         this.tipo = Atributos.NORMAL;
         this.tempoExpedicao = 0;
@@ -26,9 +25,9 @@ public class Transportadora implements Serializable {
         this.taxasImpostos = new TaxasImpostos();
     }
 
-    public Transportadora(String nome, double lucro, int tipo, int tempoExpedicao, double valorFaturado, TaxasImpostos taxasImpostos)
+    public Transportadora(int id, String email, String palavraPasse, String nome, String morada, int nrFiscal, double lucro, int tipo, int tempoExpedicao, double valorFaturado, TaxasImpostos taxasImpostos)
     {
-        this.nome = nome;
+        super(id,email,palavraPasse,nome,morada, nrFiscal);
         this.margemLucro = lucro;
         this.tipo = tipo;
         this.tempoExpedicao = tempoExpedicao;
@@ -38,20 +37,12 @@ public class Transportadora implements Serializable {
 
     public Transportadora(Transportadora transportadora)
     {
-        this.nome = transportadora.getNome();
+        super(transportadora);
         this.margemLucro = transportadora.getMargemLucro();
         this.tipo = transportadora.getTipo();
         this.tempoExpedicao = transportadora.getTempoExpedicao();
         this.valorFaturado = transportadora.getValorFaturado();
         this.taxasImpostos = transportadora.getTaxasImpostos();
-    }
-
-    public String getNome(){
-        return nome;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
     }
 
     public double getMargemLucro() {
@@ -155,7 +146,7 @@ public class Transportadora implements Serializable {
             return false;
         }
         Transportadora transportadora = (Transportadora) o;
-        return (this.getNome().equals(transportadora.getNome()) &&
+        return (super.equals(transportadora) &&
                 this.getTipo() == transportadora.getTipo() &&
                 this.getMargemLucro() == transportadora.getMargemLucro()) &&
                 this.getTempoExpedicao() == transportadora.getTempoExpedicao() &&

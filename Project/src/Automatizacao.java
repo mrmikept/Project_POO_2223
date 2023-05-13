@@ -4,10 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Automatizacao {
 
@@ -297,8 +295,7 @@ public class Automatizacao {
         }
         String email = camposArtComp[1];
         String idArtigo = camposArtComp[2];
-        Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-        sistema.adicionaArtigoEncomenda(artigo, email);
+        sistema.adicionaArtigoEncomenda(idArtigo, email);
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
@@ -335,7 +332,7 @@ public class Automatizacao {
         }
         String email = camposEncom[1];
         String nomeTransportadora = camposEncom[2].toUpperCase();
-        Transportadora transportadora = sistema.procuraTransportadora(nomeTransportadora);
+        Transportadora transportadora = sistema.procuraTransportadoraNome(nomeTransportadora);
         Encomenda encomenda = new Encomenda();
         encomenda.setTransportadora(transportadora);
         int x = 3;

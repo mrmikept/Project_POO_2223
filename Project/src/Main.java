@@ -101,6 +101,23 @@ public class Main {
                     apresentacao.printMenuGuardar();
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
+
+                    if (input.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 2;
+                            break;
+                        }
+                    }
+
                     try {
                         CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
                         apresentacao.printGuardar();
@@ -135,6 +152,22 @@ public class Main {
                     apresentacao.printMenuCarregarEstado();
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
+
+                    if (input.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE DESEJA CARREGAR!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 3;
+                            break;
+                        }
+                    }
                         try {
                             this.sistema = CarregamentoFicheiro.lerFicheiro(input);
                             apresentacao.printLoad();
@@ -167,6 +200,22 @@ public class Main {
                     apresentacao.printMenuAutomatizacao();
                     ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
+
+                    if (input_backup.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE PRETENDE CARREGAR",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 4;
+                            break;
+                        }
+                    }
                     try {
                         Automatizacao backup = new Automatizacao(input_backup);
                         backup.carregaFicheiro(this.sistema);
@@ -326,11 +375,24 @@ public class Main {
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
+                    if (email.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM EMAIL!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(2,3,0);
+                        break;
+                    }
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira a password:", 86, 1);
                     apresentacao.printEspacos(86);
                     pass = ler.nextLine();
+
+                    if (pass.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA PASSWORD!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(2,3,0);
+                        break;
+                    }
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira o seu primeiro e ultimo nome:", 86, 1);
@@ -350,6 +412,13 @@ public class Main {
                     apresentacao.printEspacos(86);
 
                     morada = ler.nextLine();
+
+                    if (morada.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MORADA!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(2,3,0);
+                        break;
+                    }
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
@@ -395,10 +464,24 @@ public class Main {
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
 
+                    if (email.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM EMAIL!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
+
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira a password:", 86, 1);
                     apresentacao.printEspacos(86);
                     pass = ler.nextLine();
+
+                    if (pass.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA PASSWORD!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira o nome da transportadora:", 86, 1);
@@ -418,6 +501,13 @@ public class Main {
                     apresentacao.printEspacos(86);
 
                     morada = ler.nextLine();
+
+                    if (morada.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MORADA!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(3,4,0);
+                        break;
+                    }
 
                     apresentacao.printClear(1);
                     apresentacao.printMensagem("Insira o seu numero fiscal:", 86, 1);
@@ -716,6 +806,7 @@ public class Main {
                         try {
                             sistema.adicionaArtigoEncomenda(id, email);
                             apresentacao.printClear(1);
+
                             apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!", 3);
                             apresentacao.printEnter("");
                             ler.nextLine();
@@ -894,6 +985,12 @@ public class Main {
                 apresentacao.printClear(2);
                 apresentacao.printMensagemSimOuNao(100);
                 opcao = ler.nextLine();
+                if (!opcao.equals("1") && !opcao.equals("0")){
+                    apresentacao.printMensagemCentrada("INPUT INVÁLIDO!!",2);
+                    apresentacao.printEnterSair();
+                    ler.nextLine();
+                    break;
+                }
                 if (opcao.equals("1")) {
                     runArtigosVender(email);
                     break;
@@ -1026,7 +1123,7 @@ public class Main {
 
         int opcao, nrDonos = 0, tamanho, padrao, tipo, tipoCordao, dataLancamento;
         double precoBase, avaliacao = 0, dimensao;
-        String id = "", descricao, marca, material, cor, nomeTransportadora;
+        String id = "", descricao, marca, material, cor, nomeTransportadora, c;
         Utilizador utilizador;
         int x = 0;
 
@@ -1048,6 +1145,29 @@ public class Main {
                     apresentacao.printEspacos(84);
                     id = ler.nextLine();
 
+                    if (id.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM ID!!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(1);
+                            break;
+                        }
+                        x = stringToInt(c);
+
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 1;
+                            break;
+                        }
+                    }
+
                     if (!sistema.verificaArtigosID(id)) {
 
                         tshirt.setId(id);
@@ -1064,52 +1184,284 @@ public class Main {
                         apresentacao.printEspacos(84);
 
                         marca = ler.nextLine();
+
+                        if (!marca.isEmpty()) {
+                            if (!containsOnlyLetters(marca)) {
+                                apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR SO CARACATERES!!", 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(1);
+                                    break;
+                                }
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 1;
+                                    break;
+                                }
+                            }
+                        } else {
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MARCA!!", 2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                        }
+
                         tshirt.setMarca(marca);
 
                         apresentacao.printClear(1);
                         apresentacao.printMensagem("INTRODUZA O PREÇO BASE", 84, 1);
                         apresentacao.printEspacos(84);
 
-                        precoBase = ler.nextDouble();
+                        c = ler.nextLine();
+
+                        if (!isDouble(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        precoBase = stringToDouble(c);
                         tshirt.setPrecoBase(precoBase);
 
                         apresentacao.printClear(1);
                         apresentacao.printTamanhosTshirt();
 
-                        tamanho = ler.nextInt();
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        tamanho = stringToInt(c);
                         tshirt.setTamanho(tamanho);
 
                         apresentacao.printClear(1);
                         apresentacao.printPadroesTshirt();
 
-                        padrao = ler.nextInt();
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        padrao = stringToInt(c);
                         tshirt.setPadrao(padrao);
 
                         apresentacao.printClear(1);
                         apresentacao.printEstadoArtigo();
 
-                        opcao = ler.nextInt();
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        opcao = stringToInt(c);
 
                         if (opcao == 0) {
                             apresentacao.printClear(1);
                             apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO", 84, 1);
                             apresentacao.printEspacos(84);
 
-                            avaliacao = ler.nextDouble();
+                            c = ler.nextLine();
+
+                            if (!isDouble(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(1);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 1;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            avaliacao = stringToDouble(c);
 
                             apresentacao.printClear(1);
                             apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE", 84, 1);
                             apresentacao.printEspacos(84);
 
-                            nrDonos = ler.nextInt();
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(1);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 1;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            nrDonos = stringToInt(c);
                         }
 
                         tshirt.setAvaliacao(avaliacao);
                         tshirt.setNrDonos(nrDonos);
 
-                        nomeTransportadora = runEscolhaTransportadora(0);
-                        tshirt.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
+                        try {
+                            nomeTransportadora = runEscolhaTransportadora(0);
+                            tshirt.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                        } catch (TransportadoraException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
 
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                        }
 
                         utilizador = sistema.procuraUtilizador(email);
                         tshirt.setVendedor(utilizador);
@@ -1122,7 +1474,34 @@ public class Main {
                         apresentacao.printClear(1);
                         apresentacao.printMensagemSimOuNao(99);
 
-                        x = ler.nextInt();
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        x = stringToInt(c);
 
                         if (x == 1) {
                             try {
@@ -1133,7 +1512,34 @@ public class Main {
                                 apresentacao.printClear(1);
                                 apresentacao.printMensagemSimOuNao(99);
 
-                                x = ler.nextInt();
+                                c = ler.nextLine();
+
+                                if (!isInt(c)) {
+                                    apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                    apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(1);
+                                        break;
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 0) {
+                                        x = 0;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 1;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                x = stringToInt(c);
 
                                 if (x == 1) {
                                     x = 0;
@@ -1146,7 +1552,15 @@ public class Main {
                                 apresentacao.printMensagem(a.getMessage(), 87, 2);
                                 apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
                                 apresentacao.printMensagemSimOuNao(87);
-                                x = ler.nextInt();
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(1);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
 
                                 if (x == 1) {
                                     x = 1;
@@ -1156,10 +1570,10 @@ public class Main {
                                     break;
                                 }
                             }
+                        } else if (x == 0) {
+                            x = 4;
+                            break;
                         }
-                    } else if (x == 0){
-                        x = 4;
-                        break;
                     }
                     break;
 
@@ -1172,137 +1586,582 @@ public class Main {
                     ler = new Scanner(System.in);
 
                     id = ler.nextLine();
-                    mala.setId(id);
 
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO",84,1);
-                    apresentacao.printEspacos(84);
+                    if (id.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM ID!!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
 
-                    descricao = ler.nextLine();
-                    mala.setDescricao(descricao);
+                        c = ler.nextLine();
 
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA A MARCA",84,1);
-                    apresentacao.printEspacos(84);
+                        if ((!isInt(c))){
+                            c = apresentacao.printInputIncorreto(2);
+                            break;
+                        }
 
-                    marca = ler.nextLine();
-                    mala.setMarca(marca);
+                        x = stringToInt(c);
 
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O PRECO BASE",84,1);
-                    apresentacao.printEspacos(84);
-
-                    precoBase = ler.nextDouble();
-                    mala.setPrecoBase(precoBase);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA A SUA DIMENSÃO",84,1);
-                    apresentacao.printEspacos(84);
-
-                    dimensao = ler.nextDouble();
-                    mala.setDimensao(dimensao);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O MATERIAL",84,1);
-                    apresentacao.printEspacos(84);
-
-                    ler = new Scanner(System.in);
-                    material = ler.nextLine();
-                    mala.setMaterial(material);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2023)",84,1);
-                    apresentacao.printEspacos(84);
-
-                    dataLancamento = ler.nextInt();
-                    mala.setAnoLancamento(dataLancamento);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printArtigoPremiumOuNormal();
-
-                    tipo = ler.nextInt();
-                    mala.setTipo(tipo);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printEstadoArtigo();
-
-                    opcao = ler.nextInt();
-
-
-                    if (opcao == 0)
-                    {
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO",84,1);
-                        apresentacao.printEspacos(84);
-                        avaliacao = ler.nextDouble();
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE",84,1);
-                        apresentacao.printEspacos(84);
-
-                        nrDonos = ler.nextInt();
-
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 2;
+                            break;
+                        }
                     }
 
-                    mala.setAvaliacao(avaliacao);
-                    mala.setNrDonos(nrDonos);
+                    if (!sistema.verificaArtigosID(id)) {
 
+                        mala.setId(id);
 
-                    nomeTransportadora = runEscolhaTransportadora(tipo);
-                    mala.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO", 84, 1);
+                        apresentacao.printEspacos(84);
 
-                    utilizador = sistema.procuraUtilizador(email);
-                    mala.setVendedor(utilizador);
+                        descricao = ler.nextLine();
+                        mala.setDescricao(descricao);
 
-                    apresentacao.clear();
-                    apresentacao.printClear(5);
-                    apresentacao.showArtigo(mala,sistema.getDataAtual().getYear());
-                    apresentacao.printClear(3);
-                    apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagemSimOuNao(99);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA A MARCA", 84, 1);
+                        apresentacao.printEspacos(84);
 
-                    x = ler.nextInt();
+                        marca = ler.nextLine();
 
-                    if (x == 1)
-                    {
-                        try {
-                            sistema.adicionaArtigo(mala);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!!",87,3);
+                        if (!marca.isEmpty()) {
+                            if (!containsOnlyLetters(marca)) {
+                                apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR SO CARACATERES!!", 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
 
-                            apresentacao.printMensagem("DESEJA ADICIONAR OUTRO ARTIGO?",87,3);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagemSimOuNao(99);
+                                c = ler.nextLine();
 
-                            x = ler.nextInt();
+                                if ((!isInt(c))){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
 
-                            if (x == 1)
-                            {
-                                x = 0;
-                                break;
-                            } else if (x == 0)
-                            {
-                                x = 4;
-                                break;
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 2;
+                                    break;
+                                }
                             }
-                        }
-                        catch (ArtigoException a){
-                            apresentacao.printMensagem(a.getMessage(), 87, 2);
+                        } else {
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MARCA!!", 2);
                             apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
                             apresentacao.printMensagemSimOuNao(87);
-                            x = ler.nextInt();
+                            ler = new Scanner(System.in);
 
-                            if (x == 1) {
-                                x = 2;
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
                                 break;
-                            } else if (x == 0) {
-                                x = 4;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
                                 break;
                             }
                         }
-                    } else if (x == 0) {
-                        x = 4;
-                        break;
+
+                        mala.setMarca(marca);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O PRECO BASE", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isDouble(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        precoBase = stringToDouble(c);
+                        mala.setPrecoBase(precoBase);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA A SUA DIMENSÃO", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isDouble(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 1;
+                                break;
+                            }
+                            break;
+                        }
+
+                        dimensao = stringToDouble(c);
+                        mala.setDimensao(dimensao);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O MATERIAL", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        ler = new Scanner(System.in);
+                        material = ler.nextLine();
+
+                        if (!material.isEmpty()){
+                            if (!containsOnlyLetters(material)){
+                                apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR SO CARACATERES!!", 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 2;
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM MATERIAL!!", 2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                        }
+                        mala.setMaterial(material);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2023)", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                            break;
+                        }
+
+                        dataLancamento = stringToInt(c);
+
+                        if (dataLancamento > sistema.getDataAtual().getYear()){
+                            apresentacao.printMensagemCentrada("ERR0! ANO DE LANCAMENTO MAIOR QUE A ANO ATUAL!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                            break;
+                        }
+
+                        mala.setAnoLancamento(dataLancamento);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printArtigoPremiumOuNormal();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                            break;
+                        }
+
+                        tipo = stringToInt(c);
+                        mala.setTipo(tipo);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printEstadoArtigo();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                            break;
+                        }
+
+                        opcao = stringToInt(c);
+
+
+                        if (opcao == 0) {
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            c = ler.nextLine();
+
+                            if (!isDouble(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 2;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            avaliacao = stringToDouble(c);
+
+
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 2;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            nrDonos = stringToInt(c);
+                        }
+
+                        mala.setAvaliacao(avaliacao);
+                        mala.setNrDonos(nrDonos);
+
+                        try {
+                            nomeTransportadora = runEscolhaTransportadora(tipo);
+                            mala.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                        } catch (TransportadoraException a) {
+                            apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                        }
+
+                        utilizador = sistema.procuraUtilizador(email);
+                        mala.setVendedor(utilizador);
+
+                        apresentacao.clear();
+                        apresentacao.printClear(5);
+                        apresentacao.showArtigo(mala, sistema.getDataAtual().getYear());
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(99);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 2;
+                                break;
+                            }
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 1) {
+                            try {
+                                sistema.adicionaArtigo(mala);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!!", 87, 3);
+
+                                apresentacao.printMensagem("DESEJA ADICIONAR OUTRO ARTIGO?", 87, 3);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagemSimOuNao(99);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)) {
+                                    apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                    apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(2);
+                                        break;
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 0) {
+                                        x = 4;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 0;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 1) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 0) {
+                                    x = 4;
+                                    break;
+                                }
+                            } catch (ArtigoException a) {
+                                apresentacao.printMensagem(a.getMessage(), 87, 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 1) {
+                                    x = 2;
+                                    break;
+                                } else if (x == 0) {
+                                    x = 4;
+                                    break;
+                                }
+                            }
+                        } else if (x == 0) {
+                            x = 4;
+                            break;
+                        }
+                    }
+                    else {
+                        apresentacao.printMensagemCentrada("ESTE ID JÁ EXISTE!!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(2);
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 1) {
+                            x = 2;
+                            break;
+                        } else if (x == 0) {
+                            x = 4;
+                            break;
+                        }
                     }
                     break;
 
@@ -1315,139 +2174,582 @@ public class Main {
                     ler = new Scanner(System.in);
 
                     id = ler.nextLine();
-                    sapatilha.setId(id);
 
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO",84,1);
-                    apresentacao.printEspacos(84);
+                    if (id.isEmpty()) {
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM ID!!", 2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
 
-                    descricao = ler.nextLine();
-                    sapatilha.setDescricao(descricao);
+                        c = ler.nextLine();
 
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA A MARCA",84,1);
-                    apresentacao.printEspacos(84);
-
-                    marca = ler.nextLine();
-                    sapatilha.setMarca(marca);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O PREÇO BASE",84,1);
-                    apresentacao.printEspacos(84);
-
-                    precoBase = ler.nextDouble();
-                    sapatilha.setPrecoBase(precoBase);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O SEU TAMANHO (Nº DE CALÇADO)",84,1);
-                    apresentacao.printEspacos(84);
-
-                    tamanho = ler.nextInt();
-                    sapatilha.setTamanho(tamanho);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printTipoCordao();
-
-                    tipoCordao = ler.nextInt();
-                    sapatilha.setTipoCordao(tipoCordao);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA A SUA COR",84,1);
-                    apresentacao.printEspacos(84);
-
-                    ler = new Scanner(System.in);
-                    cor = ler.nextLine();
-                    sapatilha.setCor(cor);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O ANO DE LANÇAMENTO",84,1);
-                    apresentacao.printEspacos(84);
-
-                    dataLancamento = ler.nextInt();
-                    sapatilha.setDataLancamento(dataLancamento);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printArtigoPremiumOuNormal();
-
-                    tipo = ler.nextInt();
-                    sapatilha.setTipo(tipo);
-
-                    apresentacao.printClear(1);
-                    apresentacao.printEstadoArtigo();
-
-                    opcao = ler.nextInt();
-
-                    if (opcao == 0)
-                    {
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO",84,1);
-                        apresentacao.printEspacos(84);
-
-                        avaliacao = ler.nextDouble();
-
-                        apresentacao.printClear(1);
-                        apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE",84,1);
-                        apresentacao.printEspacos(84);
-
-                        nrDonos = ler.nextInt();
-                     }
-                    sapatilha.setAvaliacao(avaliacao);
-                    sapatilha.setNrDonos(nrDonos);
-                    nomeTransportadora = runEscolhaTransportadora(tipo);
-                    sapatilha.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
-                    utilizador = sistema.procuraUtilizador(email);
-                    sapatilha.setVendedor(utilizador);
-
-                    apresentacao.clear();
-                    apresentacao.printClear(5);
-                    apresentacao.showArtigo(sapatilha,sistema.getDataAtual().getYear());
-                    apresentacao.printClear(3);
-                    apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?",81,1);
-                    apresentacao.printClear(1);
-                    apresentacao.printMensagemSimOuNao(99);
-
-                    x = ler.nextInt();
-
-                    if (x == 1)
-                    {
-                        try {
-                            sistema.adicionaArtigo(sapatilha);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!!",87,3);
-                            apresentacao.printMensagem("DESEJA ADICIONAR OUTRO ARTIGO?",87,3);
-                            apresentacao.printClear(1);
-                            apresentacao.printMensagemSimOuNao(99);
-
-                            x = ler.nextInt();
-
-                            if (x == 1)
-                            {
-                                x = 0;
-                                break;
-                            } else if (x == 0)
-                            {
-                                x = 4;
-                                break;
-                            }
+                        if (!isInt(c)) {
+                            c = apresentacao.printInputIncorreto(3);
+                            break;
                         }
-                        catch (ArtigoException a){
-                            apresentacao.printMensagem(a.getMessage(), 87, 2);
+                        x = stringToInt(c);
+
+                        if (x == 0) {
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 3;
+                            break;
+                        }
+                    }
+
+                    if (!sistema.verificaArtigosID(id)){
+
+                        sapatilha.setId(id);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        descricao = ler.nextLine();
+                        sapatilha.setDescricao(descricao);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA A MARCA", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        marca = ler.nextLine();
+
+                        if (!marca.isEmpty()) {
+                            if (!containsOnlyLetters(marca)) {
+                                apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR SO CARACATERES!!", 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(3);
+                                    break;
+                                }
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 3;
+                                    break;
+                                }
+                            }
+                        } else {
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MARCA!!", 2);
                             apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
                             apresentacao.printMensagemSimOuNao(87);
-                            x = ler.nextInt();
+                            ler = new Scanner(System.in);
 
-                            if (x == 1) {
-                                x = 3;
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
                                 break;
-                            } else if (x == 0) {
-                                x = 4;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
                                 break;
                             }
                         }
-                    } else if (x == 0) {
-                        x = 4;
-                        break;
+
+                        sapatilha.setMarca(marca);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O PREÇO BASE", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isDouble(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        precoBase = stringToDouble(c);
+                        sapatilha.setPrecoBase(precoBase);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O SEU TAMANHO (Nº DE CALÇADO)", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        tamanho = stringToInt(c);
+                        sapatilha.setTamanho(tamanho);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printTipoCordao();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        tipoCordao = stringToInt(c);
+                        sapatilha.setTipoCordao(tipoCordao);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA A SUA COR", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        ler = new Scanner(System.in);
+                        cor = ler.nextLine();
+
+                        if (cor.isEmpty()){
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA COR!!", 2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                        }
+                        sapatilha.setCor(cor);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O ANO DE LANÇAMENTO", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        dataLancamento = stringToInt(c);
+
+                        if (dataLancamento > sistema.getDataAtual().getYear()){
+                            apresentacao.printMensagemCentrada("ERR0! ANO DE LANCAMENTO MAIOR QUE A ANO ATUAL!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        sapatilha.setDataLancamento(dataLancamento);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printArtigoPremiumOuNormal();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        tipo = stringToInt(c);
+                        sapatilha.setTipo(tipo);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printEstadoArtigo();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        opcao = stringToInt(c);
+
+                        if (opcao == 0) {
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            c = ler.nextLine();
+
+                            if (!isDouble(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(3);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 3;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            avaliacao = stringToDouble(c);
+
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(3);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 1) {
+                                    x = 3;
+                                    break;
+                                }
+                                break;
+                            }
+
+                            nrDonos = stringToInt(c);
+                        }
+                        sapatilha.setAvaliacao(avaliacao);
+                        sapatilha.setNrDonos(nrDonos);
+
+                        try {
+                            nomeTransportadora = runEscolhaTransportadora(tipo);
+                            sapatilha.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                        } catch (TransportadoraException a){
+                            apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                        }
+
+                        utilizador = sistema.procuraUtilizador(email);
+                        sapatilha.setVendedor(utilizador);
+
+                        apresentacao.clear();
+                        apresentacao.printClear(5);
+                        apresentacao.showArtigo(sapatilha, sistema.getDataAtual().getYear());
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(99);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                x = 0;
+                                break;
+                            } else if (x == 1) {
+                                x = 3;
+                                break;
+                            }
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 1) {
+                            try {
+                                sistema.adicionaArtigo(sapatilha);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagem("ARTIGO ADICIONADO COM SUCESSO!!", 87, 3);
+                                apresentacao.printMensagem("DESEJA ADICIONAR OUTRO ARTIGO?", 87, 3);
+                                apresentacao.printClear(1);
+                                apresentacao.printMensagemSimOuNao(99);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)) {
+                                    apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                    apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                    apresentacao.printMensagemSimOuNao(87);
+                                    ler = new Scanner(System.in);
+
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(3);
+                                        break;
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 0) {
+                                        x = 4;
+                                        break;
+                                    } else if (x == 1) {
+                                        x = 0;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 1) {
+                                    x = 0;
+                                    break;
+                                } else if (x == 0) {
+                                    x = 4;
+                                    break;
+                                }
+                            } catch (ArtigoException a) {
+                                apresentacao.printMensagem(a.getMessage(), 87, 2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(3);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 1) {
+                                    x = 3;
+                                    break;
+                                } else if (x == 0) {
+                                    x = 4;
+                                    break;
+                                }
+                            }
+                        } else if (x == 0) {
+                            x = 4;
+                            break;
+                        }
                     }
+                    else {
+                        apresentacao.printMensagemCentrada("ESTE ID JÁ EXISTE!!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(3);
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 1) {
+                            x = 3;
+                            break;
+                        } else if (x == 0) {
+                            x = 4;
+                            break;
+                        }
+                    }
+                    break;
             }
         } while (x != 4);
 
@@ -1608,7 +2910,7 @@ public class Main {
                             apresentacao.printMensagemErro(1);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
-                            if (c.equals("1")) { x = 1; break;}
+                            if (c.equals("1")) { x = 3; break;}
                             if (c.equals("0")) { x = 0; break;}
                         } while (true);
                         break;
@@ -2399,6 +3701,22 @@ public class Main {
                     apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
+
+                    if (email.isEmpty()){
+                        apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM EMAIL!!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+                        x = ler.nextInt();
+
+                        if (x == 0){
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            x = 3;
+                            break;
+                        }
+                    }
 
                     List<Encomenda> listaEncomendas = sistema.listaEncomendasVendedor(email);
                     if (listaEncomendas.isEmpty()){

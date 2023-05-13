@@ -440,6 +440,31 @@ public class Sistema implements Serializable,Atributos {
         } else throw new TransportadoraException("A Transportadora com o email " + email + " não foi encontrada!");
     }
 
+    public void alteraMargemLucroTransportadora(String email, double margemLucro) throws TransportadoraException {
+        if (this.listaTransportadoras.containsKey(email))
+        {
+            this.listaTransportadoras.get(email).setMargemLucro(margemLucro);
+        } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
+    }
+
+    public void alteraTempoExpedicaoTransportadora(String email, int tempoExpedicao) throws TransportadoraException {
+        if (this.listaTransportadoras.containsKey(email))
+        {
+            this.listaTransportadoras.get(email).setTempoExpedicao(tempoExpedicao);
+        } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
+    }
+
+    public List<Encomenda> getEncomendasTransportadora(String email) throws TransportadoraException {
+        if (this.listaTransportadoras.containsKey(email))
+        {
+            List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(encomenda)).collect(Collectors.toList());
+            if (!encomendas.isEmpty())
+            {
+                return encomendas;
+            } else throw new TransportadoraException("Esta Transportadora não tem encomendas associadas!");
+        } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
+    }
+
     /**
      * Procura um artigo
      * @param id Id do artigo

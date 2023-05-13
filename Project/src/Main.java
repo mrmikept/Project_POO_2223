@@ -548,7 +548,7 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-                        apresentacao.printMenu(s, 1, nome);
+                        apresentacao.printMenu(s, 1, nome,sistema.getDataAtual());
                         eq = ler.nextLine();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}

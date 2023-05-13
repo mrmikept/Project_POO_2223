@@ -434,7 +434,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Um artigo
      * @throws ArtigoException Caso o artigo não exista
      */
-    public Artigo procuraArtigo(String id) throws ArtigoException {
+    private Artigo procuraArtigo(String id) throws ArtigoException {
         if (listaArtigos.containsKey(id.toUpperCase())) {
             return listaArtigos.get(id.toUpperCase());
         } else {
@@ -453,7 +453,7 @@ public class Sistema implements Serializable,Atributos {
         if(listaArtigos.containsKey(id)){
             Artigo artigo = this.listaArtigos.get(id);
             if(artigo.getEstadoVenda() == Atributos.VENDA){
-                return artigo;
+                return artigo.clone();
             }
             else throw new ArtigoException("Este artigo não está à venda!");
          } else throw new ArtigoException("Este artigo não existe!");
@@ -466,7 +466,7 @@ public class Sistema implements Serializable,Atributos {
      * @return Uma encomenda
      * @throws EncomendaException Caso a encomenda não exista
      */
-    public Encomenda procuraEncomenda(Encomenda encomenda) throws EncomendaException {
+    public Encomenda procuraEncomendaComprador(Encomenda encomenda) throws EncomendaException {
         if (this.listaEncomendas.contains(encomenda)) {
             return this.listaEncomendas.stream().filter(enc -> enc.equals(encomenda)).collect(Collectors.toList()).get(0);
         } else throw new EncomendaException("Esta encomenda não existe!");
@@ -496,12 +496,28 @@ public class Sistema implements Serializable,Atributos {
      * @return Uma encomenda
      * @throws EncomendaException Caso a encomenda não exista
      */
-    public Encomenda procuraEncomenda(int id, String email) throws EncomendaException {
+    public Encomenda procuraEncomendaComprador(int id, String email) throws EncomendaException {
+        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getId() == id).map(Encomenda::clone).collect(Collectors.toList());
+        if (!encomendas.isEmpty())
+        {
+            return encomendas.get(0);
+        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!");
+    }
+
+    private Encomenda procuraEncomenda(int id, String email) throws EncomendaException {
         List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getId() == id).collect(Collectors.toList());
         if (!encomendas.isEmpty())
         {
             return encomendas.get(0);
-        } else throw new EncomendaException("Esta encomenda não existe!");
+        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!!");
+    }
+
+    public Encomenda procuraEncomendaVendedor(int id, String email) throws EncomendaException {
+        List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getVendedor().getEmail().equals(email) && encomenda.getId() == id).map(Encomenda::clone).collect(Collectors.toList());
+        if (!encomendas.isEmpty())
+        {
+            return encomendas.get(0);
+        } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!!");
     }
 
     /**
@@ -523,7 +539,7 @@ public class Sistema implements Serializable,Atributos {
      * Adiciona uma fatura
      * @param fatura Uma fatura
      */
-    public void adicionaFatura(Fatura fatura)
+    private void adicionaFatura(Fatura fatura)
     {
         this.listaFaturas.add(fatura);
     }
@@ -771,7 +787,7 @@ public class Sistema implements Serializable,Atributos {
      * @param emailComprador Email do utilizador que fez a encomenda
      * @throws UtilizadorException Caso o utilizador não exista
      */
-    public void emiteFatura(Encomenda encomenda, String emailComprador) throws UtilizadorException {
+    private void emiteFatura(Encomenda encomenda, String emailComprador) throws UtilizadorException {
 
         Utilizador vendedor = this.procuraUtilizador(encomenda.getVendedor().getEmail());
         Utilizador comprador = this.procuraUtilizador(emailComprador);
@@ -866,7 +882,7 @@ public class Sistema implements Serializable,Atributos {
      * @param tipoVenda Tipo de venda, VENDA ou VENDIDO
      * @return Lista de utilizadores.
      */
-    private List<Utilizador> utilizadoresFaturaramEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda)
+    private List<Utilizador> utilizadoresFaturaramEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda) //TODO CLONE AQUI
     {
         return this.listaUtilizadores.values().stream()
                 .filter(utilizador -> utilizador.getListaFaturas().stream().filter(fatura -> ((fatura.getDataFaturacao().isAfter(primeiraData) && fatura.getDataFaturacao().isBefore(segundaData)) || (fatura.getDataFaturacao().equals(primeiraData) && fatura.getDataFaturacao().equals(segundaData))) && fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
@@ -888,7 +904,7 @@ public class Sistema implements Serializable,Atributos {
                   utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size()) return 1;
           return 0;
         };
-        return this.utilizadoresFaturaramEntreDatas(primeiraData,segundaData, tipoVenda).stream().sorted(comparador).collect(Collectors.toList());
+        return this.utilizadoresFaturaramEntreDatas(primeiraData,segundaData, tipoVenda).stream().sorted(comparador).map(Utilizador::clone).collect(Collectors.toList());
     }
 
 
@@ -922,10 +938,10 @@ public class Sistema implements Serializable,Atributos {
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
     public boolean verificaTransportadora(String nome) throws TransportadoraException {
-        if (listaUtilizadores.containsKey(nome)){
+        if (listaTransportadoras.containsKey(nome)){
             return true;
         }
-        else throw new TransportadoraException("Esta transportadora não existe!!");
+        else throw new TransportadoraException("Transportadora não encontrada!");
     }
 
     public boolean verificaLoginTransportadora(String email, String palavrapasse) //TODO ver esta e a proxima função! Colocar exceptions nesta
@@ -952,6 +968,13 @@ public class Sistema implements Serializable,Atributos {
             return true;
         }
         else throw new UtilizadorException("Password Incorreta!!");
+    }
+
+    public boolean verificaEncomenda(String email, int idEncomenda) throws UtilizadorException {
+        if (this.listaUtilizadores.containsKey(email))
+        {
+            return !this.procuraUtilizador(email).getListaEncomendas().stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList()).isEmpty();
+        } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 
 

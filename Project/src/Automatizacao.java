@@ -297,8 +297,7 @@ public class Automatizacao {
         }
         String email = camposArtComp[1];
         String idArtigo = camposArtComp[2];
-        Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-        sistema.adicionaArtigoEncomenda(artigo, email);
+        sistema.adicionaArtigoEncomenda(idArtigo, email);
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {

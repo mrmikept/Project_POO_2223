@@ -22,7 +22,7 @@ Adiciona Utilizador:2023-04-21;natalia.rodrigues@email.com;pass123;Natália Rodr
 Adiciona Transportadora:2023-03-17;enviaexpresso@exemplo.com;password123;Envia Expresso;Rua Veloz, 123;123456789;0.15;Normal;3
 Adiciona Transportadora:2023-03-17;ctt@exemplo.com;1234;CTT;Rua Veloz, 123;123456789;0.15;Normal;3
 Adiciona Transportadora:2023-03-20;rapidodelivery@exemplo.com;password456;Rápido Delivery;Avenida Ágil, 456;987654321;0.12;Premium;2
-Adiciona Transportadora:2023-03-22;superlogistica@exemplo.com;password789;Super Logística;Travessa Logística, 789;246813579;0.18;Normal;4
+Adiciona Transportadora:2023-03-22;superlogistica@exemplo.com;password789;Super Logistica;Travessa Logística, 789;246813579;0.18;Normal;4
 Adiciona Transportadora:2023-03-24;velocidadeexpress@exemplo.com;password1234;Velocidade Express;Praça Rápida, 987;135792468;0.1;Normal;3
 Adiciona Transportadora:2023-03-26;entregamaxima@exemplo.com;password5678;Entrega Máxima;Largo Eficiente, 369;864209753;0.2;Premium;2
 Adiciona Transportadora:2023-03-29;eficazlogistics@exemplo.com;passwordabcd;Eficaz Logistics;Rua Rápida, 258;975320864;0.14;Normal;4

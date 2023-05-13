@@ -289,52 +289,37 @@ public class Main {
 
                 case 2: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
                     apresentacao.printTrans();
-                    apresentacao.printMensagem("Insira o nome:",88,1);
+                    apresentacao.printMensagemCentrada("Insira o email:",1);
                     apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
-                    nome = ler.nextLine();
-
+                    email = ler.nextLine();
                     try {
-                        sistema.verificaTransportadora(nome);
-                    }
-                    catch (TransportadoraException e) {
-                        apresentacao.printMensagemCentrada(e.getMessage(), 2);
+                        sistema.verificaEmailTransportadora(email);
+                    } catch (TransportadoraException a) {
+                        apresentacao.printMensagemCentrada(a.getMessage(), 2);
                         apresentacao.printClear(1);
                         x = valorSimouNao(1,2,0);
                         break;
                     }
-
-                    /*
-                    if(!sistema.verificaTransportadora(email)) {
-                        apresentacao.printMensagemCentrada("ESTE EMAIL NÂO EXISTE", 2);
-                        apresentacao.printClear(1);
-                        x = valorSimouNao(0,2,0);
-                        break;
-                    }
-                     */
-
+                    teste = 0;
                     while (teste == 0) {
-                        apresentacao.printTrans();
-                        apresentacao.printMensagem("Insira o nome:",88,1);
-                        apresentacao.printMensagem(nome, 88, 0);
-                        apresentacao.printMensagem("Insira a password:", 88, 1);
+                        apresentacao.printMensagemCentrada("Insira a sua password:", 1);
                         apresentacao.printEspacos(88);
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         try {
-                            sistema.verificaPasswordTransportadora(nome, pass);
-                            x = runTransportadora(nome);
+                            sistema.verificaPasswordTransportadora(email,pass); //TODO CORRIGIR APRESENTAÇÃO QUANDO ERRA PASSWORD!
+                            x = runTransportadora(email);
                             break;
                         } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
                             apresentacao.printClear(1);
-                            x = valorSimouNao(1,2,0);
+                            x = valorSimouNao(0,1,0);
                         } if (x==0){
                             teste = 1;
                         }
                     }
                     break;
-
                 case 3: //Registar utilizador
                     apresentacao.printReg();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
@@ -584,8 +569,8 @@ public class Main {
         return 0;
     }
 
-    public int runTransportadora(String nome) throws TransportadoraException {
-        Transportadora transportadora = sistema.procuraTransportadora(nome);
+    public int runTransportadora(String email) throws TransportadoraException {
+        Transportadora transportadora = sistema.procuraTransportadoraEmail(email);
         int x = 0;
         String [] s = {"Dados da transportadora", "Encomendas" ,"Alterar margem de lucro", "Alterar tempo de expedição", "Retroceder"};
         String eq, c;
@@ -596,7 +581,7 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-                        apresentacao.printMenu(s, 1, nome,sistema.getDataAtual());
+                        apresentacao.printMenu(s, 1, transportadora.getNome(),sistema.getDataAtual());
                         eq = ler.nextLine();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -607,7 +592,7 @@ public class Main {
 
                 case 1:
                     apresentacao.printDadosTransportadora(transportadora);
-                    c = ler.nextLine();
+                    ler.nextLine();
                     x=0;
                     break;
 
@@ -1013,7 +998,7 @@ public class Main {
             apresentacao.printClear(2);
             System.out.println(apresentacao.CYAN_BOLD + "                                                                               Pressione" + apresentacao.RESET + " '+' " +
                     apresentacao.CYAN_BOLD + "para avancar e" + apresentacao.RESET + " '-' " + apresentacao.CYAN_BOLD + "para a retroceder ");
-            apresentacao.printMensagem("Digite o nome da Transportadora para a selecionar!", 78, 3);
+            apresentacao.printMensagemCentrada("Digite o nome da Transportadora para a selecionar!", 3);
             apresentacao.printClear(1);
             apresentacao.printEspacos(103);
             opcao = ler.nextLine().toUpperCase();
@@ -1023,7 +1008,7 @@ public class Main {
                 paginaAtual--;
             }
             else try {
-                if (sistema.verificaTransportadora(opcao))
+                if (sistema.verificaNomeTransportadora(opcao))
                 {
                     break;
                 }
@@ -1123,7 +1108,7 @@ public class Main {
                         tshirt.setNrDonos(nrDonos);
 
                         nomeTransportadora = runEscolhaTransportadora(0);
-                        tshirt.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                        tshirt.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
 
 
                         utilizador = sistema.procuraUtilizador(email);
@@ -1263,7 +1248,7 @@ public class Main {
 
 
                     nomeTransportadora = runEscolhaTransportadora(tipo);
-                    mala.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                    mala.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
 
                     utilizador = sistema.procuraUtilizador(email);
                     mala.setVendedor(utilizador);
@@ -1409,7 +1394,7 @@ public class Main {
                     sapatilha.setAvaliacao(avaliacao);
                     sapatilha.setNrDonos(nrDonos);
                     nomeTransportadora = runEscolhaTransportadora(tipo);
-                    sapatilha.setTransportadora(sistema.procuraTransportadora(nomeTransportadora));
+                    sapatilha.setTransportadora(sistema.procuraTransportadoraNome(nomeTransportadora));
                     utilizador = sistema.procuraUtilizador(email);
                     sapatilha.setVendedor(utilizador);
 

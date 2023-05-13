@@ -1915,7 +1915,7 @@ public class Apresentacao
             string.append(artigo.showArtigoLinha());
         }
         string.append(Apresentacao.YELLOW + "| " + Apresentacao.CYAN_BOLD + "Transportadora: " + Apresentacao.RESET + encomenda.getTransportadora().getNome() + Apresentacao.YELLOW + " | "
-                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + encomenda.getVendedor().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + encomenda.getVendedor() + Apresentacao.YELLOW + " | "
                 + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + encomenda.getPrecoFinal());
         if (encomenda.getEstado() == Atributos.EXPEDIDA){
             string.append(Apresentacao.YELLOW + " | " + Apresentacao.CYAN_BOLD + "Data Prevista: " + Apresentacao.RESET + encomenda.getDataPrevistaEntrega() + Apresentacao.YELLOW + " | " +

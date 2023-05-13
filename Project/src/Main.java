@@ -845,8 +845,6 @@ public class Main {
         int x = 0;
         Scanner ler = new Scanner(System.in);
         Utilizador utilizador = sistema.procuraUtilizador(email);
-        List<Fatura> faturasCompras = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDIDO).collect(Collectors.toList());
-        List<Fatura> faturasVenda = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).collect(Collectors.toList());
         String eq;
 
         do {
@@ -920,7 +918,7 @@ public class Main {
                 apresentacao.printMensagemCentrada("INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER OS ARTIGOS",1);
                 apresentacao.printClear(1);
                 int id = ler.nextInt();
-                if (sistema.getListaEncomendas().stream().anyMatch(encomenda -> encomenda.getVendedor().getEmail().equals(email) && encomenda.getEstado() != Atributos.PENDENTE))
+                if (sistema.getListaEncomendas().stream().anyMatch(encomenda -> (encomenda.getVendedor().equals(email) || encomenda.getComprador().equals(email)) && encomenda.getEstado() != Atributos.PENDENTE))
                 {
                     runVerArtigosEncomenda(id,email);
                 }
@@ -1463,8 +1461,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        tshirt.setVendedor(utilizador);
+                        tshirt.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -2028,8 +2025,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        mala.setVendedor(utilizador);
+                        mala.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -2615,8 +2611,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        sapatilha.setVendedor(utilizador);
+                        sapatilha.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -3216,7 +3211,7 @@ public class Main {
             apresentacao.printPendentes();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3288,8 +3283,7 @@ public class Main {
             apresentacao.printExpedidas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(sistema.getArtigosVenda(email));
-            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3338,7 +3332,7 @@ public class Main {
             apresentacao.printFinalizadas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(Apresentacao.CYAN_BOLD + "   Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "   Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3401,7 +3395,7 @@ public class Main {
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(15);
-            System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +

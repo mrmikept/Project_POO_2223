@@ -40,8 +40,7 @@ public class Utilizador extends Entidade implements Serializable {
         super(utilizador);
         this.listaArtigos = utilizador.getListaArtigos();
         this.listaEncomendas = utilizador.getListaEncomendas();
-
-
+        this.listaFaturas = utilizador.getListaFaturas();
     }
 
     public Map<String, Artigo> getListaArtigos(){
@@ -69,7 +68,7 @@ public class Utilizador extends Entidade implements Serializable {
 
     public List<Fatura> getListaFaturas()
     {
-        return this.listaFaturas = listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+        return listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
     }
 
     public void setListaFaturas(List<Fatura> listaFaturas)

@@ -253,7 +253,6 @@ public class Sistema implements Serializable,Atributos {
 
     /**
      * Adiciona uma transportadora à lista de transportadoras do Sistema
-     *
      * @param nome  Nome da transportadora
      * @param lucro Margem de lucro da Transportadora
      * @param tipo  Tipo de transportadora

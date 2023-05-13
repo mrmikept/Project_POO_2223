@@ -215,7 +215,7 @@ public class Main {
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0, teste = 0;
         String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro;
-        String[] s = {"Iniciar sessao - Utlizador", "Procurar Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
+        String[] s = {"Iniciar sessao - Utlizador", "Iniciar sessao - Transportadora", "Registar - Utilizador", "Registar - Transportadora", "Estatisticas", "Configuracoes", "Retroceder"};
         Scanner ler = new Scanner(System.in);
         String eq;
 
@@ -545,9 +545,10 @@ public class Main {
     public int runTransportadora(String nome) throws TransportadoraException {
         Transportadora transportadora = sistema.procuraTransportadora(nome);
         int x = 0;
-        String [] s = {"Dados da transportadora", "Encomendas" ,"Alterar margem de lucro", "Retroceder"};
-        String eq;
+        String [] s = {"Dados da transportadora", "Encomendas" ,"Alterar margem de lucro", "Alterar tempo de expedição", "Retroceder"};
+        String eq, c;
         Scanner ler = new Scanner(System.in);
+        double lucro;
 
         do{
             switch (x) {
@@ -564,10 +565,69 @@ public class Main {
 
                 case 1:
                     apresentacao.printDadosTransportadora(transportadora);
+                    c = ler.nextLine();
                     x=0;
                     break;
+
+                case 2: //TODO: FAZER UMA FUNCAO QUE DEVOLVA TODAS AS ENCOMENDAS DE UMA TRANSPORTADORA
+                    
+                case 3:
+                    apresentacao.printTrans();
+                    apresentacao.printMensagem("Lucro atual:",90,1);
+                    System.out.print(transportadora.getMargemLucro());
+                    apresentacao.printClear(2);
+                    apresentacao.printMensagem("Insira a nova margem de lucro da transportadora:",90,1);
+                    apresentacao.printEspacos(90);
+                    
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+
+                    if (!isDouble(c)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(1,3,0);
+                        break;
+                    }
+
+                    lucro = stringToDouble(c);
+                    transportadora.setMargemLucro(lucro);
+
+                    apresentacao.printTrans();
+                    apresentacao.printMensagem("MEARGEM DE LUCRO ALTERADA COM SUCESSO",90,3);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                    x = 0;
+                    break;
+
+                case 4:
+                    apresentacao.printTrans();
+                    apresentacao.printMensagem("Tempo de expedição atual:",90,1);
+                    System.out.print(transportadora.getTempoExpedicao());
+                    apresentacao.printClear(2);
+                    apresentacao.printMensagem("Insira o novo tempo de expedição da transportadora:",90,1);
+                    apresentacao.printEspacos(90);
+
+                    ler = new Scanner(System.in);
+                    c = ler.nextLine();
+
+                    if (!isInt(c)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(1,4,0);
+                        break;
+                    }
+
+                    x = stringToInt(c);
+                    transportadora.setTempoExpedicao(x);
+
+                    apresentacao.printTrans();
+                    apresentacao.printMensagem("TEMPO DE EXPEDICÃO ALTERADO COM SUCESSO",90,3);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                    x = 0;
+                    break;
             }
-        } while(x != 4);
+        } while(x != 5);
 
         return 0;
     }
@@ -638,6 +698,7 @@ public class Main {
                     break;
                 }
         } while (true);
+        
         return 0;
     }
 

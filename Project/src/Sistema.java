@@ -949,9 +949,9 @@ public class Sistema implements Serializable,Atributos {
         return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(palavrapasse)).collect(Collectors.toList()).isEmpty();
     }
 
-    private boolean verificaEmailTransportadora(String email)
-    {
-        return this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email)).collect(Collectors.toList()).isEmpty();
+    public boolean verificaEmailTransportadora(String nome) throws TransportadoraException {
+        if (this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList()).isEmpty()) return true;
+        else throw new TransportadoraException("Esta transportadora não existe!!");
     }
 
     /**
@@ -961,7 +961,7 @@ public class Sistema implements Serializable,Atributos {
      * @return True se a password é a mesma do utilizador
      * @throws UtilizadorException Caso o utilizador não exista
      */
-    public boolean verificaPassword(String email, String password) throws UtilizadorException
+    public boolean verificaPasswordUtilizador(String email, String password) throws UtilizadorException
     {
         Utilizador utilizador = procuraUtilizador(email);
         if (password.equals(utilizador.getPalavraPasse())){
@@ -970,11 +970,17 @@ public class Sistema implements Serializable,Atributos {
         else throw new UtilizadorException("Password Incorreta!!");
     }
 
+
     public boolean verificaEncomenda(String email, int idEncomenda) throws UtilizadorException {
         if (this.listaUtilizadores.containsKey(email))
         {
             return !this.procuraUtilizador(email).getListaEncomendas().stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList()).isEmpty();
         } else throw new UtilizadorException("Utilizador não encontrado!");
+    }
+
+
+    public boolean verificaPasswordTransportadora(String email, String password) throws UtilizadorException, TransportadoraException {
+        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(password)).collect(Collectors.toList()).isEmpty();
     }
 
 

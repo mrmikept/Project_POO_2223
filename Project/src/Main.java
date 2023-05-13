@@ -274,7 +274,7 @@ public class Main {
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         try {
-                            sistema.verificaPassword(email, pass);
+                            sistema.verificaPasswordUtilizador(email, pass);
                             x = runUtilizador(email);
                             break;
                         } catch (UtilizadorException a) {
@@ -287,57 +287,51 @@ public class Main {
                     }
                     break;
 
-                case 10: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
+                case 2: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
                     apresentacao.printTrans();
+                    apresentacao.printMensagem("Insira o nome:",88,1);
                     apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
-                    email = ler.nextLine();
+                    nome = ler.nextLine();
+
                     try {
-                        sistema.verificaTransportadora(email);
-                    } catch (TransportadoraException a) {
-                        apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                        sistema.verificaTransportadora(nome);
+                    }
+                    catch (TransportadoraException e) {
+                        apresentacao.printMensagemCentrada(e.getMessage(), 2);
                         apresentacao.printClear(1);
-                        x = valorSimouNao(0,1,0);
+                        x = valorSimouNao(1,2,0);
                         break;
                     }
+
+                    /*
+                    if(!sistema.verificaTransportadora(email)) {
+                        apresentacao.printMensagemCentrada("ESTE EMAIL NÂO EXISTE", 2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(0,2,0);
+                        break;
+                    }
+                     */
+
                     while (teste == 0) {
-                        apresentacao.clear();
-                        apresentacao.printMensagem("Insira o nome da transportadora:",88,1);
-                        apresentacao.printMensagem(email, 88, 0);
-                        apresentacao.printMensagem("Insira a sua password:", 88, 1);
+                        apresentacao.printTrans();
+                        apresentacao.printMensagem("Insira o nome:",88,1);
+                        apresentacao.printMensagem(nome, 88, 0);
+                        apresentacao.printMensagem("Insira a password:", 88, 1);
                         apresentacao.printEspacos(88);
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         try {
-                            sistema.verificaPassword(email, pass);
-                            x = runUtilizador(email);
+                            sistema.verificaPasswordTransportadora(nome, pass);
+                            x = runTransportadora(nome);
                             break;
                         } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
                             apresentacao.printClear(1);
-                            x = valorSimouNao(0,1,0);
+                            x = valorSimouNao(1,2,0);
                         } if (x==0){
                             teste = 1;
                         }
-                    }
-                    break;
-
-                case 2:
-                    apresentacao.printProcuraTrans();
-                    ler = new Scanner(System.in);
-                    apresentacao.printEspacos(102);
-                    nomeTrans = ler.nextLine().toUpperCase();
-                    try {
-                        Transportadora transportadora = sistema.procuraTransportadora(nomeTrans);
-                        apresentacao.printDadosTransportadora(transportadora);
-                        ler.nextLine();
-                        x = 0;
-                        break;
-                    }
-                    catch (TransportadoraException a){
-                        apresentacao.printMensagemCentrada(a.getMessage(),2);
-                        apresentacao.printClear(1);
-                        x = valorSimouNao(1,2,0);
                     }
                     break;
 
@@ -411,7 +405,6 @@ public class Main {
 
                 case 4:
                     apresentacao.printRegTrans();
-                    apresentacao.printReg();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);

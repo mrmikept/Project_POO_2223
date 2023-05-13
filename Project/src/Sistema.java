@@ -163,7 +163,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Map<String, Artigo> getArtigosVenda(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
-        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() != utilizador.getId() && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        return listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() != utilizador.getId() && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
     }
 
     /**
@@ -174,7 +174,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Map<String, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
         Utilizador utilizador = this.procuraUtilizador(email);
-        return this.listaArtigos = listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() == utilizador.getId() && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+        return listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getVendedor().getId() == utilizador.getId() && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     /**
@@ -434,9 +434,8 @@ public class Sistema implements Serializable,Atributos {
      * @throws ArtigoException Caso o artigo não exista
      */
     public Artigo procuraArtigo(String id) throws ArtigoException {
-        if (listaArtigos.containsKey(id)) {
-            return listaArtigos.get(id);
-
+        if (listaArtigos.containsKey(id.toUpperCase())) {
+            return listaArtigos.get(id.toUpperCase());
         } else {
             throw new ArtigoException("O artigo com o id " + id + " não existe");
         }
@@ -602,7 +601,7 @@ public class Sistema implements Serializable,Atributos {
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
-                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
+                encomenda.adicionaArtigo(this.procuraArtigo(idArtigo));
             }
             else
             {
@@ -672,7 +671,7 @@ public class Sistema implements Serializable,Atributos {
      * @param idEncomenda Id da encomenda
      * @param email Email do utilizador que faz a encomenda
      * @throws UtilizadorException Caso o utilizador não exista
-     * @throws EncomendaException Caso a encomenda não exista
+     * @throws EncomendaException Caso a encomenda não exista ou não possa ser devolvida!
      * @throws TransportadoraException Caso a transportadora não exista
      */
     public void confirmaEncomenda(int idEncomenda, String email) throws UtilizadorException, EncomendaException, TransportadoraException {
@@ -681,12 +680,11 @@ public class Sistema implements Serializable,Atributos {
             Encomenda encomenda = this.procuraEncomenda(idEncomenda, email);
             if (encomenda.getEstado() == Atributos.PENDENTE)
             {
-
                 encomenda.alteraEstadoExpedido(this.getDataAtual());
                 this.emiteFatura(encomenda,email);
                 this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
-            }
-        }
+            } else throw new EncomendaException("A encomenda com o id '" + idEncomenda + "' não pode ser devolvida");
+        } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 
     /**

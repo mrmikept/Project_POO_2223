@@ -63,7 +63,7 @@ public class Mala extends Acessorio implements Premium
 
     public double getValorizacaoPremium(int date)
     {
-        return (date - this.getAnoLancamento()) * 0.2;
+        return Math.round(((date - this.getAnoLancamento()) * 0.2) * 100) /100;
     }
 
     public double getCorrecaoPreco()
@@ -90,7 +90,7 @@ public class Mala extends Acessorio implements Premium
         {
             return true;
         }
-        if (o == null || this.getClass() == o.getClass())
+        if (o == null || this.getClass() != o.getClass())
         {
             return false;
         }

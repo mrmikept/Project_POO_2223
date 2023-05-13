@@ -310,14 +310,17 @@ public class Automatizacao {
             int dia = data.getDayOfMonth();
             sistema.saltaTempo(ano, mes, dia);
         }
-        String nome = camposTransp[1].toUpperCase();
-        double margemLucro = Double.parseDouble(camposTransp[2]);
-        if (camposTransp[3].contains("Normal")){
-            int tempoExpedicao = Integer.valueOf(camposTransp[4]);
-            sistema.adicionaTransportadora(nome, margemLucro, Atributos.NORMAL, tempoExpedicao);
-        } else if (camposTransp[3].contains("Premium")) {
-            int tempoExpedicao = Integer.valueOf(camposTransp[4]);
-            sistema.adicionaTransportadora(nome, margemLucro, Atributos.PREMIUM, tempoExpedicao);
+        String email = camposTransp[1];
+        String palavraPasse = camposTransp[2];
+        String nome = camposTransp[3].toUpperCase();
+        String morada = camposTransp[4];
+        int nif = Integer.parseInt(camposTransp[5]);
+        double margemLucro = Double.parseDouble(camposTransp[6]);
+        int tempoExpedicao = Integer.parseInt(camposTransp[8]);
+        if (camposTransp[7].contains("Normal")){
+            sistema.adicionaTransportadora(email, palavraPasse, nome, morada, nif, margemLucro, Atributos.NORMAL, tempoExpedicao);
+        } else if (camposTransp[7].contains("Premium")) {
+            sistema.adicionaTransportadora(email, palavraPasse, nome, morada, nif, margemLucro, Atributos.PREMIUM, tempoExpedicao);
         }
     }
 

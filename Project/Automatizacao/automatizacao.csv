@@ -1,0 +1,45 @@
+--Exemplos de Comandos!
+--Adiciona Utilizador:Data;Email;palavra-passe;Nome;Morada;Contribuinte
+--Adiciona Transportadora:Data;Email;palavra-passe;Nome;Morada;Contribuinte;TaxaDeLucro;TipoTransportadora;TempoDeExpedição
+--Adiciona Artigo:Data;Tshirt;EmailVendedor;idArtigo;Descrição;Marca;PreçoBase;EstadoArtigo;Transportadora;NrDonos;Avaliacao
+
+Adiciona Utilizador:2023-03-17;ana.silva@email.com;senha123;Ana Silva;Rua Falsa, 123;123456789
+Adiciona Utilizador:2023-03-20;antonio.rodrigues@email.com;password456;António Rodrigues;Avenida Imaginária, 456;987654321
+Adiciona Utilizador:2023-03-22;beatriz.santos@email.com;securepass789;Beatriz Santos;Travessa Inexistente, 789;246813579
+Adiciona Utilizador:2023-03-24;bruno.fernandes@email.com;password1234;Bruno Fernandes;Praça Falsa, 987;135792468
+Adiciona Utilizador:2023-03-26;carolina.ferreira@email.com;pass12345;Carolina Ferreira;Largo Fictício, 369;864209753
+Adiciona Utilizador:2023-03-29;diogo.ribeiro@email.com;testpass789;Diogo Ribeiro;Rua Falsa, 258;975320864
+Adiciona Utilizador:2023-04-02;elisa.carvalho@email.com;mypassword;Elisa Carvalho;Avenida Imaginária, 741;753198642
+Adiciona Utilizador:2023-04-04;filipe.oliveira@email.com;passwordtest;Filipe Oliveira;Travessa Inexistente, 963;486231975
+Adiciona Utilizador:2023-04-06;goncalo.lopes@email.com;password123;Gonçalo Lopes;Rua Falsa, 357;219735864
+Adiciona Utilizador:2023-04-08;helena.ferreira@email.com;secure1234;Helena Ferreira;Praça Fictícia, 582;639184275
+Adiciona Utilizador:2023-04-10;inacio.rodrigues@email.com;testpass123;Inácio Rodrigues;Largo Inexistente, 126;753190824
+Adiciona Utilizador:2023-04-13;joana.silva@email.com;passwordtest123;Joana Silva;Rua Falsa, 417;408297513
+Adiciona Utilizador:2023-04-15;jose.oliveira@email.com;pass123456;José Oliveira;Avenida Imaginária, 839;572193086
+Adiciona Utilizador:2023-04-17;lara.rodrigues@email.com;securepassword;Lara Rodrigues;Travessa Inexistente, 285;908625137
+Adiciona Utilizador:2023-04-19;miguel.santos@email.com;testpassword;Miguel Santos;Rua Falsa, 654;432109876
+Adiciona Utilizador:2023-04-21;natalia.rodrigues@email.com;pass123;Natália Rodrigues;Avenida Imaginária, 147;765432109
+Adiciona Transportadora: 2023-03-17;enviaexpresso@exemplo.com;password123;Envia Expresso;Rua Veloz, 123;123456789;0.15;Normal;3
+Adiciona Transportadora: 2023-03-20;rapidodelivery@exemplo.com;password456;Rápido Delivery;Avenida Ágil, 456;987654321;0.12;Premium;2
+Adiciona Transportadora: 2023-03-22;superlogistica@exemplo.com;password789;Super Logística;Travessa Logística, 789;246813579;0.18;Normal;4
+Adiciona Transportadora: 2023-03-24;velocidadeexpress@exemplo.com;password1234;Velocidade Express;Praça Rápida, 987;135792468;0.1;Normal;3
+Adiciona Transportadora: 2023-03-26;entregamaxima@exemplo.com;password5678;Entrega Máxima;Largo Eficiente, 369;864209753;0.2;Premium;2
+Adiciona Transportadora: 2023-03-29;eficazlogistics@exemplo.com;passwordabcd;Eficaz Logistics;Rua Rápida, 258;975320864;0.14;Normal;4
+Adiciona Transportadora: 2023-04-02;entregapontual@exemplo.com;password12345;Entrega Pontual;Avenida Expressa, 741;753198642;0.17;Normal;3
+Adiciona Transportadora: 2023-04-04;transrapid@exemplo.com;password6789;Trans Rapid;Travessa Ágil, 963;486231975;0.13;Normal;4
+Adiciona Transportadora: 2023-04-06;ultralogistic@exemplo.com;passwordxyz;Ultra Logistic;Rua Suprema, 357;219735864;0.16;Premium;2
+Adiciona Transportadora: 2023-04-08;transveloz@exemplo.com;password7890;Trans Veloz;Praça Rápida, 582;639184275;0.11;Normal;3
+Adiciona Utilizador:2023-04-23;oliver.ferreira@email.com;securepass;Oliver Ferreira;Travessa Inexistente, 753;901234567
+Adiciona Utilizador:2023-04-25;paula.ribeiro@email.com;password123;Paula Ribeiro;Praça Falsa, 321;345678901
+Adiciona Utilizador:2023-04-27;quintino.lopes@email.com;pass456;Quintino Lopes;Largo Fictício, 963;789012345
+Adiciona Utilizador:2023-04-29;raquel.carvalho@email.com;mypassword;Raquel Carvalho;Rua Falsa, 852;234567890
+Adiciona Utilizador:2023-05-01;santiago.oliveira@email.com;passwordtest;Santiago Oliveira;Avenida Imaginária, 369;678901234
+Adiciona Utilizador:2023-05-03;teresa.lopes@email.com;secure123;Teresa Lopes;Travessa Inexistente, 741;012345678
+Adiciona Utilizador:2023-05-05;ugo.silva@email.com;password456;Ugo Silva;Praça Falsa, 654;456789012
+Adiciona Utilizador:2023-05-07;vitoria.ferreira@email.com;testpass;Vitória Ferreira;Largo Fictício, 987;890123456
+Adiciona Utilizador:2023-05-07;miTeixeira@email.com;1234;Miguel Teixeira;Praça de Leiria, 20;254764986
+Adiciona Venda:2023-05-07;Tshirt;miguel.santos@email.com;Tshirt1;automatizacao;Nike;10.5;Novo;ctt;0;0
+Adiciona Utilizador:2023-04-07;teste;teste;teste;teste;1
+Adiciona Venda:2023-05-07;Tshirt;miTeixeira@email.com;Tshirt2;automatizacao;Nike;10.5;Novo;ctt;0;0
+Adiciona Venda:2023-05-07;Tshirt;miTeixeira@email.com;Tshirt3;automatizacao;Nike;10.5;Novo;ctt;0;0
+Adiciona Venda:2023-05-07;Tshirt;miTeixeira@email.com;Tshirt4;automatizacao;Nike;10.5;Novo;ctt;0;0

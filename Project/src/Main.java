@@ -338,8 +338,8 @@ public class Main {
 
                 case 2: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
                     apresentacao.printTrans();
-                    apresentacao.printMensagemCentrada("Insira o email:",1);
-                    apresentacao.printEspacos(88);
+                    apresentacao.printMensagem("Insira o email:",86,1);
+                    apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
                     email = ler.nextLine();
                     try {
@@ -352,8 +352,11 @@ public class Main {
                     }
                     teste = 0;
                     while (teste == 0) {
-                        apresentacao.printMensagemCentrada("Insira a sua password:", 1);
-                        apresentacao.printEspacos(88);
+                        apresentacao.printTrans();
+                        apresentacao.printMensagem("Insira o email:",86,1);
+                        apresentacao.printMensagem(email, 86, 0);
+                        apresentacao.printMensagem("Insira a password:",86, 1);
+                        apresentacao.printEspacos(86);
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         try {
@@ -363,7 +366,7 @@ public class Main {
                         } catch (TransportadoraException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
                             apresentacao.printClear(1);
-                            x = valorSimouNao(0,1,0);
+                            x = valorSimouNao(1,1,0);
                         } if (x==0){
                             teste = 1;
                         }
@@ -677,6 +680,7 @@ public class Main {
                         if (eq.equals("2")) { x = 2; break;}
                         if (eq.equals("3")) { x = 3; break;}
                         if (eq.equals("4")) { x = 4; break;}
+                        if (eq.equals("5")) { x = 5; break;}
                     } while (true);
                     break;
 
@@ -690,56 +694,74 @@ public class Main {
                     
                 case 3:
                     apresentacao.printTrans();
-                    apresentacao.printMensagem("Lucro atual:",90,1);
-                    System.out.print(transportadora.getMargemLucro());
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(93);
+                    System.out.print(apresentacao.CYAN_BOLD + "Lucro atual: "+ apresentacao.RESET + transportadora.getMargemLucro());
                     apresentacao.printClear(2);
-                    apresentacao.printMensagem("Insira a nova margem de lucro da transportadora:",90,1);
-                    apresentacao.printEspacos(90);
+                    apresentacao.printMensagem("Insira a nova margem de lucro da transportadora:",77,1);
+                    apresentacao.printEspacos(77);
                     
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
 
                     if (!isDouble(c)) {
-                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER UTILIZADOS DIGITOS!!",2);
                         apresentacao.printClear(1);
                         x = valorSimouNao(1,3,0);
                         break;
                     }
 
                     lucro = stringToDouble(c);
+
+                    if (lucro <= 0) {
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER VALORES POSITIVOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(1,3,0);
+                        break;
+                    }
+
                     transportadora.setMargemLucro(lucro);
 
                     apresentacao.printTrans();
-                    apresentacao.printMensagem("MEARGEM DE LUCRO ALTERADA COM SUCESSO",90,3);
-                    apresentacao.printEnter("");
+                    apresentacao.printMensagemCentrada("MARGEM DE LUCRO ALTERADA COM SUCESSO",3);
+                    apresentacao.printEnterSair();
                     ler.nextLine();
                     x = 0;
                     break;
 
                 case 4:
                     apresentacao.printTrans();
-                    apresentacao.printMensagem("Tempo de expedição atual:",90,1);
-                    System.out.print(transportadora.getTempoExpedicao());
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(89);
+                    System.out.print(apresentacao.CYAN_BOLD + "Tempo de expedição atual: "+ apresentacao.RESET + transportadora.getTempoExpedicao());
                     apresentacao.printClear(2);
-                    apresentacao.printMensagem("Insira o novo tempo de expedição da transportadora:",90,1);
-                    apresentacao.printEspacos(90);
+                    apresentacao.printMensagem("Insira o novo tempo de expedição da transportadora:",77,1);
+                    apresentacao.printEspacos(77);
 
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
 
                     if (!isInt(c)) {
-                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER UTILIZADOS DIGITOS!!",2);
                         apresentacao.printClear(1);
                         x = valorSimouNao(1,4,0);
                         break;
                     }
 
                     x = stringToInt(c);
+
+                    if (x <= 0) {
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER VALORES POSITIVOS!!",2);
+                        apresentacao.printClear(1);
+                        x = valorSimouNao(1,4,0);
+                        break;
+                    }
+
                     transportadora.setTempoExpedicao(x);
 
                     apresentacao.printTrans();
-                    apresentacao.printMensagem("TEMPO DE EXPEDICÃO ALTERADO COM SUCESSO",90,3);
-                    apresentacao.printEnter("");
+                    apresentacao.printMensagemCentrada("TEMPO DE EXPEDICÃO ALTERADO COM SUCESSO",3);
+                    apresentacao.printEnterSair();
                     ler.nextLine();
                     x = 0;
                     break;

@@ -697,9 +697,9 @@ public class Main {
                 apresentacao.printComprar();
                 apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
                 apresentacao.printClear(2);
-                System.out.println(Apresentacao.CYAN_BOLD + "                                                           Pressione" + Apresentacao.RESET + " '+' " +
+                System.out.println(Apresentacao.CYAN_BOLD + "                                             Pressione" + Apresentacao.RESET + " '+' " +
                         Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'c' " + Apresentacao.CYAN_BOLD +
-                        "para comprar artigo e" + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD + "para sair" + Apresentacao.RESET);
+                        "para adicionar artigo a uma encomenda e" + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD + "para sair" + Apresentacao.RESET);
                 apresentacao.printEspacos(103);
                 ler = new Scanner(System.in);
                 opcao = ler.nextLine();
@@ -709,7 +709,7 @@ public class Main {
                     paginaAtual--;
                 } else if (opcao.equals("c")) {
                     apresentacao.printClear(1);
-                    apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA COMPRAR", 83, 1);
+                    apresentacao.printMensagemCentrada("INTRODUZA O ID DO ARTIGO QUE DESEJA ADICIONAR A UMA ENCOMENDA", 1);
                     apresentacao.printClear(2);
                     apresentacao.printEspacos(103);
                     String id = ler.nextLine().toUpperCase();
@@ -717,9 +717,8 @@ public class Main {
                     apresentacao.printComprar();
                     try {
                         apresentacao.showArtigo(sistema.procuraArtigoVenda(id.toUpperCase()), sistema.getDataAtual().getYear());
-                        apresentacao.printMensagem("DESEJA COMPRAR ESTE ARTIGO?", 91, 1);
+                        apresentacao.printMensagemCentrada("DESEJA ADICIONAR ESTE ARTIGO A UMA ENCOMENDA?", 1);
                         apresentacao.printMensagemSimOuNao(101);
-                        apresentacao.printClear(1);
                         apresentacao.printEspacos(103);
                     } catch (ArtigoException e)
                     {
@@ -732,7 +731,7 @@ public class Main {
                         try {
                             sistema.adicionaArtigoEncomenda(id, email);
                             apresentacao.printClear(1);
-                            apresentacao.printMensagem("ARTIGO COMPRADO COM SUCESSO!", 90, 3);
+                            apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!", 3);
                             apresentacao.printEnter("");
                             ler.nextLine();
                         } catch (EncomendaException a) {
@@ -1907,17 +1906,22 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
         do {
-            List<Artigo> artigos = sistema.procuraEncomendaComprador(id, email).getListaArtigos();
-            if (artigos.isEmpty()) {
-                apresentacao.printBox();
-                apresentacao.printMensagem("Esta encomenda não possui artigos!", 87, 2);
-                apresentacao.printEnter("");
-                ler.nextLine();
-                break;
-            }
             List<String> strings = new ArrayList<>();
-            for (Artigo artigo : artigos) {
-                strings.add(apresentacao.showArtigoString(artigo, sistema.getDataAtual().getYear()));
+            try {
+                List<Artigo> artigos = sistema.procuraEncomendaComprador(id, email).getListaArtigos();
+                if (artigos.isEmpty()) {
+                    apresentacao.printBox();
+                    apresentacao.printMensagem("Esta encomenda não possui artigos!", 87, 2);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                    break;
+                }
+                for (Artigo artigo : artigos) {
+                    strings.add(apresentacao.showArtigoString(artigo, sistema.getDataAtual().getYear()));
+                }
+            } catch (EncomendaException e)
+            {
+                return 0;
             }
             int quantidade = 2;
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);

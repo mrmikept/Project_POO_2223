@@ -590,12 +590,14 @@ public class Sistema implements Serializable,Atributos {
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
                 encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
             }
             else
             {
                 Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual(), this.procuraUtilizador(email) ,this.procuraUtilizador(artigo.getVendedor().getEmail()));
-                encomenda.adicionaArtigo(artigo);
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
+                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
                 this.procuraUtilizador(email).adicionaEncomenda(encomenda);
                 this.adicionaEncomenda(encomenda,email);
             }
@@ -618,12 +620,14 @@ public class Sistema implements Serializable,Atributos {
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
-                encomenda.adicionaArtigo(this.procuraArtigo(idArtigo));
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
+                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
             }
             else
             {
                 Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual(), this.procuraUtilizador(email) ,this.procuraUtilizador(artigo.getVendedor().getEmail()));
-                encomenda.adicionaArtigo(artigo);
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
+                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
                 this.procuraUtilizador(email).adicionaEncomenda(encomenda);
                 this.adicionaEncomenda(encomenda,email);
             }
@@ -637,13 +641,14 @@ public class Sistema implements Serializable,Atributos {
      * @throws EncomendaException Caso a encomenda não exista
      * @throws UtilizadorException Caso o utilizador não exista
      */
-    public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException {
+    public void removeArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
         if (this.listaUtilizadores.containsKey(email))
         {
             List<Encomenda> encomendas = this.listaEncomendas.stream().filter(encomenda -> encomenda.getComprador().getEmail().equals(email) && encomenda.getVendedor().getEmail().equals(artigo.getVendedor().getEmail()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDA);
                 encomenda.removeArtigo(artigo);
 
                 if (encomenda.getListaArtigos().isEmpty())
@@ -671,6 +676,7 @@ public class Sistema implements Serializable,Atributos {
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
+                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDA);
                 encomenda.removeArtigo(this.procuraArtigo(idArtigo));
 
                 if (encomenda.getListaArtigos().isEmpty())

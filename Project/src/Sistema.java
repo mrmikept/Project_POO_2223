@@ -244,10 +244,10 @@ public class Sistema implements Serializable,Atributos {
      * @throws TransportadoraException Caso a Transportadora já exista
      */
     public void adicionaTransportadora(Transportadora transportadora) throws TransportadoraException {
-        if (!this.listaTransportadoras.containsKey(transportadora.getNome())) {
-            this.listaTransportadoras.put(transportadora.getNome(), transportadora.clone());
+        if (!this.listaTransportadoras.containsKey(transportadora.getEmail()) && this.verificaNomeTransportadora(transportadora.getNome())) { //TODO VERIFICAR NOME TRANSPORTADORA
+            this.listaTransportadoras.put(transportadora.getEmail(), transportadora.clone());
         } else {
-            throw new TransportadoraException("A Transportadora " + transportadora.getNome() + " já existe!");
+            throw new TransportadoraException("A Transportadora " + transportadora.getNome().toUpperCase() + " já existe!");
         }
     }
 
@@ -259,12 +259,15 @@ public class Sistema implements Serializable,Atributos {
      * @throws TransportadoraException Caso a Transportadora já exista
      */
     public void adicionaTransportadora(String email, String palavraPasse, String nome, String morada, int nrFiscal, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
-        if (!this.listaTransportadoras.containsKey(nome.toUpperCase()) && verificaEmailTransportadora(email)) {
-            int id = this.listaTransportadoras.size() + 1;
-            Transportadora transportadora = new Transportadora(id, email, palavraPasse, nome.toUpperCase(), morada, nrFiscal, lucro, tipo, tempExpedicao, 0, this.getTaxas());
-            this.listaTransportadoras.put(nome.toUpperCase(), transportadora);
+        if (!this.listaTransportadoras.containsKey(email)) { //TODO VERIFICAR NOME TRANSPORTADORA
+            if (!this.verificaNomeTransportadora(nome.toUpperCase()))
+            {
+                int id = this.listaTransportadoras.size() + 1;
+                Transportadora transportadora = new Transportadora(id, email, palavraPasse, nome.toUpperCase(), morada, nrFiscal, lucro, tipo, tempExpedicao, 0, this.getTaxas());
+                this.listaTransportadoras.put(email, transportadora);
+            } else throw new TransportadoraException("A Transportadora com o nome " + nome.toUpperCase() + " já existe!");
         } else {
-            throw new TransportadoraException("A Transportadora " + nome + " já existe!");
+            throw new TransportadoraException("A Transportadora com o email " + email + " já existe!");
         }
     }
 
@@ -331,7 +334,7 @@ public class Sistema implements Serializable,Atributos {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Tshirt tshirt = new Tshirt(id.toUpperCase(), utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
+            Tshirt tshirt = new Tshirt(id.toUpperCase(), utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora), Atributos.VENDA, tamanho, padrao);
             this.listaArtigos.put(id,tshirt);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         } else {
@@ -361,7 +364,7 @@ public class Sistema implements Serializable,Atributos {
     public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, int data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id)) {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
+            Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), utilizador, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
             this.listaArtigos.put(id, sapatilha);
             utilizador.adicionaArtigo(sapatilha);
         } else {
@@ -391,7 +394,7 @@ public class Sistema implements Serializable,Atributos {
         if (!this.listaArtigos.containsKey(id))
         {
             Utilizador utilizador = this.procuraUtilizador(email);
-            Mala mala = new Mala(id.toUpperCase(), utilizador, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
+            Mala mala = new Mala(id.toUpperCase(), utilizador, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
             this.listaArtigos.put(id,mala);
             utilizador.adicionaArtigo(this.listaArtigos.get(id));
         } else {
@@ -420,12 +423,21 @@ public class Sistema implements Serializable,Atributos {
      * @return Uma transportadora
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public Transportadora procuraTransportadora(String nome) throws TransportadoraException {
-        if (listaTransportadoras.containsKey(nome)) {
-            return listaTransportadoras.get(nome).clone();
+    public Transportadora procuraTransportadoraNome(String nome) throws TransportadoraException {
+        List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList());
+        if (!transportadoras.isEmpty())
+        {
+            return transportadoras.get(0).clone();
         } else {
             throw new TransportadoraException("A Transportadora com o nome, " + nome + " não existe!");
         }
+    }
+
+    public Transportadora procuraTransportadoraEmail(String email) throws TransportadoraException {
+        if (this.listaTransportadoras.containsKey(email))
+        {
+            return this.listaTransportadoras.get(email).clone();
+        } else throw new TransportadoraException("A Transportadora com o email " + email + " não foi encontrada!");
     }
 
     /**
@@ -705,7 +717,7 @@ public class Sistema implements Serializable,Atributos {
             {
                 encomenda.alteraEstadoExpedido(this.getDataAtual());
                 this.emiteFatura(encomenda,email);
-                this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
+                this.procuraTransportadoraNome(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
             } else throw new EncomendaException("A encomenda com o id '" + idEncomenda + "' não pode ser devolvida");
         } else throw new UtilizadorException("Utilizador não encontrado!");
     }
@@ -943,21 +955,23 @@ public class Sistema implements Serializable,Atributos {
      * @param nome Nome da transportadora
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
-    public boolean verificaTransportadora(String nome) throws TransportadoraException {
-        if (listaTransportadoras.containsKey(nome)){
-            return true;
-        }
-        else throw new TransportadoraException("Transportadora não encontrada!");
+    public boolean verificaNomeTransportadora(String nome) throws TransportadoraException {
+        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList()).isEmpty();
     }
 
-    public boolean verificaLoginTransportadora(String email, String palavrapasse) //TODO ver esta e a proxima função! Colocar exceptions nesta
+    public boolean verificaEmailTransportadora(String email) throws TransportadoraException //TODO ver esta e a proxima função! Colocar exceptions nesta
     {
-        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(palavrapasse)).collect(Collectors.toList()).isEmpty();
+        if (this.listaTransportadoras.containsKey(email))
+        {
+            return true;
+        } else throw new TransportadoraException("Esta Transportadora ou email não existe!!");
     }
 
-    public boolean verificaEmailTransportadora(String nome) throws TransportadoraException {
-        if (this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList()).isEmpty()) return true;
-        else throw new TransportadoraException("Esta transportadora não existe!!");
+    public boolean verificaPasswordTransportadora(String email, String palavraPasse) throws TransportadoraException {
+        if (this.listaTransportadoras.get(email).getPalavraPasse().equals(palavraPasse))
+        {
+            return true;
+        } else throw new TransportadoraException("Password Incorreta!!");
     }
 
     /**
@@ -982,11 +996,6 @@ public class Sistema implements Serializable,Atributos {
         {
             return !this.procuraUtilizador(email).getListaEncomendas().stream().filter(encomenda -> encomenda.getId() == idEncomenda).collect(Collectors.toList()).isEmpty();
         } else throw new UtilizadorException("Utilizador não encontrado!");
-    }
-
-
-    public boolean verificaPasswordTransportadora(String email, String password) throws UtilizadorException, TransportadoraException {
-        return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getEmail().equals(email) && transportadora.getPalavraPasse().equals(password)).collect(Collectors.toList()).isEmpty();
     }
 
 

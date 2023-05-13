@@ -922,7 +922,7 @@ public class Sistema implements Serializable,Atributos {
      * @return True se a utilizadora exista, False se a transportadora não existir
      */
     public boolean verificaTransportadora(String nome) throws TransportadoraException {
-        if (listaUtilizadores.containsKey(nome)){
+        if (listaTransportadoras.containsKey(nome)){
             return true;
         }
         else throw new TransportadoraException("Esta transportadora não existe!!");

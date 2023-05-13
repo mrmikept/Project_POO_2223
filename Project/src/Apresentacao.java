@@ -1088,6 +1088,29 @@ public class Apresentacao
         System.out.print("                                                                                                        ");
     }
 
+    public String printInputIncorreto(int p){
+
+
+        String c;
+        do {
+            if (p == 1){
+                printTshirt();
+            }
+            if (p == 2){
+                printMala();
+            }
+            if (p == 3){
+                printSapatilhas();
+            }
+            printMensagemCentrada("INPUT INCORRETO!!", 2);
+            printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+            printMensagemSimOuNao(87);
+            Scanner ler = new Scanner(System.in);
+            c = ler.nextLine();
+        }while (!c.equals("1") && !c.equals("0"));
+        return c;
+    }
+
     public void printOpcoes(String mensagem, String[] opcoes){
         printMensagem(mensagem,86,1);
         int i = 1;

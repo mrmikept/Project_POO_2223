@@ -1,0 +1,36 @@
+
+--Comandos de Adição de Utilizadores e Transportadora
+--Adiciona Utilizador:Data;email;palavraPasse;NomeUtilizador;Morada;NrIdentificacaoFiscal
+--Adiciona Transportadora:Data;emailTransportadora;palavraPasse;Nome;Morada;MargemLucro;Tipo;TempoExpedicao
+
+--Comandos de Venda de Artigos
+
+--Tshirt
+--Adiciona Venda:Data;Tshirt;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Tamanho;Padrão
+--Adiciona Venda:Data;Tshirt;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Tamanho;Padrão
+
+--Mala
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Dimensão;Material;AnoLancamento;Tipo(Normal/Premium)
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Dimensão;Material;AnoLancamento;Tipo(Normal/Premium)
+
+--Sapatilha
+--Adiciona Venda:Data;Sapatilha;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Tamanho;TipoCordao;Cor;AnoLancamento;Tipo(Normal/Premium)
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Tamanho;TipoCordao;Cor;AnoLancamento;Tipo(Normal/Premium)
+
+
+--Comando de Manipulação de Encomendas
+--Adiciona Artigo Encomenda:Data;IdArtigo;emailComprador
+--Remove Artigo Encomenda:Data;IdArtigo;emailComprador
+--Confirma Encomenda:Data;IdEncomenda;emailComprador
+--Devolve Encomenda:Data;IdEncomenda;emailComprador
+
+--Manipulação de Taxas do sistema e Transportadora
+
+--Transportadora
+--Altera Margem Lucro:Data;EmailTransportadora;MargemLucro
+
+--Sistema
+--Altera Taxa Encomenda Pequena:Data;Taxa
+--Altera Taxa Encomenda Media:Data;Taxa
+--Altera Taxa Encomenda Grande:Data;Taxa
+--Altera Imposto:Data;Imposto

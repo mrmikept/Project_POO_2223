@@ -71,9 +71,7 @@ public abstract class Acessorio extends Artigo implements Serializable
      */
     public String totring()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("\nTamaho: " + this.getMaterial());
-        return string.toString();
+        return "\nTamaho: " + this.getMaterial();
     }
 
     /**

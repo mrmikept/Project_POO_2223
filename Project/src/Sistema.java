@@ -417,8 +417,8 @@ public class Sistema implements Serializable,Atributos {
 
     /**
      * Devolve uma copia de um utilizador
-     * @param email
-     * @return
+     * @param email Email de um Utilizador
+     * @return Um Utilizador
      * @throws UtilizadorException
      */
     public Utilizador procuraUtilizador(String email) throws UtilizadorException {
@@ -460,9 +460,9 @@ public class Sistema implements Serializable,Atributos {
 
     /**
      * Devolve a referencia de uma transportadora
-     * @param nome
-     * @return
-     * @throws TransportadoraException
+     * @param nome Nome da Transportadora
+     * @return Uma transportadora
+     * @throws TransportadoraException Caso a transportadora não exista!
      */
     private Transportadora procuraTransportadora(String nome) throws TransportadoraException {
         List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList());

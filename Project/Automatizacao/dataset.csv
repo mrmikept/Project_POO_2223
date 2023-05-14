@@ -13,11 +13,11 @@ Adiciona Utilizador:2023-05-15;ana.almeida@example.com;ana;Ana Almeida;Rua do Co
 Adiciona Utilizador:2023-05-15;andre.oliveira@example.com;andre;Andre Oliveira;Rua do Sol, n12;444555666
 Adiciona Transportadora:2023-05-15;transportadoralitoral@exemplo.com;transportadoralitoral;Transportadora Litoral;Largo da Praia;123456789;0.10;Normal;3
 Adiciona Venda:2023-05-15;Tshirt;beatriz.martins@gmail.com;TSH002;T-shirt branca com ilustracao;Adidas;20.50;Usado;4;1;Transportadora Loures;S;Lisa
-Adiciona Venda:2023-05-15;Sapatilha;mariana.rodrigues@example.com;JQX123;Sapatilha Preta;Nike;89.99;Usado;8;2;Transportadora Centro;41;Cordao;Preto;2022;Normal
+Adiciona Venda:2023-05-15;Sapatilha;mariana.rodrigues@example.com;JQX123;Sapatilha Preta;Nike;89.99;Usado;3.7;2;Transportadora Centro;41;Cordao;Preto;2022;Normal
 Adiciona Venda:2023-05-15;Sapatilha;joao.costa@hotmail.com;7DYFJ14;Sapatilha de Futsal;Puma;69.99;Novo;Transportadora Loures;40;Cordao;Branco;2021;Premium
 Adiciona Venda:2023-05-15;Mala;mariana.rodrigues@example.com;M45KJ2;Mala tiracolo amarela;Furla;299.50;Novo;Transportadora Santarem;40.2;Couro;2023;Normal
-Adiciona Venda:2023-05-15;Mala;maria.santos@hotmail.com;51TWJ9F;Mala de cabine rigida com fechadura TSA;Delsey;99.99;Usado;8;2;Transportadora Loures;55;Policarbonato;2004;Premium
-Adiciona Venda:2023-05-15;Mala;antonio.oliveira@gmail.com;39DFT7V;Mala de viagem flexivel preta com rodas;American Tourister;79.99;Usado;7;1;Transportadora Centro;65;Poliester;2020;Normal
+Adiciona Venda:2023-05-15;Mala;maria.santos@hotmail.com;51TWJ9F;Mala de cabine rigida com fechadura TSA;Delsey;99.99;Usado;4.2;2;Transportadora Loures;55;Policarbonato;2004;Premium
+Adiciona Venda:2023-05-15;Mala;antonio.oliveira@gmail.com;39DFT7V;Mala de viagem flexivel preta com rodas;American Tourister;79.99;Usado;2.7;1;Transportadora Centro;65;Poliester;2020;Normal
 Adiciona Artigo Encomenda:2023-05-15;M87JK1;maria.santos@hotmail.com
 Adiciona Artigo Encomenda:2023-05-15;64VNS8T;filipa.silva@gmail.com
 Altera Tempo Expedicao:2023-05-15;transportadorasantarem@exemplo.com;5
@@ -32,11 +32,11 @@ Adiciona Venda:2023-05-16;Tshirt;ricardo.alves@hotmail.com;TSH003;T-shirt preta 
 Adiciona Venda:2023-05-16;Tshirt;filipa.silva@gmail.com;qwerty123;Camisola estampada;Bershka;24.99;Usado;3.8;2;Transportadora Loures;M;Riscas
 Adiciona Venda:2023-05-16;Tshirt;antonio.oliveira@gmail.com;asdc432;T-shirt basica;Pull&Bear;9.99;Novo;Transportadora Litoral;M;Lisa
 Adiciona Venda:2023-05-16;Sapatilha;tiago.martins@example.com;XKJ789;Tenis Brancos;Adidas;59.99;Novo;Transportadora Litoral;40;Atilho;Branco;2023;Normal
-Adiciona Venda:2023-05-16;Sapatilha;filipa.silva@gmail.com;LPZ456;Sapatilha Azul;Puma;69.99;Usado;6.5;3;Transportadora Norte;39;Cordao;Azul;2021;Premium
+Adiciona Venda:2023-05-16;Sapatilha;filipa.silva@gmail.com;LPZ456;Sapatilha Azul;Puma;69.99;Usado;4.5;3;Transportadora Norte;39;Cordao;Azul;2021;Premium
 Adiciona Venda:2023-05-16;Sapatilha;filipa.silva@gmail.com;1MZAS45;Sapatilha de Caminhada;Sketchers;79.99;Usado;3.2;2;Transportadora Santarem;39;Atilho;Castanho;2021;Normal
 Adiciona Venda:2023-05-16;Mala;pedro.ferreira@example.com;M87JK1;Mala de viagem grande azul;Samsonite;599.99;Usado;4.5;2;Transportadora Loures;75.0;Poliester;2020;Premium
 Adiciona Venda:2023-05-16;Mala;margarida.fonseca@gmail.com;27GSP6A;Mala de cabine com 2 rodas e pega lateral;Tumi;299.00;Novo;Transportadora Norte;55;Aluminio;2010;Premium
-Adiciona Venda:2023-05-16;Mala;carlos.ferreira@hotmail.com;64VNS8T;Mala de viagem leve com 4 rodas;Rimowa;329.00;Usado;9;2;Transportadora Litoral;75;Aluminio;2019;Normal
+Adiciona Venda:2023-05-16;Mala;carlos.ferreira@hotmail.com;64VNS8T;Mala de viagem leve com 4 rodas;Rimowa;329.00;Usado;3.3;2;Transportadora Litoral;75;Aluminio;2019;Normal
 Adiciona Artigo Encomenda:2023-05-16;M33KJ5;susana.pereira@gmail.com
 Adiciona Artigo Encomenda:2023-05-16;FGH234;ricardo.alves@hotmail.com
 Adiciona Artigo Encomenda:2023-05-16;7DYFJ14;beatriz.mendes@example.com
@@ -48,11 +48,11 @@ Altera Taxa Encomenda Grande:2023-05-16;8.4
 Adiciona Utilizador:2023-05-17;filipe.santos@example.com;filipe;Filipe Santos;Rua dos Pescadores, n25;222111000
 Adiciona Utilizador:2023-05-17;rita.gomes@example.com;rita;Rita Gomes;Rua do Castelo, n4;333222111
 Adiciona Transportadora:2023-05-17;transportadoracentro@exemplo.com;transportadoracentro;Transportadora Centro;Rua do Comercio;246813579;0.12;Normal;4
-Adiciona Venda:2023-05-17;Tshirt;filipa.silva@gmail.com;TSH004;T-shirt vermelha com estampado;Reebok;22.75;Usado;7;10;Transportadora Centro;M;Riscas
+Adiciona Venda:2023-05-17;Tshirt;filipa.silva@gmail.com;TSH004;T-shirt vermelha com estampado;Reebok;22.75;Usado;2.1;10;Transportadora Centro;M;Riscas
 Adiciona Venda:2023-05-17;Tshirt;maria.santos@hotmail.com;hjkl765;T-shirt com estampado;Zara;14.99;Usado;4.2;3;Transportadora Litoral;M;Palmeiras
 Adiciona Venda:2023-05-17;Tshirt;carlos.ferreira@hotmail.com;poiuyt987;Camisola com padrao floral;H&M;29.99;Novo;Transportadora Santarem;XL;Riscas
 Adiciona Venda:2023-05-17;Sapatilha;andre.oliveira@example.com;FGH234;Tenis Vermelhos;Nike;99.99;Novo;Transportadora Loures;42;Atilho;Vermelho;2018;Premium
-Adiciona Venda:2023-05-17;Sapatilha;joao.costa@hotmail.com;ABC456;Sapatilha Verde;Adidas;79.99;Usado;7.5;1;Transportadora Santarem;44;Cordao;Verde;2022;Normal
+Adiciona Venda:2023-05-17;Sapatilha;joao.costa@hotmail.com;ABC456;Sapatilha Verde;Adidas;79.99;Usado;4.5;1;Transportadora Santarem;44;Cordao;Verde;2022;Normal
 Adiciona Venda:2023-05-17;Sapatilha;beatriz.martins@gmail.com;4EVBG8;Sapatilha de Basquetebol;Nike;139.99;Usado;4;2;Transportadora Centro;41;Atilho;Azul;2019;Normal
 Adiciona Venda:2023-05-17;Mala;filipe.santos@example.com;M62TY9;Mala de mao marrom;Tumi;249.90;Novo;Transportadora Centro;30.8;Couro;2023;Normal
 Adiciona Venda:2023-05-17;Mala;susana.pereira@gmail.com;84PJK2B;Mala de cabine expansivel com rodas e bolso frontal;Victorinox;189.99;Novo;Transportadora Centro;55;Nylon;2023;Normal
@@ -69,9 +69,9 @@ Adiciona Venda:2023-05-18;Tshirt;andre.oliveira@example.com;TSH005;T-shirt rosa 
 Adiciona Venda:2023-05-18;Tshirt;pedro.almeida@hotmail.com;lkjhgf321;T-shirt com padrao tropical;Pull&Bear;12.99;Novo;Transportadora Norte;S;Riscas
 Adiciona Venda:2023-05-18;Tshirt;beatriz.martins@gmail.com;mnbvcxz654;T-shirt com slogan;Bershka;17.99;Usado;3.5;2;Transportadora Santarem;L;Lisa
 Adiciona Venda:2023-05-18;Sapatilha;rita.ferreira@gmail.com;KLM789;Sapatilha Cinza;Reebok;49.99;Novo;Transportadora Centro;38;Atilho;Cinza;2023;Normal
-Adiciona Venda:2023-05-18;Sapatilha;pedro.almeida@hotmail.com;XYZ123;Tenis Amarelos;Nike;119.99;Usado;9;4;Transportadora Norte;43;Cordao;Amarelo;2021;Premium
+Adiciona Venda:2023-05-18;Sapatilha;pedro.almeida@hotmail.com;XYZ123;Tenis Amarelos;Nike;119.99;Usado;3;4;Transportadora Norte;43;Cordao;Amarelo;2021;Premium
 Adiciona Venda:2023-05-18;Mala;rita.gomes@example.com;M29JK3;Mala de rodinha preta;Rimowa;999.99;Usado;3.8;1;Transportadora Litoral;68.9;Aluminio;2019;Normal
-Adiciona Venda:2023-05-18;Mala;ricardo.alves@hotmail.com;45THD6J;Mala de viagem com 4 rodas duplas e fechadura TSA;Samsonite;279.99;Usado;8;1;Transportadora Litoral;80;Poliester;2022;Normal
+Adiciona Venda:2023-05-18;Mala;ricardo.alves@hotmail.com;45THD6J;Mala de viagem com 4 rodas duplas e fechadura TSA;Samsonite;279.99;Usado;4.3;1;Transportadora Litoral;80;Poliester;2022;Normal
 Adiciona Venda:2023-05-18;Mala;joao.costa@hotmail.com;73KZV5N;Mala de cabine com rodas e cadeado de combinacao;Tumi;399.00;Novo;Transportadora Santarem;55;Poliester;2023;Normal
 Adiciona Artigo Encomenda:2023-05-18;M34FGH;carla.ferreira@example.com
 Adiciona Artigo Encomenda:2023-05-18;21DFR9T;joao.costa@hotmail.com
@@ -86,9 +86,9 @@ Adiciona Transportadora:2023-05-19;transportadoraloures@exemplo.com;transportado
 Adiciona Venda:2023-05-19;Tshirt;rita.gomes@example.com;TSH006;T-shirt cinza com estampado;Nike;27.99;Usado;3;7;Transportadora Norte;S;Riscas
 Adiciona Venda:2023-05-19;Tshirt;sara.silva@example.com;plmokn098;Camisola com padrao geometrico;Zara;24.99;Usado;4.5;4;Transportadora Loures;S;Palmeiras
 Adiciona Venda:2023-05-19;Sapatilha;beatriz.martins@gmail.com;OPQ456;Tenis Rosa;Puma;89.99;Novo;Transportadora Loures;39;Atilho;Rosa;2015;Premium
-Adiciona Venda:2023-05-19;Sapatilha;cristina.albuquerque@gmail.com;DEF789;Sapatilha Laranja;Adidas;59.99;Usado;6;2;Transportadora Litoral;41;Cordao;Laranja;2022;Normal
+Adiciona Venda:2023-05-19;Sapatilha;cristina.albuquerque@gmail.com;DEF789;Sapatilha Laranja;Adidas;59.99;Usado;4.2;2;Transportadora Litoral;41;Cordao;Laranja;2022;Normal
 Adiciona Venda:2023-05-19;Mala;joao.costa@hotmail.com;M67DFG;Mala de viagem media azul marinho;Delsey;349.50;Novo;Transportadora Santarem;64.2;Poliester;2023;Normal
-Adiciona Venda:2023-05-19;Mala;beatriz.martins@gmail.com;21DFR9T;Mala de viagem com rodas e fechadura TSA;American Tourister;119.00;Usado;7;1;Transportadora Loures;70;Poliester;2020;Premium
+Adiciona Venda:2023-05-19;Mala;beatriz.martins@gmail.com;21DFR9T;Mala de viagem com rodas e fechadura TSA;American Tourister;119.00;Usado;5;1;Transportadora Loures;70;Poliester;2020;Premium
 Adiciona Venda:2023-05-19;Mala;manuel.santana@hotmail.com;68QWJ5F;Mala de cabine rigida com 4 rodas e pega lateral;Delsey;129.99;Novo;Transportadora Norte;55;ABS;2012;Premium
 Adiciona Artigo Encomenda:2023-05-19;4EVBG8;ricardo.alves@hotmail.com
 Adiciona Artigo Encomenda:2023-05-19;27GSP6A;diogo.fonseca@hotmail.com
@@ -99,14 +99,14 @@ Altera Margem Lucro:2023-05-19;transportadoraloures@exemplo.com;1.25
 Altera Imposto:2023-05-19;5
 Adiciona Venda:2023-05-20;Tshirt;tiago.martins@example.com;TSH007;T-shirt verde lisa;Puma;13.50;Novo;Transportadora Loures;L;Palmeiras
 Adiciona Venda:2023-05-20;Sapatilha;susana.pereira@gmail.com;RST234;Sapatilha Roxa;Nike;69.99;Novo;Transportadora Santarem;37;Atilho;Roxo;2023;Normal
-Adiciona Venda:2023-05-20;Sapatilha;carla.ferreira@example.com;UVW567;Tenis Pretos;Reebok;79.99;Usado;8;3;Transportadora Centro;42;Cordao;Preto;2022;Normal
+Adiciona Venda:2023-05-20;Sapatilha;carla.ferreira@example.com;UVW567;Tenis Pretos;Reebok;79.99;Usado;2.3;3;Transportadora Centro;42;Cordao;Preto;2022;Normal
 Adiciona Venda:2023-05-20;Sapatilha;ricardo.alves@hotmail.com;8NLDJ21;Sapatilha Casual;Adidas;59.99;Usado;3.5;1;Transportadora Norte;38;Cordao;Cinza;2020;Premium
 Adiciona Venda:2023-05-20;Mala;margarida.fonseca@gmail.com;M55PO9;Mala de mao preta;Prada;599.99;Usado;4.2;3;Transportadora Norte;35.6;Couro;2021;Premium
 Adiciona Artigo Encomenda:2023-05-20;M75FGH;rita.gomes@example.com
 Adiciona Artigo Encomenda:2023-05-20;39DFT7V;ana.almeida@example.com
 Adiciona Artigo Encomenda:2023-05-20;73KZV5N;filipe.santos@example.com
 Remove Artigo Encomenda:2023-05-20;M75FGH;rita.gomes@example.com
-Confirma Encomenda:2023-05-20;9;tiago.martins@example.com
+Confirma Encomenda:2023-05-20;1;tiago.martins@example.com
 Altera Tempo Expedicao:2023-05-20;transportadoranorte@exemplo.com;3
 Altera Margem Lucro:2023-05-20;transportadoralitoral@exemplo.com;5
 Altera Imposto:2023-05-20;36
@@ -138,7 +138,7 @@ Adiciona Venda:2023-05-24;Tshirt;maria.santos@hotmail.com;TSH011;T-shirt preta c
 Adiciona Artigo Encomenda:2023-05-24;RST234;joao.costa@hotmail.com
 Adiciona Artigo Encomenda:2023-05-24;KLM789;ricardo.alves@hotmail.com
 Adiciona Artigo Encomenda:2023-05-24;DEF789;andre.oliveira@example.com
-Adiciona Venda:2023-05-25;Tshirt;joao.costa@hotmail.com;TSH012;T-shirt vermelha lisa;Reebok;24.50;Usado;6;8;Transportadora Centro;XL;Riscas
+Adiciona Venda:2023-05-25;Tshirt;joao.costa@hotmail.com;TSH012;T-shirt vermelha lisa;Reebok;24.50;Usado;1;8;Transportadora Centro;XL;Riscas
 Adiciona Artigo Encomenda:2023-05-25;ABC456;susana.pereira@gmail.com
 Confirma Encomenda:2023-05-25;6;beatriz.mendes@example.com
 Altera Taxa Encomenda Media:2023-05-25;4.5
@@ -166,3 +166,40 @@ Adiciona Utilizador:2024-08-30;pedro.almeida@hotmail.com;pedroalmeida;Pedro Alme
 Adiciona Utilizador:2024-09-05;filipa.silva@gmail.com;filipasilva;Filipa Silva;Rua do Castelo;951;732819564
 Adiciona Utilizador:2024-10-14;luis.castro@hotmail.com;luiscastro;Luis Castro;Rua dos Arcos;753;614295837
 Adiciona Utilizador:2024-11-22;cristina.albuquerque@gmail.com;cristinaalbuquerque;Cristina Albuquerque;Avenida da Republica;369;285437916
+
+
+--Comandos de Adição de Utilizadores e Transportadora
+--Adiciona Utilizador:Data;email;palavraPasse;NomeUtilizador;Morada;NrIdentificacaoFiscal
+--Adiciona Transportadora:Data;emailTransportadora;palavraPasse;Nome;Morada;MargemLucro;Tipo;TempoExpedicao
+
+--Comandos de Venda de Artigos
+
+--Tshirt
+--Adiciona Venda:Data;Tshirt;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Tamanho;Padrão
+--Adiciona Venda:Data;Tshirt;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Tamanho;Padrão
+
+--Mala
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Dimensão;Material;AnoLancamento;Tipo(Normal/Premium)
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Dimensão;Material;AnoLancamento;Tipo(Normal/Premium)
+
+--Sapatilha
+--Adiciona Venda:Data;Sapatilha;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Tamanho;TipoCordao;Cor;AnoLancamento;Tipo(Normal/Premium)
+--Adiciona Venda:Data;Mala;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Usado;Avaliacao;NrDonos;NomeTransportadora;Tamanho;TipoCordao;Cor;AnoLancamento;Tipo(Normal/Premium)
+
+
+--Comando de Manipulação de Encomendas
+--Adiciona Artigo Encomenda:Data;IdArtigo;emailComprador
+--Remove Artigo Encomenda:Data;IdArtigo;emailComprador
+--Confirma Encomenda:Data;IdEncomenda;emailComprador
+--Devolve Encomenda:Data;IdEncomenda;emailComprador
+
+--Manipulação de Taxas do sistema e Transportadora
+
+--Transportadora
+--Altera Margem Lucro:Data;EmailTransportadora;MargemLucro
+
+--Sistema
+--Altera Taxa Encomenda Pequena:Data;Taxa
+--Altera Taxa Encomenda Media:Data;Taxa
+--Altera Taxa Encomenda Grande:Data;Taxa
+--Altera Imposto:Data;Imposto

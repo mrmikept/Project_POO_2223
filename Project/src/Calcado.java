@@ -75,9 +75,7 @@ public abstract class Calcado extends Artigo implements Serializable
      */
     public String totring()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("\nTamaho: " + this.getTamanho());
-        return string.toString();
+        return "\nTamaho: " + this.getTamanho();
     }
 
     /**

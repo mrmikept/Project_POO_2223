@@ -51,7 +51,7 @@ public class Utilizador extends Entidade implements Serializable {
     ////////////////////
 
     public Map<String, Artigo> getListaArtigos(){
-        return listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+        return listaArtigos.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().clone()));
     }
 
     public List<Encomenda> getListaEncomendas(){
@@ -69,7 +69,7 @@ public class Utilizador extends Entidade implements Serializable {
     }
 
     public void setListaArtigos(Map<String, Artigo> listaArtigos){
-        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
+        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().clone()));
     }
 
     public void setListaEncomendas(List<Encomenda> listaEncomendas)

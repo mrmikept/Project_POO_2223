@@ -172,8 +172,8 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que adiciona um artigo a encomenda
-     * @param artigo
-     * @throws EncomendaException
+     * @param artigo Um objeto Artigo
+     * @throws EncomendaException Caso o Artigo já exista na Encomenda
      */
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
         if (!this.listaArtigos.contains(artigo)) {
@@ -190,8 +190,8 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que remove um artigo a encomenda
-     * @param artigo
-     * @throws EncomendaException
+     * @param artigo Um objeto Artigo
+     * @throws EncomendaException Caso o Artigo não exista na encomenda
      */
     public void removeArtigo(Artigo artigo) throws EncomendaException {
         if (this.listaArtigos.contains(artigo)) {
@@ -217,7 +217,7 @@ public class Encomenda implements Serializable {
     public double calculaTaxaArtigos()
     {
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> !artigo.verificaNovo()).count()) * 0.25;
-        double valorArtigosNovos = (this.listaArtigos.stream().filter(artigo -> artigo.verificaNovo()).count()) * 0.5;
+        double valorArtigosNovos = (this.listaArtigos.stream().filter(Artigo::verificaNovo).count()) * 0.5;
         return valorArtigosNovos + valorArtigosUsados;
     }
 
@@ -233,16 +233,16 @@ public class Encomenda implements Serializable {
     /**
      * funçao que altera o preço final de uma encomenda
      */
-    public void alteraPreco()
+    private void alteraPreco()
     {
         this.setPrecoFinal(this.calculaValorArtigos() + this.calculaTaxaArtigos() + this.calculaValorExpedicao());
     }
 
     /**
      * funçao que altera a dimensao de uma encomenda
-     * @param tamanho
+     * @param tamanho quantidade de artigos da encomenda
      */
-    public void alteraDimensão(int tamanho) {
+    private void alteraDimensão(int tamanho) {
         if (tamanho <= 1) {
             this.setDimensao(Atributos.PEQUENO);
         }
@@ -257,7 +257,7 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que altera o estado de uma encomenda para expedida
-     * @param dataAtualizacao
+     * @param dataAtualizacao Data da atualizacao da encomenda
      */
     public void alteraEstadoExpedido(LocalDate dataAtualizacao)
     {
@@ -276,9 +276,9 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que calcula a data máxima de devoluçao de uma encomenda
-     * @param tempoDevolucao
+     * @param tempoDevolucao Tempo de devolucao máximo em dias
      * @return LocalDate data máxima de devoluçao
-     * @throws EncomendaException
+     * @throws EncomendaException Caso a encomenda não se encontre finalizada
      */
     public LocalDate getDataDevolucao(int tempoDevolucao) throws EncomendaException {
         if (this.getEstado() == Atributos.FINALIZADA){
@@ -289,7 +289,7 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que altera o estado da encomenda para finalizada
-     * @param dataAtualizacao
+     * @param dataAtualizacao Data da atualizacao do estado
      */
     public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
@@ -303,7 +303,7 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que altera o estado da encomenda para devolvida
-     * @param dataAtualizacao
+     * @param dataAtualizacao Data da atualizacao do estado
      */
     public void alteraEstadoDevolvida(LocalDate dataAtualizacao)
     {
@@ -313,7 +313,7 @@ public class Encomenda implements Serializable {
 
     /**
      * funçao que verifica se uma encomenda é igual ao objeto fornecido
-     * @param o
+     * @param o Um objeto
      * @return True se for igual, caso contrario false
      */
     public boolean equals(Object o)
@@ -370,17 +370,15 @@ public class Encomenda implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("Identificador Encomenda: " + this.getId() + "\n");
-        string.append("Vendedor: " + this.getVendedor() + "\n");
-        string.append("Comprador: " + this.getComprador() + "\n");
-        string.append(this.listaArtigos.toString());
-        string.append("Dimensão: " + this.dimensaoToString() + "\n");
-        string.append("Preco: " + this.precoFinal + "\n");
-        string.append("Estado encomenda: " + this.estadoToString() + "\n");
-        string.append("Data Criação Encomenda: " + this.getDataCriacao() + "\n");
-        string.append("Data Atualização Estado: " + this.getDataAtualizacao());
-        return string.toString();
+        return "Identificador Encomenda: " + this.getId() + "\n" +
+                "Vendedor: " + this.getVendedor() + "\n" +
+                "Comprador: " + this.getComprador() + "\n" +
+                this.listaArtigos.toString() +
+                "Dimensão: " + this.dimensaoToString() + "\n" +
+                "Preco: " + this.precoFinal + "\n" +
+                "Estado encomenda: " + this.estadoToString() + "\n" +
+                "Data Criação Encomenda: " + this.getDataCriacao() + "\n" +
+                "Data Atualização Estado: " + this.getDataAtualizacao();
     }
 
     /**

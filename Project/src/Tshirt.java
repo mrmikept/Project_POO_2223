@@ -1,7 +1,4 @@
-import javax.swing.plaf.PanelUI;
 import java.io.Serializable;
-import java.security.PublicKey;
-import java.time.LocalDate;
 
 /**
  * Classe que representa artigos do tipo Tshirt.
@@ -68,7 +65,7 @@ public class Tshirt extends Vestuario implements Serializable
     public double getCorrecaoPreco() {
         if (!this.verificaNovo() && this.getPadrao() != Tshirt.LISA)
         {
-            return Math.round((this.getPrecoBase() * (-0.5)) * 100) / 100;
+            return Math.round((this.getPrecoBase() * (-0.5)) * 100.0) / 100.0;
         }
         return 0;
     }
@@ -130,11 +127,9 @@ public class Tshirt extends Vestuario implements Serializable
      */
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("[Tshirt]" + " | ");
-        string.append(super.toString());
-        string.append("Padrão: " + this.padraoToString() + "\n");
-        return string.toString();
+        return "[Tshirt]" + " | " +
+                super.toString() +
+                "Padrão: " + this.padraoToString() + "\n";
     }
 
     /**

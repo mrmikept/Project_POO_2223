@@ -92,10 +92,8 @@ public abstract class Vestuario extends Artigo implements Serializable
      */
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-        string.append(super.toString());
-        string.append("Tamanho: " + this.tamanhoToString() + " | ");
-        return string.toString();
+        return super.toString() +
+                "Tamanho: " + this.tamanhoToString() + " | ";
     }
 
     /**

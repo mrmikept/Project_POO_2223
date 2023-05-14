@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * Classe que extende a classe Acessorio e que contem os parametros de uma mala
@@ -72,12 +71,12 @@ public class Mala extends Acessorio implements Premium, Serializable
 
     /**
      * funçao que calcula a valorizaçao de uma mala premium com base na data
-     * @param date
+     * @param date Data do calculo da valorizacao
      * @return double valor da valorizacao premium
      */
     public double getValorizacaoPremium(int date)
     {
-        return Math.round(((date - this.getAnoLancamento()) * 0.2) * 100) /100;
+        return Math.round(((date - this.getAnoLancamento()) * 0.2) * 100.0) /100.0;
     }
 
     /**
@@ -88,14 +87,14 @@ public class Mala extends Acessorio implements Premium, Serializable
     {
         if (!this.verificaNovo() && this.getTipo() == Atributos.NORMAL)
         {
-            return Math.round(((this.getPrecoBase() / this.getDimensao()) * -1) * 100) / 100;
+            return Math.round(((this.getPrecoBase() / this.getDimensao()) * -1) * 100.0) / 100.0;
         }
         return 0;
     }
 
     /**
      * funçao que calcula a preço final de uma mala
-     * @param data
+     * @param data Data do calculo do preco
      * @return double preço final da mala
      */
     public double getPrecoFinal(int data)
@@ -109,7 +108,7 @@ public class Mala extends Acessorio implements Premium, Serializable
 
     /**
      * funçao que verifica se uma mala é igual ao objeto fornecido
-     * @param o
+     * @param o Um objeto
      * @return True se for igual, caso contrario false
      */
     public boolean equals(Object o)
@@ -157,14 +156,12 @@ public class Mala extends Acessorio implements Premium, Serializable
      */
     public String toString()
     {
-        StringBuffer string = new StringBuffer();
-        string.append("[Mala]");
-        string.append(super.toString());
-        string.append("Dimensão: " + this.getDimensao() + " | ");
-        string.append("Material: " + this.getMaterial() + " | ");
-        string.append("Data Lançamento: " + this.getAnoLancamento() + " | ");
-        string.append("Tipo: " + this.tipoToString());
-        return string.toString();
+        return "[Mala]" +
+                super.toString() +
+                "Dimensão: " + this.getDimensao() + " | " +
+                "Material: " + this.getMaterial() + " | " +
+                "Data Lançamento: " + this.getAnoLancamento() + " | " +
+                "Tipo: " + this.tipoToString();
     }
 
     /**

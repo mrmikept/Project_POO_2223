@@ -168,9 +168,9 @@ public class Encomenda implements Serializable {
             if (this.listaArtigos.isEmpty())
             {
                 this.setVendedor(artigo.getEmailVendedor());
-                this.setTransportadora(artigo.getTransportadora());
             }
             this.listaArtigos.add(artigo);
+            this.setTransportadora(artigo.getTransportadora().clone());
             this.alteraPreco();
             this.alteraDimensão(listaArtigos.size());
         } else throw new EncomendaException("Artigo já existente na encomenda!");

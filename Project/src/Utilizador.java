@@ -40,8 +40,7 @@ public class Utilizador extends Entidade implements Serializable {
         super(utilizador);
         this.listaArtigos = utilizador.getListaArtigos();
         this.listaEncomendas = utilizador.getListaEncomendas();
-
-
+        this.listaFaturas = utilizador.getListaFaturas();
     }
 
     public Map<String, Artigo> getListaArtigos(){
@@ -69,7 +68,7 @@ public class Utilizador extends Entidade implements Serializable {
 
     public List<Fatura> getListaFaturas()
     {
-        return this.listaFaturas = listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
+        return listaFaturas.stream().map(Fatura::clone).collect(Collectors.toList());
     }
 
     public void setListaFaturas(List<Fatura> listaFaturas)
@@ -166,11 +165,11 @@ public class Utilizador extends Entidade implements Serializable {
 
     public String toString()
     {
-        return Apresentacao.CYAN_BOLD +"                                                                                                   [Utilizador]"+ Apresentacao.RESET + "\n" +
-               Apresentacao.CYAN_BOLD +"                                                                                                   Numero: "+ Apresentacao.RESET + this.getId() + "\n" +
-               Apresentacao.CYAN_BOLD +"                                                                                                   Email: "+ Apresentacao.RESET + this.getEmail() + "\n" +
-               Apresentacao.CYAN_BOLD +"                                                                                                   Nome: "+ Apresentacao.RESET + this.getNome() + "\n" +
-               Apresentacao.CYAN_BOLD +"                                                                                                   Morada: "+ Apresentacao.RESET + this.getMorada() + "\n" +
-               Apresentacao.CYAN_BOLD +"                                                                                                   Numero Fiscal: "+ Apresentacao.RESET + this.getNrFiscal();
+        return Apresentacao.CYAN_BOLD +"                                                                                          [Utilizador]"+ Apresentacao.RESET + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                          Numero: "+ Apresentacao.RESET + this.getId() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                          Email: "+ Apresentacao.RESET + this.getEmail() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                          Nome: "+ Apresentacao.RESET + this.getNome() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                          Morada: "+ Apresentacao.RESET + this.getMorada() + "\n" +
+               Apresentacao.CYAN_BOLD +"                                                                                          Numero Fiscal: "+ Apresentacao.RESET + this.getNrFiscal();
     }
 }

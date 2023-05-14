@@ -74,7 +74,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, x, "", sistema.getDataAtual());
+                        apresentacao.printMenu(s, x, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -104,31 +104,34 @@ public class Main {
 
                     if (input.isEmpty()){
                         apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO",2);
-                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                        apresentacao.printMensagemSimOuNao(87);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 93, 2);
+                        apresentacao.printMensagemSimOuNao(101);
                         ler = new Scanner(System.in);
-                        x = ler.nextInt();
 
-                        if (x == 0){
-                            x = 0;
-                            break;
-                        } else if (x == 1) {
-                            x = 2;
-                            break;
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(4);
                         }
-                    }
 
+                        x = stringToInt(c);
+
+                        if (x == 1) {
+                            x = 2;
+                        }
+                        break;
+                    }
                     try {
                         CarregamentoFicheiro.escreveFicheiro(this.sistema, input);
                         apresentacao.printGuardar();
-                        apresentacao.printEnter("ESTADO GUARDADO COM SUCESSO!!");
+                        apresentacao.printEnter("   ESTADO GUARDADO COM SUCESSO!!");
                         ler.nextLine();
                         x = 0;
                         break;
                     }
                     catch (IOException e){
                         apresentacao.printGuardar();
-                        apresentacao.printEnter("ERRO AO GUARDAR O FICHEIRO!!");
+                        apresentacao.printEnter("   ERRO AO GUARDAR O FICHEIRO!!");
                         ler.nextLine();
                         x = 0;
                         break;
@@ -136,15 +139,21 @@ public class Main {
                     catch (CarregamentoFicheiroException a){
                         apresentacao.printMensagem(a.getMessage(),87,2);
                         apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
-                        apresentacao.printMensagemSimOuNao(102);
-                        x = ler.nextInt();
+                        apresentacao.printMensagemSimOuNao(101);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(4);
+                        }
+
+                        x = stringToInt(c);
+
                         if (x == 1) {
                             x = 2;
                             break;
-                        } else if (x == 0) {
-                            x = 0;
-                            break;
                         }
+                        break;
                     }
 
 
@@ -154,19 +163,25 @@ public class Main {
                     input = ler.nextLine();
 
                     if (input.isEmpty()){
-                        apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE DESEJA CARREGAR!",2);
-                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                        apresentacao.printMensagemSimOuNao(87);
+                        apresentacao.printMensagemCentrada("   ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE DESEJA CARREGAR!",2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 94, 2);
+                        apresentacao.printMensagemSimOuNao(102);
                         ler = new Scanner(System.in);
-                        x = ler.nextInt();
 
-                        if (x == 0){
-                            x = 0;
-                            break;
-                        } else if (x == 1) {
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(5);
+                        }
+
+                        x = stringToInt(c);
+
+
+                         if (x == 1) {
                             x = 3;
                             break;
                         }
+                         break;
                     }
                         try {
                             this.sistema = CarregamentoFicheiro.lerFicheiro(input);
@@ -178,22 +193,28 @@ public class Main {
                         }
                         catch (IOException e){
                             apresentacao.printErroFicheiro();
-                            apresentacao.printEnterSair();
+                            apresentacao.printEnterSair(90);
                             ler.nextLine();
                             x = 0;
                             break;
                         } catch (CarregamentoFicheiroException e) {
                             apresentacao.printMensagem(e.getMessage(),95,2);
-                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemCentrada("   DESEJA TENTAR NOVAMENTE?", 2);
                             apresentacao.printMensagemSimOuNao(102);
-                            x = ler.nextInt();
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(5);
+                            }
+
+                            x = stringToInt(c);
+
                             if (x == 1) {
                                 x = 3;
                                 break;
-                            } else if (x == 0) {
-                                x = 0;
-                                break;
                             }
+                            break;
                         }
 
                 case 4 :
@@ -203,18 +224,24 @@ public class Main {
 
                     if (input_backup.isEmpty()){
                         apresentacao.printMensagemCentrada("ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE PRETENDE CARREGAR",2);
-                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                        apresentacao.printMensagemSimOuNao(87);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 92, 2);
+                        apresentacao.printMensagemSimOuNao(101);
                         ler = new Scanner(System.in);
-                        x = ler.nextInt();
 
-                        if (x == 0){
-                            x = 0;
-                            break;
-                        } else if (x == 1) {
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(6);
+                        }
+
+                        x = stringToInt(c);
+
+
+                        if (x == 1) {
                             x = 4;
                             break;
                         }
+                        break;
                     }
                     try {
                         Automatizacao backup = new Automatizacao(input_backup);
@@ -233,23 +260,28 @@ public class Main {
                     }
                     catch (IOException e){
                         apresentacao.printErroFicheiro();
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
                         break;
                     }
                     catch (AutomatizacaoException a){
                         apresentacao.printMensagem(a.getMessage(),95,2);
-                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemCentrada("  DESEJA TENTAR NOVAMENTE?", 2);
                         apresentacao.printMensagemSimOuNao(102);
-                        x = ler.nextInt();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(6);
+                        }
+
+                        x = stringToInt(c);
                         if (x == 1) {
                             x = 4;
                             break;
-                        } else if (x == 0) {
-                            x = 0;
-                            break;
                         }
+                        break;
                     }
             }
         } while (x != 5);
@@ -267,7 +299,7 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-                        apresentacao.printMenu(s, x, "", sistema.getDataAtual());
+                        apresentacao.printMenu(s, x, 87,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) {
                             x = 1;
@@ -613,7 +645,7 @@ public class Main {
         Utilizador utilizador = sistema.procuraUtilizador(email);
         String nome = utilizador.getNome();
         Scanner ler = new Scanner(System.in);
-        apresentacao.printMenu(s, 1, nome, sistema.getDataAtual());
+        apresentacao.printMenu(s, 1, 87, nome, sistema.getDataAtual());
 
         do {
             switch (x) {
@@ -621,7 +653,7 @@ public class Main {
 
                     do {
 
-                        apresentacao.printMenu(s, 1, nome, sistema.getDataAtual());
+                        apresentacao.printMenu(s, 1, 87, nome, sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
 
                         if (eq.equals("1")) { x = 1; break;}
@@ -674,7 +706,7 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-                        apresentacao.printMenu(s, 1, transportadora.getNome(),sistema.getDataAtual());
+                        apresentacao.printMenu(s, 1, 87, transportadora.getNome(),sistema.getDataAtual());
                         eq = ler.nextLine();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -728,7 +760,7 @@ public class Main {
                     apresentacao.printClear(1);
                     apresentacao.printEspacos(90);
                     System.out.println(apresentacao.CYAN_BOLD + "Margem de lucro atual: "+ apresentacao.RESET + lucro);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
                     break;
@@ -770,7 +802,7 @@ public class Main {
                     apresentacao.printClear(1);
                     apresentacao.printEspacos(90);
                     System.out.println(apresentacao.CYAN_BOLD + "Tempo de expedição atual: "+ apresentacao.RESET + n);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
                     break;
@@ -843,19 +875,19 @@ public class Main {
                             ler.nextLine();
                         } catch (EncomendaException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
-                            apresentacao.printEnterSair();
+                            apresentacao.printEnterSair(90);
                             ler.nextLine();
                             continue;
 
                         } catch (UtilizadorException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
-                            apresentacao.printEnterSair();
+                            apresentacao.printEnterSair(90);
                             ler.nextLine();
                             continue;
 
                         } catch (ArtigoException a) {
                             apresentacao.printMensagemCentrada(a.getMessage(),2);
-                            apresentacao.printEnterSair();
+                            apresentacao.printEnterSair(90);
                             ler.nextLine();
                             continue;
 
@@ -872,12 +904,10 @@ public class Main {
 
     public int runFaturas(String email) throws UtilizadorException, ArtigoException, SistemaException, EncomendaException, TransportadoraException {
         String [] s = {"Faturas de compras", "Faturas de vendas", "Retroceder"};
-        apresentacao.printMenu(s,5,"", sistema.getDataAtual());
+        apresentacao.printMenu(s,5, 87,"", sistema.getDataAtual());
         int x = 0;
         Scanner ler = new Scanner(System.in);
         Utilizador utilizador = sistema.procuraUtilizador(email);
-        List<Fatura> faturasCompras = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDIDO).collect(Collectors.toList());
-        List<Fatura> faturasVenda = utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).collect(Collectors.toList());
         String eq;
 
         do {
@@ -885,7 +915,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s,5,"", sistema.getDataAtual());
+                        apresentacao.printMenu(s,5, 87,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -951,9 +981,9 @@ public class Main {
                 apresentacao.printMensagemCentrada("INTRODUZA O ID DA ENCOMENDA QUE DESEJA VER OS ARTIGOS",1);
                 apresentacao.printClear(1);
                 int id = ler.nextInt();
-                if (sistema.getListaEncomendas().stream().anyMatch(encomenda -> encomenda.getVendedor().getEmail().equals(email) && encomenda.getEstado() != Atributos.PENDENTE))
+                if (sistema.verificaEncomenda(email,id))
                 {
-                    runVerArtigosEncomenda(id,email);
+                    runVerArtigosEncomenda(id,email,tipoFatura);
                 }
                 else
                 {
@@ -979,7 +1009,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 0, "", sistema.getDataAtual());
+                        apresentacao.printMenu(s, 0, 87,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -1018,7 +1048,7 @@ public class Main {
                 opcao = ler.nextLine();
                 if (!opcao.equals("1") && !opcao.equals("0")){
                     apresentacao.printMensagemCentrada("INPUT INVÁLIDO!!",2);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler.nextLine();
                     break;
                 }
@@ -1085,13 +1115,13 @@ public class Main {
                                     break;
                                 } catch (UtilizadorException a) {
                                     apresentacao.printMensagemCentrada(a.getMessage(),2);
-                                    apresentacao.printEnterSair();
+                                    apresentacao.printEnterSair(90);
                                     ler.nextLine();
                                     continue;
 
                                 } catch (ArtigoException a) {
                                     apresentacao.printMensagemCentrada(a.getMessage(),2);
-                                    apresentacao.printEnterSair();
+                                    apresentacao.printEnterSair(90);
                                     ler.nextLine();
                                     continue;
 
@@ -1494,8 +1524,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        tshirt.setVendedor(utilizador);
+                        tshirt.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -2059,8 +2088,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        mala.setVendedor(utilizador);
+                        mala.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -2646,8 +2674,7 @@ public class Main {
                             }
                         }
 
-                        utilizador = sistema.procuraUtilizador(email);
-                        sapatilha.setVendedor(utilizador);
+                        sapatilha.setEmailVendedor(email);
 
                         apresentacao.clear();
                         apresentacao.printClear(5);
@@ -2805,7 +2832,7 @@ public class Main {
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Peq.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena() +
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Med.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia() +
                                 Apresentacao.CYAN_BOLD + " | Taxa enc. Grd.: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande());
-                        apresentacao.printMenu(opcoes, 100, "", sistema.getDataAtual());
+                        apresentacao.printMenu(opcoes, 100, 87, "", sistema.getDataAtual());
                         escolha = ler.nextLine().toLowerCase();
                         if (escolha.equals("1")) {
                             flag = 1;
@@ -2975,7 +3002,7 @@ public class Main {
                 case 6:
                     apresentacao.printTax();
                     apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!", 87, 3);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler = new Scanner(System.in);
                     escolha = ler.nextLine();
                     flag = 0;
@@ -2996,7 +3023,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 2, "", sistema.getDataAtual());
+                        apresentacao.printMenu(s, 2, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -3078,7 +3105,7 @@ public class Main {
                 case 0:
                     do {
                         apresentacao.printSaltaTempo();
-                        apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", s);
+                        apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", s, 87);
                         apresentacao.printEspacos(103);
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
@@ -3188,13 +3215,13 @@ public class Main {
                         sistema.saltaTempo(nAno, nMes, nDia);
                         localDate = this.sistema.getDataAtual();
                         System.out.println();
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(90);
 
                         apresentacao.printSaltaTempo();
                         apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!", 84,3);
                         System.out.println();
                         apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(90);
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -3254,7 +3281,7 @@ public class Main {
                     apresentacao.printMensagem("SALTO NO TEMPO REALIZADO COM SUCESSO!!",84,3);
                     System.out.println();
                     apresentacao.printMensagemLocaldate("Data atual do sistema: ",86,1,localDate);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
@@ -3279,7 +3306,7 @@ public class Main {
                 case 0: // MENU ENCOMENDAS
 
                     do {
-                        apresentacao.printMenu(s,3,"", sistema.getDataAtual());
+                        apresentacao.printMenu(s,3, 87,"", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -3351,7 +3378,7 @@ public class Main {
             apresentacao.printPendentes();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3423,8 +3450,7 @@ public class Main {
             apresentacao.printExpedidas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(sistema.getArtigosVenda(email));
-            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3473,7 +3499,7 @@ public class Main {
             apresentacao.printFinalizadas();
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
-            System.out.println(Apresentacao.CYAN_BOLD + "   Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "   Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3536,7 +3562,7 @@ public class Main {
             apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(15);
-            System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor().getEmail() + Apresentacao.YELLOW + " | " +
+            System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxas Artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaTaxaArtigos() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor Taxa Expedição: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id,email).calculaValorExpedicao() + Apresentacao.YELLOW + " | " +
@@ -3628,24 +3654,24 @@ public class Main {
         }while (true);
     }
 
-    public void runVerArtigosEncomenda(int id, String email) throws EncomendaException {
+    public void runVerArtigosEncomenda(int id, String email, int tipoEncomenda) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
         List<String> strings = new ArrayList<>();
-        try {
-            Encomenda encomenda = sistema.procuraEncomendaVendedor(id,email);
-            List<Artigo> artigos = encomenda.getListaArtigos();
-            for (Artigo artigo : artigos)
-            {
-                strings.add(apresentacao.showArtigoString(artigo,encomenda.getDataCriacao().getYear()));
-            }
-        } catch (EncomendaException e)
+        Encomenda encomenda;
+        if (tipoEncomenda == Atributos.VENDA)
         {
-            apresentacao.printMensagemCentrada(e.getMessage(),2);
-            apresentacao.printEnter("");
-            ler.nextLine();
-            return;
+            encomenda = sistema.procuraEncomendaVendedor(id,email);
+        }
+        else
+        {
+            encomenda = sistema.procuraEncomendaComprador(id,email);
+        }
+        List<Artigo> artigos = encomenda.getListaArtigos();
+        for (Artigo artigo : artigos)
+        {
+            strings.add(apresentacao.showArtigoString(artigo,encomenda.getDataCriacao().getYear()));
         }
         int quantidade = 2;
         int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
@@ -3685,7 +3711,7 @@ public class Main {
                 case 0:
 
                     do {
-                        apresentacao.printMenu(s, 4, "", sistema.getDataAtual());
+                        apresentacao.printMenu(s, 4, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) { x = 1; break;}
                         if (eq.equals("2")) { x = 2; break;}
@@ -3701,13 +3727,19 @@ public class Main {
                     do {
                         switch (x) {
                             case 0:
-                                apresentacao.printVendedorDinheiro();
-                                String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
-                                apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE", o);
-                                apresentacao.printEspacos(93);
 
-                                ler = new Scanner(System.in);
-                                x = ler.nextInt();
+                                do {
+                                    apresentacao.printVendedorDinheiro();
+                                    String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
+                                    apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE", o,95);
+                                    apresentacao.printEspacos(101);
+                                    ler = new Scanner(System.in);
+
+                                    c = ler.nextLine().toLowerCase();
+                                    if (c.equals("1")) { x = 1; break;}
+                                    if (c.equals("2")) { x = 2; break;}
+                                    if (c.equals("3")) { x = 3; break;}
+                                }while (true);
                                 break;
 
                             case 1:
@@ -3716,15 +3748,15 @@ public class Main {
                                 try {
                                     Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
                                     System.out.print(utilizador.toString());
-                                    apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                                    apresentacao.printEnterSair();
+                                    apresentacao.printFaturacao("Faturou: ", 90, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                                    apresentacao.printEnterSair(90);
                                     ler = new Scanner(System.in);
                                     c = ler.nextLine();
                                     x = 0;
                                     break;
                                 } catch (SistemaException a) {
                                     apresentacao.printMensagem(a.getMessage(), 86, 2);
-                                    apresentacao.printEnterSair();
+                                    apresentacao.printEnterSair(90);
                                     ler = new Scanner(System.in);
                                     c = ler.nextLine();
                                     x = 0;
@@ -3744,16 +3776,20 @@ public class Main {
                                     data1 = stringParaData(d1);
 
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(), 97,2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0) {
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(7);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
                                         x = 2;
                                         break;
                                     }
@@ -3767,16 +3803,20 @@ public class Main {
                                 try {
                                     data2 = stringParaData(d2);
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(), 97,2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0){
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(7);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
                                         x = 2;
                                         break;
                                     }
@@ -3789,14 +3829,14 @@ public class Main {
                                         System.out.println();
                                         System.out.print(utilizador.toString());
                                         apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                                        apresentacao.printEnterSair();
+                                        apresentacao.printEnterSair(90);
                                         ler = new Scanner(System.in);
                                         c = ler.nextLine();
                                         x = 0;
                                         break;
                                     } catch (SistemaException e) {
-                                        apresentacao.printMensagem(e.getMessage(), 86, 2);
-                                        apresentacao.printEnterSair();
+                                        apresentacao.printMensagem(e.getMessage(), 78, 2);
+                                        apresentacao.printEnterSair(90);
                                         ler = new Scanner(System.in);
                                         c = ler.nextLine();
                                         x = 0;
@@ -3814,7 +3854,7 @@ public class Main {
                         Transportadora transportadora = sistema.transportadoraMaiorFaturacao();
                         System.out.println();
                         System.out.println(transportadora.toString());
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(94);
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -3822,7 +3862,7 @@ public class Main {
                     }
                     catch (SistemaException a){
                         apresentacao.printMensagem(a.getMessage(),86,2);
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(94);
                         ler = new Scanner(System.in);
                         c = ler.nextLine();
                         x = 0;
@@ -3856,7 +3896,7 @@ public class Main {
                     List<Encomenda> listaEncomendas = sistema.listaEncomendasVendedor(email);
                     if (listaEncomendas.isEmpty()){
                         apresentacao.printMensagem("NÃO EXISTEM ENCOMENDAS PARA ESTE UTILIZADOR!",82,2);
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(90);
                         c = ler.nextLine();
                         x = 0;
                         break;
@@ -3869,7 +3909,7 @@ public class Main {
                         Encomenda encomenda = lista[i];
                         apresentacao.printEspacos(10);
                         System.out.print(apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
-                        apresentacao.printEnterSair();
+                        apresentacao.printEnterSair(90);
                     }
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
@@ -3881,16 +3921,18 @@ public class Main {
                     do {
                         switch (x){
                             case 0:
-                                apresentacao.printCompradorVendedor();
-                                String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
-                                apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA",ops);
-                                apresentacao.printEspacos(86);
+                                do {
+                                    apresentacao.printCompradorVendedor();
+                                    String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
+                                    apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA", ops, 95);
+                                    apresentacao.printEspacos(101);
+                                    ler = new Scanner(System.in);
 
-                                ler = new Scanner(System.in);
-                                x = ler.nextInt();
-                                break;
-                            case 3:
-                                x = 3;
+                                    c = ler.nextLine().toLowerCase();
+                                    if (c.equals("1")) { x = 1; break;}
+                                    if (c.equals("2")) { x = 2; break;}
+                                    if (c.equals("3")) { x = 3; break;}
+                                }while (true);
                                 break;
 
                             case 1:
@@ -3903,16 +3945,20 @@ public class Main {
                                     data1 = stringParaData(d1);
 
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(),97, 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0){
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(8);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
                                         x = 1;
                                         break;
                                     }
@@ -3926,16 +3972,20 @@ public class Main {
                                 try {
                                     data2 = stringParaData(d2);
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(),97, 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0){
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(8);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
                                         x = 1;
                                         break;
                                     }
@@ -3956,17 +4006,21 @@ public class Main {
                                     data1 = stringParaData(d1);
 
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(),97, 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0){
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
-                                        x = 1;
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(8);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
+                                        x = 2;
                                         break;
                                     }
                                     break;
@@ -3979,17 +4033,21 @@ public class Main {
                                 try {
                                     data2 = stringParaData(d2);
                                 } catch (DateTimeException a) {
-                                    apresentacao.printMensagemCentrada(a.getMessage(), 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
-                                    apresentacao.printMensagemSimOuNao(87);
+                                    apresentacao.printMensagem(a.getMessage(),97, 2);
+                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                                    apresentacao.printMensagemSimOuNao(99);
                                     ler = new Scanner(System.in);
-                                    x = ler.nextInt();
 
-                                    if (x == 0){
-                                        x = 0;
-                                        break;
-                                    } else if (x == 1) {
-                                        x = 1;
+                                    c = ler.nextLine();
+
+                                    if (!isInt(c)){
+                                        c = apresentacao.printInputIncorreto(8);
+                                    }
+
+                                    x = stringToInt(c);
+
+                                    if (x == 1) {
+                                        x = 2;
                                         break;
                                     }
                                     break;
@@ -4007,7 +4065,7 @@ public class Main {
                     apresentacao.printVintageDinheiro();
                     apresentacao.printClear(3);
                     apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;

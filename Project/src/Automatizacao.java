@@ -219,7 +219,6 @@ public class Automatizacao {
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArt[0]);
-        System.out.println(data.toString());
         if (sistema.getDataAtual().isBefore(data)){
            int ano = data.getYear();
            int mes = data.getMonthValue();
@@ -342,7 +341,7 @@ public class Automatizacao {
             encomenda.adicionaArtigo(artigo);
             x++;
         }
-        sistema.adicionaEncomenda(encomenda, email);
+        //sistema.adicionaEncomenda(encomenda, email);
     }
 
     public void confEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {

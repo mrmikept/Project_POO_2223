@@ -24,9 +24,9 @@ public class Tshirt extends Vestuario
         this.padrao = LISA;
     }
 
-    public Tshirt(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int padrao)
+    public Tshirt(String id, String vendedor, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int padrao)
     {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
+        super(id, vendedor, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
         this.padrao = padrao;
     }
 

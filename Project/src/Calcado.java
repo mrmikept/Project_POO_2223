@@ -8,9 +8,9 @@ public abstract class Calcado extends Artigo
         this.tamanho = 0;
     }
 
-    public Calcado(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho)
+    public Calcado(String id, String vendedor, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho)
     {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
+        super(id, vendedor, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda);
         this.tamanho = tamanho;
     }
 

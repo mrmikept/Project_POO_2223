@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
  */
 public class Encomenda {
     private int id;
-    private Utilizador vendedor;
-    private Utilizador comprador;
+    private String emailVendedor;
+    private String emailComprador;
     private List<Artigo> listaArtigos;
     private Transportadora transportadora;
     private int dimensao;
@@ -25,8 +25,8 @@ public class Encomenda {
 
     public Encomenda() {
         this.id = 0;
-        this.vendedor = new Utilizador();
-        this.comprador = new Utilizador();
+        this.emailVendedor = "";
+        this.emailComprador = "";
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -36,10 +36,10 @@ public class Encomenda {
         this.dataAtualizacao = LocalDate.now();
     }
 
-    public Encomenda(int id, Utilizador vendedor, Utilizador comprador, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
+    public Encomenda(int id, String emailComprador, String emailVendedor, List<Artigo> listaArtigos, Transportadora transportadora, int dimensao, double precoFinal, int estado, LocalDate dataCriacao, LocalDate dataAtualizacao) {
         this.id = id;
-        this.vendedor = vendedor;
-        this.comprador = comprador;
+        this.emailVendedor = emailVendedor;
+        this.emailComprador = emailComprador;
         this.listaArtigos = listaArtigos;
         this.transportadora = transportadora.clone();
         this.dimensao = dimensao;
@@ -51,8 +51,8 @@ public class Encomenda {
 
     public Encomenda(Encomenda encomenda) {
         this.id = encomenda.getId();
-        this.vendedor = encomenda.getVendedor();
-        this.comprador = encomenda.getComprador();
+        this.emailVendedor = encomenda.getVendedor();
+        this.emailComprador = encomenda.getComprador();
         this.listaArtigos = encomenda.getListaArtigos();
         this.transportadora = encomenda.getTransportadora();
         this.dimensao = encomenda.getDimensao();
@@ -62,10 +62,10 @@ public class Encomenda {
         this.dataAtualizacao = encomenda.getDataAtualizacao();
     }
 
-    public Encomenda(int id, LocalDate dataCriacao, Utilizador comprador, Utilizador vendedor) {
+    public Encomenda(int id, LocalDate dataCriacao, String emailComprador, String emailVendedor) {
         this.id = id;
-        this.vendedor = vendedor;
-        this.comprador = comprador;
+        this.emailVendedor = emailVendedor;
+        this.emailComprador = emailComprador;
         this.listaArtigos = new ArrayList<>();
         this.transportadora = new Transportadora();
         this.dimensao = Atributos.PEQUENO;
@@ -84,24 +84,24 @@ public class Encomenda {
         this.id = id;
     }
 
-    public Utilizador getVendedor()
+    public String getVendedor()
     {
-        return this.vendedor;
+        return this.emailVendedor;
     }
 
-    public void setVendedor(Utilizador vendedor)
+    public void setVendedor(String vendedor)
     {
-        this.vendedor = vendedor;
+        this.emailVendedor = vendedor;
     }
 
-    public Utilizador getComprador()
+    public String getComprador()
     {
-        return this.comprador;
+        return this.emailComprador;
     }
 
-    public void setComprador(Utilizador comprador)
+    public void setComprador(String comprador)
     {
-        this.comprador = comprador;
+        this.emailComprador = comprador;
     }
 
     public List<Artigo> getListaArtigos() {
@@ -166,7 +166,7 @@ public class Encomenda {
         if (!this.listaArtigos.contains(artigo)) {
             if (this.listaArtigos.isEmpty())
             {
-                this.setVendedor(artigo.getVendedor());
+                this.setVendedor(artigo.getEmailVendedor());
                 this.setTransportadora(artigo.getTransportadora());
             }
             this.listaArtigos.add(artigo);
@@ -293,7 +293,9 @@ public class Encomenda {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
-        string.append("Identificador Encomenda: " + this.getId());
+        string.append("Identificador Encomenda: " + this.getId() + "\n");
+        string.append("Vendedor: " + this.getVendedor() + "\n");
+        string.append("Comprador: " + this.getComprador() + "\n");
         string.append(this.listaArtigos.toString());
         string.append("Dimensão: " + this.dimensaoToString() + "\n");
         string.append("Preco: " + this.precoFinal + "\n");

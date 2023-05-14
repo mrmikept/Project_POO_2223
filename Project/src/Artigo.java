@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * Descrição classe
@@ -11,7 +10,7 @@ import java.time.LocalDate;
 public abstract class Artigo implements Serializable
 {
     private String id;
-    private Utilizador vendedor;
+    private String emailVendedor;
     private String descricao;
     private String marca;
     private double precoBase;
@@ -23,7 +22,7 @@ public abstract class Artigo implements Serializable
     public Artigo()
     {
         this.id = "";
-        this.vendedor = new Utilizador();
+        this.emailVendedor = "";
         this.descricao = "";
         this.marca = "";
         this.precoBase = 0.0;
@@ -33,10 +32,10 @@ public abstract class Artigo implements Serializable
         this.estadoVenda = Atributos.VENDA;
     }
 
-    public Artigo(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda)
+    public Artigo(String id, String emailVendedor, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda)
     {
         this.id = id;
-        this.vendedor = utilizador;
+        this.emailVendedor = emailVendedor;
         this.descricao = descricao;
         this.marca = marca;
         this.precoBase = precoBase;
@@ -49,7 +48,7 @@ public abstract class Artigo implements Serializable
     public Artigo(Artigo artigo)
     {
         this.id = artigo.getId();
-        this.vendedor = artigo.getVendedor();
+        this.emailVendedor = artigo.getEmailVendedor();
         this.descricao = artigo.getDescricao();
         this.marca = artigo.getMarca();
         this.precoBase = artigo.getPrecoBase();
@@ -63,9 +62,9 @@ public abstract class Artigo implements Serializable
         this.id = id;
     }
 
-    public void setVendedor(Utilizador vendedor)
+    public void setEmailVendedor(String emailVendedor)
     {
-        this.vendedor = vendedor;
+        this.emailVendedor = emailVendedor;
     }
 
     public void setDescricao(String descricao) {
@@ -99,9 +98,9 @@ public abstract class Artigo implements Serializable
         return id;
     }
 
-    public Utilizador getVendedor()
+    public String getEmailVendedor()
     {
-        return this.vendedor;
+        return this.emailVendedor;
     }
 
     public String getDescricao() {
@@ -161,7 +160,7 @@ public abstract class Artigo implements Serializable
         }
         Artigo artigo = (Artigo) o;
         return (this.getId() == artigo.getId() &&
-                this.getVendedor().equals(artigo.getVendedor()) &&
+                this.getEmailVendedor().equals(artigo.getEmailVendedor()) &&
                 this.getMarca().equals(artigo.getMarca()) &&
                 this.getPrecoBase() == artigo.getPrecoBase() &&
                 this.getTransportadora().equals(artigo.getTransportadora()) &&

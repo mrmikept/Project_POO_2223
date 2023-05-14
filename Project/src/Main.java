@@ -1022,7 +1022,13 @@ public class Main {
         return 0;
     }
 
-    public void runMenuUtilizadorArtigosVenda(String email) throws UtilizadorException, TransportadoraException {
+    /**
+     * funçao que imprime a paginaçao dos artigos a venda de um utilizador
+     * @param email
+     * @throws UtilizadorException
+     * @throws TransportadoraException
+     */
+    private void runMenuUtilizadorArtigosVenda(String email) throws UtilizadorException, TransportadoraException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -1114,7 +1120,12 @@ public class Main {
         } while (true);
     }
 
-    public String runEscolhaTransportadora(int tipoTransportadora) {
+    /**
+     * funçao que imprime a paginaçao da transportadora e devolve a transportadora escolhida pelo utilizador
+     * @param tipoTransportadora
+     * @return String nome da transportadora
+     */
+    private String runEscolhaTransportadora(int tipoTransportadora) {
         String opcao;
         Scanner ler = new Scanner(System.in);
         List<Transportadora> transportadoras = sistema.getListaTransportadoras().values().stream().filter(transportadora -> transportadora.getTipo() == tipoTransportadora).collect(Collectors.toList());
@@ -1160,7 +1171,14 @@ public class Main {
         return opcao;
     }
 
-    public int runArtigosVender(String email) throws TransportadoraException, UtilizadorException {
+    /**
+     * funçao que imprime as opcoes dos artigos para vender e em cada caso imprime os parametros para o utilzador inserir
+     * @param email
+     * @return int 0 para voltar ao menu anterior
+     * @throws TransportadoraException
+     * @throws UtilizadorException
+     */
+    private int runArtigosVender(String email) throws TransportadoraException, UtilizadorException {
         Scanner ler = new Scanner(System.in);
         int opcao, nrDonos = 0, tamanho, padrao, tipo, tipoCordao, dataLancamento;
         double precoBase = 0, avaliacao = 0, dimensao;
@@ -1794,7 +1812,11 @@ public class Main {
         return 0;
     }
 
-    public int runMenuImpostos()
+    /**
+     * funçao que imprime o menu dos impostos
+     * @return int 0 para voltar ao menu anterior
+     */
+    private int runMenuImpostos()
     {
         int imposto, flag = 0;
         double nTaxa;
@@ -1976,7 +1998,11 @@ public class Main {
         return 0;
     }
 
-    public int runConfig() {
+    /**
+     * funçao que imprime o menu das configuraçoes
+     * @return int 0 para voltar ao menu anterior
+     */
+    private int runConfig() {
         int x = 0;
         String [] s = {"Avancar no tempo", "Alterar taxas e impostos", "Alterar tempo de devolucao", "Retroceder"};
         Scanner ler = new Scanner(System.in);
@@ -2070,7 +2096,11 @@ public class Main {
         return 0;
     }
 
-    public int runAvancaTempo() {
+    /**
+     * funçao que imprime o menu de avançar no tempo
+     * @return int 0 para voltar ao menu anterior
+     */
+    private int runAvancaTempo() {
         int x = 0, nDia, nMes, nAno;
         String[] s ={"Avançar para uma data", "Adicionar dias à data atual", "Retroceder"};
         String c, dia, mes, ano;
@@ -2291,7 +2321,16 @@ public class Main {
         return 0;
     }
 
-    public int runEncomendas(String email) throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException {
+    /**
+     * funçao que imprime o menu das encomendas
+     * @param email
+     * @return int 0 para voltar ao menu anterior
+     * @throws ArtigoException
+     * @throws UtilizadorException
+     * @throws EncomendaException
+     * @throws TransportadoraException
+     */
+    private int runEncomendas(String email) throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException {
         int x = 0;
         String [] s = {"Pendentes", "Expedidas", "Finalizadas", "Devolvidas", "Retroceder"};
         Scanner ler = new Scanner(System.in);
@@ -2348,7 +2387,16 @@ public class Main {
         return 0;
     }
 
-    public void runEncomendaPendente(String email, int id) throws EncomendaException, UtilizadorException, TransportadoraException, ArtigoException {
+    /**
+     * funçao que imprime a paginaçao das encomendas pendentes
+     * @param email
+     * @param id
+     * @throws EncomendaException
+     * @throws UtilizadorException
+     * @throws TransportadoraException
+     * @throws ArtigoException
+     */
+    private void runEncomendaPendente(String email, int id) throws EncomendaException, UtilizadorException, TransportadoraException, ArtigoException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2431,7 +2479,14 @@ public class Main {
         } while (true);
     }
 
-    public void runEncomendaExpedida(String email, int id) throws EncomendaException, UtilizadorException {
+    /**
+     * funçao que imprime a paginaçao das encomendas expedidas
+     * @param email
+     * @param id
+     * @throws EncomendaException
+     * @throws UtilizadorException
+     */
+    private void runEncomendaExpedida(String email, int id) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2479,7 +2534,14 @@ public class Main {
         } while (true);
     }
 
-    public void runEncomendaFinalizada(String email, int id) throws EncomendaException, UtilizadorException {
+    /**
+     * funçao que imprime a paginaçao das encomendas finalizadas
+     * @param email
+     * @param id
+     * @throws EncomendaException
+     * @throws UtilizadorException
+     */
+    private void runEncomendaFinalizada(String email, int id) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2540,7 +2602,14 @@ public class Main {
         } while (true);
     }
 
-    public void runEncomendaDevolvidas(String email, int id) throws EncomendaException, UtilizadorException {
+    /**
+     * funçao que imprime a paginaçao das encomendas devolvidas
+     * @param email
+     * @param id
+     * @throws EncomendaException
+     * @throws UtilizadorException
+     */
+    private void runEncomendaDevolvidas(String email, int id) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2587,7 +2656,16 @@ public class Main {
         } while (true);
     }
 
-    public void runListarEncomendas(String email, int estado) throws UtilizadorException, EncomendaException, ArtigoException, TransportadoraException {
+    /**
+     * funçao que imprime a paginaçao das encomendas
+     * @param email
+     * @param estado
+     * @throws UtilizadorException
+     * @throws EncomendaException
+     * @throws ArtigoException
+     * @throws TransportadoraException
+     */
+    private void runListarEncomendas(String email, int estado) throws UtilizadorException, EncomendaException, ArtigoException, TransportadoraException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2655,7 +2733,15 @@ public class Main {
         }while (true);
     }
 
-    public void runVerArtigosEncomenda(int id, String email, int tipoEncomenda) throws EncomendaException, UtilizadorException {
+    /**
+     * funçao que imprime a paginaçao dos artigos numa encomenda
+     * @param id
+     * @param email
+     * @param tipoEncomenda
+     * @throws EncomendaException
+     * @throws UtilizadorException
+     */
+    private void runVerArtigosEncomenda(int id, String email, int tipoEncomenda) throws EncomendaException, UtilizadorException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2698,7 +2784,10 @@ public class Main {
         } while (true);
     }
 
-    public void runMenuVendedorMaisFaturou()
+    /**
+     * funçao imprime o menu da querie vendedor mais faturou
+     */
+    private void runMenuVendedorMaisFaturou()
     {
         int x = 0;
         String opcao;
@@ -2824,7 +2913,11 @@ public class Main {
         }while (x != 3);
     }
 
-    public void runPaginacaoMaioresUtilizadores(List<String> strings)
+    /**
+     * funçao que imprime a paginaçao da querie da ordenaçao do maior comprador/vendedor
+     * @param strings
+     */
+    private void runPaginacaoMaioresUtilizadores(List<String> strings)
     {
         String opcao;
         Scanner ler = new Scanner(System.in);
@@ -2853,7 +2946,10 @@ public class Main {
         } while (true);
     }
 
-    public void runMaiorCompradorVendedor()
+    /**
+     * funçao imprime o menu da querie maior comprador ou vendedor
+     */
+    private void runMaiorCompradorVendedor()
     {
         int x = 0;
         Scanner ler = new Scanner(System.in);
@@ -3026,7 +3122,11 @@ public class Main {
         }while (x != 3);
     }
 
-    public int runEstatisticas() {
+    /**
+     * funçao imprime o menu das estatisticas
+     * @return int 0 para voltar ao menu anterior
+     */
+    private int runEstatisticas() {
         int x = 0;
         String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
                 " em um período de tempo", "Ganhos Vintage", "Retroceder"};
@@ -3155,7 +3255,14 @@ public class Main {
         return 0;
     }
 
-    public int valorSimouNao(int p, int y, int z) {
+    /**
+     * funçao que imprime as opcoes sim ou nao
+     * @param p identifica uma determinada imagem
+     * @param y caso queira repetir a funçao
+     * @param z volta ao menu anterior
+     * @return int opcao escolhida
+     */
+    private int valorSimouNao(int p, int y, int z) {
         String c;
         Scanner ler;
         int x, u = p; p = -1;
@@ -3178,7 +3285,12 @@ public class Main {
         return x;
     }
 
-    public static boolean dataValida(final String data){
+    /**
+     * funçao que verifica se uma String é uma data válida
+     * @param data
+     * @return True se for válida, caso contrario false
+     */
+    private boolean dataValida(final String data){
 
         boolean valido = false;
 
@@ -3191,7 +3303,12 @@ public class Main {
         return valido;
     }
 
-    public LocalDate stringParaData(String dma){
+    /**
+     * funçao que converte uma String para LocalDate
+     * @param dma
+     * @return LocalDate
+     */
+    private LocalDate stringParaData(String dma){
 
         if (dataValida(dma)){
             String[] dataf = dma.split("-");

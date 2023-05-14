@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * Descrição classe
+ * Classe que extende a classe Calcado e que contem os parametros de uma sapatilha
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
@@ -14,6 +14,10 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
     private String cor;
     private int dataLancamento;
     private int tipo;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Sapatilha() {
         super();
@@ -38,6 +42,10 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         this.tipo = sapatilha.getTipo();
 
     }
+
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public int getTipoCordao() {
         return tipoCordao;
@@ -71,11 +79,21 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         this.tipo = tipo;
     }
 
+
+    /**
+     * funçao que calcula a valorizacao de uma sapatilha premium com base na data
+     * @param date
+     * @return double valor da valorizacao premium
+     */
     public double getValorizacaoPremium(int date)
     {
         return this.getPrecoBase() * Math.round((0.6 * (date - this.getDataLancamento()) * this.getPrecoBase())* 100) / 100;
     }
 
+    /**
+     * funçao que calcula a correçao de preço de uma sapatilha normal
+     * @return double valor da correçao de preço
+     */
     public double getCorrecaoPreco()
     {
             if (this.verificaNovo() && this.getTamanho() > 45)
@@ -89,6 +107,11 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
             return 0;
     }
 
+    /**
+     * funçao que calcula o preço final de uma sapatilha
+     * @param data
+     * @return double preço final de uma sapatilha
+     */
     public double getPrecoFinal(int data)
     {
         if (this.getTipo() == Atributos.PREMIUM)
@@ -101,6 +124,10 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         }
     }
 
+    /**
+     * funçao que converte o tipo de cordao para String
+     * @return String tipoCordao
+     */
     private String tipoCordaoToString()
     {
         if (this.getTipoCordao() == Atributos.CORDAO)
@@ -110,6 +137,11 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         return "Atilho";
     }
 
+    /**
+     * funçao que verifica se uma sapatilha é igual ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -129,10 +161,18 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
                 this.getTipo() == sapatilha.getTipo());
     }
 
+    /**
+     * funçao que devolve uma String [Sapatilha]
+     * @return String
+     */
     public String showArtigoLinha() {
         return ("[Sapatilha] ");
     }
 
+    /**
+     * funçao que converte o tipo de uma sapatilha para String
+     * @return String tipo
+     */
     private String tipoToString()
     {
         if (this.getTipo() == Atributos.PREMIUM)
@@ -142,6 +182,10 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         return "Normal";
     }
 
+    /**
+     * funçao que converte para String todos os parametros de uma sapatilha
+     * @return String sapatilha
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -155,6 +199,10 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
         return string.toString();
     }
 
+    /**
+     * funçao que faz uma cópia do objeto
+     * @return Sapatilha com a cópia do objeto
+     */
     public Sapatilha clone() {
         return new Sapatilha(this);
     }

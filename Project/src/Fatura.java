@@ -1,6 +1,13 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Classe que contem os parametros de uma fatura
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
 public class Fatura implements Serializable
 {
     private int idEncomenda;
@@ -11,6 +18,10 @@ public class Fatura implements Serializable
     private double valorExpedicao;
     private double valorTotal;
     private LocalDate dataFaturacao;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Fatura()
     {
@@ -47,6 +58,10 @@ public class Fatura implements Serializable
         this.valorTotal = fatura.getValorTotal();
         this.dataFaturacao = fatura.getDataFaturacao();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public int getIdEncomenda() {
         return idEncomenda;
@@ -115,6 +130,10 @@ public class Fatura implements Serializable
         this.dataFaturacao = dataFaturacao;
     }
 
+    /**
+     * funçao que converte todos os parametros de uma fatura para String
+     * @return String de uma fatura
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -130,6 +149,11 @@ public class Fatura implements Serializable
         return string.toString();
     }
 
+    /**
+     * funçao que verifca se uma fatura é igual ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -151,6 +175,10 @@ public class Fatura implements Serializable
                 this.getDataFaturacao().equals(fatura.getDataFaturacao()));
     }
 
+    /**
+     * funçao que faz uma cópia do objeto
+     * @return Fatura com a cópia do objeto
+     */
     public Fatura clone()
     {
         return new Fatura(this);

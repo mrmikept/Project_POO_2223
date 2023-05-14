@@ -8,6 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Classe que contem os métodos para ler e analizar o ficheiro de automatizaçao
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
 public class Automatizacao {
 
     private String path;
@@ -40,6 +48,17 @@ public class Automatizacao {
         this.excecoes = excecoes;
     }
 
+    /**
+     * Carrega o ficheiro de automatização
+     * @param sistema
+     * @throws IOException
+     * @throws AutomatizacaoException
+     * @throws ArtigoException
+     * @throws UtilizadorException
+     * @throws SistemaException
+     * @throws EncomendaException
+     * @throws TransportadoraException
+     */
     public void carregaFicheiro(Sistema sistema) throws IOException, AutomatizacaoException, ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
         String pasta = Paths.get(this.path).toAbsolutePath().getParent().toString();
         String pasta2 = pasta.replace("/src", "/Automatizacao");
@@ -330,7 +349,14 @@ public class Automatizacao {
         }
     }
 
-    public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
+    /**
+     * Trata as linhas de adicionar utilizador
+     * @param aux
+     * @param sistema
+     * @throws UtilizadorException
+     * @throws SistemaException
+     */
+    private void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
         String[] camposUtil = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposUtil[0]);
         int ano = data.getYear();
@@ -345,9 +371,18 @@ public class Automatizacao {
         int nrFiscal = Integer.parseInt(camposUtil[5]);
         sistema.adicionaUtilizador(email, palavraPasse, nome, morada, nrFiscal);
     }
-    
 
-    public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
+
+    /**
+     * Trata as linhas de adicionar um artigo a venda
+     * @param aux
+     * @param sistema
+     * @throws ArtigoException
+     * @throws TransportadoraException
+     * @throws UtilizadorException
+     * @throws SistemaException
+     */
+    private void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArt[0]);
         int ano = data.getYear();
@@ -413,7 +448,14 @@ public class Automatizacao {
         }
     }
 
-    public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
+    /**
+     * Trata as linhas de adicionar uma transportadora
+     * @param aux
+     * @param sistema
+     * @throws TransportadoraException
+     * @throws SistemaException
+     */
+    private void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
         String[] camposTransp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposTransp[0]);
         int ano = data.getYear();
@@ -435,7 +477,16 @@ public class Automatizacao {
         }
     }
 
-    public void adArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException {
+    /**
+     * Trata as linhas de adicionar um artigo a uma encomenda
+     * @param aux
+     * @param sistema
+     * @throws EncomendaException
+     * @throws ArtigoException
+     * @throws UtilizadorException
+     * @throws SistemaException
+     */
+    private void adArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException {
         String[] camposAdArtEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAdArtEnc[0]);
         int ano = data.getYear();
@@ -448,7 +499,16 @@ public class Automatizacao {
         sistema.adicionaArtigoEncomenda(idArtigo,email);
     }
 
-    public void remArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException{
+    /**
+     * Trata as linhas de remover um artigo de uma encomenda
+     * @param aux
+     * @param sistema
+     * @throws EncomendaException
+     * @throws ArtigoException
+     * @throws UtilizadorException
+     * @throws SistemaException
+     */
+    private void remArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException{
         String[] camposRemArtEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposRemArtEnc[0]);
         int ano = data.getYear();
@@ -461,7 +521,16 @@ public class Automatizacao {
         sistema.removeArtigoEncomenda(idArtigo,email);
     }
 
-    public void confEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
+    /**
+     * Trata as linhas de confirmar uma encomenda
+     * @param aux
+     * @param sistema
+     * @throws EncomendaException
+     * @throws SistemaException
+     * @throws UtilizadorException
+     * @throws TransportadoraException
+     */
+    private void confEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
         String[] camposConfEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposConfEnc[0]);
         int ano = data.getYear();
@@ -474,7 +543,15 @@ public class Automatizacao {
         sistema.confirmaEncomenda(idEncomenda, email);
     }
 
-    public void devEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
+    /**
+     * Trata as linhas de devolver uma encomenda
+     * @param aux
+     * @param sistema
+     * @throws EncomendaException
+     * @throws SistemaException
+     * @throws UtilizadorException
+     */
+    private void devEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
         String[] camposDevEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposDevEnc[0]);
         int ano = data.getYear();
@@ -487,7 +564,14 @@ public class Automatizacao {
         sistema.devolveEncomenda(email, idEncomenda);
     }
 
-    public void altTempExp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException {
+    /**
+     * Trata as linhas de alterar o tempo de expediçao de uma transportadora
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     * @throws TransportadoraException
+     */
+    private void altTempExp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException {
         String[] camposAltTempExp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTempExp[0]);
         int ano = data.getYear();
@@ -500,7 +584,14 @@ public class Automatizacao {
         sistema.alteraTempoExpedicaoTransportadora(email, tempo);
     }
 
-    public void altMargLucro(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
+    /**
+     * Trata as linhas de alterar a margem de lucro de uma transportadora
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     * @throws TransportadoraException
+     */
+    private void altMargLucro(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
         String[] camposAltMargLucro = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltMargLucro[0]);
         int ano = data.getYear();
@@ -513,7 +604,13 @@ public class Automatizacao {
         sistema.alteraMargemLucroTransportadora(email, margemLucro);
     }
 
-    public void altImp(String[] aux, Sistema sistema) throws SistemaException{
+    /**
+     * Trata as linhas de alterar o valor do imposto
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     */
+    private void altImp(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltImp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltImp[0]);
         int ano = data.getYear();
@@ -525,7 +622,13 @@ public class Automatizacao {
         sistema.getTaxas().setImposto(imposto);
     }
 
-    public void altTaxEncPeq(String[] aux, Sistema sistema) throws SistemaException{
+    /**
+     * Trata as linhas de alterar a taxa de uma encomenda pequena
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     */
+    private void altTaxEncPeq(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncPeq = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncPeq[0]);
         int ano = data.getYear();
@@ -537,7 +640,13 @@ public class Automatizacao {
         sistema.getTaxas().setTaxaEncPequena(taxa);
     }
 
-    public void altTaxEncMed(String[] aux, Sistema sistema) throws SistemaException{
+    /**
+     * Trata as linhas de alterar a taxa de uma encomenda media
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     */
+    private void altTaxEncMed(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncMed = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncMed[0]);
         int ano = data.getYear();
@@ -549,7 +658,13 @@ public class Automatizacao {
         sistema.getTaxas().setTaxaEncMedia(taxa);
     }
 
-    public void altTaxEncGrd(String[] aux, Sistema sistema) throws SistemaException{
+    /**
+     * Trata as linhas de alterar a taxa de uma encomenda grande
+     * @param aux
+     * @param sistema
+     * @throws SistemaException
+     */
+    private void altTaxEncGrd(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncGrd = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncGrd[0]);
         int ano = data.getYear();
@@ -561,7 +676,12 @@ public class Automatizacao {
         sistema.getTaxas().setTaxaEncGrande(taxa);
     }
 
-    public int retornaTamanho(String tamanho){
+    /**
+     * funçao que converte a String de uma tamanho para o seu valor definido na classe Atibutos
+     * @param tamanho
+     * @return int valor do tamanho
+     */
+    private int retornaTamanho(String tamanho){
         if (tamanho.contains("S")){
             return Atributos.S;
         } else if (tamanho.contains("L")) {
@@ -574,7 +694,12 @@ public class Automatizacao {
         return 4;
     }
 
-    public int retornaTipo(String tipo){
+    /**
+     * funçao que converte a String de um para o seu valor definido na classe Atributos
+     * @param tipo
+     * @return int valor do tipo
+     */
+    private int retornaTipo(String tipo){
         if (tipo.contains("Normal")){
             return Atributos.NORMAL;
         } else if (tipo.contains("Premium")) {
@@ -582,7 +707,13 @@ public class Automatizacao {
         }
         return 2;
     }
-    public int retornaPadrao(String padrao){
+
+    /**
+     * funçao que converte a String de um padrao para o seu valor definido na classe Tshirt
+     * @param padrao
+     * @return int valor do padrao
+     */
+    private int retornaPadrao(String padrao){
         if (padrao.contains("Lisa")){
             return Tshirt.LISA;
         } else if (padrao.contains("Riscas")) {
@@ -593,7 +724,12 @@ public class Automatizacao {
         return 3;
     }
 
-    public int retornaCordao(String cordao){
+    /**
+     * funçao que converte a String de um cordao para o seu valor definido na classe Atributos
+     * @param cordao
+     * @return int valor do cordao
+     */
+    private int retornaCordao(String cordao){
         if (cordao.contains("Cordao")){
             return Atributos.CORDAO;
         } else if (cordao.contains("Atilho")) {

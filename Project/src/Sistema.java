@@ -753,7 +753,7 @@ public class Sistema implements Serializable,Atributos {
                 if (encomenda.getComprador().equals(email) && encomenda.getEstado() == Atributos.PENDENTE)
                 {
                     encomenda.alteraEstadoExpedido(this.getDataAtual());
-                    this.listaEncomendas.put(idEncomenda,encomenda.clone());
+                    this.listaEncomendas.put(idEncomenda,encomenda);
                     this.emiteFatura(encomenda,email);
                     this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
                 } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO PODE SER CONFIRMADA!");

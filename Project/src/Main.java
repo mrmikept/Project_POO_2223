@@ -8,6 +8,14 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Classe que contem todos as funcionalidades dos menu Vintage
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
+
 public class Main {
     private Sistema sistema;
     private final Apresentacao apresentacao;
@@ -20,7 +28,6 @@ public class Main {
         this.sistema = new Sistema();
         this.apresentacao = new Apresentacao();
     }
-
 
     /**
      * Função que verifica se o input é um dígito
@@ -1083,7 +1090,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao dos artigos a venda de um utilizador
+     * Funçao que imprime a paginaçao dos artigos a venda de um utilizador
      * @param email
      * @throws UtilizadorException
      * @throws TransportadoraException
@@ -1181,7 +1188,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao da transportadora e devolve a transportadora escolhida pelo utilizador
+     * Funçao que imprime a paginaçao da transportadora e devolve a transportadora escolhida pelo utilizador
      * @param tipoTransportadora
      * @return String nome da transportadora
      */
@@ -1232,7 +1239,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime as opcoes dos artigos para vender e em cada caso imprime os parametros para o utilzador inserir
+     * Funçao que imprime as opcoes dos artigos para vender e em cada caso imprime os parametros para o utilzador inserir
      * @param email
      * @return int 0 para voltar ao menu anterior
      * @throws TransportadoraException
@@ -1873,7 +1880,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime o menu dos impostos
+     * Função que controla o menu "Impostos"
      * @return int 0 para voltar ao menu anterior
      */
     private int runMenuImpostos()
@@ -2059,7 +2066,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime o menu das configuraçoes
+     * Função que controla o menu "Configurações"
      * @return int 0 para voltar ao menu anterior
      */
     private int runConfig() {
@@ -2157,7 +2164,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime o menu de avançar no tempo
+     * Função que controla o menu "Avançar no tempo"
      * @return int 0 para voltar ao menu anterior
      */
     private int runAvancaTempo() {
@@ -2382,7 +2389,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime o menu das encomendas
+     * Função que controla o menu "Encomendas"
      * @param email
      * @return int 0 para voltar ao menu anterior
      * @throws ArtigoException
@@ -2448,7 +2455,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao das encomendas pendentes
+     * Funçao que imprime a paginaçao das encomendas pendentes
      * @param email
      * @param id
      * @throws EncomendaException
@@ -2540,7 +2547,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao das encomendas expedidas
+     * Funçao que imprime a paginaçao das encomendas expedidas
      * @param email
      * @param id
      * @throws EncomendaException
@@ -2595,7 +2602,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao das encomendas finalizadas
+     * Funçao que imprime a paginaçao das encomendas finalizadas
      * @param email
      * @param id
      * @throws EncomendaException
@@ -2663,7 +2670,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao das encomendas devolvidas
+     * Funçao que imprime a paginaçao das encomendas devolvidas
      * @param email
      * @param id
      * @throws EncomendaException
@@ -2717,7 +2724,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao das encomendas
+     * Funçao que imprime a paginaçao das encomendas
      * @param email
      * @param estado
      * @throws UtilizadorException
@@ -2794,7 +2801,7 @@ public class Main {
     }
 
     /**
-     * funçao que imprime a paginaçao dos artigos numa encomenda
+     * Funçao que imprime a paginaçao dos artigos numa encomenda
      * @param id
      * @param email
      * @param tipoEncomenda
@@ -2845,7 +2852,7 @@ public class Main {
     }
 
     /**
-     * funçao imprime o menu da querie vendedor mais faturou
+     * Função que controla o menu "Vendedor que mais faturou"
      */
     private void runMenuVendedorMaisFaturou()
     {
@@ -3007,7 +3014,7 @@ public class Main {
     }
 
     /**
-     * funçao imprime o menu da querie maior comprador ou vendedor
+     * Função que controla o menu "Maior comprador/vendedor"
      */
     private void runMaiorCompradorVendedor()
     {
@@ -3183,7 +3190,7 @@ public class Main {
     }
 
     /**
-     * funçao imprime o menu das estatisticas
+     * Função que controla o menu "Estatísticas"
      * @return int 0 para voltar ao menu anterior
      */
     private int runEstatisticas() {

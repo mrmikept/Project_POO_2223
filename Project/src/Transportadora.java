@@ -14,6 +14,9 @@ public class Transportadora extends Entidade implements Serializable {
     private double valorFaturado;
     private TaxasImpostos taxasImpostos;
 
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Transportadora()
     {
@@ -44,6 +47,10 @@ public class Transportadora extends Entidade implements Serializable {
         this.valorFaturado = transportadora.getValorFaturado();
         this.taxasImpostos = transportadora.getTaxasImpostos();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public double getMargemLucro() {
         return margemLucro;
@@ -87,6 +94,11 @@ public class Transportadora extends Entidade implements Serializable {
         this.taxasImpostos = taxasImpostos;
     }
 
+    /**
+     * Função que devolve a taxa de expedição de uma encomenda
+     * @param tamanhoEnc Tamanho da encomenda
+     * @return Taxa de expedição
+     */
     public double getTxExpedicao(int tamanhoEnc)
     {
         if (tamanhoEnc < 2)
@@ -100,6 +112,11 @@ public class Transportadora extends Entidade implements Serializable {
         return this.getTaxasImpostos().getTaxaEncGrande();
     }
 
+    /**
+     * Função que calcula a taxa de expedição de uma encomenda
+     * @param tamanhoEnc Tamanho da encomenda
+     * @return Taxa de expedição
+     */
     public double calculaValorExpedicao(int tamanhoEnc)
     {
         if (this.getTipo() == Atributos.PREMIUM)
@@ -109,20 +126,19 @@ public class Transportadora extends Entidade implements Serializable {
        return (double) Math.round((this.getTxExpedicao(tamanhoEnc) + (this.getTxExpedicao(tamanhoEnc) * this.getMargemLucro() * (1 + ((double)this.getTaxasImpostos().getImposto() / 100)))) * 100) / 100;
     }
 
+    /**
+     * Função que adiciona o valor ganho ao valor já faturado pela transportadora
+     * @param valor Valor ganho
+     */
     public void adicionaValorGanho(double valor)
     {
         this.valorFaturado += valor;
     }
 
-    private String tipotoString()
-    {
-        if (this.getTipo() == Atributos.NORMAL)
-        {
-            return "Normal";
-        }
-        return "Premium";
-    }
-
+    /**
+     * Função que converte para string os dados de uma transportadora
+     * @return String dados de uma transportadora
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -135,6 +151,11 @@ public class Transportadora extends Entidade implements Serializable {
         return string.toString();
     }
 
+    /**
+     * Função que verifica se a transportadora é igual ao objeto
+     * @param o Objecto
+     * @return True se o objecto for igual à transportadora, caso contrário False
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -154,6 +175,10 @@ public class Transportadora extends Entidade implements Serializable {
                 this.getTaxasImpostos().equals(transportadora.getTaxasImpostos());
     }
 
+    /**
+     * Função que faz a cópia do objecto
+     * @return Cópia do objecto
+     */
     public Transportadora clone()
     {
         return new Transportadora(this);

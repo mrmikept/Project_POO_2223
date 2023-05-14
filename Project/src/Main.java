@@ -21,7 +21,9 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    public static boolean isInt(String input) {
+    
+
+    public boolean isInt(String input) {
         try {
             Integer.parseInt(input);
             return true;
@@ -41,7 +43,7 @@ public class Main {
         }
     }
 
-    private static int stringToInt(String str) {
+    private int stringToInt(String str) {
         return Integer.parseInt(str);
     }
 

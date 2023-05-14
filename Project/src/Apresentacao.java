@@ -1322,6 +1322,7 @@ public class Apresentacao
     /**
      * Função que imprime mensagem de input incorreto
      * @param p Identificador da imagem
+     * @return '1' se for para continuar e '0' para sair
      */
     public String printInputIncorreto(int p){
 
@@ -1558,9 +1559,10 @@ public class Apresentacao
     }
 
     /**
-     * Função que converte para uma string a paginação de uma transportadora
+     * Função que converte para uma string uma transportadora
      * @param indice Posição da transportadora na lista de strings
      * @param transportadora Transportadora
+     * @return String com dados de uma transportdora
      */
     public String showTransportadora(int indice, Transportadora transportadora)
     {
@@ -1571,6 +1573,7 @@ public class Apresentacao
      * Função que converte para uma string uma tshirt e os seus dados
      * @param tshirt Tshirt
      * @param date Data atual do sistema
+     * @return String com desenho e dados de uma thsirt
      */
     private String showTshirt(Tshirt tshirt, int date)
     {
@@ -1595,6 +1598,7 @@ public class Apresentacao
      * Função que converte para uma string uma mala e os seus dados
      * @param mala Mala
      * @param date Data atual do sistema
+     * @return String com desenho e dados de uma mala
      */
     private String showMala(Mala mala, int date) {
         String tipo = "PREMIUM";
@@ -1620,6 +1624,7 @@ public class Apresentacao
      * Função que converte para uma string uma sapatilha e os seus dados
      * @param sapatilha Sapatilha
      * @param date Data atual do sistema
+     * @return String com desenho e dados de uma sapatilha
      */
     private String showSapatilha(Sapatilha sapatilha, int date) {
         String tipo = "PREMIUM";
@@ -1646,6 +1651,7 @@ public class Apresentacao
      * Função que converte para uma string um artigo
      * @param artigo Artigo
      * @param date Data atual do sistema
+     * @return String com o respetivo artigo
      */
     public String showArtigoString(Artigo artigo, int date)
     {
@@ -1682,8 +1688,9 @@ public class Apresentacao
     }
 
     /**
-     * Função que imprime o estado de uma encomenda
+     * Função que converte para uma string o estado de uma encomenda
      * @param estado Estado
+     * @return String com o estado de uma encomenda
      */
     public String estadoEncomendaString(int estado)
     {
@@ -1709,6 +1716,7 @@ public class Apresentacao
     /**
      * Função que converte para uma string uma fatura
      * @param fatura Fatura
+     * @return String com dados da fatura
      */
     public String showFatura(Fatura fatura) {
         StringBuilder string = new StringBuilder();
@@ -1733,6 +1741,7 @@ public class Apresentacao
     /**
      * Função que converte para uma string as encomendas do menu estatísticas
      * @param encomenda Encomenda
+     * @return String com dados de uma encomenda do menu estatísticas
      */
     public String showEncomendaEstatisticas(Encomenda encomenda)
     {
@@ -1754,6 +1763,7 @@ public class Apresentacao
     /**
      * Função que converte para uma string os dados de um utilizador
      * @param utilizador Utilizador
+     * @return String com dados do utilizador
      */
     public String utilizadorLinha(Utilizador utilizador)
     {
@@ -1770,7 +1780,7 @@ public class Apresentacao
      * Função que converte para uma string os dados de uma encomenda
      * @param encomenda Encomenda
      * @param tempoDevolucao Tempo de devolução de uma encomenda
-     *
+     * @return String com dados de uma encomenda
      */
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {
         StringBuilder string = new StringBuilder();

@@ -70,6 +70,7 @@ public class Main {
                 case 0:
                     do {
                         apresentacao.printMenu(s, x, 87, "", sistema.getDataAtual());
+                        ler = new Scanner(System.in);
                         eq = ler.nextLine().toLowerCase();
                         if (eq.equals("1")) {
                             x = 1;
@@ -92,6 +93,7 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1:
                     try {
                         sistema.atualizaSistema();
@@ -101,6 +103,7 @@ public class Main {
                     } catch (SistemaException | EncomendaException e) {
                         throw new RuntimeException(e);
                     }
+                    break;
                 case 2:
                     apresentacao.printMenuGuardar();
                     ler = new Scanner(System.in);
@@ -147,6 +150,7 @@ public class Main {
                             x = 2;
                         }
                     }
+                    break;
                 case 3:
                     apresentacao.printMenuCarregarEstado();
                     ler = new Scanner(System.in);
@@ -197,6 +201,7 @@ public class Main {
                             }
                         } while (true);
                     }
+                    break;
                 case 4:
                     apresentacao.printMenuAutomatizacao();
                     ler = new Scanner(System.in);
@@ -247,6 +252,7 @@ public class Main {
                             if (c.equals("0")) {x = 0;break;}
                         } while (true);
                     }
+                    break;
             }
         } while (x != 5);
         Apresentacao.clear();
@@ -294,6 +300,7 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: //Iniciar sessao
                     apresentacao.printMenuLogin();
                     apresentacao.printEspacos(88);
@@ -329,6 +336,7 @@ public class Main {
                             teste = 1;
                         }
                     }
+                    break;
                 case 2:
                     apresentacao.printTrans();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
@@ -365,6 +373,7 @@ public class Main {
                             teste = 1;
                         }
                     }
+                    break;
                 case 3: //Registar utilizador
                     apresentacao.printReg();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
@@ -428,6 +437,7 @@ public class Main {
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
                             if (c.equals("1")) {
+                                x=3;
                                 break;
                             }
                             if (c.equals("0")) {
@@ -435,11 +445,13 @@ public class Main {
                                 break;
                             }
                         } while (true);
+                        break;
                     } catch (UtilizadorException a) {
 
                         apresentacao.printClear(1);
                         apresentacao.printMensagemCentrada(a.getMessage(), 2);
                         x = valorSimouNao(2, 3, 0);
+                        break;
                     }
                 case 4:
                     apresentacao.printRegTrans();
@@ -540,6 +552,7 @@ public class Main {
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
                             if (c.equals("1")) {
+                                x=4;
                                 break;
                             }
                             if (c.equals("0")) {
@@ -547,17 +560,20 @@ public class Main {
                                 break;
                             }
                         } while (true);
+                        break;
                     } catch (TransportadoraException a) {
                         apresentacao.printClear(3);
                         apresentacao.printMensagemCentrada(a.getMessage(), 2);
                         x = valorSimouNao(3, 4, 0);
+                        break;
                     }
                 case 5: // MENU ESTATISTICAS
                         x = runEstatisticas();
+                        break;
                 case 6: // MENU CONFIGURACOES
                         x = runConfig();
+                        break;
             }
-
             }while (x != 7);
         return 0;
         }
@@ -576,7 +592,6 @@ public class Main {
             switch (x) {
                 case 0:
                     do {
-
                         apresentacao.printMenu(s, 1, 87, nome, sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
 
@@ -605,19 +620,25 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1:
                     apresentacao.printLogin();
                     apresentacao.printPerfil(utilizador);
                     ler.nextLine();
                     x = 0;
+                    break;
                 case 2: // MENU COMPRAR
                         x = runMenuComprar(email);
+                        break;
                 case 3: // MENU VENDAS
                         x = runVendas(email);
+                        break;
                 case 4: // MENU ENCOMENDAS
                         x = runEncomendas(email);
+                        break;
                 case 5: // MENU FATURAS
                         x = runFaturas(email);
+                        break;
             }
         } while (x != 6);
 
@@ -688,11 +709,12 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1:
                     apresentacao.printDadosTransportadora(transportadora);
                     ler.nextLine();
                     x = 0;
-
+                    break;
                 case 2:
                     List<Encomenda> lista = sistema.listaEncomendaTransportadoras(email);
                     if (lista.isEmpty()) {
@@ -709,6 +731,7 @@ public class Main {
                     }
                     paginacaoEncTransportadora(strings);
                     x = 0;
+                    break;
                 case 3:
                     transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
@@ -742,6 +765,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
+                    break;
                 case 4:
                     transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
@@ -776,6 +800,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
+                    break;
             }
         } while(x != 5);
 
@@ -883,12 +908,15 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1:
                     runMenuFaturas(email, Atributos.VENDIDO);
                     x = 0;
+                    break;
                 case 2:
                     runMenuFaturas(email, Atributos.VENDA);
                     x = 0;
+                    break;
             }
         } while (x != 3);
 
@@ -979,16 +1007,16 @@ public class Main {
                             break;
                         }
                     } while (true);
-
+                    break;
                 case 1: //MINHA LISTA DE ARTIGOS A VENDA
                     runMenuUtilizadorArtigosVenda(email);
                     x = 0;
+                    break;
                 case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
                     x = runArtigosVender(email);
-
+                    break;
             }
         } while (x != 3);
-
         return 0;
     }
 
@@ -1809,6 +1837,7 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: //Alterar imposto
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -1854,6 +1883,7 @@ public class Main {
                     }
                     sistema.getTaxas().setImposto(imposto);
                     flag = 6;
+                    break;
                 case 2:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -1879,6 +1909,7 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncPequena(nTaxa);
                     flag = 6;
+                    break;
                 case 3:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -1904,6 +1935,7 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncMedia(nTaxa);
                     flag = 6;
+                    break;
                 case 4:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -1929,13 +1961,14 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncGrande(nTaxa);
                     flag = 6;
-
+                    break;
                 case 6:
                     apresentacao.printTax();
                     apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!", 87, 3);
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     flag = 0;
+                    break;
             }
         } while (flag != 5);
         return 0;
@@ -1970,10 +2003,13 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: // MENU AVANCAR NO TEMPO
                         x = runAvancaTempo();
+                        break;
                 case 2: // MENU ALTERAR IMPOSTO E TAXAS
                         x = runMenuImpostos();
+                        break;
                 case 3:
                     apresentacao.printReturnTime();
                     apresentacao.printEspacos(82);
@@ -2026,6 +2062,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
+                    break;
             }
         } while (x != 4);
         return 0;
@@ -2062,6 +2099,7 @@ public class Main {
                         }
 
                     } while (true);
+                    break;
                 case 1:
                     apresentacao.printSaltaTempo();
                     apresentacao.printMensagem("Introduza o dia (DD)", 87, 1);
@@ -2183,12 +2221,14 @@ public class Main {
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
+                        break;
                     } catch (SistemaException e) {
                         apresentacao.printClear(3);
                         apresentacao.printMensagemCentrada(e.getMessage(), 2);
                         apresentacao.printEnter("");
                         ler.nextLine();
                         x = 0;
+                        break;
                     }
                 case 2:
                     apresentacao.printSaltaTempo();
@@ -2242,6 +2282,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
+                    break;
             }
         } while (x!=3);
 
@@ -2282,18 +2323,23 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: // MENU PENDENTES
                     runListarEncomendas(email, Atributos.PENDENTE);
                     x = 0;
+                    break;
                 case 2:  //MENU EXPEDIDAS
                     runListarEncomendas(email, Atributos.EXPEDIDA);
                     x = 0;
+                    break;
                 case 3: //MENU FINALIZADAS
                     runListarEncomendas(email, Atributos.FINALIZADA);
                     x = 0;
+                    break;
                 case 4:
                     runListarEncomendas(email, Atributos.DEVOLVIDA);
                     x = 0;
+                    break;
             }
         } while (x != 5);
 
@@ -2680,6 +2726,7 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: //Desde Sempre
                     apresentacao.printVendedorDinheiro();
                     System.out.println();
@@ -2690,11 +2737,13 @@ public class Main {
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
+                        break;
                     } catch (SistemaException a) {
                         apresentacao.printMensagem(a.getMessage(), 86, 2);
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
+                        break;
                     }
                 case 2:
                     apresentacao.printVendedorDinheiro();
@@ -2761,11 +2810,13 @@ public class Main {
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
+                        break;
                     } catch (SistemaException e) {
                         apresentacao.printMensagem(e.getMessage(), 78, 2);
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
+                        break;
                     }
                 }
         }while (x != 3);
@@ -2830,6 +2881,7 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    break;
                 case 1: // Comprador
                     apresentacao.printCompradorVendedor();
                     apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
@@ -2899,6 +2951,7 @@ public class Main {
                     }
                     runPaginacaoMaioresUtilizadores(strings);
                     x = 0;
+                    break;
                 case 2:
                     apresentacao.printCompradorVendedor();
                     apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
@@ -2966,6 +3019,7 @@ public class Main {
                     }
                     runPaginacaoMaioresUtilizadores(strings);
                     x = 0;
+                    break;
             }
         }while (x != 3);
     }
@@ -3078,6 +3132,8 @@ public class Main {
                             break;
                         }
                     } while (true);
+                    x = 0;
+                    break;
                 case 4: //Ordenacao maiores compradores/vendedores
                     runMaiorCompradorVendedor();
                     x = 0;

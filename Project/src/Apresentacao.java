@@ -9,66 +9,130 @@ import java.util.stream.Collectors;
 
 public class Apresentacao
 {
-    public static final String RESET = "\033[0m";  // Text Reset
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String CYAN_BOLD = "\033[1;36m";   // Cyan Bold
+    /**
+     * Variante de instância estática que define o valor da cor original do terminal
+     */
+    public static final String RESET = "\033[0m";
 
+    /**
+     * Variante de instância estática que define o valor da cor vermelho do terminal
+     */
+    public static final String RED = "\033[0;31m";
+
+    /**
+     * Variante de instância estática que define o valor da cor azul negrito do terminal
+     */
+    public static final String CYAN_BOLD = "\033[1;36m";
+
+    /**
+     * Variante de instância estática que define o valor da cor amarelo do terminal
+     */
     public static final String YELLOW = "\033[0;33m";
+
+    /**
+     * Variante de instância estática que define o valor da cor azul do terminal
+     */
     public static final String CYAN = "\033[0;36m";
-    public static final int ECRA=55;
+
+    /**
+     * Variante de instância estática que define uma linha
+     */
     public static String LINE =
             "##############################";
 
+    /**
+     * Função que apaga tudo do terminal
+     */
     public static void clear(){
         System.out.print("\033\143");
         System.out.flush();
     }
 
+    /**
+     * Função que imprime um número de linhas vazias
+     * @param number Número de limhas
+     */
     public void printClear(int number) {
         for (int i = 0; i < number; ++i) System.out.println();
     }
-
+    /**
+     * Função que imprime um número de linhas da instância estática LINE
+     * @param numeroDeLinhas Número de limhas
+     */
     public void line(int numeroDeLinhas){
         for (int i=0;i<numeroDeLinhas;i++) System.out.println(LINE);
     }
+
+    /**
+     * Função que imprime um número de espaços numa linha
+     * @param x Número de espaços
+     */
     public void printEspacos(int x) {
         for (int i = 0; i< x; i++) System.out.print(" ");
     }
 
+    /**
+     * Função que coloca o texto a azul
+     */
     public void cyan(){
         System.out.println("\033[0;36m");
     }
+
+    /**
+     * Função que coloca o texto a azul negrito
+     */
     public void cyanBold(){
         System.out.println("\033[1;36m");
     }
+
+    /**
+     * Função que coloca o texto a amarelo
+     */
     public void yellow(){
         System.out.println("\033[0;33m");
     }
 
     /**
-     * Texto a vermelho
+     * Função que coloca o texto a vermelho
      */
     public void red(){
         System.out.println("\033[0;31m");
     }
 
     /**
-     * Volta a colocar a cor "normal"
+     * Função que coloca o texto à cor original do terminal
      */
     public void resetColor(){
         System.out.println("\033[0m");
     }
 
+    /**
+     * Função que imprime uma opção
+     * @param i Número da opção
+     * @param s Opção
+     * @param x Número de espaços
+     */
     public void printOpcao(int i,String s, int x){
         printEspacos(x);
         System.out.print(""+CYAN_BOLD+i+")"+RESET+"  "+s + "\n");
     }
 
+    /**
+     * Função que imprime a data atual do sistema
+     * @param data Data atual do sistema
+     */
     public void printDataAtual(LocalDate data){
         System.out.println( CYAN_BOLD + "                                                                                          Data Atual: " + RESET + data);
     }
 
-
+    /**
+     * Função que imprime um menu
+     * @param opcoes Número de opções
+     * @param x Identificador para imprimir uma determinada imagem
+     * @param e Número de espaços
+     * @param nome Nome de um utilizador ou transportadora
+     * @param data Data atual do sistema
+     */
     public void printMenu(String[] opcoes, int x, int e, String nome, LocalDate data){
         if (x != 100)
         {
@@ -109,6 +173,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem da Vintage
+     */
     public void printVintage(){
         cyan();
         System.out.println();
@@ -130,6 +197,10 @@ public class Apresentacao
         printClear(2);
         resetColor();
     }
+
+    /**
+     * Função que imprime a imagem do login utilizador
+     */
     public void printLogin() {
         clear();
         System.out.println();
@@ -155,6 +226,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de registar um utilizador
+     */
     public void printReg() {
         clear();
         System.out.println();
@@ -179,6 +253,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem da transportadora
+     */
     public void printTrans() {
         clear();
         System.out.println();
@@ -200,6 +277,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de registar uma transportadora
+     */
     public void printRegTrans() {
         clear();
         System.out.println();
@@ -223,6 +303,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de uma encomenda
+     */
     public void printBox() {
         clear();
         System.out.println();
@@ -245,6 +328,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de guardar o estado
+     */
     public void printGuardar() {
         clear();
         System.out.println();
@@ -271,6 +357,10 @@ public class Apresentacao
         System.out.println();
         System.out.println();
     }
+
+    /**
+     * Função que imprime a imagem de carregar estado
+     */
     public void printLoad() {
         clear();
         System.out.println();
@@ -297,6 +387,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem "COMPRAR"
+     */
     public void printComprar() {
         clear();
         cyan();
@@ -317,6 +410,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "COMPRAS"
+     */
     public void printCompras() {
         clear();
         cyan();
@@ -337,6 +433,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem da automatização
+     */
     public void printBackup() {
         clear();
         System.out.println();
@@ -371,6 +470,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem "VENDAS"
+     */
     public void printVendas() {
         clear();
         cyan();
@@ -389,6 +491,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem da minha lista de artigos à venda
+     */
     public void printMinhaLista() {
         clear();
         System.out.println();
@@ -414,6 +519,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de adicionar artigos à minha lista de vendas
+     */
     public void printAdicionaArtigoVenda() {
         clear();
         System.out.println();
@@ -438,7 +546,10 @@ public class Apresentacao
         System.out.println();
         System.out.println();
     }
-    
+
+    /**
+     * Função que imprime a imagem "AVISOS"
+     */
     public void printAviso() {
         clear();
         cyan();
@@ -455,7 +566,9 @@ public class Apresentacao
         System.out.println("                                                                                   ############################################         ");
         System.out.println("                                                                                      ######################################            ");
     }
-
+    /**
+     * Função que imprime erro na automatização
+     */
     public void printErrosAutomatizcao(List<String> erro){
         printAviso();
         cyan();
@@ -479,6 +592,9 @@ public class Apresentacao
         System.out.print("                                                                                                      ");
     }
 
+    /**
+     * Função que imprime a imagem dos artigos à venda
+     */
     public void printArtigosVenda() {
         cyan();
         System.out.println();
@@ -502,6 +618,9 @@ public class Apresentacao
         System.out.println("                                        (1)                                                              (2)                                                                 (3)");
     }
 
+    /**
+     * Função que imprime a imagem da tshirt
+     */
     public void printTshirt(){
         clear();
         System.out.println();
@@ -520,6 +639,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem da mala
+     */
     public void printMala(){
         clear();
         System.out.println();
@@ -540,6 +662,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem da sapatilha
+     */
     public void printSapatilhas(){
         clear();
         System.out.println();
@@ -555,6 +680,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem "CONFIGURACOES"
+     */
     public void printConfiguracoes() {
         clear();
         cyan();
@@ -575,6 +703,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem salta no tempo
+     */
     public void printSaltaTempo() {
         clear();
         System.out.println();
@@ -607,6 +738,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem do imposto
+     */
     public void printTax() {
         clear();
         System.out.println();
@@ -641,6 +775,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de alterar o tempo de devolução de uma encomenda
+     */
     public void printReturnTime() {
         clear();
         System.out.println();
@@ -675,6 +812,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem "ENCOMENDAS"
+     */
     public void printEncomendas() {
         clear();
         cyan();
@@ -695,6 +835,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "PENDENTES"
+     */
     public void printPendentes() {
         clear();
         cyan();
@@ -715,6 +858,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "EXPEDIDAS"
+     */
     public void printExpedidas() {
         clear();
         cyan();
@@ -735,6 +881,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "FINALIZADAS"
+     */
     public void printFinalizadas() {
         clear();
         cyan();
@@ -755,6 +904,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "DEVOLVIDAS"
+     */
     public void printDevolvidas() {
         clear();
         cyan();
@@ -775,6 +927,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem "ESTATISTICAS"
+     */
     public void printEstatisticas(){
         clear();
         cyan();
@@ -793,6 +948,9 @@ public class Apresentacao
 
     }
 
+    /**
+     * Função que imprime a imagem "FATURAS"
+     */
     public void printFaturas() {
         clear();
         cyan();
@@ -813,6 +971,9 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime a imagem do vendedor que mais faturou
+     */
     public void printVendedorDinheiro(){
         clear();
         System.out.println();
@@ -844,6 +1005,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem da transportadora que mais faturou
+     */
     public void printTransportadoraDinheiro(){
         clear();
         System.out.println();
@@ -870,6 +1034,9 @@ public class Apresentacao
         System.out.println("                                                                                  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⠿⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⠿⠟⠋⠀⠀⠀⠀⠀⠀");
     }
 
+    /**
+     * Função que imprime a imagem das encomendas de um vendedor
+     */
     public void printEncomendasVendedor(){
         clear();
         System.out.println();
@@ -892,6 +1059,9 @@ public class Apresentacao
         System.out.println("                                                                               ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
     }
 
+    /**
+     * Função que imprime a imagem dos ganhos da Vintage
+     */
     public void printVintageDinheiro(){
         clear();
         System.out.println();
@@ -912,6 +1082,9 @@ public class Apresentacao
         System.out.println("                                             ⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⣿⣿⣿⣿⣿⣿⠿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀                                                                    ⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⣿⣿⣿⣿⣿⣿⠿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀");
     }
 
+    /**
+     * Função que imprime a imagem dos maiores vendedores/compradores num período de tempo
+     */
     public void printCompradorVendedor(){
         clear();
         System.out.println();
@@ -940,6 +1113,9 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime a imagem de uma fatura
+     */
     public void printFatura() {
         clear();
         System.out.println();
@@ -961,25 +1137,39 @@ public class Apresentacao
         System.out.println();
     }
 
+    /**
+     * Função que imprime o início de um login
+     */
     public void printMenuLogin()
     {
         printLogin();
         printMensagem("Insira o seu email:", 88, 1);
     }
 
+    /**
+     * Função que imprime erro ao carregar/guardar um ficheiro
+     */
     public void printErroFicheiro(){
         printMensagem("ERRO AO CARREGAR/GUARDAR O FICHEIRO",86,2);
     }
 
+    /**
+     * Função que imprime o início de guardar o estado
+     */
     public void printMenuGuardar()
     {
-        this.printGuardar();
+        printGuardar();
         cyan();
         System.out.println("                                                                                 Indique o nome do ficheiro que pretende guardar:");
         resetColor();
         System.out.print("                                                                                 ");
     }
 
+    /**
+     * Função que imprime uma mensagem centrada com uma determinada cor
+     * @param mensagem Mensagem
+     * @param cor Cor
+     */
     public void printMensagemCentrada(String mensagem, int cor)
     {
         if (cor == 1) cyanBold();
@@ -995,18 +1185,27 @@ public class Apresentacao
         System.out.print(mensagem);
         resetColor();
     }
-
+    /**
+     * Função que imprime "SIM" ou "NÃO"
+     * @param x Número de espaços
+     */
     public void printMensagemSimOuNao(int x) {
         System.out.println();
         printEspacos(x);
         System.out.print("1 - SIM");
         System.out.println();
         printEspacos(x);
-        System.out.print("0 - NAO");
+        System.out.print("0 - NÃO");
         printClear(2);
         printEspacos(x+3);
     }
 
+    /**
+     * Função que imprime "SIM" ou "NÃO"
+     * @param mensagem Número de espaços
+     * @param x Número de espaços
+     * @param cor Número de espaços
+     */
     public void printMensagem(String mensagem, int x, int cor) {
         if (cor == 1) cyanBold();
         if (cor == 2) red();
@@ -1021,6 +1220,10 @@ public class Apresentacao
         resetColor();
     }
 
+    /**
+     * Função que imprime uma determinada mensagem de erro
+     * @param x Identificador da mensagem
+     */
     public void printMensagemErro(int x) {
         if (x == 1) {
             printMensagemCentrada("ERRO! APENAS PODE UTILIZAR DIGITOS",2);
@@ -1037,6 +1240,13 @@ public class Apresentacao
         }
     }
 
+    /**
+     * Função que imprime uma determinada mensagem com um localdate
+     * @param mensagem Mensagem
+     * @param x Número de espaços
+     * @param cor Cor da mensagem
+     * @param localdate Data
+     */
     public void printMensagemLocaldate(String mensagem, int x, int cor, LocalDate localdate){
         if (cor == 1) cyanBold();
         if (cor == 2) red();
@@ -1050,6 +1260,13 @@ public class Apresentacao
         System.out.print(mensagem + RESET + localdate);
     }
 
+    /**
+     * Função que imprime uma determinada mensagem com um valor de uma faturação
+     * @param mensagem Mensagem
+     * @param x Número de espaços
+     * @param cor Cor da mensagem
+     * @param faturacao Valor da faturação
+     */
     public void printFaturacao(String mensagem, int x, int cor, double faturacao){
         if (cor == 1) cyanBold();
         if (cor == 2) red();
@@ -1063,6 +1280,13 @@ public class Apresentacao
         System.out.print(mensagem + RESET + faturacao);
     }
 
+    /**
+     * Função que imprime uma determinada mensagem com um valor ganho
+     * @param mensagem Mensagem
+     * @param x Número de espaços
+     * @param cor Cor da mensagem
+     * @param ganho Valor da ganho
+     */
     public void printGanhos(String mensagem, int x, int cor, double ganho){
         if (cor == 1) cyanBold();
         if (cor == 2) red();
@@ -1076,6 +1300,10 @@ public class Apresentacao
         System.out.print(mensagem + RESET + ganho);
     }
 
+    /**
+     * Função que imprime uma mensagem centrada com enter para sair
+     * @param mensagem
+     */
     public void printEnter(String mensagem)
     {
         resetColor();
@@ -1085,16 +1313,22 @@ public class Apresentacao
         System.out.println();
         System.out.print("                                                                                                         ");
     }
-
+    /**
+     * Função que imprime enter para sair
+     * @param x Número de espaços
+     */
     public void printEnterSair(int x){
         System.out.println();
         System.out.println();
         printMensagem("Pressione enter para sair...",x,0);
-        //System.out.println("                                                                                          Pressione enter para sair...");
         System.out.println();
         System.out.print("                                                                                                        ");
     }
 
+    /**
+     * Função que imprime mensagem de input incorreto
+     * @param p Identificador da imagem
+     */
     public String printInputIncorreto(int p){
 
 
@@ -1137,6 +1371,12 @@ public class Apresentacao
         return c;
     }
 
+    /**
+     * Função que imprime várias opções
+     * @param mensagem Mensagem
+     * @param opcoes Opcões
+     * @param e Número de espaços
+     */
     public void printOpcoes(String mensagem, String[] opcoes, int e){
         printMensagem(mensagem,92,1);
         int i = 1;
@@ -1149,6 +1389,9 @@ public class Apresentacao
 
     }
 
+    /**
+     * Função que imprime o início do carregar estado
+     */
     public void printMenuCarregarEstado()
     {
         printLoad();
@@ -1158,6 +1401,9 @@ public class Apresentacao
         System.out.print("                                                                              ");
     }
 
+    /**
+     * Função que imprime o início da automatização
+     */
     public void printMenuAutomatizacao()
     {
         printBackup();
@@ -1167,6 +1413,11 @@ public class Apresentacao
         System.out.print("                                                                           ");
     }
 
+
+    /**
+     * Função que imprime o o perfil de um utilizador
+     * @param utilizador Utilizador
+     */
     public void printPerfil(Utilizador utilizador)
     {
         System.out.println(CYAN_BOLD + "                                                                                        ID: " + Apresentacao.RESET + utilizador.getId());
@@ -1188,13 +1439,19 @@ public class Apresentacao
         System.out.print("                                                                                                       ");
     }
 
+    /**
+     * Função que imprime procurar uma transportadora
+     */
     public void printProcuraTrans() {
         printTrans();
         printMensagem("Introduza a transportadora que pretende procurar:",77,3);
         printClear(1);
-        //printEspacos(77);
     }
 
+    /**
+     * Função que imprime todos os dados de uma transportadora
+     * @param transportadora Transportadora
+     */
     public void printDadosTransportadora(Transportadora transportadora) {
         String tipo;
         if (transportadora.getTipo() == 0) tipo = "NORMAL";
@@ -1221,6 +1478,9 @@ public class Apresentacao
         System.out.print("                                                                                                     ");
     }
 
+    /**
+     * Função que imprime procurar uma transportadora
+     */
     public void printRunArtigosVendaCase0() {
         printAdicionaArtigoVenda();
         printArtigosVenda();
@@ -1230,6 +1490,9 @@ public class Apresentacao
         printEspacos(105);
     }
 
+    /**
+     * Função que imprime os tamanhos de uma tshirt
+     */
     public void printTamanhosTshirt() {
         printMensagem("INDIQUE O TAMANHO",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    3 - " + RESET + "XL");
@@ -1239,6 +1502,9 @@ public class Apresentacao
         printEspacos(84);
     }
 
+    /**
+     * Função que imprime os padrões de uma tshirt
+     */
     public void printPadroesTshirt() {
         printMensagem("INDIQUE O PADRAO",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    2 - " + RESET + "PALMEIRAS");
@@ -1247,13 +1513,19 @@ public class Apresentacao
         printEspacos(84);
     }
 
+    /**
+     * Função que imprime o estado de um artigo
+     */
     public void printEstadoArtigo() {
         printMensagem("INDIQUE O SEU ESTADO:",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "NOVO");
         System.out.println(CYAN_BOLD + "                                                                                    0 - " + RESET + "USADO");
         printEspacos(84);
     }
-    
+
+    /**
+     * Função que imprime o tipo de um artigo
+     */
     public void printArtigoPremiumOuNormal() {
         printMensagem("INDIQUE O SEU TIPO",84,1);
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "PREMIUM");
@@ -1262,6 +1534,9 @@ public class Apresentacao
         printEspacos(88);
     }
 
+    /**
+     * Função que imprime o tipo de um cordao
+     */
     public void printTipoCordao() {
         printMensagem("INDIQUE O TIPO DE CORDÃO", 84,1);
         System.out.println(CYAN_BOLD + "                                                                                    1 - " + RESET + "ATILHO");
@@ -1269,6 +1544,7 @@ public class Apresentacao
         System.out.println();
         printEspacos(88);
     }
+
 
     public void paginacao(List<String> lista, int indice, int quantidade)
     {

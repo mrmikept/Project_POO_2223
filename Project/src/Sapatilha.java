@@ -21,8 +21,8 @@ public class Sapatilha extends Calcado implements Premium {
         this.dataLancamento = 0;
     }
 
-    public Sapatilha(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, int dataLancamento, int tipo) {
-        super(id, utilizador, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
+    public Sapatilha(String id, String vendedor, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, int tamanho, int tipoCordao, String cor, int dataLancamento, int tipo) {
+        super(id, vendedor, descricao, marca, precoBase, nrDonos, avaliacao, transportadora, estadoVenda, tamanho);
         this.tipoCordao = tipoCordao;
         this.cor = cor;
         this.dataLancamento = dataLancamento;

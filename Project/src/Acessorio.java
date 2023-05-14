@@ -8,9 +8,9 @@ public abstract class Acessorio extends Artigo
         this.material = "";
     }
 
-    public Acessorio(String id, Utilizador utilizador, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, String material)
+    public Acessorio(String id, String vendedor, String descricao, String marca, double precoBase, int nrDonos, double avaliacao, Transportadora transportadora, int estadoVenda, String material)
     {
-        super(id,utilizador,descricao,marca,precoBase,nrDonos,avaliacao,transportadora,estadoVenda);
+        super(id,vendedor,descricao,marca,precoBase,nrDonos,avaliacao,transportadora,estadoVenda);
         this.material = material;
     }
 

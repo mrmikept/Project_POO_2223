@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Descrição classe
+ * Classe que contem os parametros de uma encomenda
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
@@ -23,6 +23,10 @@ public class Encomenda implements Serializable {
     private LocalDate dataCriacao;
     private LocalDate dataAtualizacao;
 
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Encomenda() {
         this.id = 0;
@@ -76,6 +80,9 @@ public class Encomenda implements Serializable {
         this.dataAtualizacao = dataCriacao;
     }
 
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public int getId() {
         return id;
@@ -163,6 +170,11 @@ public class Encomenda implements Serializable {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+    /**
+     * funçao que adiciona um artigo a encomenda
+     * @param artigo
+     * @throws EncomendaException
+     */
     public void adicionaArtigo(Artigo artigo) throws EncomendaException {
         if (!this.listaArtigos.contains(artigo)) {
             if (this.listaArtigos.isEmpty())
@@ -176,6 +188,11 @@ public class Encomenda implements Serializable {
         } else throw new EncomendaException("Artigo já existente na encomenda!");
     }
 
+    /**
+     * funçao que remove um artigo a encomenda
+     * @param artigo
+     * @throws EncomendaException
+     */
     public void removeArtigo(Artigo artigo) throws EncomendaException {
         if (this.listaArtigos.contains(artigo)) {
             this.listaArtigos.remove(artigo);
@@ -184,11 +201,19 @@ public class Encomenda implements Serializable {
         } else throw new EncomendaException("Artigo não existe na encomenda!");
     }
 
+    /**
+     * funçao que calcula o valor dos artigos na encomenda
+     * @return double valor final de todos os artigos
+     */
     public double calculaValorArtigos()
     {
         return this.listaArtigos.stream().mapToDouble(Artigo::getPrecoBase).sum() + this.listaArtigos.stream().mapToDouble(Artigo::getCorrecaoPreco).sum();
     }
 
+    /**
+     * funçao que calcula o valor das taxas dos artigos na encomenda
+     * @return double valor final das taxas
+     */
     public double calculaTaxaArtigos()
     {
         double valorArtigosUsados = (this.listaArtigos.stream().filter(artigo -> !artigo.verificaNovo()).count()) * 0.25;
@@ -196,15 +221,27 @@ public class Encomenda implements Serializable {
         return valorArtigosNovos + valorArtigosUsados;
     }
 
+    /**
+     * funçao que calcula o valor de expediçao de uma encomenda
+     * @return double valor final da expedicao
+     */
     public double calculaValorExpedicao()
     {
         return this.transportadora.calculaValorExpedicao(this.listaArtigos.size());
     }
+
+    /**
+     * funçao que altera o preço final de uma encomenda
+     */
     public void alteraPreco()
     {
         this.setPrecoFinal(this.calculaValorArtigos() + this.calculaTaxaArtigos() + this.calculaValorExpedicao());
     }
 
+    /**
+     * funçao que altera a dimensao de uma encomenda
+     * @param tamanho
+     */
     public void alteraDimensão(int tamanho) {
         if (tamanho <= 1) {
             this.setDimensao(Atributos.PEQUENO);
@@ -218,17 +255,31 @@ public class Encomenda implements Serializable {
     }
 
 
+    /**
+     * funçao que altera o estado de uma encomenda para expedida
+     * @param dataAtualizacao
+     */
     public void alteraEstadoExpedido(LocalDate dataAtualizacao)
     {
         this.estado = Atributos.EXPEDIDA;
         this.setDataAtualizacao(dataAtualizacao);
     }
 
+    /**
+     * funçao que calcula a data prevista de entrega de uma encomenda
+     * @return LocalDate data prevista da entrega
+     */
     public LocalDate getDataPrevistaEntrega()
     {
         return this.getDataAtualizacao().plusDays(this.getTransportadora().getTempoExpedicao());
     }
 
+    /**
+     * funçao que calcula a data máxima de devoluçao de uma encomenda
+     * @param tempoDevolucao
+     * @return LocalDate data máxima de devoluçao
+     * @throws EncomendaException
+     */
     public LocalDate getDataDevolucao(int tempoDevolucao) throws EncomendaException {
         if (this.getEstado() == Atributos.FINALIZADA){
             return this.getDataAtualizacao().plusDays(tempoDevolucao);
@@ -236,6 +287,10 @@ public class Encomenda implements Serializable {
         else throw new EncomendaException("Esta encomenda não se encontra finalizada");
     }
 
+    /**
+     * funçao que altera o estado da encomenda para finalizada
+     * @param dataAtualizacao
+     */
     public void alteraEstadoFinalizado(LocalDate dataAtualizacao)
     {
         LocalDate dataPrevistaEntrega = this.getDataPrevistaEntrega();
@@ -246,12 +301,21 @@ public class Encomenda implements Serializable {
         }
     }
 
+    /**
+     * funçao que altera o estado da encomenda para devolvida
+     * @param dataAtualizacao
+     */
     public void alteraEstadoDevolvida(LocalDate dataAtualizacao)
     {
         this.setEstado(Atributos.DEVOLVIDA);
         this.setDataAtualizacao(dataAtualizacao);
     }
 
+    /**
+     * funçao que verifica se uma encomenda é igual ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -268,6 +332,11 @@ public class Encomenda implements Serializable {
                 this.getPrecoFinal() == encomenda.getPrecoFinal() &&
                 this.getDimensao() == encomenda.getDimensao());
     }
+
+    /**
+     * funçao que converte uma dimensao para String
+     * @return String dimensao
+     */
     private String dimensaoToString() {
         if (this.getDimensao() == Atributos.PEQUENO) {
             return "Pequena";
@@ -278,7 +347,11 @@ public class Encomenda implements Serializable {
         return "Grande";
     }
 
-    public String estadoToString()
+    /**
+     * funçao que converte o estado para String
+     * @return String estado
+     */
+    private String estadoToString()
     {
         if (this.getEstado() == Atributos.PENDENTE)
         {
@@ -291,6 +364,10 @@ public class Encomenda implements Serializable {
         return "FINALIZADA";
     }
 
+    /**
+     * funçao que converte os parametros de uma encomenda para String
+     * @return String de uma encomenda
+     */
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
@@ -306,6 +383,10 @@ public class Encomenda implements Serializable {
         return string.toString();
     }
 
+    /**
+     * funçao que faz uma cópia do objeto
+     * @return Encomenda com a cópia do objeto
+     */
     public Encomenda clone() {
         return new Encomenda(this);
     }

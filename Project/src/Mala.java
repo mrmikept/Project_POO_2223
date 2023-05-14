@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * Descrição classe
+ * Classe que extende a classe Acessorio e que contem os parametros de uma mala
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
@@ -13,6 +13,10 @@ public class Mala extends Acessorio implements Premium, Serializable
     private double dimensao;
     private int anoLancamento;
     private int tipo;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Mala()
     {
@@ -38,6 +42,10 @@ public class Mala extends Acessorio implements Premium, Serializable
         this.tipo = mala.getTipo();
     }
 
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
+
     public double getDimensao() {
         return dimensao;
     }
@@ -62,11 +70,20 @@ public class Mala extends Acessorio implements Premium, Serializable
         this.tipo = tipo;
     }
 
+    /**
+     * funçao que calcula a valorizaçao de uma mala premium com base na data
+     * @param date
+     * @return double valor da valorizacao premium
+     */
     public double getValorizacaoPremium(int date)
     {
         return Math.round(((date - this.getAnoLancamento()) * 0.2) * 100) /100;
     }
 
+    /**
+     * funçao que calcula a correçao de preço de uma mala normal
+     * @return double valor da correçao de preço
+     */
     public double getCorrecaoPreco()
     {
         if (!this.verificaNovo() && this.getTipo() == Atributos.NORMAL)
@@ -76,6 +93,11 @@ public class Mala extends Acessorio implements Premium, Serializable
         return 0;
     }
 
+    /**
+     * funçao que calcula a preço final de uma mala
+     * @param data
+     * @return double preço final da mala
+     */
     public double getPrecoFinal(int data)
     {
         if (this.getTipo() == Atributos.PREMIUM)
@@ -85,6 +107,11 @@ public class Mala extends Acessorio implements Premium, Serializable
         else return this.getPrecoBase() + this.getCorrecaoPreco();
     }
 
+    /**
+     * funçao que verifica se uma mala é igual ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -103,6 +130,10 @@ public class Mala extends Acessorio implements Premium, Serializable
                 this.getAnoLancamento() == mala.getAnoLancamento();
     }
 
+    /**
+     * funçao que converte o tipo de uma mala para String
+     * @return String do tipo
+     */
     private String tipoToString()
     {
         if (this.getTipo() == Atributos.PREMIUM)
@@ -112,11 +143,18 @@ public class Mala extends Acessorio implements Premium, Serializable
         return "Normal";
     }
 
-
+    /**
+     * funçao que devolve uma String [Mala]
+     * @return String
+     */
     public String showArtigoLinha() {
         return ("[Mala]");
     }
 
+    /**
+     * funçao que converte para String todos os parametro de uma mala
+     * @return String mala
+     */
     public String toString()
     {
         StringBuffer string = new StringBuffer();
@@ -129,6 +167,10 @@ public class Mala extends Acessorio implements Premium, Serializable
         return string.toString();
     }
 
+    /**
+     * funçao que faz uma cópia do objeto
+     * @return Mala com a cópia do objeto
+     */
     public Mala clone()
     {
         return new Mala(this);

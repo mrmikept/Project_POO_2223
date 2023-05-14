@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 /**
- * Descrição classe
+ * Classe que contém todos os parametros de um artigo
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
@@ -19,6 +19,9 @@ public abstract class Artigo implements Serializable
     private double avaliacao;
     private int estadoVenda;
 
+    ///////////////
+    //Contrutores//
+    ///////////////
     public Artigo()
     {
         this.id = "";
@@ -57,6 +60,10 @@ public abstract class Artigo implements Serializable
         this.transportadora = artigo.getTransportadora();
         this.estadoVenda = artigo.getEstadoVenda();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public void setId(String id) {
         this.id = id;
@@ -139,6 +146,11 @@ public abstract class Artigo implements Serializable
         this.estadoVenda = estadoVenda;
     }
 
+
+    /**
+     * Verifica se um Artigo é novo ou usado
+     * @return True se for novo, caso contrario false
+     */
     public boolean verificaNovo()
     {
         if (this.getNrDonos() > 0)
@@ -148,6 +160,11 @@ public abstract class Artigo implements Serializable
         else return true;
     }
 
+    /**
+     * funçao que verifica se um artigo é igual ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -169,10 +186,22 @@ public abstract class Artigo implements Serializable
                 this.getDescricao().equals(artigo.getDescricao()));
     }
 
+    /**
+     * função que faz uma cópia do objeto
+     * Return Artigo com a cópia do objeto
+     */
     public abstract Artigo clone();
 
+    /**
+     * funçao abstrata que devolve uma String com o tipo de artigo
+     * @return String do tipo de artigo
+     */
     public abstract String showArtigoLinha();
 
+    /**
+     * funçao que converte o estado de um artigo para String
+     * @return String do estado do artigo
+     */
     public String estadoToString()
     {
         if (this.verificaNovo()){
@@ -181,6 +210,10 @@ public abstract class Artigo implements Serializable
         return "USADO (" + Apresentacao.YELLOW +"Aval: "+ Apresentacao.RESET + this.getAvaliacao() + " | "+ Apresentacao.YELLOW +"Nr. Donos: "+ Apresentacao.RESET + this.getNrDonos() + ")";
     }
 
+    /**
+     * funçao que converte para String todos os atributos de um artigo
+     * @return String do artigo
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();

@@ -1,11 +1,18 @@
 import java.io.Serializable;
 
+/**
+ * Classe que contem todos os parametros de taxas e impostos
+ */
 public class TaxasImpostos implements Serializable
 {
     private int imposto;
     private double taxaEncPequena;
     private double taxaEncMedia;
     private double taxaEncGrande;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public TaxasImpostos()
     {
@@ -30,6 +37,10 @@ public class TaxasImpostos implements Serializable
         this.taxaEncMedia = taxasImpostos.getTaxaEncMedia();
         this.taxaEncGrande = taxasImpostos.getTaxaEncGrande();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    ////////////////////
 
     public int getImposto() {
         return imposto;
@@ -63,6 +74,10 @@ public class TaxasImpostos implements Serializable
         this.taxaEncGrande = taxaEncGrande;
     }
 
+    /**
+     * funçao que converte as taxas e impostos para String
+     * @return String TaxasImpostos
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -74,6 +89,11 @@ public class TaxasImpostos implements Serializable
         return string.toString();
     }
 
+    /**
+     * funçao que verifica se as taxas e impostos são iguais ao objeto fornecido
+     * @param o
+     * @return True se for igual, caso contrario false
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -91,6 +111,10 @@ public class TaxasImpostos implements Serializable
                 this.getTaxaEncGrande() == taxasImpostos.getTaxaEncGrande());
     }
 
+    /**
+     * funçao que uma cópia do objeto
+     * @return TaxasImpostos com a cópia do objeto
+     */
     public TaxasImpostos clone()
     {
         return new TaxasImpostos(this);

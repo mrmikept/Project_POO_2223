@@ -368,7 +368,7 @@ public class Main {
                     }
                     break;
 
-                case 2: //TODO: NOVO CASO DE INICIAR SESSAO TRANSPORTADORA
+                case 2:
                     apresentacao.printTrans();
                     apresentacao.printMensagem("Insira o email:",86,1);
                     apresentacao.printEspacos(86);
@@ -392,7 +392,7 @@ public class Main {
                         ler = new Scanner(System.in);
                         pass = ler.nextLine();
                         try {
-                            sistema.verificaPasswordTransportadora(email,pass); //TODO CORRIGIR APRESENTAÇÃO QUANDO ERRA PASSWORD!
+                            sistema.verificaPasswordTransportadora(email,pass);
                             x = runTransportadora(email);
                             break;
                         } catch (TransportadoraException a) {
@@ -2816,9 +2816,9 @@ public class Main {
 
     public int runMenuImpostos()
     {
-        int imposto, flag = 0;
-        double taxa;
-        String escolha;
+        int imposto, flag = 0, x;
+        double nTaxa = 0;
+        String escolha, c, taxa;
         String [] opcoes = {"Alterar taxa de Imposto", "Alterar taxa encomendas pequenas","Alterar taxa encomendas médias","Alterar taxa encomendas grandes","Retroceder"};
         Scanner ler = new Scanner(System.in);
 
@@ -2860,6 +2860,7 @@ public class Main {
                         }
                     } while (true);
                     break;
+
                 case 1: //Alterar imposto
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -2869,10 +2870,38 @@ public class Main {
                     System.out.println();
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
-                    imposto = ler.nextInt();
+                    escolha = ler.nextLine();
+
+                    if (!isInt(escolha)) {
+                        do {
+                            apresentacao.printTax();
+                            apresentacao.printMensagemErro(1);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { flag = 1; break;}
+                            if (c.equals("0")) { flag = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    imposto = stringToInt(escolha);
+
+                    if (imposto <= 0) {
+                        do {
+                            apresentacao.printTax();
+                            apresentacao.printMensagemErro(3);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { flag = 1; break;}
+                            if (c.equals("0")) { flag = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
                     sistema.getTaxas().setImposto(imposto);
                     flag = 6;
                     break;
+
                 case 2:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -2882,10 +2911,28 @@ public class Main {
                     System.out.println();
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncPequena(taxa);
+                    taxa = ler.nextLine();
+
+                    if (!isDouble(taxa)) {
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,2,0);
+                        break;
+                    }
+
+                    nTaxa = stringToDouble(taxa);
+
+                    if (nTaxa <= 0) {
+                        apresentacao.printMensagemCentrada("ERR0! APENAS VALORES POSITIVOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,2,0);
+                        break;
+                    }
+
+                    sistema.getTaxas().setTaxaEncPequena(nTaxa);
                     flag = 6;
                     break;
+
                 case 3:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -2895,10 +2942,28 @@ public class Main {
                     System.out.println();
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncMedia(taxa);
+                    taxa = ler.nextLine();
+
+                    if (!isDouble(taxa)) {
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,3,0);
+                        break;
+                    }
+
+                    nTaxa = stringToDouble(taxa);
+
+                    if (nTaxa <= 0) {
+                        apresentacao.printMensagemCentrada("ERR0! APENAS VALORES POSITIVOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,3,0);
+                        break;
+                    }
+
+                    sistema.getTaxas().setTaxaEncMedia(nTaxa);
                     flag = 6;
                     break;
+
                 case 4:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
@@ -2908,13 +2973,32 @@ public class Main {
                     System.out.println();
                     apresentacao.printEspacos(86);
                     ler = new Scanner(System.in);
-                    taxa = ler.nextDouble();
-                    sistema.getTaxas().setTaxaEncGrande(taxa);
+                    taxa = ler.nextLine();
+
+                    if (!isDouble(taxa)) {
+                        apresentacao.printMensagemCentrada("ERR0! SÓ PODEM SER UTILIZADOS DIGITOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,4,0);
+                        break;
+                    }
+
+                    nTaxa = stringToDouble(taxa);
+
+                    if (nTaxa <= 0) {
+                        apresentacao.printMensagemCentrada("ERR0! APENAS VALORES POSITIVOS!!",2);
+                        apresentacao.printClear(1);
+                        flag = valorSimouNao(4,4,0);
+                        break;
+                    }
+
+                    sistema.getTaxas().setTaxaEncGrande(nTaxa);
                     flag = 6;
                     break;
+
                 case 5:
                     flag = 5;
                     break;
+
                 case 6:
                     apresentacao.printTax();
                     apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!", 87, 3);
@@ -2956,6 +3040,9 @@ public class Main {
                     break;
                 case 3:
                     apresentacao.printReturnTime();
+                    apresentacao.printEspacos(82);
+                    System.out.println(apresentacao.CYAN_BOLD + "Limite de dias para devolver uma encomenda: " + apresentacao.RESET + sistema.getTempoDevolucao());
+                    apresentacao.printClear(1);
                     apresentacao.printMensagem("Defina o limite de dias para a devolucao de uma encomenda",77,1);
                     System.out.println();
                     apresentacao.printEspacos(77);
@@ -2964,7 +3051,7 @@ public class Main {
 
                     if (!isInt(c)) {
                         do {
-                            apresentacao.printSaltaTempo();
+                            apresentacao.printReturnTime();
                             apresentacao.printMensagemErro(1);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
@@ -2974,11 +3061,28 @@ public class Main {
                         break;
                     }
 
-                    sistema.setTempoDevolucao(x);
+                    int rt = stringToInt(c);
+
+                    if (rt <= 0) {
+                        do {
+                            apresentacao.printReturnTime();
+                            apresentacao.printMensagemErro(3);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) { x = 3; break;}
+                            if (c.equals("0")) { x = 0; break;}
+                        } while (true);
+                        break;
+                    }
+
+                    sistema.setTempoDevolucao(rt);
 
                     apresentacao.printReturnTime();
                     apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!",87,3);
-                    apresentacao.printEnterSair(90);
+                    apresentacao.printClear(1);
+                    apresentacao.printEspacos(82);
+                    System.out.print(apresentacao.CYAN_BOLD + "Limite de dias para devolver uma encomenda: " + apresentacao.RESET + rt);
+                    apresentacao.printEnterSair();
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;
@@ -3982,6 +4086,7 @@ public class Main {
             if (p == 1) apresentacao.printTrans();
             if (p == 2) apresentacao.printReg();
             if (p == 3) apresentacao.printRegTrans();
+            if (p == 4) apresentacao.printTax();
             p = u;
             apresentacao.printMensagemCentrada("DESEJA CONTINUAR A TENTAR?", 2);
             apresentacao.printMensagemSimOuNao(101);

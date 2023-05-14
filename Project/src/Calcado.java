@@ -1,8 +1,21 @@
 import java.io.Serializable;
 
+/**
+ * Classe abstata Calcado, representa um artigo do tipo calçado
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
+
 public abstract class Calcado extends Artigo implements Serializable
 {
     private int tamanho;
+
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Calcado()
     {
@@ -22,6 +35,11 @@ public abstract class Calcado extends Artigo implements Serializable
         this.tamanho = calcado.getTamanho();
     }
 
+
+    /////////////////////
+    //Getters e Setters//
+    /////////////////////
+
     public int getTamanho() {
         return tamanho;
     }
@@ -31,6 +49,11 @@ public abstract class Calcado extends Artigo implements Serializable
     }
 
 
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -46,5 +69,20 @@ public abstract class Calcado extends Artigo implements Serializable
                 this.getTamanho() == calcado.getTamanho());
     }
 
+    /**
+     * Metodo toString calçado
+     * @return String com o conteudo do sistema
+     */
+    public String totring()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("\nTamaho: " + this.getTamanho());
+        return string.toString();
+    }
+
+    /**
+     * Cria uma copia de um objecto
+     * @return Um Objecto Calcado
+     */
     public abstract Calcado clone();
 }

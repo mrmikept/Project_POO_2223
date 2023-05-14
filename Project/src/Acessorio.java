@@ -1,8 +1,19 @@
 import java.io.Serializable;
 
+/**
+ * Classe abstata Acessorio, representa artigo do tipo acessorio
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
 public abstract class Acessorio extends Artigo implements Serializable
 {
     private String material;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Acessorio()
     {
@@ -22,6 +33,10 @@ public abstract class Acessorio extends Artigo implements Serializable
         this.material = acessorio.getMaterial();
     }
 
+    /////////////////////
+    //Getters e Setters//
+    /////////////////////
+
     public String getMaterial() {
         return material;
     }
@@ -30,6 +45,11 @@ public abstract class Acessorio extends Artigo implements Serializable
         this.material = material;
     }
 
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -45,5 +65,20 @@ public abstract class Acessorio extends Artigo implements Serializable
                 this.getMaterial().equals(acessorio.getMaterial());
     }
 
+    /**
+     * Devolve uma string com o valor dos atributos de um acessorio
+     * @return String com o valor dos atributos de um acessorio
+     */
+    public String totring()
+    {
+        StringBuilder string = new StringBuilder();
+        string.append("\nTamaho: " + this.getMaterial());
+        return string.toString();
+    }
+
+    /**
+     * Cria uma copia de um objecto
+     * @return Um Objecto Acessorio
+     */
     public abstract Acessorio clone();
 }

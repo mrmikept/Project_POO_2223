@@ -1,5 +1,13 @@
 import java.io.Serializable;
 
+/**
+ * Classe abstata para representar uma entidade do Sistema Vintage
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
+
 public abstract class Entidade implements Serializable
 {
     private int id;
@@ -8,6 +16,10 @@ public abstract class Entidade implements Serializable
     private String nome;
     private String morada;
     private int nrFiscal;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Entidade()
     {
@@ -38,6 +50,10 @@ public abstract class Entidade implements Serializable
         this.morada = entidade.getMorada();
         this.nrFiscal = entidade.getNrFiscal();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    /////////////////////
 
     public int getId() {
         return id;
@@ -87,6 +103,11 @@ public abstract class Entidade implements Serializable
         this.nrFiscal = nrFiscal;
     }
 
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -106,6 +127,10 @@ public abstract class Entidade implements Serializable
                 this.getNrFiscal() == entidade.getNrFiscal();
     }
 
+    /**
+     * Metodo toString de uma Entidade
+     * @return String com o conteudo do sistema
+     */
     public String toString()
     {
         return Apresentacao.CYAN_BOLD +"                                                                                                   [Utilizador]"+ Apresentacao.RESET + "\n" +
@@ -116,6 +141,10 @@ public abstract class Entidade implements Serializable
                 Apresentacao.CYAN_BOLD +"                                                                                                   Numero Fiscal: "+ Apresentacao.RESET + this.getNrFiscal();
     }
 
+    /**
+     * Cria uma copia de um objecto
+     * @return Um Objecto Entidade
+     */
     public abstract Entidade clone();
 
 }

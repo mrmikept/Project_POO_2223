@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -66,6 +65,7 @@ public class Sistema implements Serializable,Atributos {
         this.dataUltimoAcesso = sistema.getDataUltimoAcesso();
         this.dataAtual = sistema.getDataAtual();
         this.tempoDevolucao = sistema.getTempoDevolucao();
+        this.taxas = sistema.getTaxas();
     }
 
     /////////////////////
@@ -73,37 +73,35 @@ public class Sistema implements Serializable,Atributos {
     ////////////////////
 
     public Map<String, Utilizador> getListaUtilizadores() {
-        return listaUtilizadores.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        return listaUtilizadores.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public void setListaUtilizadores(Map<String, Utilizador> listaUtilizadores) {
-        this.listaUtilizadores = listaUtilizadores.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
-        ;
+        this.listaUtilizadores = listaUtilizadores.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public Map<String, Transportadora> getListaTransportadoras() {
-        return listaTransportadoras.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        return listaTransportadoras.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public void setListaTransportadoras(Map<String, Transportadora> listaTransportadoras) {
-        this.listaTransportadoras = listaTransportadoras.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
-        ;
+        this.listaTransportadoras = listaTransportadoras.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public Map<String, Artigo> getListaArtigos() {
-        return this.listaArtigos.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        return this.listaArtigos.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public void setListaArtigos(Map<String, Artigo> listaArtigos) {
-        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+        this.listaArtigos = listaArtigos.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     public Map<Integer, Encomenda> getListaEncomendas() {
-        return listaEncomendas.entrySet().stream().collect(Collectors.toMap(encomenda -> encomenda.getKey(), encomenda -> encomenda.getValue().clone()));
+        return listaEncomendas.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, encomenda -> encomenda.getValue().clone()));
     }
 
     public void setListaEncomendas(Map<Integer, Encomenda> listaEncomendas) {
-        this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(encomenda -> encomenda.getKey(), encomenda -> encomenda.getValue().clone()));
+        this.listaEncomendas = listaEncomendas.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, encomenda -> encomenda.getValue().clone()));
     }
 
     public List<Fatura> getListaFaturas()
@@ -160,21 +158,18 @@ public class Sistema implements Serializable,Atributos {
      * Devolve todos os artigos à venda no sistema, filtrado pelo utilizador que está a comprar
      * @param email Email de um utilizador
      * @return Hashmap Artigos à venda
-     * @throws UtilizadorException Caso o utilizador não exista.
      */
-    public Map<String, Artigo> getArtigosVenda(String email) throws UtilizadorException {
-        return listaArtigos.entrySet().stream().filter(artigo -> !artigo.getValue().getEmailVendedor().equals(email) && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().clone()));
+    public Map<String, Artigo> getArtigosVenda(String email) {
+        return listaArtigos.entrySet().stream().filter(artigo -> !artigo.getValue().getEmailVendedor().equals(email) && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().clone()));
     }
 
     /**
      * Devolve os artigos à venda de um utilizador
      * @param email Email de um utilizador
      * @return Hashmap de Artigos à venda
-     * @throws UtilizadorException Caso o utilizador não exista.
      */
-    public Map<String, Artigo> getArtigosVendaUtilizador(String email) throws UtilizadorException {
-        Utilizador utilizador = this.procuraUtilizadorSistema(email);
-        return listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getEmailVendedor().equals(email) && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(e->e.getKey(), e->e.getValue().clone()));
+    public Map<String, Artigo> getArtigosVendaUtilizador(String email) {
+        return listaArtigos.entrySet().stream().filter(artigo -> artigo.getValue().getEmailVendedor().equals(email) && artigo.getValue().getEstadoVenda() == Atributos.VENDA).collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().clone()));
     }
 
     /**
@@ -183,12 +178,8 @@ public class Sistema implements Serializable,Atributos {
      * @return true se o utilizador tiver artigos há venda, false se não tiver artigos há venda.
      * @throws UtilizadorException Caso o utilizador não exista.
      */
-    public boolean verificaArtigosVendaUtilizador(String email) throws UtilizadorException {
-        return (!this.getArtigosVendaUtilizador(email).isEmpty());
-    }
-
     public boolean verificaArtigoUtilizador(String email, String id) throws UtilizadorException {
-        return (!this.procuraUtilizadorSistema(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA).collect(Collectors.toList()).isEmpty());
+        return (!this.procuraUtilizadorSistema(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA && artigo.getId().equals(id)).collect(Collectors.toList()).isEmpty());
     }
 
     public boolean verificaArtigosVenda(String email)
@@ -335,9 +326,12 @@ public class Sistema implements Serializable,Atributos {
         {
             if (this.verificaUtilizador(email))
             {
-                Tshirt tshirt = new Tshirt(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
-                this.listaArtigos.put(id,tshirt);
-                this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                if (this.procuraTransportadora(transportadora).getTipo() == 0)
+                {
+                    Tshirt tshirt = new Tshirt(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
+                    this.listaArtigos.put(id,tshirt);
+                    this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                } else throw new ArtigoException("O TIPO DA TRANSPORTADORA NÃO CORRESPONDE AO TIPO DO ARTIGO!");
             }
         } else {
             throw new ArtigoException("Este Artigo já está à venda");
@@ -367,10 +361,13 @@ public class Sistema implements Serializable,Atributos {
         if (!this.listaArtigos.containsKey(id)) {
             if (this.verificaUtilizador(email))
             {
-                if (tipo == Atributos.PREMIUM && anoLancamento <= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
-                Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, anoLancamento, tipo);
-                this.listaArtigos.put(id, sapatilha);
-                this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                if (this.procuraTransportadora(transportadora).getTipo() == tipo)
+                {
+                    if (tipo == Atributos.PREMIUM && anoLancamento <= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
+                    Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, anoLancamento, tipo);
+                    this.listaArtigos.put(id, sapatilha);
+                    this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                } else throw new ArtigoException("O TIPO DA TRANSPORTADORA NÃO CORRESPONDE AO TIPO DO ARTIGO!");
             }
         } else {
             throw new ArtigoException("Este Artigo já está à venda");
@@ -400,10 +397,13 @@ public class Sistema implements Serializable,Atributos {
         {
             if (this.verificaUtilizador(email))
             {
-                if (tipo == Atributos.PREMIUM && anoLancamento >= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
-                Mala mala = new Mala(id.toUpperCase(), email, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
-                this.listaArtigos.put(id,mala);
-                this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                if (this.procuraTransportadora(transportadora).getTipo() == tipo)
+                {
+                    if (tipo == Atributos.PREMIUM && anoLancamento >= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
+                    Mala mala = new Mala(id.toUpperCase(), email, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
+                    this.listaArtigos.put(id,mala);
+                    this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
+                } else throw new ArtigoException("O TIPO DA TRANSPORTADORA NÃO CORRESPONDE AO TIPO DO ARTIGO!");
             }
         } else {
             throw new ArtigoException("Este Artigo já está à venda");
@@ -482,17 +482,6 @@ public class Sistema implements Serializable,Atributos {
         } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
     }
 
-    public List<Encomenda> getEncomendasTransportadora(String email) throws TransportadoraException {
-        if (this.listaTransportadoras.containsKey(email))
-        {
-            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(encomenda)).collect(Collectors.toList());
-            if (!encomendas.isEmpty())
-            {
-                return encomendas;
-            } else throw new TransportadoraException("Esta Transportadora não tem encomendas associadas!");
-        } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
-    }
-
     /**
      * Procura um artigo
      * @param id Id do artigo
@@ -546,12 +535,9 @@ public class Sistema implements Serializable,Atributos {
     {
         if(listaArtigos.containsKey(id)){
             Artigo artigo = this.listaArtigos.get(id);
-            if(artigo.getEstadoVenda() == Atributos.VENDA){
-                return true;
-            }
+            return artigo.getEstadoVenda() == Atributos.VENDA;
         }
         else throw new ArtigoException("ESTE ARTIGO NÃO ESTÁ À VENDA!!");
-        return false;
     }
 
     /**

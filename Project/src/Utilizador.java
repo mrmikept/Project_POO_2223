@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Descrição classe
+ * Classe que contem todos os métodos do utilizador Vintage
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292

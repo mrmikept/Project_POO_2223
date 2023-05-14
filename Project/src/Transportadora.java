@@ -1,12 +1,13 @@
 import java.io.Serializable;
 
 /**
- * Descrição classe
+ * Classe que contem todos os métodos da transportadora Vintage
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
+
 public class Transportadora extends Entidade implements Serializable {
     private double margemLucro;
     private int tipo;

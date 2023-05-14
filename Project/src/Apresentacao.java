@@ -1,6 +1,14 @@
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Classe que imprime a visualização da Vintage
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
+
 public class Apresentacao
 {
     /**

@@ -82,14 +82,6 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Adiciona Compra:")) {
-                            try {
-                                artCompra(aux, sistema);
-                            } catch (ArtigoException | UtilizadorException | EncomendaException | SistemaException a) {
-                                this.excecoes.add(a.getMessage());
-                            }
-                        }
-
                         if (linha.contains("Adiciona Transportadora:")) {
                             try {
                                 transp(aux, sistema);
@@ -232,14 +224,6 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Adiciona Compra:")) {
-                            try {
-                                artCompra(aux, sistema);
-                            } catch (ArtigoException | UtilizadorException | EncomendaException | SistemaException a) {
-                                this.excecoes.add(a.getMessage());
-                            }
-                        }
-
                         if (linha.contains("Adiciona Transportadora:")) {
                             try {
                                 transp(aux, sistema);
@@ -311,7 +295,7 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Altera Taxa Encomenda pequena:")){
+                        if (linha.contains("Altera Taxa Encomenda Pequena:")){
                             try {
                                 altTaxEncPeq(aux,sistema);
                             }
@@ -320,7 +304,7 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Altera Taxa Encomenda media:")){
+                        if (linha.contains("Altera Taxa Encomenda Media:")){
                             try {
                                 altTaxEncMed(aux,sistema);
                             }
@@ -329,7 +313,7 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Altera Taxa Encomenda grande:")){
+                        if (linha.contains("Altera Taxa Encomenda Grande:")){
                             try {
                                 altTaxEncGrd(aux,sistema);
                             }
@@ -427,19 +411,6 @@ public class Automatizacao {
                 sistema.adicionaTshirtVenda(id, email, descricao, marca, precoBase, avaliacao, nrDonos, nomeTransportadora, tamanho, padrao);
             }
         }
-    }
-
-    public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException, SistemaException {
-        String[] camposArtComp = aux[1].split(";");
-        LocalDate data = LocalDate.parse(camposArtComp[0]);
-        int ano = data.getYear();
-        int mes = data.getMonthValue();
-        int dia = data.getDayOfMonth();
-        sistema.saltaTempo(ano, mes, dia);
-
-        String email = camposArtComp[1];
-        String idArtigo = camposArtComp[2];
-        sistema.adicionaArtigoEncomenda(idArtigo, email);
     }
 
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {

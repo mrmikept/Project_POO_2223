@@ -136,22 +136,19 @@ public class Fatura implements Serializable
      */
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("[Fatura]\n");
-        string.append("Fatura referente à encomenda: " + this.getIdEncomenda() + "\n");
-        //TODO TOSTRING UTILIZADOR;
-        string.append("Tipo: " + this.getTipo() + "\n");
-        string.append("Valor dos Artigos: " + this.getValorArtigos() + "\n");
-        string.append("Valor Taxas sobre Artigos Novos e Usados: " + this.getValorTaxas() + "\n");
-        string.append("Valor Taxa de expedição: " + this.getValorExpedicao() + "\n");
-        string.append("Valor total: " + this.getValorTotal() + "\n");
-        string.append("Data de Faturacao: " + this.getDataFaturacao() + "\n");
-        return string.toString();
+        return "[Fatura]\n" +
+                "Fatura referente à encomenda: " + this.getIdEncomenda() + "\n" +
+                "Tipo: " + this.getTipo() + "\n" +
+                "Valor dos Artigos: " + this.getValorArtigos() + "\n" +
+                "Valor Taxas sobre Artigos Novos e Usados: " + this.getValorTaxas() + "\n" +
+                "Valor Taxa de expedição: " + this.getValorExpedicao() + "\n" +
+                "Valor total: " + this.getValorTotal() + "\n" +
+                "Data de Faturacao: " + this.getDataFaturacao() + "\n";
     }
 
     /**
      * funçao que verifca se uma fatura é igual ao objeto fornecido
-     * @param o
+     * @param o Um objeto
      * @return True se for igual, caso contrario false
      */
     public boolean equals(Object o)

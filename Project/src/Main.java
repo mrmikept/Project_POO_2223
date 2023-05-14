@@ -699,7 +699,7 @@ public class Main {
             apresentacao.printEncomendas();
             int numPaginas = (int) Math.ceil((double) encomendas.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, encomendas.size());
-            apresentacao.paginateMenu(encomendas, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(encomendas, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(74);
             System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
@@ -882,7 +882,7 @@ public class Main {
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
                 apresentacao.printComprar();
-                apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
                 apresentacao.printClear(2);
                 System.out.println(Apresentacao.CYAN_BOLD + "                                             Pressione" + Apresentacao.RESET + " '+' " +
                         Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'c' " + Apresentacao.CYAN_BOLD +
@@ -1013,7 +1013,7 @@ public class Main {
             else apresentacao.printCompras();
 
             apresentacao.printMensagem("[Faturas de " + (tipoFatura == 0 ? "Vendas]" : "Compras]"),0,3);
-            apresentacao.paginateMenu(strings,quantidade,paginaAtual,numPaginas,inicio,fim);
+            apresentacao.paginateMenu(strings,paginaAtual,numPaginas,inicio,fim);
             System.out.println(Apresentacao.CYAN_BOLD + "                                                 Pressione" + Apresentacao.RESET + " '+' " +
                     Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'v' " + Apresentacao.CYAN_BOLD + "para ver os artigos de uma encomenda," + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD +
                     "para sair" + Apresentacao.RESET);
@@ -1130,7 +1130,7 @@ public class Main {
             do {
                 int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
                 apresentacao.printMinhaLista();
-                apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
                 apresentacao.printClear(2);
                 System.out.println(Apresentacao.CYAN_BOLD + "                                                           Pressione" + Apresentacao.RESET + " '+' " +
                         Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'r' " + Apresentacao.CYAN_BOLD +
@@ -1208,7 +1208,7 @@ public class Main {
         do {
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printProcuraTrans();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(2);
             System.out.println(Apresentacao.CYAN_BOLD + "                                                                               Pressione" + Apresentacao.RESET + " '+' " +
                     Apresentacao.CYAN_BOLD + "para avancar e" + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder ");
@@ -2454,6 +2454,7 @@ public class Main {
         return 0;
     }
 
+
     /**
      * Funçao que imprime a paginaçao das encomendas pendentes
      * @param email
@@ -2463,7 +2464,7 @@ public class Main {
      * @throws TransportadoraException
      * @throws ArtigoException
      */
-    private void runEncomendaPendente(String email, int id) throws EncomendaException, UtilizadorException, TransportadoraException, ArtigoException {
+    private void runEncomendaPendente(String email, int id) throws EncomendaException, UtilizadorException, TransportadoraException {
         String opcao;
         Scanner ler = new Scanner(System.in);
         int paginaAtual = 1;
@@ -2489,7 +2490,7 @@ public class Main {
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printPendentes();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
@@ -2574,7 +2575,7 @@ public class Main {
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printExpedidas();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             System.out.println(Apresentacao.CYAN_BOLD + "                    Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
@@ -2629,7 +2630,7 @@ public class Main {
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printFinalizadas();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             System.out.println(Apresentacao.CYAN_BOLD + "   Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
                     Apresentacao.CYAN_BOLD + "Valor dos artigos: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).calculaValorArtigos() + Apresentacao.YELLOW + " | " +
@@ -2697,7 +2698,7 @@ public class Main {
             int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printDevolvidas();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(15);
             System.out.println(Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + sistema.procuraEncomendaComprador(id, email).getVendedor() + Apresentacao.YELLOW + " | " +
@@ -2760,7 +2761,7 @@ public class Main {
 
                 apresentacao.printEncomendas();
                 System.out.println(Apresentacao.RED + "[ENCOMENDAS " + apresentacao.estadoEncomendaString(estado) + "]\n" + Apresentacao.RESET);
-                apresentacao.paginateMenu(strings,quantidade,paginaAtual,numPaginas,inicio,fim);
+                apresentacao.paginateMenu(strings,paginaAtual,numPaginas,inicio,fim);
                 apresentacao.printClear(1);
                 System.out.println(Apresentacao.CYAN_BOLD + "                                                        Pressione" + Apresentacao.RESET + " '+' " +
                         Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 'v' " + Apresentacao.CYAN_BOLD +
@@ -2832,7 +2833,7 @@ public class Main {
         do {
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printEncomendas();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(74);
             System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
@@ -2994,7 +2995,7 @@ public class Main {
         do {
             int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
             apresentacao.printCompradorVendedor();
-            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
             apresentacao.printClear(1);
             apresentacao.printEspacos(74);
             System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
@@ -3284,7 +3285,7 @@ public class Main {
                     do {
                         int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
                         apresentacao.printEncomendasVendedor();
-                        apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                        apresentacao.paginateMenu(strings, paginaAtual, numPaginas, inicio, fim);
                         apresentacao.printClear(1);
                         apresentacao.printEspacos(74);
                         System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +

@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 
 /**
  * Interface que implementa propriedades de artigos premium

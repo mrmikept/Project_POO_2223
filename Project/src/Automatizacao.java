@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 /**
@@ -50,7 +49,7 @@ public class Automatizacao {
 
     /**
      * Carrega o ficheiro de automatização
-     * @param sistema
+     * @param sistema Objeto Sistema a ser carregado os comandos
      * @throws IOException
      * @throws AutomatizacaoException
      * @throws ArtigoException
@@ -69,7 +68,6 @@ public class Automatizacao {
 
                 BufferedReader teste = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
 
-                LocalDate saveData = sistema.getDataAtual();
                 String texto = teste.readLine();
                 String[] aux1 = texto.split(":");
                 String[] campoData = aux1[1].split(";");
@@ -201,7 +199,6 @@ public class Automatizacao {
                     }
                 }
                 comeco.close();
-                sistema.setDataAtual(saveData);
             } else throw new AutomatizacaoException("O ficheiro não existe!");
         }
         else {

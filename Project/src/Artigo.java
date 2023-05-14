@@ -153,16 +153,12 @@ public abstract class Artigo implements Serializable
      */
     public boolean verificaNovo()
     {
-        if (this.getNrDonos() > 0)
-        {
-            return false;
-        }
-        else return true;
+        return this.getNrDonos() <= 0;
     }
 
     /**
      * funçao que verifica se um artigo é igual ao objeto fornecido
-     * @param o
+     * @param o Um objecto
      * @return True se for igual, caso contrario false
      */
     public boolean equals(Object o)
@@ -176,7 +172,7 @@ public abstract class Artigo implements Serializable
             return false;
         }
         Artigo artigo = (Artigo) o;
-        return (this.getId() == artigo.getId() &&
+        return (this.getId().equals(artigo.getId()) &&
                 this.getEmailVendedor().equals(artigo.getEmailVendedor()) &&
                 this.getMarca().equals(artigo.getMarca()) &&
                 this.getPrecoBase() == artigo.getPrecoBase() &&
@@ -216,17 +212,14 @@ public abstract class Artigo implements Serializable
      */
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-
-        string.append("Identificador: " + this.getId() + " | ");
-        string.append("Descrição: " + this.getDescricao() + " | ");
-        string.append("Marca: " + this.getMarca() + " | ");
-        string.append("Preço Base: " + this.getPrecoBase() + " | ");
-        string.append("Correção Preço: " + this.getCorrecaoPreco() + " | ");
-        string.append("Estado: " + this.estadoToString() + " | ");
-        string.append("Transportadora: " + this.getTransportadora().toString());
-        string.append("Estado Venda: " + this.getEstadoVenda() + " | ");
-        return string.toString();
+        return "Identificador: " + this.getId() + " | " +
+                "Descrição: " + this.getDescricao() + " | " +
+                "Marca: " + this.getMarca() + " | " +
+                "Preço Base: " + this.getPrecoBase() + " | " +
+                "Correção Preço: " + this.getCorrecaoPreco() + " | " +
+                "Estado: " + this.estadoToString() + " | " +
+                "Transportadora: " + this.getTransportadora().toString() +
+                "Estado Venda: " + this.getEstadoVenda() + " | ";
     }
 
 

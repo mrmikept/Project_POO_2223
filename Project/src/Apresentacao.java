@@ -1557,7 +1557,7 @@ public class Apresentacao
      * @param inicio Primeira página
      * @param fim ùltima página
      */
-    public void paginateMenu(List<String> lista, int quantidade, int paginaAtual, int numPaginas, int inicio, int fim)
+    public void paginateMenu(List<String> lista, int paginaAtual, int numPaginas, int inicio, int fim)
     {
             for (int i = inicio; i < fim; i++)
             {

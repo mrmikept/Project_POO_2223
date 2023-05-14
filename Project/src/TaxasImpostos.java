@@ -80,18 +80,16 @@ public class TaxasImpostos implements Serializable
      */
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("[Taxas]\n");
-        string.append("Taxa de imposto: " + this.getImposto());
-        string.append("\nTaxa sobre encomendas pequenas: " + this.getTaxaEncPequena());
-        string.append("\nTaxa sobre encomendas medias: " + this.getTaxaEncMedia());
-        string.append("\nTaxa sobre encomendas grandes: " + this.getTaxaEncGrande());
-        return string.toString();
+        return "[Taxas]\n" +
+                "Taxa de imposto: " + this.getImposto() +
+                "\nTaxa sobre encomendas pequenas: " + this.getTaxaEncPequena() +
+                "\nTaxa sobre encomendas medias: " + this.getTaxaEncMedia() +
+                "\nTaxa sobre encomendas grandes: " + this.getTaxaEncGrande();
     }
 
     /**
      * funçao que verifica se as taxas e impostos são iguais ao objeto fornecido
-     * @param o
+     * @param o Um Objecto
      * @return True se for igual, caso contrario false
      */
     public boolean equals(Object o)

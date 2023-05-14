@@ -156,43 +156,55 @@ public class Main {
                     if (input.isEmpty()) {
                         do {
                             apresentacao.printMenuCarregarEstado();
-                            apresentacao.printMensagemCentrada("   ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE DESEJA CARREGAR!",2);
+                            apresentacao.printMensagemCentrada("   ERRO! DEVE INSERIR O NOME DO FICHEIRO QUE DESEJA CARREGAR!", 2);
                             apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 94, 2);
                             apresentacao.printMensagemSimOuNao(102);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
-                            if (c.equals("1")) {x = 3;break;}
-                            if (c.equals("0")) {x = 0;break;}
+                            if (c.equals("1")) {
+                                x = 3;
+                                break;
+                            }
+                            if (c.equals("0")) {
+                                x = 0;
+                                break;
+                            }
                         } while (true);
                         break;
                     }
-                        try {
-                            this.sistema = CarregamentoFicheiro.lerFicheiro(input);
-                            apresentacao.printLoad();
-                            apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
-                            ler.nextLine();
-                            x = 0;
-                            break;
-                        }
-                        catch (IOException e){
-                            apresentacao.printErroFicheiro();
-                            apresentacao.printEnterSair(90);
-                            ler.nextLine();
-                            x = 0;
-                            break;
-                        } catch (CarregamentoFicheiroException e) {
-                            do {
-                                apresentacao.printMenuCarregarEstado();
-                                apresentacao.printMensagem(e.getMessage(),95,2);
-                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 94, 2);
-                                apresentacao.printMensagemSimOuNao(102);
-                                ler = new Scanner(System.in);
-                                c = ler.nextLine();
-                                if (c.equals("1")) {x = 3;break;}
-                                if (c.equals("0")) {x = 0;break;}
-                            } while (true);
-                            break;
-                        }
+                    try {
+                        this.sistema = CarregamentoFicheiro.lerFicheiro(input);
+                        apresentacao.printLoad();
+                        apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    } catch (IOException e) {
+                        apresentacao.printErroFicheiro();
+                        apresentacao.printEnterSair(90);
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    } catch (CarregamentoFicheiroException e) {
+                        do {
+                            apresentacao.printMenuCarregarEstado();
+                            apresentacao.printMensagem(e.getMessage(), 95, 2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 94, 2);
+                            apresentacao.printMensagemSimOuNao(102);
+                            ler = new Scanner(System.in);
+                            c = ler.nextLine();
+                            if (c.equals("1")) {
+                                x = 3;
+                                break;
+                            }
+                            if (c.equals("0")) {
+                                x = 0;
+                                break;
+                            }
+                        } while (true);
+                        break;
+                    }
+                }
                 case 4 -> {
                     apresentacao.printMenuAutomatizacao();
                     ler = new Scanner(System.in);

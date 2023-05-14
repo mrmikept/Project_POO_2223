@@ -39,7 +39,7 @@ public class Automatizacao {
         this.excecoes = excecoes;
     }
 
-    public void carregaFicheiro(Sistema sistema) throws IOException, AutomatizacaoException {
+    public void carregaFicheiro(Sistema sistema) throws IOException, AutomatizacaoException, ArtigoException, UtilizadorException, SistemaException, EncomendaException, TransportadoraException {
         String pasta = Paths.get(this.path).toAbsolutePath().getParent().toString();
         String pasta2 = pasta.replace("/src", "/Automatizacao");
         File dir = new File(pasta2);
@@ -87,19 +87,27 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Adiciona Encomenda:")) {
+                        if (linha.contains("Adiciona Artigo Encomenda:")){
                             try {
-                                encom(aux, sistema);
-                            } catch (EncomendaException | ArtigoException | TransportadoraException |
-                                     UtilizadorException |
-                                     SistemaException a) {
+                                adArtEnc(aux,sistema);
+                            }
+                            catch (EncomendaException | ArtigoException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Remove Artigo Encomenda:")){
+                            try {
+                                remArtEnc(aux,sistema);
+                            }
+                            catch (EncomendaException | ArtigoException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
 
                         if (linha.contains("Confirma Encomenda:")) {
                             try {
-                                confEncomenda(aux, sistema);
+                                confEnc(aux, sistema);
                             } catch (EncomendaException | SistemaException | UtilizadorException |
                                      TransportadoraException a) {
                                 this.excecoes.add(a.getMessage());
@@ -109,8 +117,62 @@ public class Automatizacao {
 
                         if (linha.contains("Devolve Encomenda:")) {
                             try {
-                                devolEncomenda(aux, sistema);
+                                devEnc(aux, sistema);
                             } catch (EncomendaException | SistemaException | UtilizadorException a) {
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Tempo Expedicao:")){
+                            try {
+                                altTempExp(aux,sistema);
+                            }
+                            catch (SistemaException | TransportadoraException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Margem Lucro:")){
+                            try {
+                                altMargLucro(aux,sistema);
+                            }
+                            catch (SistemaException | TransportadoraException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Imposto:")){
+                            try {
+                                altImp(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda pequena:")){
+                            try {
+                                altTaxEncPeq(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda media:")){
+                            try {
+                                altTaxEncMed(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda grande:")){
+                            try {
+                                altTaxEncGrd(aux,sistema);
+                            }
+                            catch (SistemaException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
@@ -164,19 +226,27 @@ public class Automatizacao {
                             }
                         }
 
-                        if (linha.contains("Adiciona Encomenda:")) {
+                        if (linha.contains("Adiciona Artigo Encomenda:")){
                             try {
-                                encom(aux, sistema);
-                            } catch (EncomendaException | ArtigoException | TransportadoraException |
-                                     UtilizadorException |
-                                     SistemaException a) {
+                                adArtEnc(aux,sistema);
+                            }
+                            catch (EncomendaException | ArtigoException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Remove Artigo Encomenda:")){
+                            try {
+                                remArtEnc(aux,sistema);
+                            }
+                            catch (EncomendaException | ArtigoException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
 
                         if (linha.contains("Confirma Encomenda:")) {
                             try {
-                                confEncomenda(aux, sistema);
+                                confEnc(aux, sistema);
                             } catch (EncomendaException | SistemaException | UtilizadorException |
                                      TransportadoraException a) {
                                 this.excecoes.add(a.getMessage());
@@ -186,11 +256,66 @@ public class Automatizacao {
 
                         if (linha.contains("Devolve Encomenda:")) {
                             try {
-                                devolEncomenda(aux, sistema);
+                                devEnc(aux, sistema);
                             } catch (EncomendaException | SistemaException | UtilizadorException a) {
                                 this.excecoes.add(a.getMessage());
                             }
                         }
+
+                        if (linha.contains("Altera Tempo Expedicao:")){
+                            try {
+                                altTempExp(aux,sistema);
+                            }
+                            catch (SistemaException | TransportadoraException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Margem Lucro:")){
+                            try {
+                                altMargLucro(aux,sistema);
+                            }
+                            catch (SistemaException | TransportadoraException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Imposto:")){
+                            try {
+                                altImp(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda pequena:")){
+                            try {
+                                altTaxEncPeq(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda media:")){
+                            try {
+                                altTaxEncMed(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
+                        if (linha.contains("Altera Taxa Encomenda grande:")){
+                            try {
+                                altTaxEncGrd(aux,sistema);
+                            }
+                            catch (SistemaException a){
+                                this.excecoes.add(a.getMessage());
+                            }
+                        }
+
                     }
                 }
                 comeco.close();
@@ -320,56 +445,140 @@ public class Automatizacao {
         }
     }
 
-    public void encom(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
-        String[] camposEncom = aux[1].split(";");
-        LocalDate data = LocalDate.parse(camposEncom[0]);
+    public void adArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException {
+        String[] camposAdArtEnc = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAdArtEnc[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
             int dia = data.getDayOfMonth();
             sistema.saltaTempo(ano, mes, dia);
         }
-        String email = camposEncom[1];
-        String nomeTransportadora = camposEncom[2].toUpperCase();
-        Transportadora transportadora = sistema.procuraTransportadoraNome(nomeTransportadora);
-        Encomenda encomenda = new Encomenda();
-        encomenda.setTransportadora(transportadora);
-        int x = 3;
-        while (camposEncom[x] != null){
-            String idArtigo = camposEncom[x];
-            Artigo artigo = sistema.procuraArtigoVenda(idArtigo);
-            encomenda.adicionaArtigo(artigo);
-            x++;
-        }
-        //sistema.adicionaEncomenda(encomenda, email);
+        String idArtigo = camposAdArtEnc[1];
+        String email = camposAdArtEnc[2];
+        sistema.adicionaArtigoEncomenda(idArtigo,email);
     }
 
-    public void confEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
-        String[] camposConfEncom = aux[1].split(";");
-        LocalDate data = LocalDate.parse(camposConfEncom[0]);
+    public void remArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException{
+        String[] camposRemArtEnc = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposRemArtEnc[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
             int dia = data.getDayOfMonth();
             sistema.saltaTempo(ano, mes, dia);
         }
-        int idEncomenda = Integer.valueOf(camposConfEncom[1]);
-        String email = camposConfEncom[2];
+        String idArtigo = camposRemArtEnc[1];
+        String email = camposRemArtEnc[2];
+        sistema.removeArtigoEncomenda(idArtigo,email);
+    }
+
+    public void confEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
+        String[] camposConfEnc = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposConfEnc[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        int idEncomenda = Integer.valueOf(camposConfEnc[1]);
+        String email = camposConfEnc[2];
         sistema.confirmaEncomenda(idEncomenda, email);
     }
 
-    public void devolEncomenda(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
-        String[] camposDevolEncom = aux[1].split(";");
-        LocalDate data = LocalDate.parse(camposDevolEncom[0]);
+    public void devEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
+        String[] camposDevEnc = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposDevEnc[0]);
         if (sistema.getDataAtual().isBefore(data)){
             int ano = data.getYear();
             int mes = data.getMonthValue();
             int dia = data.getDayOfMonth();
             sistema.saltaTempo(ano, mes, dia);
         }
-        String email = camposDevolEncom[1];
-        int idEncomenda = Integer.valueOf(camposDevolEncom[2]);
+        int idEncomenda = Integer.valueOf(camposDevEnc[1]);
+        String email = camposDevEnc[2];
         sistema.devolveEncomenda(email, idEncomenda);
+    }
+
+    public void altTempExp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException {
+        String[] camposAltTempExp = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltTempExp[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        String email = camposAltTempExp[1];
+        int tempo = Integer.valueOf(camposAltTempExp[2]);
+        sistema.alteraTempoExpedicaoTransportadora(email, tempo);
+    }
+
+    public void altMargLucro(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
+        String[] camposAltMargLucro = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltMargLucro[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        String email = camposAltMargLucro[1];
+        double margemLucro = Double.parseDouble(camposAltMargLucro[2]);
+        sistema.alteraMargemLucroTransportadora(email, margemLucro);
+    }
+
+    public void altImp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
+        String[] camposAltImp = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltImp[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        int imposto = Integer.valueOf(camposAltImp[1]);
+        sistema.getTaxas().setImposto(imposto);
+    }
+
+    public void altTaxEncPeq(String[] aux, Sistema sistema) throws SistemaException{
+        String[] camposAltTaxEncPeq = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltTaxEncPeq[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        double taxa = Double.parseDouble(camposAltTaxEncPeq[1]);
+        sistema.getTaxas().setTaxaEncPequena(taxa);
+    }
+
+    public void altTaxEncMed(String[] aux, Sistema sistema) throws SistemaException{
+        String[] camposAltTaxEncMed = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltTaxEncMed[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        double taxa = Double.parseDouble(camposAltTaxEncMed[1]);
+        sistema.getTaxas().setTaxaEncMedia(taxa);
+    }
+
+    public void altTaxEncGrd(String[] aux, Sistema sistema) throws SistemaException{
+        String[] camposAltTaxEncGrd = aux[1].split(";");
+        LocalDate data = LocalDate.parse(camposAltTaxEncGrd[0]);
+        if (sistema.getDataAtual().isBefore(data)){
+            int ano = data.getYear();
+            int mes = data.getMonthValue();
+            int dia = data.getDayOfMonth();
+            sistema.saltaTempo(ano, mes, dia);
+        }
+        double taxa = Double.parseDouble(camposAltTaxEncGrd[1]);
+        sistema.getTaxas().setTaxaEncGrande(taxa);
     }
 
     public int retornaTamanho(String tamanho){

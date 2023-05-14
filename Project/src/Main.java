@@ -21,8 +21,12 @@ public class Main {
         this.apresentacao = new Apresentacao();
     }
 
-    
 
+    /**
+     * Função que verifica se o input é um dígito
+     * @param input Input
+     * @return True se for inteiro, caso contrário False
+     */
     public boolean isInt(String input) {
         try {
             Integer.parseInt(input);
@@ -32,33 +36,51 @@ public class Main {
         }
     }
 
+    /**
+     * Função que verifica se o input é um double
+     * @param input Input
+     * @return True se for double, caso contrário False
+     */
     public boolean notDouble(String input) {
         try {
-            // Attempt to parse the input string as a double
             Double.parseDouble(input);
             return false;
         } catch (NumberFormatException e) {
-            // The input string is not a valid double
             return true;
         }
     }
 
+    /**
+     * Função que converte uma string num int
+     * @param str String
+     * @return int do valor convertido a partir da string
+     */
     private int stringToInt(String str) {
         return Integer.parseInt(str);
     }
 
-    public double stringToDouble(String input) throws NumberFormatException {
-        return Double.parseDouble(input);
+    /**
+     * Função que converte uma string num double
+     * @param str String
+     * @return double do valor convertido a partir da string
+     */
+    public double stringToDouble(String str) throws NumberFormatException {
+        return Double.parseDouble(str);
     }
 
+    /**
+     * Função que verifica se o input é um não contém letras
+     * @param input Input
+     * @return True se for não contiver, caso contrário False
+     */
     public boolean naoContemLetras(String input) {
-        // Regular expression to match one or more alphabetical characters
         String regex = "[a-zA-Z ]+";
-
-        // Check if the input matches the regular expression
         return !input.matches(regex);
     }
 
+    /**
+     * Função que controla o menu inicial
+     */
     private void run() throws UtilizadorException, TransportadoraException, ClassNotFoundException, ArtigoException, EncomendaException, SistemaException {
         int x = 0;
         String c;
@@ -260,6 +282,10 @@ public class Main {
         Apresentacao.clear();
     }
 
+    /**
+     * Função que controla o menu "Entrar no programa"
+     * @return int 0 para voltar ao menu anterior
+     */
     private int runPrograma() throws UtilizadorException, TransportadoraException, ArtigoException, SistemaException, EncomendaException {
         int x = 0, teste, nNif;
         String email, pass, nome, morada, nomeTrans, c, nif, tipo, lucro, tempoExpedicao;
@@ -580,6 +606,11 @@ public class Main {
         return 0;
         }
 
+    /**
+     * Função que controla o menu "Iniciar sessão - Utilizador"
+     * @param email Email do utilizador
+     * @return int 0 para voltar ao menu anterior
+     */
     public int runUtilizador(String email) throws UtilizadorException, ArtigoException, TransportadoraException, EncomendaException //MENU UTILIZADOR
     {
         String[] s = {"Ver perfil", "Comprar", "Vendas", "Encomendas", "Faturas", "Retroceder"};
@@ -647,6 +678,10 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Função de paginação das transportadoras
+     * @param encomendas Lista de encomendas da transportadora
+     */
     public void paginacaoEncTransportadora(List<String> encomendas)
     {
         String opcao;
@@ -676,6 +711,11 @@ public class Main {
         } while (true);
     }
 
+    /**
+     * Função que controla o menu "Iniciar sessão - Transportadora"
+     * @param email Emial da transportadora
+     * @return int 0 para voltar ao menu anterior
+     */
     public int runTransportadora(String email) throws TransportadoraException {
         Transportadora transportadora = sistema.procuraTransportadoraEmail(email);
         int x = 0;
@@ -809,6 +849,11 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Função que controla o menu "Comprar"
+     * @param email Email do utilizador
+     * @return int 0 para voltar ao menu anterior
+     */
     public int runMenuComprar(String email) {
         Scanner ler = new Scanner(System.in);
         String opcao;
@@ -884,6 +929,11 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Função que controla o menu "Faturas"
+     * @param email Email do utilizador
+     * @return int 0 para voltar ao menu anterior
+     */
     public int runFaturas(String email) throws UtilizadorException, EncomendaException {
         String [] s = {"Faturas de compras", "Faturas de vendas", "Retroceder"};
         apresentacao.printMenu(s,5, 87,"", sistema.getDataAtual());
@@ -925,6 +975,11 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Função da paginação das faturas
+     * @param email Email do utilizador
+     * @param tipoFatura Fatura de compras ou vendas
+     */
     public void runMenuFaturas(String email, int tipoFatura) throws UtilizadorException, EncomendaException {
         Scanner ler = new Scanner(System.in);
         String opcao;
@@ -984,6 +1039,11 @@ public class Main {
         }while (true);
     }
 
+    /**
+     * Função que controla o menu "Vendas"
+     * @param email Email do utilizador
+     * @return int 0 para voltar ao menu anterior
+     */
     public int runVendas(String email) throws UtilizadorException, TransportadoraException {
         String[] s = {"Minha lista de vendas", "Adicionar artigos a minha lista de vendas", "Retroceder"};
         Scanner ler = new Scanner(System.in);

@@ -335,7 +335,7 @@ public class Sistema implements Serializable,Atributos {
         {
             if (this.verificaUtilizador(email))
             {
-                Tshirt tshirt = new Tshirt(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora), Atributos.VENDA, tamanho, padrao);
+                Tshirt tshirt = new Tshirt(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora), Atributos.VENDA, tamanho, padrao);
                 this.listaArtigos.put(id,tshirt);
                 this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
             }
@@ -357,17 +357,18 @@ public class Sistema implements Serializable,Atributos {
      * @param tamanho Tamanho do artigo Sapatilha
      * @param tipoCordao Tipo do cordão da sapatilha
      * @param cor Cor da sapatilha
-     * @param data Data de lançamento da sapatilha
+     * @param anoLancamento Data de lançamento da sapatilha
      * @param tipo Tipo de sapatilha, Normal ou Premium
      * @throws ArtigoException Caso o artigo já exista
      * @throws UtilizadorException Caso o utilizador não exista
      * @throws TransportadoraException Caso a transportadora não exista
      */
-    public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, int data, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
+    public void adicionaSapatilhaVenda(String id, String email, String descricao, String marca, double precoBase, double avaliacao, int nrDonos, String transportadora, int tamanho, int tipoCordao, String cor, int anoLancamento, int tipo) throws ArtigoException, UtilizadorException, TransportadoraException {
         if (!this.listaArtigos.containsKey(id)) {
             if (this.verificaUtilizador(email))
             {
-                Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, data, tipo);
+                if (tipo == Atributos.PREMIUM && anoLancamento <= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
+                Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, anoLancamento, tipo);
                 this.listaArtigos.put(id, sapatilha);
                 this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
             }
@@ -399,7 +400,8 @@ public class Sistema implements Serializable,Atributos {
         {
             if (this.verificaUtilizador(email))
             {
-                Mala mala = new Mala(id.toUpperCase(), email, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadoraNome(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
+                if (tipo == Atributos.PREMIUM && anoLancamento >= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
+                Mala mala = new Mala(id.toUpperCase(), email, descricao,marca,precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, dimensao, material, anoLancamento, tipo);
                 this.listaArtigos.put(id,mala);
                 this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));
             }
@@ -453,6 +455,18 @@ public class Sistema implements Serializable,Atributos {
             return this.listaTransportadoras.get(email).clone();
         } else throw new TransportadoraException("A Transportadora com o email " + email + " não foi encontrada!");
     }
+
+    private Transportadora procuraTransportadora(String nome) throws TransportadoraException {
+        List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList());
+        if (!transportadoras.isEmpty())
+        {
+            return transportadoras.get(0);
+        } else {
+            throw new TransportadoraException("A Transportadora com o nome, " + nome + " não existe!");
+        }
+    }
+
+
 
     public void alteraMargemLucroTransportadora(String email, double margemLucro) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
@@ -762,7 +776,7 @@ public class Sistema implements Serializable,Atributos {
                 {
                     encomenda.alteraEstadoExpedido(this.getDataAtual());
                     this.emiteFatura(encomenda,email);
-                    this.procuraTransportadoraNome(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
+                    this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
                 } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO PODE SER CONFIRMADA!");
             }
         } else throw new UtilizadorException("Utilizador não encontrado!");
@@ -927,7 +941,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public List<Encomenda> listaEncomendasVendedor(String emailVendedor) // Querie 3
     {
-        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getVendedor().equals(emailVendedor) && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getVendedor().equals(emailVendedor) && encomenda.getEstado() != Atributos.PENDENTE).map(Encomenda::clone).collect(Collectors.toList());
     }
 
     /**
@@ -959,16 +973,17 @@ public class Sistema implements Serializable,Atributos {
      * @param tipoVenda
      * @return
      */
-    public List<Utilizador> maioresUtilizadoresEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda)
+    public List<Utilizador> maioresUtilizadoresEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda) //Querie 4
     {
         Comparator<Utilizador> comparador = (Utilizador utilizador1, Utilizador utilizador2) -> {
-            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size() >
-                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size()) return -1;
-            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size() <
-                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size()) return 1;
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).count() >
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).count()) return -1;
+            if (utilizador1.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).count() <
+                    utilizador2.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == tipoVenda).count()) return 1;
             return 0;
         };
-        return this.utilizadoresFaturaramEntreDatas(primeiraData,segundaData, tipoVenda).stream().sorted(comparador).map(Utilizador::clone).collect(Collectors.toList());
+        return this.listaUtilizadores.values().stream().filter(utilizador -> utilizador.getListaFaturas().stream().anyMatch((fatura -> ((fatura.getDataFaturacao().isAfter(primeiraData) && fatura.getDataFaturacao().isBefore(segundaData)) ||
+                fatura.getDataFaturacao().equals(primeiraData)) && fatura.getTipo() == tipoVenda))).sorted(comparador).map(Utilizador::clone).collect(Collectors.toList());
     }
 
 

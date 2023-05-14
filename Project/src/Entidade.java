@@ -1,4 +1,6 @@
-public abstract class Entidade
+import java.io.Serializable;
+
+public abstract class Entidade implements Serializable
 {
     private int id;
     private String email;

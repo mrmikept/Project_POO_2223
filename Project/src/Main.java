@@ -694,6 +694,35 @@ public class Main {
         return 0;
     }
 
+    public void paginacaoEncTransportadora(List<String> encomendas)
+    {
+        String opcao;
+        Scanner ler = new Scanner(System.in);
+        int paginaAtual = 1;
+        int quantidade = 10;
+        int numPaginas = (int) Math.ceil((double) encomendas.size() / quantidade);
+        int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, encomendas.size());
+        do {
+            apresentacao.printEncomendas();
+            apresentacao.paginateMenu(encomendas, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.printClear(1);
+            apresentacao.printEspacos(74);
+            System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
+                    Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD +
+                    "para sair" + Apresentacao.RESET);
+            apresentacao.printClear(1);
+            apresentacao.printEspacos(102);
+            opcao = ler.nextLine().toLowerCase();
+            if (opcao.equals("+") && paginaAtual < numPaginas) {
+                paginaAtual++;
+            } else if (opcao.equals("-") && paginaAtual > 1) {
+                paginaAtual--;
+            } else if (opcao.equals("s")) {
+                break;
+            }
+        } while (true);
+    }
+
     public int runTransportadora(String email) throws TransportadoraException {
         Transportadora transportadora = sistema.procuraTransportadoraEmail(email);
         int x = 0;
@@ -722,8 +751,25 @@ public class Main {
                     x=0;
                     break;
 
-                case 2: //TODO: FAZER UMA FUNCAO QUE DEVOLVA TODAS AS ENCOMENDAS DE UMA TRANSPORTADORA
-                    
+                case 2:
+                    List<Encomenda> lista = sistema.getListaEncomendas().values().stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(email) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
+                    if (lista.isEmpty())
+                    {
+                        apresentacao.printEncomendas();
+                        apresentacao.printMensagemCentrada("Esta transportadora não possui encomendas associadas!",2);
+                        apresentacao.printEnter("");
+                        ler.nextLine();
+                        x=0;
+                        break;
+                    }
+                    List<String> strings = new ArrayList<>();
+                    for (Encomenda encomenda : lista)
+                    {
+                        strings.add(apresentacao.showEncomendaEstatisticas(encomenda));
+                    }
+                    paginacaoEncTransportadora(strings);
+                    x=0;
+                    break;
                 case 3:
                     transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
@@ -857,7 +903,6 @@ public class Main {
                         apresentacao.showArtigo(sistema.procuraArtigoVenda(id.toUpperCase()), sistema.getDataAtual().getYear());
                         apresentacao.printMensagemCentrada("DESEJA ADICIONAR ESTE ARTIGO A UMA ENCOMENDA?", 1);
                         apresentacao.printMensagemSimOuNao(101);
-                        apresentacao.printEspacos(103);
                     } catch (ArtigoException e)
                     {
                         apresentacao.printMensagemCentrada(e.getMessage(),2);
@@ -1024,7 +1069,7 @@ public class Main {
                     x =0;
                     break;
                 case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
-                    x = runArtigosVender(email);
+                    x = runArtigosVenderTESTE(email);
                     break;
             }
 
@@ -1180,12 +1225,780 @@ public class Main {
         return opcao;
     }
 
+    public int runArtigosVenderTESTE(String email) throws TransportadoraException, ArtigoException, UtilizadorException {
+        Scanner ler = new Scanner(System.in);
+        int opcao, nrDonos = 0, tamanho, padrao, tipo, tipoCordao, dataLancamento;
+        double precoBase = 0, avaliacao = 0, dimensao;
+        String id = "", descricao = "", marca = "", material = "", cor = "", nomeTransportadora, c;
+        int artigo = 0; //1 = Tshirt ; 2 = Mala ; 3 = Sapatilha
+        int x = 0;
+        do {
+            do {
+                apresentacao.printRunArtigosVendaCase0();
+                c = ler.nextLine();
+                if (isInt(c)) {
+                    if (stringToInt(c) <= 4 && stringToInt(c) > 0)
+                    {
+                        artigo = stringToInt(c);
+                        break;
+                    }
+                }
+            } while (true);
+            if (artigo == 4) break;
+
+            do { //Ver idArtigo, Descricao, marca, precoBase, estadoArtigo, nrDonos, Avaliacao.
+
+                apresentacao.printAdicionaArtigoVenda();
+                apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO (CÓDIGO DE BARRAS)", 84, 1);
+                ler = new Scanner(System.in);
+                apresentacao.printEspacos(84);
+                id = ler.nextLine();
+
+                if (id.isEmpty()){
+                    apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM ID!!",2);
+                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                    apresentacao.printMensagemSimOuNao(87);
+                    ler = new Scanner(System.in);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)){
+                        c = apresentacao.printInputIncorreto(1);
+                        break;
+                    }
+                    x = stringToInt(c);
+
+                    if (x == 0){
+                        artigo = 4;
+                        break;
+                    } else if (x == 1) {
+                        continue;
+                    }
+                }
+
+                apresentacao.printClear(1);
+                apresentacao.printMensagem("INTRODUZA UMA DESCRIÇÃO", 84, 1);
+                apresentacao.printEspacos(84);
+                descricao = ler.nextLine();
+
+                if (descricao.isEmpty()){
+                    apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA DESCRIÇÃO!!",2);
+                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                    apresentacao.printMensagemSimOuNao(87);
+                    ler = new Scanner(System.in);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)){
+                        c = apresentacao.printInputIncorreto(1);
+                        break;
+                    }
+                    x = stringToInt(c);
+
+                    if (x == 0){
+                        artigo = 4;
+                        break;
+                    } else if (x == 1) {
+                        continue;
+                    }
+                }
+
+                apresentacao.printClear(1);
+                apresentacao.printMensagem("INTRODUZA A MARCA", 84, 1);
+                apresentacao.printEspacos(84);
+
+                marca = ler.nextLine();
+
+                if (marca.isEmpty()){
+                    apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA MARCA!!",2);
+                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                    apresentacao.printMensagemSimOuNao(87);
+                    ler = new Scanner(System.in);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)){
+                        c = apresentacao.printInputIncorreto(1);
+                        break;
+                    }
+                    x = stringToInt(c);
+
+                    if (x == 0){
+                        artigo = 4;
+                        break;
+                    } else if (x == 1) {
+                        continue;
+                    }
+                }
+
+                apresentacao.printClear(1);
+                apresentacao.printMensagem("INTRODUZA O PREÇO BASE", 84, 1);
+                apresentacao.printEspacos(84);
+
+                c = ler.nextLine();
+
+                if (!isDouble(c)) {
+                    apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                    apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                    apresentacao.printMensagemSimOuNao(87);
+                    ler = new Scanner(System.in);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)){
+                        c = apresentacao.printInputIncorreto(1);
+                        break;
+                    }
+                    x = stringToInt(c);
+
+                    if (x == 0) {
+                        artigo = 4;
+                        break;
+                    } else if (x == 1) {
+                        continue;
+                    }
+                }
+
+                precoBase = stringToDouble(c);
+
+                apresentacao.printEstadoArtigo();
+                c = ler.nextLine();
+
+                if (!isInt(c)) {
+                    apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                    apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                    apresentacao.printMensagemSimOuNao(87);
+                    ler = new Scanner(System.in);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)){
+                        c = apresentacao.printInputIncorreto(1);
+                        break;
+                    }
+
+                    x = stringToInt(c);
+
+                    if (x == 0) {
+                        artigo = 4;
+                        break;
+                    } else if (x == 1) {
+                        continue;
+                    }
+                }
+
+                opcao = stringToInt(c);
+
+                if (opcao == 0) {
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("INTRODUZA A SUA AVALIAÇÃO", 84, 1);
+                    apresentacao.printEspacos(84);
+
+                    c = ler.nextLine();
+
+                    if (!isDouble(c)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(1);
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 0) {
+                            x = 0;
+                            break;
+                        } else if (x == 1) {
+                            continue;
+                        }
+                    }
+
+                    avaliacao = stringToDouble(c);
+
+                    apresentacao.printClear(1);
+                    apresentacao.printMensagem("INTRODUZA O NÚMERO DE DONOS QUE JÁ TEVE", 84, 1);
+                    apresentacao.printEspacos(84);
+
+                    c = ler.nextLine();
+
+                    if (!isInt(c)) {
+                        apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemSimOuNao(87);
+                        ler = new Scanner(System.in);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            c = apresentacao.printInputIncorreto(1);
+                            break;
+                        }
+
+                        x = stringToInt(c);
+
+                        if (x == 0) {
+                            artigo = 4;
+                            break;
+                        } else if (x == 1) {
+                            continue;
+                        }
+                    }
+                    nrDonos = stringToInt(c);
+                    break;
+                }
+                break;
+            }   while (true);
+            if (artigo == 4) break;
+
+            do { //Ver cada parametro especifico, escolher transportadora e adicionar Artigo
+                switch (artigo) {
+                    case 1:
+                        apresentacao.printAdicionaArtigoVenda();
+                        apresentacao.printClear(1);
+                        apresentacao.printTamanhosTshirt();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+
+                        tamanho = stringToInt(c);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printPadroesTshirt();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(1);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+                        padrao = stringToInt(c);
+                        nomeTransportadora = runEscolhaTransportadora(0);
+                        Tshirt tshirt = new Tshirt(id,email,descricao,marca,precoBase,nrDonos,avaliacao,sistema.procuraTransportadoraNome(nomeTransportadora),0,tamanho,padrao);
+
+                        apresentacao.clear();
+                        apresentacao.printClear(5);
+                        apresentacao.showArtigo(tshirt, sistema.getDataAtual().getYear());
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(99);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                            break;
+                        }
+
+                        x = stringToInt(c);
+                        if (x == 1)
+                        {
+                            try {
+                                sistema.adicionaTshirtVenda(id,email,descricao,marca,precoBase,avaliacao,nrDonos,nomeTransportadora,tamanho,padrao);
+                                apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!!",3);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                                break;
+                            } catch (ArtigoException e)
+                            {
+                                apresentacao.printMensagemCentrada(e.getMessage(),2);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                                break;
+                            }
+                        } else
+                        {
+                            artigo = 4;
+                            break;
+                        }
+                        case 2:
+                            apresentacao.printAdicionaArtigoVenda();
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA A SUA DIMENSÃO", 84, 1);
+                            apresentacao.printEspacos(84);
+                            c = ler.nextLine();
+
+                            if (!isDouble(c)){
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                            }
+                            dimensao = stringToDouble(c);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA O MATERIAL", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            material = ler.nextLine();
+
+                            if (material.isEmpty()){
+                                apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UM MATERIAL!!",2);
+                                apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(1);
+                                    break;
+                                }
+                                x = stringToInt(c);
+
+                                if (x == 0){
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                            }
+
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2015)", 84, 1);
+                            apresentacao.printEspacos(84);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                            }
+                            dataLancamento = stringToInt(c);
+                            if (dataLancamento > sistema.getDataAtual().getYear()){
+                                apresentacao.printMensagemCentrada("ERR0! O ARTIGO NÃO PODE POSSUIR UM ANO DE LANÇAMENTO SUPERIOR AO ANO ATUAL!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                            }
+                            apresentacao.printClear(1);
+                            apresentacao.printArtigoPremiumOuNormal();
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                            }
+                            tipo = stringToInt(c);
+                            nomeTransportadora = runEscolhaTransportadora(tipo);
+                            Mala mala = new Mala(id,email,descricao,marca,precoBase,nrDonos,avaliacao,sistema.procuraTransportadoraNome(nomeTransportadora),0,dimensao,material,dataLancamento,tipo);
+                            apresentacao.clear();
+                            apresentacao.showArtigo(mala, sistema.getDataAtual().getYear());
+                            apresentacao.printClear(3);
+                            apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
+                            apresentacao.printClear(1);
+                            apresentacao.printMensagemSimOuNao(99);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                                apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                                apresentacao.printMensagemSimOuNao(87);
+                                ler = new Scanner(System.in);
+
+                                c = ler.nextLine();
+
+                                if (!isInt(c)){
+                                    c = apresentacao.printInputIncorreto(2);
+                                    break;
+                                }
+
+                                x = stringToInt(c);
+
+                                if (x == 0) {
+                                    artigo = 4;
+                                    break;
+                                } else if (x == 1) {
+                                    continue;
+                                }
+                                break;
+                            }
+                            x = stringToInt(c);
+                            if (x == 1)
+                            {
+                                try {
+                                    sistema.adicionaMalaVenda(id,email,descricao,marca,precoBase,avaliacao,nrDonos,nomeTransportadora,dimensao,material,dataLancamento,tipo);
+                                    apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!!",3);
+                                    apresentacao.printEnter("");
+                                    ler.nextLine();
+                                    break;
+                                } catch (ArtigoException e)
+                                {
+                                    apresentacao.printMensagemCentrada(e.getMessage(),2);
+                                    apresentacao.printEnter("");
+                                    ler.nextLine();
+                                    break;
+                                }
+                            } else
+                            {
+                                artigo = 4;
+                                break;
+                            }
+                    case 3:
+                        apresentacao.printAdicionaArtigoVenda();
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O SEU TAMANHO (Nº DE CALÇADO)", 84, 1);
+                        apresentacao.printEspacos(84);
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+
+                        tamanho = stringToInt(c);
+
+                        apresentacao.printClear(1);
+                        apresentacao.printTipoCordao();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+
+                        tipoCordao = stringToInt(c);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA A SUA COR", 84, 1);
+                        apresentacao.printEspacos(84);
+                        cor = ler.nextLine();
+                        if (cor.isEmpty()){
+                            apresentacao.printMensagemCentrada("ERR0! DEVE INSERIR UMA COR!!", 2);
+                            apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 87, 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)) {
+                                c = apresentacao.printInputIncorreto(3);
+                                break;
+                            }
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2015)", 84, 1);
+                        apresentacao.printEspacos(84);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+                        dataLancamento = stringToInt(c);
+                        if (dataLancamento > sistema.getDataAtual().getYear()){
+                            apresentacao.printMensagemCentrada("ERR0! O ARTIGO NÃO PODE POSSUIR UM ANO DE LANÇAMENTO SUPERIOR AO ANO ATUAL!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+                        apresentacao.printClear(1);
+                        apresentacao.printArtigoPremiumOuNormal();
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)){
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                        }
+                        tipo = stringToInt(c);
+                        nomeTransportadora = runEscolhaTransportadora(tipo);
+                        Sapatilha sapatilha = new Sapatilha(id,email,descricao,marca,precoBase,nrDonos,avaliacao,sistema.procuraTransportadoraNome(nomeTransportadora),0,tamanho,tipoCordao,c,dataLancamento,tipo);
+                        apresentacao.clear();
+                        apresentacao.showArtigo(sapatilha, sistema.getDataAtual().getYear());
+                        apresentacao.printClear(3);
+                        apresentacao.printMensagem("TEM A CERTEZA QUE DESEJA ADICIONAR ESTE ARTIGO?", 81, 1);
+                        apresentacao.printClear(1);
+                        apresentacao.printMensagemSimOuNao(99);
+
+                        c = ler.nextLine();
+
+                        if (!isInt(c)) {
+                            apresentacao.printMensagemCentrada("ERR0! SO PODEM SER UTILIZADOS DIGITOS!!", 2);
+                            apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                            apresentacao.printMensagemSimOuNao(87);
+                            ler = new Scanner(System.in);
+
+                            c = ler.nextLine();
+
+                            if (!isInt(c)){
+                                c = apresentacao.printInputIncorreto(2);
+                                break;
+                            }
+
+                            x = stringToInt(c);
+
+                            if (x == 0) {
+                                artigo = 4;
+                                break;
+                            } else if (x == 1) {
+                                continue;
+                            }
+                            break;
+                        }
+                        x = stringToInt(c);
+                        if (x == 1)
+                        {
+                            try {
+                                sistema.adicionaSapatilhaVenda(id,email,descricao,marca,precoBase,avaliacao,nrDonos,nomeTransportadora,tamanho,tipoCordao,c,dataLancamento,tipo);
+                                apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!!",3);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                                break;
+                            } catch (ArtigoException e)
+                            {
+                                apresentacao.printMensagemCentrada(e.getMessage(),2);
+                                apresentacao.printEnter("");
+                                ler.nextLine();
+                                break;
+                            }
+                        } else
+                        {
+                            artigo = 4;
+                            break;
+                        }
+                }
+                break;
+            } while (true);
+            break;
+            } while (true);
+        return 0;
+    }
+
     public int runArtigosVender(String email) throws ArtigoException, UtilizadorException, TransportadoraException {
 
         int opcao, nrDonos = 0, tamanho, padrao, tipo, tipoCordao, dataLancamento;
         double precoBase, avaliacao = 0, dimensao;
-        String id = "", descricao, marca, material, cor, nomeTransportadora, c;
-        Utilizador utilizador;
+        String id, descricao, marca, material, cor, nomeTransportadora, c;
         int x = 0;
 
         Scanner ler = new Scanner(System.in);
@@ -1864,7 +2677,7 @@ public class Main {
                         mala.setMaterial(material);
 
                         apresentacao.printClear(1);
-                        apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2023)", 84, 1);
+                        apresentacao.printMensagem("INTRODUZA O SEU ANO DE LANÇAMENTO (EX: 2015)", 84, 1);
                         apresentacao.printEspacos(84);
 
                         c = ler.nextLine();
@@ -1896,8 +2709,8 @@ public class Main {
 
                         dataLancamento = stringToInt(c);
 
-                        if (dataLancamento > sistema.getDataAtual().getYear()){
-                            apresentacao.printMensagemCentrada("ERR0! ANO DE LANCAMENTO MAIOR QUE A ANO ATUAL!!", 2);
+                        if (dataLancamento >= sistema.getDataAtual().getYear()){
+                            apresentacao.printMensagemCentrada("ERR0! ARTIGOS PREMIUM NÃO PODEM POSSUIR UM ANO DE LANÇAMENTO IGUAL AO SUPERIOR AO ANO ATUAL!!", 2);
                             apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
                             apresentacao.printMensagemSimOuNao(87);
                             ler = new Scanner(System.in);
@@ -2486,7 +3299,7 @@ public class Main {
                         dataLancamento = stringToInt(c);
 
                         if (dataLancamento > sistema.getDataAtual().getYear()){
-                            apresentacao.printMensagemCentrada("ERR0! ANO DE LANCAMENTO MAIOR QUE A ANO ATUAL!!", 2);
+                            apresentacao.printMensagemCentrada("ERR0! ARTIGOS PREMIUM NÃO PODEM POSSUIR UM ANO DE LANÇAMENTO IGUAL OU SUPERIOR AO ANO ATUAL!!", 2);
                             apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
                             apresentacao.printMensagemSimOuNao(87);
                             ler = new Scanner(System.in);
@@ -3593,6 +4406,333 @@ public class Main {
         } while (true);
     }
 
+    public void runMenuVendedorMaisFaturou()
+    {
+        int x = 0;
+        String opcao;
+        Scanner ler = new Scanner(System.in);
+        LocalDate data1, data2;
+        do {
+            switch (x) {
+                case 0:
+
+                    do {
+                        apresentacao.printVendedorDinheiro();
+                        String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
+                        apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE", o,95);
+                        apresentacao.printEspacos(101);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine().toLowerCase();
+                        if (opcao.equals("1")) { x = 1; break;}
+                        if (opcao.equals("2")) { x = 2; break;}
+                        if (opcao.equals("3")) { x = 3; break;}
+                    }while (true);
+                    break;
+
+                case 1: //Desde Sempre
+                    apresentacao.printVendedorDinheiro();
+                    System.out.println();
+                    try {
+                        Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
+                        System.out.print(utilizador.toString());
+                        apresentacao.printFaturacao("Faturou: ", 90, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        apresentacao.printEnterSair(90);
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    } catch (SistemaException a) {
+                        apresentacao.printMensagem(a.getMessage(), 86, 2);
+                        apresentacao.printEnterSair(90);
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+
+                case 2:
+                    apresentacao.printVendedorDinheiro();
+                    System.out.println();
+
+                    ler = new Scanner(System.in);
+
+                    apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 87, 1);
+                    apresentacao.printEspacos(87);
+                    String d1 = ler.nextLine();
+                    try {
+                        data1 = stringParaData(d1);
+
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagem(a.getMessage(), 97,2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(7);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 2;
+                            break;
+                        }
+                        break;
+                    }
+
+                    System.out.println();
+                    apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 87, 1);
+                    apresentacao.printEspacos(87);
+                    String d2 = ler.nextLine();
+                    try {
+                        data2 = stringParaData(d2);
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagem(a.getMessage(), 97,2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(7);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 2;
+                            break;
+                        }
+                        break;
+                    }
+
+                    try {
+                        Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
+                        apresentacao.printVendedorDinheiro();
+                        System.out.println();
+                        System.out.print(utilizador.toString());
+                        apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
+                        apresentacao.printEnterSair(90);
+                        ler = new Scanner(System.in);
+                        opcao = ler.nextLine();
+                        x = 0;
+                        break;
+                    } catch (SistemaException e) {
+                        apresentacao.printMensagem(e.getMessage(), 78, 2);
+                        apresentacao.printEnterSair(90);
+                        ler = new Scanner(System.in);
+                        opcao = ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+            }
+        }while (x != 3);
+    }
+
+    public void runPaginacaoMaioresUtilizadores(List<String> strings)
+    {
+        String opcao;
+        Scanner ler = new Scanner(System.in);
+        int paginaAtual = 1;
+        int quantidade = 10;
+        int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
+        int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
+        do {
+            apresentacao.printCompradorVendedor();
+            apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+            apresentacao.printClear(1);
+            apresentacao.printEspacos(74);
+            System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
+                    Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD +
+                    "para sair" + Apresentacao.RESET);
+            apresentacao.printClear(1);
+            apresentacao.printEspacos(102);
+            opcao = ler.nextLine().toLowerCase();
+            if (opcao.equals("+") && paginaAtual < numPaginas) {
+                paginaAtual++;
+            } else if (opcao.equals("-") && paginaAtual > 1) {
+                paginaAtual--;
+            } else if (opcao.equals("s")) {
+                break;
+            }
+        } while (true);
+    }
+
+    public void runMaiorCompradorVendedor()
+    {
+        int x = 0;
+        Scanner ler = new Scanner(System.in);
+        String opcao, d1, d2;
+        LocalDate data1, data2;
+        List<Utilizador> utilizadores;
+        List<String> strings;
+        do {
+            switch (x){
+                case 0:
+                    do {
+                        apresentacao.printCompradorVendedor();
+                        String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
+                        apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA", ops, 95);
+                        apresentacao.printEspacos(101);
+                        opcao = ler.nextLine().toLowerCase();
+                        if (opcao.equals("1")) { x = 1; break;}
+                        if (opcao.equals("2")) { x = 2; break;}
+                        if (opcao.equals("3")) { x = 3; break;}
+                    }while (true);
+                    break;
+
+                case 1: // Comprador
+                    apresentacao.printCompradorVendedor();
+                    apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
+                    apresentacao.printEspacos(86);
+                    d1 = ler.nextLine();
+                    try {
+                        data1 = stringParaData(d1);
+
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagem(a.getMessage(),97, 2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(8);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 1;
+                            break;
+                        }
+                        break;
+
+                    }
+                    apresentacao.printMensagemCentrada("INSIRA A DATA FINAL (AAAA-MM-DD)", 1);
+                    apresentacao.printEspacos(86);
+                    d2 = ler.nextLine();
+                    try {
+                        data2 = stringParaData(d2);
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagemCentrada(a.getMessage(), 2);
+                        apresentacao.printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(8);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 1;
+                            break;
+                        }
+                        break;
+                    }
+                    utilizadores = sistema.maioresUtilizadoresEntreDatas(data1,data2,Atributos.VENDIDO);
+                    if (utilizadores.isEmpty())
+                    {
+                        apresentacao.printCompradorVendedor();
+                        apresentacao.printMensagemCentrada("Nenhum Utilizador encontrado entre as datas inseridas!!",2);
+                        apresentacao.printEnter("");
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    strings = new ArrayList<>();
+                    int i = 1;
+                    for (Utilizador utilizador : utilizadores) {
+                        strings.add(i + ") " + apresentacao.utilizadorLinha(utilizador));
+                        i++;
+                    }
+                    runPaginacaoMaioresUtilizadores(strings);
+                    x = 0;
+                    break;
+
+                case 2:
+                    apresentacao.printCompradorVendedor();
+                    apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
+                    apresentacao.printEspacos(86);
+                    d1 = ler.nextLine();
+                    try {
+                        data1 = stringParaData(d1);
+
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagem(a.getMessage(),97, 2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(8);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 1;
+                            break;
+                        }
+                        break;
+
+                    }
+                    apresentacao.printMensagemCentrada("INSIRA A DATA FINAL (AAAA-MM-DD)", 1);
+                    apresentacao.printEspacos(86);
+                    d2 = ler.nextLine();
+                    try {
+                        data2 = stringParaData(d2);
+                    } catch (DateTimeException a) {
+                        apresentacao.printMensagem(a.getMessage(),97, 2);
+                        apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
+                        apresentacao.printMensagemSimOuNao(99);
+                        ler = new Scanner(System.in);
+
+                        opcao = ler.nextLine();
+
+                        if (!isInt(opcao)){
+                            opcao = apresentacao.printInputIncorreto(8);
+                        }
+
+                        x = stringToInt(opcao);
+
+                        if (x == 1) {
+                            x = 1;
+                            break;
+                        }
+                        break;
+                    }
+                    utilizadores = sistema.maioresUtilizadoresEntreDatas(data1,data2,Atributos.VENDA);
+                    if (utilizadores.isEmpty())
+                    {
+                        apresentacao.printCompradorVendedor();
+                        apresentacao.printMensagemCentrada("Nenhum Utilizador encontrado entre as datas inseridas!!",2);
+                        apresentacao.printEnter("");
+                        ler.nextLine();
+                        x = 0;
+                        break;
+                    }
+                    strings = new ArrayList<>();
+                    for (Utilizador utilizador : utilizadores) {
+                        strings.add(apresentacao.utilizadorLinha(utilizador));
+                    }
+                    runPaginacaoMaioresUtilizadores(strings);
+                    x = 0;
+                    break;
+            }
+        }while (x != 3);
+    }
+
     public int runEstatisticas() throws ArtigoException, UtilizadorException, EncomendaException, TransportadoraException, SistemaException {
         int x = 0;
         String [] s = {"Vendedor que mais facturou desde sempre ou num período de tempo", "Transportadora com maior facturação", "Encomendas de um vendedor", "Maiores Vendedores/Compradores" +
@@ -3618,132 +4758,12 @@ public class Main {
                     } while (true);
                     break;
 
-                case 1:
-                    x = 0;
-                    do {
-                        switch (x) {
-                            case 0:
-
-                                do {
-                                    apresentacao.printVendedorDinheiro();
-                                    String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
-                                    apresentacao.printOpcoes("INDIQUE A OPÇÃO QUE PRETENDE", o,95);
-                                    apresentacao.printEspacos(101);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine().toLowerCase();
-                                    if (c.equals("1")) { x = 1; break;}
-                                    if (c.equals("2")) { x = 2; break;}
-                                    if (c.equals("3")) { x = 3; break;}
-                                }while (true);
-                                break;
-
-                            case 1:
-                                apresentacao.printVendedorDinheiro();
-                                System.out.println();
-                                try {
-                                    Utilizador utilizador = sistema.vendedorMaisFaturouSempre();
-                                    System.out.print(utilizador.toString());
-                                    apresentacao.printFaturacao("Faturou: ", 90, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                                    apresentacao.printEnterSair(90);
-                                    ler = new Scanner(System.in);
-                                    c = ler.nextLine();
-                                    x = 0;
-                                    break;
-                                } catch (SistemaException a) {
-                                    apresentacao.printMensagem(a.getMessage(), 86, 2);
-                                    apresentacao.printEnterSair(90);
-                                    ler = new Scanner(System.in);
-                                    c = ler.nextLine();
-                                    x = 0;
-                                    break;
-                                }
-
-                            case 2:
-                                apresentacao.printVendedorDinheiro();
-                                System.out.println();
-
-                                ler = new Scanner(System.in);
-
-                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 87, 1);
-                                apresentacao.printEspacos(87);
-                                d1 = ler.nextLine();
-                                try {
-                                    data1 = stringParaData(d1);
-
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(), 97,2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(7);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 2;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                                System.out.println();
-                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 87, 1);
-                                apresentacao.printEspacos(87);
-                                d2 = ler.nextLine();
-                                try {
-                                    data2 = stringParaData(d2);
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(), 97,2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(7);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 2;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                                    try {
-                                        Utilizador utilizador = sistema.vendedorMaisFaturouEntreDatas(data1, data2);
-                                        apresentacao.printVendedorDinheiro();
-                                        System.out.println();
-                                        System.out.print(utilizador.toString());
-                                        apresentacao.printFaturacao("Faturou: ", 99, 1, utilizador.getListaFaturas().stream().filter(fatura -> fatura.getTipo() == Atributos.VENDA).mapToDouble(Fatura::getValorTotal).sum());
-                                        apresentacao.printEnterSair(90);
-                                        ler = new Scanner(System.in);
-                                        c = ler.nextLine();
-                                        x = 0;
-                                        break;
-                                    } catch (SistemaException e) {
-                                        apresentacao.printMensagem(e.getMessage(), 78, 2);
-                                        apresentacao.printEnterSair(90);
-                                        ler = new Scanner(System.in);
-                                        c = ler.nextLine();
-                                        x = 0;
-                                        break;
-                                    }
-                                }
-                    }while (x != 3);
+                case 1: // Vendedor que mais Faturou
+                    runMenuVendedorMaisFaturou();
                     x = 0;
                     break;
 
-                case 2:
+                case 2: // Transportadora maior volume facturacao;
                     apresentacao.printTransportadoraDinheiro();
                     System.out.println();
                     try {
@@ -3751,26 +4771,23 @@ public class Main {
                         System.out.println();
                         System.out.println(transportadora.toString());
                         apresentacao.printEnterSair(94);
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
+                        ler.nextLine();
                         x = 0;
                         break;
                     }
                     catch (SistemaException a){
                         apresentacao.printMensagem(a.getMessage(),86,2);
                         apresentacao.printEnterSair(94);
-                        ler = new Scanner(System.in);
-                        c = ler.nextLine();
+                        ler.nextLine();
                         x = 0;
                         break;
                     }
 
-                case 3:
+                case 3: //Listar encomendas emitidas por um vendedor
                     apresentacao.printEncomendasVendedor();
                     System.out.println();
                     apresentacao.printMensagem("INTRODUZA O EMAIL DO VENDEDOR",88,1);
                     apresentacao.printEspacos(88);
-                    ler = new Scanner(System.in);
                     email = ler.nextLine();
 
                     if (email.isEmpty()){
@@ -3793,171 +4810,47 @@ public class Main {
                     if (listaEncomendas.isEmpty()){
                         apresentacao.printMensagem("NÃO EXISTEM ENCOMENDAS PARA ESTE UTILIZADOR!",82,2);
                         apresentacao.printEnterSair(90);
-                        c = ler.nextLine();
+                        ler.nextLine();
                         x = 0;
                         break;
                     }
-                    Encomenda[] lista = new Encomenda[listaEncomendas.size()];
-                    int i;
-                    System.out.println();
-                    listaEncomendas.toArray(lista);
-                    for (i = 0; i < lista.length; i++){
-                        Encomenda encomenda = lista[i];
-                        apresentacao.printEspacos(10);
-                        System.out.print(apresentacao.showEncomenda(encomenda, sistema.getTempoDevolucao()));
-                        apresentacao.printEnterSair(90);
+                    List<String> strings = new ArrayList<>();
+                    for (Encomenda encomenda : listaEncomendas)
+                    {
+                        strings.add(apresentacao.showEncomendaEstatisticas(encomenda));
                     }
-                    ler = new Scanner(System.in);
-                    c = ler.nextLine();
-                    x = 0;
-                    break;
-
-                case 4:
-                    x = 0;
+                    Encomenda[] lista = new Encomenda[listaEncomendas.size()];
+                    int paginaAtual = 1;
+                    int quantidade = 6;
+                    int numPaginas = (int) Math.ceil((double) strings.size() / quantidade);
+                    int inicio = (paginaAtual - 1) * quantidade, fim = Math.min(inicio + quantidade, strings.size());
+                    String opcao;
                     do {
-                        switch (x){
-                            case 0:
-                                do {
-                                    apresentacao.printCompradorVendedor();
-                                    String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
-                                    apresentacao.printOpcoes("INDIQUE A SUA ESCOLHA", ops, 95);
-                                    apresentacao.printEspacos(101);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine().toLowerCase();
-                                    if (c.equals("1")) { x = 1; break;}
-                                    if (c.equals("2")) { x = 2; break;}
-                                    if (c.equals("3")) { x = 3; break;}
-                                }while (true);
-                                break;
-
-                            case 1:
-                                apresentacao.printCompradorVendedor();
-                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 86, 1);
-                                apresentacao.printEspacos(86);
-                                ler = new Scanner(System.in);
-                                d1 = ler.nextLine();
-                                try {
-                                    data1 = stringParaData(d1);
-
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(),97, 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(8);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 1;
-                                        break;
-                                    }
-                                    break;
-
-                                }
-                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 86, 1);
-                                apresentacao.printEspacos(86);
-                                ler = new Scanner(System.in);
-                                d2 = ler.nextLine();
-                                try {
-                                    data2 = stringParaData(d2);
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(),97, 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(8);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 1;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                                apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDIDO), 2);
-                                x = 0;
-                                break;
-
-                            case 2:
-                                apresentacao.printCompradorVendedor();
-                                apresentacao.printMensagem("INSIRA A DATA INICIAL (AAAA-MM-DD)", 86, 1);
-                                apresentacao.printEspacos(86);
-                                ler = new Scanner(System.in);
-                                d1 = ler.nextLine();
-                                try {
-                                    data1 = stringParaData(d1);
-
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(),97, 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(8);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 2;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                                apresentacao.printMensagem("INSIRA A DATA FINAL (AAAA-MM-DD)", 86, 1);
-                                apresentacao.printEspacos(86);
-                                ler = new Scanner(System.in);
-                                d2 = ler.nextLine();
-                                try {
-                                    data2 = stringParaData(d2);
-                                } catch (DateTimeException a) {
-                                    apresentacao.printMensagem(a.getMessage(),97, 2);
-                                    apresentacao.printMensagem("DESEJA TENTAR NOVAMENTE?", 91, 2);
-                                    apresentacao.printMensagemSimOuNao(99);
-                                    ler = new Scanner(System.in);
-
-                                    c = ler.nextLine();
-
-                                    if (!isInt(c)){
-                                        c = apresentacao.printInputIncorreto(8);
-                                    }
-
-                                    x = stringToInt(c);
-
-                                    if (x == 1) {
-                                        x = 2;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                                apresentacao.paginateCompradorVendedor(sistema.maioresUtilizadoresEntreDatas(data1, data2, Atributos.VENDA), 2);
-                                x = 0;
-                                break;
+                        apresentacao.printEncomendasVendedor();
+                        apresentacao.paginateMenu(strings, quantidade, paginaAtual, numPaginas, inicio, fim);
+                        apresentacao.printClear(1);
+                        apresentacao.printEspacos(74);
+                        System.out.println(Apresentacao.CYAN_BOLD + "Pressione" + Apresentacao.RESET + " '+' " +
+                                Apresentacao.CYAN_BOLD + "para avancar," + Apresentacao.RESET + " '-' " + Apresentacao.CYAN_BOLD + "para a retroceder," + Apresentacao.RESET + " 's' " + Apresentacao.CYAN_BOLD +
+                                "para sair" + Apresentacao.RESET);
+                        apresentacao.printClear(1);
+                        apresentacao.printEspacos(102);
+                        opcao = ler.nextLine().toLowerCase();
+                        if (opcao.equals("+") && paginaAtual < numPaginas) {
+                            paginaAtual++;
+                        } else if (opcao.equals("-") && paginaAtual > 1) {
+                            paginaAtual--;
+                        } else if (opcao.equals("s")) {
+                            break;
                         }
-                    }while (x != 3);
+                    } while (true);
+                    x = 0;
+                case 4: //Ordenacao maior compradores/vendedores
+                    runMaiorCompradorVendedor();
                     x = 0;
                     break;
 
-                case 5:
+                case 5: //Valor ganho Vintage
                     apresentacao.printVintageDinheiro();
                     apresentacao.printClear(3);
                     apresentacao.printGanhos("$GANHOS$ : ",96,1, sistema.ganhoVintage());

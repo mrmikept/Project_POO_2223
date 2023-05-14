@@ -32,7 +32,7 @@ public class Transportadora extends Entidade implements Serializable {
         this.tipo = tipo;
         this.tempoExpedicao = tempoExpedicao;
         this.valorFaturado = valorFaturado;
-        this.taxasImpostos = taxasImpostos;
+        this.taxasImpostos = taxasImpostos.clone();
     }
 
     public Transportadora(Transportadora transportadora)

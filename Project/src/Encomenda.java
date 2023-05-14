@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Encomenda {
+public class Encomenda implements Serializable {
     private int id;
     private String emailVendedor;
     private String emailComprador;
@@ -119,7 +120,7 @@ public class Encomenda {
 
     public void setTransportadora(Transportadora transportadora)
     {
-        this.transportadora = transportadora.clone();
+        this.transportadora = transportadora;
     }
 
     public int getDimensao() {

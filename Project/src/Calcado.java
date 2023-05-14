@@ -1,4 +1,6 @@
-public abstract class Calcado extends Artigo
+import java.io.Serializable;
+
+public abstract class Calcado extends Artigo implements Serializable
 {
     private int tamanho;
 

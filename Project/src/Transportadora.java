@@ -126,12 +126,12 @@ public class Transportadora extends Entidade implements Serializable {
     public String toString()
     {
         StringBuilder string = new StringBuilder();
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    [Transportadora]\n" + Apresentacao.RESET);
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Nome: " + Apresentacao.RESET + this.getNome() + "\n");
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Tipo: " + Apresentacao.RESET + this.getTipo() + "\n");
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Margem Lucro: " + Apresentacao.RESET + this.getMargemLucro() + "\n");
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Tempo de expedição: " + Apresentacao.RESET + this.getTempoExpedicao() + Apresentacao.CYAN_BOLD + " dias\n");
-        string.append(Apresentacao.CYAN_BOLD +"                                                                                                    Valor Faturado: " + Apresentacao.RESET + this.getValorFaturado() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               [Transportadora]\n" + Apresentacao.RESET);
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               Nome: " + Apresentacao.RESET + this.getNome() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               Tipo: " + Apresentacao.RESET + this.getTipo() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               Margem Lucro: " + Apresentacao.RESET + this.getMargemLucro() + "\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               Tempo de expedição: " + Apresentacao.RESET + this.getTempoExpedicao() + Apresentacao.CYAN_BOLD + " dias\n");
+        string.append(Apresentacao.CYAN_BOLD +"                                                                                               Valor Faturado: " + Apresentacao.RESET + this.getValorFaturado() + "\n");
         return string.toString();
     }
 

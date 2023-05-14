@@ -59,8 +59,9 @@ public class Apresentacao
         System.out.println("\033[0m");
     }
 
-    public void printOpcao(int i,String s){
-        System.out.println("                                                                                       "+CYAN_BOLD+i+")"+RESET+"  "+s);
+    public void printOpcao(int i,String s, int x){
+        printEspacos(x);
+        System.out.print(""+CYAN_BOLD+i+")"+RESET+"  "+s + "\n");
     }
 
     public void printDataAtual(LocalDate data){
@@ -68,7 +69,7 @@ public class Apresentacao
     }
 
 
-    public void printMenu(String[] opcoes, int x, String nome, LocalDate data){
+    public void printMenu(String[] opcoes, int x, int e, String nome, LocalDate data){
         if (x != 100)
         {
             clear();
@@ -97,7 +98,7 @@ public class Apresentacao
         int i = 1;
         printClear(3);
         for (String s : opcoes) {
-            printOpcao(i, s);
+            printOpcao(i, s, e);
             i++;
         }
         printClear(5);
@@ -974,9 +975,9 @@ public class Apresentacao
     {
         this.printGuardar();
         cyan();
-        System.out.println("                                                               Indique o nome do ficheiro que pretende guardar:");
+        System.out.println("                                                                                 Indique o nome do ficheiro que pretende guardar:");
         resetColor();
-        System.out.print("                                                               ");
+        System.out.print("                                                                                 ");
     }
 
     public void printMensagemCentrada(String mensagem, int cor)
@@ -1079,10 +1080,11 @@ public class Apresentacao
         System.out.print("                                                                                                         ");
     }
 
-    public void printEnterSair(){
+    public void printEnterSair(int x){
         System.out.println();
         System.out.println();
-        System.out.println("                                                                                          Pressione enter para sair...");
+        printMensagem("Pressione enter para sair...",x,0);
+        //System.out.println("                                                                                          Pressione enter para sair...");
         System.out.println();
         System.out.print("                                                                                                        ");
     }
@@ -1101,21 +1103,36 @@ public class Apresentacao
             if (p == 3){
                 printSapatilhas();
             }
+            if (p == 4){
+                printMenuGuardar();
+            }
+            if (p == 5){
+                printMenuCarregarEstado();
+            }
+            if (p == 6){
+                printMenuAutomatizacao();
+            }
+            if (p == 7){
+                printVendedorDinheiro();
+            }
+            if (p == 8){
+                printCompradorVendedor();
+            }
             printMensagemCentrada("INPUT INCORRETO!!", 2);
             printMensagemCentrada("DESEJA TENTAR NOVAMENTE?", 2);
-            printMensagemSimOuNao(87);
+            printMensagemSimOuNao(101);
             Scanner ler = new Scanner(System.in);
             c = ler.nextLine();
         }while (!c.equals("1") && !c.equals("0"));
         return c;
     }
 
-    public void printOpcoes(String mensagem, String[] opcoes){
-        printMensagem(mensagem,86,1);
+    public void printOpcoes(String mensagem, String[] opcoes, int e){
+        printMensagem(mensagem,92,1);
         int i = 1;
         printClear(2);
         for (String s : opcoes) {
-            printOpcao(i, s);
+            printOpcao(i, s, e);
             i++;
         }
         printClear(1);
@@ -1126,18 +1143,18 @@ public class Apresentacao
     {
         printLoad();
         cyan();
-        System.out.println("                                                               Indique o nome do ficheiro estado que pretende carregar:");
+        System.out.println("                                                                              Indique o nome do ficheiro estado que pretende carregar:");
         resetColor();
-        System.out.print("                                                               ");
+        System.out.print("                                                                              ");
     }
 
     public void printMenuAutomatizacao()
     {
         printBackup();
         cyan();
-        System.out.println("                                                               Indique o nome do ficheiro que pretende carregar a automatizacao:");
+        System.out.println("                                                                           Indique o nome do ficheiro que pretende carregar a automatizacao:");
         resetColor();
-        System.out.print("                                                               ");
+        System.out.print("                                                                           ");
     }
 
     public void printPerfil(Utilizador utilizador)
@@ -1173,14 +1190,22 @@ public class Apresentacao
         if (transportadora.getTipo() == 0) tipo = "NORMAL";
         else tipo = "PREMIUM";
         printTrans();
-        System.out.println(CYAN_BOLD + "                                                                                                  Nome: " + RESET + transportadora.getNome());
+        System.out.println(CYAN_BOLD + "                                                                                      ID: " + RESET + transportadora.getId());
         System.out.println();
-        System.out.println(CYAN_BOLD + "                                                      Margem Lucro: " + RESET + transportadora.getMargemLucro() + CYAN_BOLD +
-
-                " | Tipo: " + RESET + tipo);
+        System.out.println(CYAN_BOLD + "                                                                                      Nome: " + RESET + transportadora.getNome());
         System.out.println();
-        System.out.println(CYAN_BOLD + "                                                                                                Encomendas:" + RESET);
+        System.out.println(CYAN_BOLD + "                                                                                      Email: " + RESET + transportadora.getEmail());
         System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Morada: " + RESET + transportadora.getMorada());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Nr. Fiscal: " + RESET + transportadora.getNrFiscal());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Tipo: " + RESET + tipo);
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Margem de Lucro: " + RESET + transportadora.getMargemLucro());
+        System.out.println();
+        System.out.println(CYAN_BOLD + "                                                                                      Tempo de Expedição: " + RESET + transportadora.getTempoExpedicao());
+        printClear(2);
         System.out.println(YELLOW + "                                                                                      Pressione enter para continuar..." + RESET);
         System.out.println();
         System.out.print("                                                                                                     ");

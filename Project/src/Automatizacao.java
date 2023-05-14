@@ -326,12 +326,11 @@ public class Automatizacao {
     public void util(String[] aux, Sistema sistema) throws UtilizadorException, SistemaException {
         String[] camposUtil = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposUtil[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposUtil[1];
         String palavraPasse = camposUtil[2];
         String nome = camposUtil[3];
@@ -344,12 +343,11 @@ public class Automatizacao {
     public void artVenda(String[] aux, Sistema sistema) throws ArtigoException, TransportadoraException, UtilizadorException, SistemaException {
         String[] camposArt = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArt[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-           int ano = data.getYear();
-           int mes = data.getMonthValue();
-           int dia = data.getDayOfMonth();
-           sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposArt[2];
         String id = camposArt[3].toUpperCase();
         String descricao = camposArt[4];
@@ -411,12 +409,11 @@ public class Automatizacao {
     public void artCompra(String[] aux, Sistema sistema) throws ArtigoException, UtilizadorException, EncomendaException, SistemaException {
         String[] camposArtComp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposArtComp[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposArtComp[1];
         String idArtigo = camposArtComp[2];
         sistema.adicionaArtigoEncomenda(idArtigo, email);
@@ -425,12 +422,11 @@ public class Automatizacao {
     public void transp(String[] aux, Sistema sistema) throws TransportadoraException, SistemaException {
         String[] camposTransp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposTransp[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposTransp[1];
         String palavraPasse = camposTransp[2];
         String nome = camposTransp[3].toUpperCase();
@@ -448,12 +444,11 @@ public class Automatizacao {
     public void adArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException {
         String[] camposAdArtEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAdArtEnc[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String idArtigo = camposAdArtEnc[1];
         String email = camposAdArtEnc[2];
         sistema.adicionaArtigoEncomenda(idArtigo,email);
@@ -462,12 +457,11 @@ public class Automatizacao {
     public void remArtEnc(String[] aux, Sistema sistema) throws EncomendaException, ArtigoException, UtilizadorException, SistemaException{
         String[] camposRemArtEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposRemArtEnc[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String idArtigo = camposRemArtEnc[1];
         String email = camposRemArtEnc[2];
         sistema.removeArtigoEncomenda(idArtigo,email);
@@ -476,12 +470,11 @@ public class Automatizacao {
     public void confEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException, TransportadoraException {
         String[] camposConfEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposConfEnc[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         int idEncomenda = Integer.valueOf(camposConfEnc[1]);
         String email = camposConfEnc[2];
         sistema.confirmaEncomenda(idEncomenda, email);
@@ -490,12 +483,11 @@ public class Automatizacao {
     public void devEnc(String[] aux, Sistema sistema) throws EncomendaException, SistemaException, UtilizadorException {
         String[] camposDevEnc = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposDevEnc[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         int idEncomenda = Integer.valueOf(camposDevEnc[1]);
         String email = camposDevEnc[2];
         sistema.devolveEncomenda(email, idEncomenda);
@@ -504,12 +496,11 @@ public class Automatizacao {
     public void altTempExp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException {
         String[] camposAltTempExp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTempExp[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposAltTempExp[1];
         int tempo = Integer.valueOf(camposAltTempExp[2]);
         sistema.alteraTempoExpedicaoTransportadora(email, tempo);
@@ -518,12 +509,11 @@ public class Automatizacao {
     public void altMargLucro(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
         String[] camposAltMargLucro = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltMargLucro[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         String email = camposAltMargLucro[1];
         double margemLucro = Double.parseDouble(camposAltMargLucro[2]);
         sistema.alteraMargemLucroTransportadora(email, margemLucro);
@@ -532,12 +522,11 @@ public class Automatizacao {
     public void altImp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
         String[] camposAltImp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltImp[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         int imposto = Integer.valueOf(camposAltImp[1]);
         sistema.getTaxas().setImposto(imposto);
     }
@@ -545,12 +534,11 @@ public class Automatizacao {
     public void altTaxEncPeq(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncPeq = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncPeq[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         double taxa = Double.parseDouble(camposAltTaxEncPeq[1]);
         sistema.getTaxas().setTaxaEncPequena(taxa);
     }
@@ -558,12 +546,11 @@ public class Automatizacao {
     public void altTaxEncMed(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncMed = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncMed[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         double taxa = Double.parseDouble(camposAltTaxEncMed[1]);
         sistema.getTaxas().setTaxaEncMedia(taxa);
     }
@@ -571,12 +558,11 @@ public class Automatizacao {
     public void altTaxEncGrd(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltTaxEncGrd = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltTaxEncGrd[0]);
-        if (sistema.getDataAtual().isBefore(data)){
-            int ano = data.getYear();
-            int mes = data.getMonthValue();
-            int dia = data.getDayOfMonth();
-            sistema.saltaTempo(ano, mes, dia);
-        }
+        int ano = data.getYear();
+        int mes = data.getMonthValue();
+        int dia = data.getDayOfMonth();
+        sistema.saltaTempo(ano, mes, dia);
+
         double taxa = Double.parseDouble(camposAltTaxEncGrd[1]);
         sistema.getTaxas().setTaxaEncGrande(taxa);
     }

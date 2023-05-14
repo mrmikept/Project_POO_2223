@@ -1936,6 +1936,35 @@ public class Apresentacao
         return string.toString();
     }
 
+
+    public String showEncomendaEstatisticas(Encomenda encomenda)
+    {
+        StringBuilder string = new StringBuilder();
+        string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + encomenda.getId() + Apresentacao.YELLOW + " | " +
+                Apresentacao.CYAN_BOLD + "Artigos: " + Apresentacao.RESET);
+
+        for(Artigo artigo: encomenda.getListaArtigos())
+        {
+            string.append(artigo.showArtigoLinha());
+        }
+        string.append(Apresentacao.YELLOW + "| " + Apresentacao.CYAN_BOLD + "Transportadora: " + Apresentacao.RESET + encomenda.getTransportadora().getNome() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Vendedor: " + Apresentacao.RESET + encomenda.getVendedor() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Comprador: " + Apresentacao.RESET + encomenda.getComprador() + Apresentacao.YELLOW + " | "
+                + Apresentacao.CYAN_BOLD + "Preço: " + Apresentacao.RESET + encomenda.getPrecoFinal());
+        return string.toString();
+    }
+
+    public String utilizadorLinha(Utilizador utilizador)
+    {
+        StringBuilder string = new StringBuilder();
+        string.append(Apresentacao.CYAN_BOLD + "ID Utilizador: " + Apresentacao.RESET + utilizador.getId() + Apresentacao.YELLOW + " | ");
+        string.append(Apresentacao.CYAN_BOLD + "Email Utilizador: " + Apresentacao.RESET + utilizador.getEmail() + Apresentacao.YELLOW + " | ");
+        string.append(Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + utilizador.getNome() + Apresentacao.YELLOW + " | ");
+        string.append(Apresentacao.CYAN_BOLD + "Morada: " + Apresentacao.RESET + utilizador.getMorada() + Apresentacao.YELLOW + " | ");
+        string.append(Apresentacao.CYAN_BOLD + "Identificação Fiscal: " + Apresentacao.RESET + utilizador.getNrFiscal());
+        return string.toString();
+    }
+
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {
         StringBuilder string = new StringBuilder();
         string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + encomenda.getId() + Apresentacao.YELLOW + " | " +

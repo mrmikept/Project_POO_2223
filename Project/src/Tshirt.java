@@ -1,4 +1,5 @@
 import javax.swing.plaf.PanelUI;
+import java.io.Serializable;
 import java.security.PublicKey;
 import java.time.LocalDate;
 
@@ -9,7 +10,7 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Tshirt extends Vestuario
+public class Tshirt extends Vestuario implements Serializable
 {
     private int padrao;
 

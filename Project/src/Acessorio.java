@@ -1,4 +1,6 @@
-public abstract class Acessorio extends Artigo
+import java.io.Serializable;
+
+public abstract class Acessorio extends Artigo implements Serializable
 {
     private String material;
 

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDate;
  * @author Mike Pinto A89292
  * @author Rafael Gomes A96208
  */
-public class Sapatilha extends Calcado implements Premium {
+public class Sapatilha extends Calcado implements Premium, Serializable {
 
     private int tipoCordao;
     private String cor;

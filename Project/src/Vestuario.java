@@ -1,4 +1,6 @@
-public abstract class Vestuario extends Artigo
+import java.io.Serializable;
+
+public abstract class Vestuario extends Artigo implements Serializable
 {
     private int tamanho;
 

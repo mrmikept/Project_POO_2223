@@ -41,7 +41,7 @@ public abstract class Artigo implements Serializable
         this.precoBase = precoBase;
         this.nrDonos = nrDonos;
         this.avaliacao = avaliacao;
-        this.transportadora = transportadora.clone();
+        this.transportadora = transportadora;
         this.estadoVenda = estadoVenda;
     }
 
@@ -130,7 +130,7 @@ public abstract class Artigo implements Serializable
     }
 
     public Transportadora getTransportadora() {
-        return this.transportadora.clone();
+        return this.transportadora;
     }
 
     public int getEstadoVenda(){ return estadoVenda; }

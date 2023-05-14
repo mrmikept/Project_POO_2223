@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Automatizacao {
 
@@ -46,13 +47,23 @@ public class Automatizacao {
         if (dir.exists()) {
             File ficheiro = new File(pasta2 + File.separator + this.path);
             if (ficheiro.exists()) {
+
+                BufferedReader teste = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
+
+                LocalDate saveData = sistema.getDataAtual();
+                String texto = teste.readLine();
+                String[] aux1 = texto.split(":");
+                String[] campoData = aux1[1].split(";");
+                LocalDate data = LocalDate.parse(campoData[0]);
+                sistema.setDataAtual(data);
+                teste.close();
+
                 BufferedReader comeco = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
 
                 while (comeco.ready()) {
                     String linha = comeco.readLine();
                     if (!linha.contains("--")) {
                         String[] aux = linha.split(":");
-
 
                         if (linha.contains("Adiciona Utilizador:")) {
                             try {
@@ -179,19 +190,30 @@ public class Automatizacao {
                     }
                 }
                 comeco.close();
+                sistema.setDataAtual(saveData);
             } else throw new AutomatizacaoException("O ficheiro não existe!");
         }
         else {
             dir.mkdirs();
             File ficheiro = new File(pasta2 + File.separator + this.path);
             if (ficheiro.exists()) {
+
+                BufferedReader teste = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
+
+                LocalDate saveData = sistema.getDataAtual();
+                String texto = teste.readLine();
+                String[] aux1 = texto.split(":");
+                String[] campoData = aux1[1].split(";");
+                LocalDate data = LocalDate.parse(campoData[0]);
+                sistema.setDataAtual(data);
+                teste.close();
+
                 BufferedReader comeco = new BufferedReader(new FileReader(pasta2 + File.separator + this.path));
 
                 while (comeco.ready()) {
                     String linha = comeco.readLine();
                     if (!linha.contains("--")) {
                         String[] aux = linha.split(":");
-
 
                         if (linha.contains("Adiciona Utilizador:")) {
                             try {
@@ -319,6 +341,7 @@ public class Automatizacao {
                     }
                 }
                 comeco.close();
+                sistema.setDataAtual(saveData);
             } else throw new AutomatizacaoException("O ficheiro não existe!");
         }
     }

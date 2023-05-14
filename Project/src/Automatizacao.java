@@ -94,7 +94,7 @@ public class Automatizacao {
                             try {
                                 adArtEnc(aux,sistema);
                             }
-                            catch (EncomendaException | ArtigoException a){
+                            catch (EncomendaException | ArtigoException | UtilizadorException | SistemaException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
@@ -103,7 +103,7 @@ public class Automatizacao {
                             try {
                                 remArtEnc(aux,sistema);
                             }
-                            catch (EncomendaException | ArtigoException a){
+                            catch (EncomendaException | ArtigoException | UtilizadorException | SistemaException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
@@ -236,7 +236,7 @@ public class Automatizacao {
                             try {
                                 adArtEnc(aux,sistema);
                             }
-                            catch (EncomendaException | ArtigoException a){
+                            catch (EncomendaException | ArtigoException | UtilizadorException | SistemaException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
@@ -245,7 +245,7 @@ public class Automatizacao {
                             try {
                                 remArtEnc(aux,sistema);
                             }
-                            catch (EncomendaException | ArtigoException a){
+                            catch (EncomendaException | ArtigoException | UtilizadorException | SistemaException a){
                                 this.excecoes.add(a.getMessage());
                             }
                         }
@@ -513,7 +513,7 @@ public class Automatizacao {
         sistema.alteraMargemLucroTransportadora(email, margemLucro);
     }
 
-    public void altImp(String[] aux, Sistema sistema) throws SistemaException, TransportadoraException{
+    public void altImp(String[] aux, Sistema sistema) throws SistemaException{
         String[] camposAltImp = aux[1].split(";");
         LocalDate data = LocalDate.parse(camposAltImp[0]);
         int ano = data.getYear();

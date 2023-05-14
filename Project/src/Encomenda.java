@@ -293,7 +293,9 @@ public class Encomenda {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
-        string.append("Identificador Encomenda: " + this.getId());
+        string.append("Identificador Encomenda: " + this.getId() + "\n");
+        string.append("Vendedor: " + this.getVendedor() + "\n");
+        string.append("Comprador: " + this.getComprador() + "\n");
         string.append(this.listaArtigos.toString());
         string.append("Dimensão: " + this.dimensaoToString() + "\n");
         string.append("Preco: " + this.precoFinal + "\n");

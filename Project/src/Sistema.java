@@ -615,7 +615,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public void removeEncomenda(Encomenda encomenda) throws EncomendaException {
         if (this.listaEncomendas.containsValue(encomenda)) {
-            this.listaEncomendas.remove(encomenda);
+            this.listaEncomendas.remove(encomenda.getId());
         } else throw new EncomendaException("Esta encomenda não existe no sistema!");
     }
 
@@ -736,8 +736,8 @@ public class Sistema implements Serializable,Atributos {
 
                 if (encomenda.getListaArtigos().isEmpty())
                 {
-                    this.listaUtilizadores.get(email).removeEncomenda(encomenda);
                     this.removeEncomenda(encomenda);
+                    this.listaUtilizadores.get(email).removeEncomenda(encomenda);
                 }
 
             } else throw new EncomendaException("Encomenda não existe!");

@@ -1,11 +1,5 @@
-import javax.swing.plaf.PanelUI;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.security.PublicKey;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Apresentacao
 {
@@ -114,7 +108,7 @@ public class Apresentacao
      */
     public void printOpcao(int i,String s, int x){
         printEspacos(x);
-        System.out.print(""+CYAN_BOLD+i+")"+RESET+"  "+s + "\n");
+        System.out.print(CYAN_BOLD+i+")"+RESET+"  "+s + "\n");
     }
 
     /**
@@ -1302,7 +1296,7 @@ public class Apresentacao
 
     /**
      * Função que imprime uma mensagem centrada com enter para sair
-     * @param mensagem
+     * @param mensagem Mensagem
      */
     public void printEnter(String mensagem)
     {
@@ -1545,21 +1539,17 @@ public class Apresentacao
         printEspacos(88);
     }
 
-
-    public void paginacao(List<String> lista, int indice, int quantidade)
-    {
-        int fim = indice + quantidade;
-        for (int i = indice;i < fim || i >= lista.size() - 1; i++)
-        {
-            System.out.println("indice: " + indice + " FIm: " + fim);
-            System.out.println(lista.get(i));
-        }
-    }
-
+    /**
+     * Função que imprime a paginação
+     * @param lista Lista de strings
+     * @param quantidade Quantidade a apresentar por página
+     * @param paginaAtual Página atual
+     * @param numPaginas Número de páginas
+     * @param inicio Primeira página
+     * @param fim Última página
+     */
     public void paginateMenu(List<String> lista, int quantidade, int paginaAtual, int numPaginas, int inicio, int fim)
     {
-            inicio = (paginaAtual - 1) * quantidade;
-            fim = Math.min(inicio + quantidade, lista.size());
             for (int i = inicio; i < fim; i++)
             {
                 System.out.println(lista.get(i));
@@ -1567,12 +1557,22 @@ public class Apresentacao
             System.out.println("                                                                                                  Pag." + paginaAtual + " de " + numPaginas);
     }
 
+    /**
+     * Função que imprime a paginação das transportadoras
+     * @param indice Posição da transportadora na lista de strings
+     * @param transportadora Transportadora
+     */
     public String showTransportadora(int indice, Transportadora transportadora)
     {
         return "                                                                               " + indice +") " + Apresentacao.CYAN_BOLD + "Nome: " + Apresentacao.RESET + transportadora.getNome() + Apresentacao.CYAN_BOLD + ", Margem de Lucro: " + Apresentacao.RESET + transportadora.getMargemLucro() + Apresentacao.CYAN_BOLD + ", Tipo: " + Apresentacao.RESET + (transportadora.getTipo() == 0 ? "Normal" : "Premium") + "\n";
     }
 
-    public String showTshirt(Tshirt tshirt, int date) ///TODO VERIFICAR SE PODE SER PRIVATE
+    /**
+     * Função que imprime uma tshirt e os seus dados
+     * @param tshirt Tshirt
+     * @param date Data atual do sistema
+     */
+    private String showTshirt(Tshirt tshirt, int date) ///TODO VERIFICAR SE PODE SER PRIVATE
     {
         String tipo = "PREMIUM";
         int x = tshirt.getTransportadora().getTipo();
@@ -1591,7 +1591,12 @@ public class Apresentacao
                             Apresentacao.CYAN + "                                                                                ⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃           " + Apresentacao.YELLOW + "Padrão: " + Apresentacao.RESET + tshirt.padraoToString() + "\n\n");
     }
 
-    public String showMala(Mala mala, int date) {
+    /**
+     * Função que imprime uma mala e os seus dados
+     * @param mala Mala
+     * @param date Data atual do sistema
+     */
+    private String showMala(Mala mala, int date) {
         String tipo = "PREMIUM";
         int x = mala.getTransportadora().getTipo();
         if (x == 0) tipo = "NORMAL";
@@ -1611,7 +1616,12 @@ public class Apresentacao
                 Apresentacao.CYAN + "                                                                            ⠀⠀⠸⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⠇⠀⠀"   + Apresentacao.YELLOW + "       Tipo: " + Apresentacao.RESET + (mala.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
     }
 
-    public String showSapatilha(Sapatilha sapatilha, int date) { //TODO VERIFICAR SE PODE SER PRIVATE
+    /**
+     * Função que imprime uma sapatilha e os seus dados
+     * @param sapatilha Sapatilha
+     * @param date Data atual do sistema
+     */
+    private String showSapatilha(Sapatilha sapatilha, int date) { //TODO VERIFICAR SE PODE SER PRIVATE
         String tipo = "PREMIUM";
         int x = sapatilha.getTransportadora().getTipo();
         if (x == 0) tipo = "NORMAL";
@@ -1632,6 +1642,11 @@ public class Apresentacao
                 Apresentacao.YELLOW + "                                                                                                             Tipo: " + Apresentacao.RESET + (sapatilha.getTipo() == 0 ? "Normal" : "Premium") + "\n\n");
     }
 
+    /**
+     * Função converte para string um artigo
+     * @param artigo Artigo
+     * @param date Data atual do sistema
+     */
     public String showArtigoString(Artigo artigo, int date)
     {
         if (artigo.getClass().getSimpleName().equals("Tshirt"))
@@ -1646,6 +1661,12 @@ public class Apresentacao
         }
         else return "";
     }
+
+    /**
+     * Função que imprime um artigo
+     * @param artigo Artigo
+     * @param date Data atual do sistema
+     */
     public void showArtigo(Artigo artigo, int date)
     {
         if (artigo.getClass().getSimpleName().equals("Tshirt"))
@@ -1660,6 +1681,10 @@ public class Apresentacao
         }
     }
 
+    /**
+     * Função que imprime um estado de uma encomenda
+     * @param estado Artigo
+     */
     public String estadoEncomendaString(int estado)
     {
         if (estado == Atributos.PENDENTE)
@@ -1681,6 +1706,10 @@ public class Apresentacao
         return "";
     }
 
+    /**
+     * Função converte para string uma fatura
+     * @param fatura Fatura
+     */
     public String showFatura(Fatura fatura) {
         StringBuilder string = new StringBuilder();
         if (fatura.getTipo() == Atributos.VENDA)
@@ -1701,7 +1730,10 @@ public class Apresentacao
         return string.toString();
     }
 
-
+    /**
+     * Função converte para string uma encomenda no menu estatísticas
+     * @param encomenda Encomenda
+     */
     public String showEncomendaEstatisticas(Encomenda encomenda)
     {
         StringBuilder string = new StringBuilder();
@@ -1719,6 +1751,10 @@ public class Apresentacao
         return string.toString();
     }
 
+    /**
+     * Função converte para string os dados de um utilizador
+     * @param utilizador Utilizador
+     */
     public String utilizadorLinha(Utilizador utilizador)
     {
         StringBuilder string = new StringBuilder();
@@ -1730,6 +1766,11 @@ public class Apresentacao
         return string.toString();
     }
 
+    /**
+     * Função converte para string os dados de uma encomenda
+     * @param encomenda Encomenda
+     * @param tempoDevolucao Tempo de devolução de uma encomenda
+     */
     public String showEncomenda(Encomenda encomenda, int tempoDevolucao) throws EncomendaException {
         StringBuilder string = new StringBuilder();
         string.append(Apresentacao.CYAN_BOLD + "ID Encomenda: " + Apresentacao.RESET + encomenda.getId() + Apresentacao.YELLOW + " | " +

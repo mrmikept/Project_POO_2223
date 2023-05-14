@@ -3082,7 +3082,7 @@ public class Main {
                     apresentacao.printClear(1);
                     apresentacao.printEspacos(82);
                     System.out.print(apresentacao.CYAN_BOLD + "Limite de dias para devolver uma encomenda: " + apresentacao.RESET + rt);
-                    apresentacao.printEnterSair();
+                    apresentacao.printEnterSair(90);
                     ler = new Scanner(System.in);
                     c = ler.nextLine();
                     x = 0;

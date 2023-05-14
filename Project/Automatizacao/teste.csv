@@ -1,3 +1,21 @@
+Adiciona Utilizador:2023-05-10;mike@email.com;1234;Mike Pinto;Avendia Grande;238549205
+Adiciona Utilizador:2023-05-10;rafael@email.com;1234;Rafael Gomes;Rua Chao;234854930
+Adiciona Utilizador:2023-05-10;lucas@email.com;1234;Lucas Oliveira;Rua da Travessa;258473928
+Adiciona Transportadora:2023-05-10;ctt@email.com;1234;CTT;Sede CTT;510234395;0.3;Normal;3
+Adiciona Transportadora:2023-05-10;cttexpresso@email.com;1234;CTT Expresso;Sede CTT Expresso;456776374;0.4;Premium;2
+Adiciona Transportadora:2023-05-10;generica@email.com;1234;Generica Transports;Travessa generica;567843895;0.15;Normal;4
+Adiciona Venda:2023-05-10;Tshirt;rafael@email.com;TSHIR001;Tshirt casual;Pull and Bear;10.5;Usado;3.8;1;ctt;XL;Lisa
+Adiciona Venda:2023-05-10;Tshirt;lucas@email.com;TSHIR002;Tshirt praia;Super;22.5;Novo;Generica Transports;M;Riscas
+Adiciona Venda:2023-05-10;Sapatilha;mike@email.com;SAP001;Sapatilhas de Corrida;Adidas;35;Novo;ctt;43;Cordao;Pretas;2019;Normal
+Adiciona Venda:2023-05-10;Sapatilha;rafael@email.com;SAP002P;Sapatilhas edicao especial;Nike;150.5;Novo;ctt expresso;40;Cordao;Branco;2018;Premium
+Adiciona Venda:2023-05-10;Mala;mike@email.com;MAL001;Mala de Viagem;Samsonite;75;Usado;4;1;Generica Transports;15;Tecido;2022;Normal
+Adiciona Artigo Encomenda:2023-05-10;MAL001;rafael@email.com
+Confirma Encomenda:2023-05-10;1;rafael@email.com
+Adiciona Artigo Encomenda:2023-05-10;TSHIR001;mike@email.com;
+Adiciona Artigo Encomenda:2023-05-10;SAP002P;mike@email.com;
+Confirma Encomenda:2023-05-14;2;mike@email.com
+
+--Adiciona Venda:Data;Tshirt;emailVendedor;IdArtigo;Descrição;Marca;PreçoBase;Novo;NomeTransportadora;Tamanho;Padrão
 
 --Comandos de Adição de Utilizadores e Transportadora
 --Adiciona Utilizador:Data;email;palavraPasse;NomeUtilizador;Morada;NrIdentificacaoFiscal

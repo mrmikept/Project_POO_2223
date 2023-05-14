@@ -1558,13 +1558,16 @@ public class Main {
                                 apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!!", 3);
                                 apresentacao.printEnter("");
                                 ler.nextLine();
+                                break;
                             } catch (ArtigoException e) {
                                 apresentacao.printAdicionaArtigoVenda();
                                 apresentacao.printMensagemCentrada(e.getMessage(), 2);
                                 apresentacao.printEnter("");
                                 ler.nextLine();
+                                break;
                             }
                         }
+                        break;
                     case 2:
                         apresentacao.printAdicionaArtigoVenda();
                         apresentacao.printClear(1);
@@ -1701,12 +1704,15 @@ public class Main {
                                 apresentacao.printMensagemCentrada("ARTIGO ADICIONADO COM SUCESSO!!", 3);
                                 apresentacao.printEnter("");
                                 ler.nextLine();
+                                break;
                             } catch (ArtigoException e) {
                                 apresentacao.printMensagemCentrada(e.getMessage(), 2);
                                 apresentacao.printEnter("");
                                 ler.nextLine();
+                                break;
                             }
                         }
+                        break;
                     case 3:
                         apresentacao.printAdicionaArtigoVenda();
                         apresentacao.printClear(1);

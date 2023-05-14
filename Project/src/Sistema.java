@@ -353,7 +353,7 @@ public class Sistema implements Serializable,Atributos {
             {
                 if (this.procuraTransportadora(transportadora).getTipo() == tipo)
                 {
-                    if (tipo == Atributos.PREMIUM && anoLancamento <= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
+                    if (tipo == Atributos.PREMIUM && anoLancamento >= this.getDataAtual().getYear()) throw new ArtigoException("Artigos Premium não podem possuir data de lançamento superior ou igual ao ano atual!");
                     Sapatilha sapatilha = new Sapatilha(id.toUpperCase(), email, descricao, marca, precoBase, nrDonos, avaliacao, this.procuraTransportadora(transportadora).clone(), Atributos.VENDA, tamanho, tipoCordao, cor, anoLancamento, tipo);
                     this.listaArtigos.put(id, sapatilha);
                     this.listaUtilizadores.get(email).adicionaArtigo(this.listaArtigos.get(id));

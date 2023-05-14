@@ -4,7 +4,7 @@ import java.security.PublicKey;
 import java.time.LocalDate;
 
 /**
- * Descrição classe
+ * Classe que representa artigos do tipo Tshirt.
  *
  * @author Lucas Oliveira A98695
  * @author Mike Pinto A89292
@@ -14,10 +14,25 @@ public class Tshirt extends Vestuario implements Serializable
 {
     private int padrao;
 
+    /**
+     * Variavel de instacia estatica para representar o padrão Liso
+     */
     public static final int LISA = 0;
+
+    /**
+     * Variavel de instacia estatica para representar o padrão Riscas
+     */
     public static final int RISCAS = 1;
+
+    /**
+     * Variavel de instacia estatica para representar o padrão Palmeiras
+     */
     public static final int PALMEIRAS = 2;
 
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Tshirt()
     {
@@ -36,6 +51,10 @@ public class Tshirt extends Vestuario implements Serializable
         super(tshirt);
         this.padrao = tshirt.getPadrao();
     }
+
+    /////////////////////
+    //Getters e Setters//
+    /////////////////////
 
     public int getPadrao() {
         return padrao;
@@ -59,6 +78,37 @@ public class Tshirt extends Vestuario implements Serializable
         return this.getPrecoBase() + this.getCorrecaoPreco();
     }
 
+    /**
+     * Metodo que devolve uma string com o padrão da tshirt
+     * @return Uma string
+     */
+    public String padraoToString()
+    {
+        if (this.getPadrao() == LISA)
+        {
+            return "Lisa";
+        }
+        if (this.getPadrao() == RISCAS)
+        {
+            return "Riscas";
+        }
+        return "Palmeiras";
+    }
+
+    /**
+     * Metodo que devolve uma string com o tipo do artigo
+     * @return Uma string "[Tshirt] "
+     */
+    public String showArtigoLinha() {
+        return ("[Tshirt] ");
+    }
+
+
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -74,24 +124,10 @@ public class Tshirt extends Vestuario implements Serializable
                 this.getPadrao() == tshirt.getPadrao();
     }
 
-
-    public String padraoToString()
-    {
-        if (this.getPadrao() == LISA)
-        {
-            return "Lisa";
-        }
-        if (this.getPadrao() == RISCAS)
-        {
-            return "Riscas";
-        }
-        return "Palmeiras";
-    }
-
-    public String showArtigoLinha() {
-        return ("[Tshirt] ");
-    }
-
+    /**
+     * Devolve uma string com o valor dos atributos de uma tshirt
+     * @return String ccom o valor dos atributos de uma tshirt
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -101,6 +137,10 @@ public class Tshirt extends Vestuario implements Serializable
         return string.toString();
     }
 
+    /**
+     * Cria uma copia de um objecto Tshirt
+     * @return Um Objecto Tshirt
+     */
     @Override
     public Tshirt clone() {
         return new Tshirt(this);

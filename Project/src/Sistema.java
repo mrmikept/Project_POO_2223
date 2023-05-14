@@ -182,16 +182,6 @@ public class Sistema implements Serializable,Atributos {
         return (!this.procuraUtilizadorSistema(email).getListaArtigos().values().stream().filter(artigo -> artigo.getEstadoVenda() == Atributos.VENDA && artigo.getId().equals(id)).collect(Collectors.toList()).isEmpty());
     }
 
-    public boolean verificaArtigosVenda(String email)
-    {
-        return (!this.listaArtigos.entrySet().stream().filter(artigo -> !artigo.getValue().getEmailVendedor().equals(email)).collect(Collectors.toList()).isEmpty());
-    }
-
-    public boolean verificaArtigosID(String id)
-    {
-        return this.listaArtigos.containsKey(id);
-    }
-
     /**
      * Adiciona um utilizador à lista de utilizadores do Sistema.
      *
@@ -412,7 +402,7 @@ public class Sistema implements Serializable,Atributos {
 
 
     /**
-     * Porcura um utilizador
+     * Devolve um utilizador
      * @param email Email do utilizador
      * @return Um utilizador
      * @throws UtilizadorException Caso o utilizador não exista
@@ -425,6 +415,12 @@ public class Sistema implements Serializable,Atributos {
         }
     }
 
+    /**
+     * Devolve uma copia de um utilizador
+     * @param email
+     * @return
+     * @throws UtilizadorException
+     */
     public Utilizador procuraUtilizador(String email) throws UtilizadorException {
         if (listaUtilizadores.containsKey(email)) {
             return listaUtilizadores.get(email).clone();
@@ -434,7 +430,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
-     * Procura uma transportadora
+     * Devolve a copia de uma transportadora pelo nome
      * @param nome Nome da transportadora
      * @return Uma transportadora
      * @throws TransportadoraException Caso a transportadora não exista
@@ -449,6 +445,12 @@ public class Sistema implements Serializable,Atributos {
         }
     }
 
+    /**
+     * Devolve a copia de uma transportadora
+     * @param email email da Transportadora
+     * @return Uma transportadora
+     * @throws TransportadoraException Caso a transportadora não exista!
+     */
     public Transportadora procuraTransportadoraEmail(String email) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
         {
@@ -456,6 +458,12 @@ public class Sistema implements Serializable,Atributos {
         } else throw new TransportadoraException("A Transportadora com o email " + email + " não foi encontrada!");
     }
 
+    /**
+     * Devolve a referencia de uma transportadora
+     * @param nome
+     * @return
+     * @throws TransportadoraException
+     */
     private Transportadora procuraTransportadora(String nome) throws TransportadoraException {
         List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList());
         if (!transportadoras.isEmpty())
@@ -466,6 +474,12 @@ public class Sistema implements Serializable,Atributos {
         }
     }
 
+    /**
+     * Altera a margem de lucro de uma transportadora do Sistema
+     * @param email email da Transportadora
+     * @param margemLucro Margem de lucro
+     * @throws TransportadoraException
+     */
     public void alteraMargemLucroTransportadora(String email, double margemLucro) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
         {
@@ -473,6 +487,12 @@ public class Sistema implements Serializable,Atributos {
         } else throw new TransportadoraException("A transportadora com o email " + email + " não foi encontrada!");
     }
 
+    /**
+     * Altera o tempo de expedicao de uma transportadora
+     * @param email email da transportadora
+     * @param tempoExpedicao Tempo de expedicao em dias
+     * @throws TransportadoraException
+     */
     public void alteraTempoExpedicaoTransportadora(String email, int tempoExpedicao) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
         {
@@ -512,7 +532,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
-     * Verifica se um artigo se encontra à venda.
+     * Verifica se um artigo se encontra à venda pelo seu identificador.
      * @param id Id do artigo
      * @return True caso o artigo esteja à venda, False se o artigo não estiver à venda.
      * @throws ArtigoException Caso o artigo não exista.
@@ -535,7 +555,7 @@ public class Sistema implements Serializable,Atributos {
     public Encomenda procuraEncomendaComprador(int id, String email) throws EncomendaException, UtilizadorException {
         if (this.verificaEncomenda(email,id))
         {
-            Encomenda encomenda = this.procuraEncomendaSistema(id,email);
+            Encomenda encomenda = this.procuraEncomendaSistema(id);
             if (encomenda.getComprador().equals(email))
             {
                 return this.listaEncomendas.get(id).clone();
@@ -543,17 +563,31 @@ public class Sistema implements Serializable,Atributos {
         } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO LHE PERTENCE!");
     }
 
-    private Encomenda procuraEncomendaSistema(int id, String email) throws EncomendaException {
+    /**
+     * Devolve a referencia de uma encomenda no sistema
+     * @param id Id da encomenda
+     * @return Uma encomenda
+     * @throws EncomendaException Caso a encomenda não exista
+     */
+    private Encomenda procuraEncomendaSistema(int id) throws EncomendaException {
         if (this.listaEncomendas.containsKey(id))
         {
             return this.listaEncomendas.get(id);
         } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA!!");
     }
 
+    /**
+     * Procura uma encomenda pelo seu vendedor
+     * @param id Id da encomenda
+     * @param email email do vendedor
+     * @return Uma encomenda
+     * @throws EncomendaException Caso a encomenda não exista ou não pertenca ao utilizador
+     * @throws UtilizadorException Caso o utilizador não seja encontrado
+     */
     public Encomenda procuraEncomendaVendedor(int id, String email) throws EncomendaException, UtilizadorException {
         if (this.verificaEncomenda(email,id))
         {
-            Encomenda encomenda = this.procuraEncomendaSistema(id,email);
+            Encomenda encomenda = this.procuraEncomendaSistema(id);
             if (encomenda.getVendedor().equals(email))
             {
                 return this.listaEncomendas.get(id).clone();
@@ -749,6 +783,14 @@ public class Sistema implements Serializable,Atributos {
         } else throw new UtilizadorException("Utilizador não encontrado!");
     }
 
+    /**
+     * Verifica o estado de uma encomenda do utilizador
+     * @param email email do utilizador
+     * @param idEncomenda Id da encomenda
+     * @param estado Estado da encomenda
+     * @return true se o estado corresponder ao passado por parametro, false caso contrario
+     * @throws UtilizadorException Caso o utilizador não seja encontrado
+     */
     public boolean verificaEstadoEncomenda(String email, int idEncomenda, int estado) throws UtilizadorException
     {
         return !this.procuraUtilizadorSistema(email).getListaEncomendas(estado).stream().filter(encomenda -> encomenda.getId() == idEncomenda && encomenda.getEstado() == estado).collect(Collectors.toList()).isEmpty();
@@ -765,7 +807,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
-     * Função que avança a data do sistema em um numero de dias.
+     * Função que avança a data do sistema em um número de dias.
      * @param dias Numero de dias a avançar.
      */
     public void saltaTempo(int dias) {
@@ -774,7 +816,7 @@ public class Sistema implements Serializable,Atributos {
     }
 
     /**
-     * Função que acança a data do sistema para uma data especifica
+     * Função que acança a data do sistema para uma data específica
      * @param ano Ano
      * @param mes mes
      * @param dia dia
@@ -799,7 +841,7 @@ public class Sistema implements Serializable,Atributos {
     /**
      * Função que atualiza o sistema baseado na data de acesso ao sistema
      */
-    public void atualizaSistema() { //TODO Função que atualiza o sistema: Entregar encomendas, diminuit stock, e emissão de fatura para cada comprador/vendedor
+    public void atualizaSistema() {
         this.atualizaEncomendas();
         this.atualizaData();
     }
@@ -895,10 +937,10 @@ public class Sistema implements Serializable,Atributos {
 
     /**
      * Devolve uma lista de utilizadores ordenados pelo volume de compras/vendas entre datas.
-     * @param primeiraData
-     * @param segundaData
-     * @param tipoVenda
-     * @return
+     * @param primeiraData Data inicial
+     * @param segundaData Data final
+     * @param tipoVenda Tipo de venda (venda ou compra/vendido)
+     * @return Array list de Utilizadores ordenados.
      */
     public List<Utilizador> maioresUtilizadoresEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda) //Querie 4
     {
@@ -947,7 +989,13 @@ public class Sistema implements Serializable,Atributos {
         return !this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList()).isEmpty();
     }
 
-    public boolean verificaEmailTransportadora(String email) throws TransportadoraException //TODO ver esta e a proxima função! Colocar exceptions nesta
+    /**
+     * Verifica se o email de uma transportadora já se encontra registrado no sistema
+     * @param email email de uma transportadora
+     * @return true se já estiver no sistema, false caso contrario
+     * @throws TransportadoraException Caso a transportadora não exista
+     */
+    public boolean verificaEmailTransportadora(String email) throws TransportadoraException
     {
         if (this.listaTransportadoras.containsKey(email))
         {
@@ -955,6 +1003,13 @@ public class Sistema implements Serializable,Atributos {
         } else throw new TransportadoraException("Esta Transportadora ou email não existe!!");
     }
 
+    /**
+     * Verifica a palavra-passe de uma transpotadora
+     * @param email email da transportadora
+     * @param palavraPasse palavra-passe
+     * @return true se a palavra-passe for correta, false caso contrario
+     * @throws TransportadoraException Caso a palavra-passe seja incorreta
+     */
     public boolean verificaPasswordTransportadora(String email, String palavraPasse) throws TransportadoraException {
         if (this.listaTransportadoras.get(email).getPalavraPasse().equals(palavraPasse))
         {
@@ -997,6 +1052,11 @@ public class Sistema implements Serializable,Atributos {
     }
 
 
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -1020,6 +1080,10 @@ public class Sistema implements Serializable,Atributos {
                 this.getTempoDevolucao() == sistema.getTempoDevolucao();
     }
 
+    /**
+     * Metodo toString do sistema
+     * @return String com o conteudo do sistema
+     */
     public String toString()
     {
         return "[Sistema]\n" +

@@ -1,8 +1,19 @@
 import java.io.Serializable;
 
+/**
+ * Classe abstata Vestuario, representa artigo do tipo vestuario
+ *
+ * @author Lucas Oliveira A98695
+ * @author Mike Pinto A89292
+ * @author Rafael Gomes A96208
+ */
 public abstract class Vestuario extends Artigo implements Serializable
 {
     private int tamanho;
+
+    ///////////////
+    //Contrutores//
+    ///////////////
 
     public Vestuario()
     {
@@ -22,6 +33,10 @@ public abstract class Vestuario extends Artigo implements Serializable
         this.tamanho = vestuario.getTamanho();
     }
 
+    /////////////////////
+    //Getters e Setters//
+    /////////////////////
+
     public int getTamanho() {
         return tamanho;
     }
@@ -30,6 +45,10 @@ public abstract class Vestuario extends Artigo implements Serializable
         this.tamanho = tamanho;
     }
 
+    /**
+     * Devolve uma String com o tamanho
+     * @return Uma String com o tamanho.
+     */
     public String tamanhoToString()
     {
         if (this.getTamanho() == Atributos.S)
@@ -47,6 +66,11 @@ public abstract class Vestuario extends Artigo implements Serializable
         return "XL";
     }
 
+    /**
+     * Metodo que verifica a igualdade entre objectos
+     * @param o Um objeto
+     * @return true se forem iguais, false caso contrario
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -62,6 +86,10 @@ public abstract class Vestuario extends Artigo implements Serializable
                 this.getTamanho() == vestuario.getTamanho();
     }
 
+    /**
+     * Devolve uma string com o valor dos atributos de um vestuario
+     * @return String ccom o valor dos atributos de um vestuario
+     */
     public String toString()
     {
         StringBuilder string = new StringBuilder();
@@ -70,5 +98,9 @@ public abstract class Vestuario extends Artigo implements Serializable
         return string.toString();
     }
 
+    /**
+     * Cria uma copia de um objecto vestuario
+     * @return Um Objecto vestuario
+     */
     public abstract Vestuario clone();
 }

@@ -438,7 +438,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws TransportadoraException Caso a transportadora não exista
      */
     public Transportadora procuraTransportadoraNome(String nome) throws TransportadoraException {
-        List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome)).collect(Collectors.toList());
+        List<Transportadora> transportadoras = this.listaTransportadoras.values().stream().filter(transportadora -> transportadora.getNome().equals(nome.toUpperCase())).collect(Collectors.toList());
         if (!transportadoras.isEmpty())
         {
             return transportadoras.get(0).clone();
@@ -918,8 +918,7 @@ public class Sistema implements Serializable,Atributos {
         }
         else throw new SistemaException("Não existem transportadoras com faturação!!");
     }
-
-
+    
     /**
      * Procura as encomendas de um vendedor
      * @param emailVendedor Email de um utilizdor

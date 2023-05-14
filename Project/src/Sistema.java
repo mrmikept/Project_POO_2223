@@ -823,7 +823,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public void saltaTempo(int ano, int mes, int dia) throws SistemaException {
         LocalDate dataInput = LocalDate.of(ano, mes, dia);
-        if (dataInput.isAfter(this.getDataAtual())) {
+        if (dataInput.isAfter(this.getDataAtual()) || dataInput.equals(this.getDataAtual())) {
             this.setDataAtual(dataInput);
             this.atualizaSistema();
         } else throw new SistemaException("Data inserida não pode ser anterior à data atual!");

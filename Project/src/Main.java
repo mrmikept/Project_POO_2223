@@ -67,7 +67,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, x, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
@@ -92,8 +92,7 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> {
+                case 1:
                     try {
                         sistema.atualizaSistema();
                         x = runPrograma();
@@ -102,8 +101,7 @@ public class Main {
                     } catch (SistemaException | EncomendaException e) {
                         throw new RuntimeException(e);
                     }
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printMenuGuardar();
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
@@ -116,7 +114,8 @@ public class Main {
                             apresentacao.printMensagemSimOuNao(101);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
-                            if (c.equals("1")) { x = 2; break;}
+                            if (c.equals("1")) {
+                                break;}
                             if (c.equals("0")) { x = 0; break;}
                         } while (true);
                         break;
@@ -148,8 +147,7 @@ public class Main {
                             x = 2;
                         }
                     }
-                }
-                case 3 -> {
+                case 3:
                     apresentacao.printMenuCarregarEstado();
                     ler = new Scanner(System.in);
                     input = ler.nextLine();
@@ -162,7 +160,6 @@ public class Main {
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
                             if (c.equals("1")) {
-                                x = 3;
                                 break;
                             }
                             if (c.equals("0")) {
@@ -178,13 +175,11 @@ public class Main {
                         apresentacao.printEnter("ESTADO CARREGADO COM SUCESSO!!");
                         ler.nextLine();
                         x = 0;
-                        break;
                     } catch (IOException e) {
                         apresentacao.printErroFicheiro();
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
-                        break;
                     } catch (CarregamentoFicheiroException e) {
                         do {
                             apresentacao.printMenuCarregarEstado();
@@ -194,7 +189,6 @@ public class Main {
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
                             if (c.equals("1")) {
-                                x = 3;
                                 break;
                             }
                             if (c.equals("0")) {
@@ -202,10 +196,8 @@ public class Main {
                                 break;
                             }
                         } while (true);
-                        break;
                     }
-                }
-                case 4 -> {
+                case 4:
                     apresentacao.printMenuAutomatizacao();
                     ler = new Scanner(System.in);
                     input_backup = ler.nextLine();
@@ -217,7 +209,8 @@ public class Main {
                             apresentacao.printMensagemSimOuNao(102);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
-                            if (c.equals("1")) {x = 4;break;}
+                            if (c.equals("1")) {
+                                break;}
                             if (c.equals("0")) {x = 0;break;}
                         } while (true);
                         break;
@@ -240,7 +233,6 @@ public class Main {
                         apresentacao.printEnterSair(90);
                         ler.nextLine();
                         x = 0;
-                        break;
                     }
                     catch (AutomatizacaoException a){
                         do {
@@ -250,12 +242,11 @@ public class Main {
                             apresentacao.printMensagemSimOuNao(102);
                             ler = new Scanner(System.in);
                             c = ler.nextLine();
-                            if (c.equals("1")) {x = 4;break;}
+                            if (c.equals("1")) {
+                                break;}
                             if (c.equals("0")) {x = 0;break;}
                         } while (true);
-                        break;
                     }
-                }
             }
         } while (x != 5);
         Apresentacao.clear();
@@ -270,7 +261,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, x, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
@@ -303,8 +294,7 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { //Iniciar sessao
+                case 1: //Iniciar sessao
                     apresentacao.printMenuLogin();
                     apresentacao.printEspacos(88);
                     ler = new Scanner(System.in);
@@ -339,8 +329,7 @@ public class Main {
                             teste = 1;
                         }
                     }
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printTrans();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
                     apresentacao.printEspacos(86);
@@ -376,8 +365,7 @@ public class Main {
                             teste = 1;
                         }
                     }
-                }
-                case 3 -> { //Registar utilizador
+                case 3: //Registar utilizador
                     apresentacao.printReg();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
                     apresentacao.printEspacos(86);
@@ -453,8 +441,7 @@ public class Main {
                         apresentacao.printMensagemCentrada(a.getMessage(), 2);
                         x = valorSimouNao(2, 3, 0);
                     }
-                }
-                case 4 -> {
+                case 4:
                     apresentacao.printRegTrans();
                     apresentacao.printMensagem("Insira o email:", 86, 1);
                     apresentacao.printEspacos(86);
@@ -565,10 +552,9 @@ public class Main {
                         apresentacao.printMensagemCentrada(a.getMessage(), 2);
                         x = valorSimouNao(3, 4, 0);
                     }
-                }
-                case 5 -> // MENU ESTATISTICAS
+                case 5: // MENU ESTATISTICAS
                         x = runEstatisticas();
-                case 6 -> // MENU CONFIGURACOES
+                case 6: // MENU CONFIGURACOES
                         x = runConfig();
             }
 
@@ -588,7 +574,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
 
                         apresentacao.printMenu(s, 1, 87, nome, sistema.getDataAtual());
@@ -619,20 +605,18 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> {
+                case 1:
                     apresentacao.printLogin();
                     apresentacao.printPerfil(utilizador);
                     ler.nextLine();
                     x = 0;
-                }
-                case 2 -> // MENU COMPRAR
+                case 2: // MENU COMPRAR
                         x = runMenuComprar(email);
-                case 3 -> // MENU VENDAS
+                case 3: // MENU VENDAS
                         x = runVendas(email);
-                case 4 -> // MENU ENCOMENDAS
+                case 4: // MENU ENCOMENDAS
                         x = runEncomendas(email);
-                case 5 -> // MENU FATURAS
+                case 5: // MENU FATURAS
                         x = runFaturas(email);
             }
         } while (x != 6);
@@ -679,7 +663,7 @@ public class Main {
 
         do{
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, 1, 87, transportadora.getNome(), sistema.getDataAtual());
                         eq = ler.nextLine();
@@ -704,14 +688,13 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> {
+                case 1:
                     apresentacao.printDadosTransportadora(transportadora);
                     ler.nextLine();
                     x = 0;
-                }
-                case 2 -> {
-                    List<Encomenda> lista = sistema.getListaEncomendas().values().stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(email) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
+
+                case 2:
+                    List<Encomenda> lista = sistema.listaEncomendaTransportadoras(email);
                     if (lista.isEmpty()) {
                         apresentacao.printEncomendas();
                         apresentacao.printMensagemCentrada("Esta transportadora não possui encomendas associadas!", 2);
@@ -726,8 +709,7 @@ public class Main {
                     }
                     paginacaoEncTransportadora(strings);
                     x = 0;
-                }
-                case 3 -> {
+                case 3:
                     transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
                     apresentacao.printClear(1);
@@ -760,8 +742,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
-                }
-                case 4 -> {
+                case 4:
                     transportadora = sistema.procuraTransportadoraEmail(email);
                     apresentacao.printTrans();
                     apresentacao.printClear(1);
@@ -795,14 +776,13 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
-                }
             }
         } while(x != 5);
 
         return 0;
     }
 
-    public int runMenuComprar(String email) throws UtilizadorException {
+    public int runMenuComprar(String email) {
         Scanner ler = new Scanner(System.in);
         String opcao;
         int paginaAtual = 1;
@@ -886,7 +866,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, 5, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
@@ -903,15 +883,12 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> {
+                case 1:
                     runMenuFaturas(email, Atributos.VENDIDO);
                     x = 0;
-                }
-                case 2 -> {
+                case 2:
                     runMenuFaturas(email, Atributos.VENDA);
                     x = 0;
-                }
             }
         } while (x != 3);
 
@@ -985,7 +962,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, 0, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
@@ -1002,15 +979,14 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { //MINHA LISTA DE ARTIGOS A VENDA
+
+                case 1: //MINHA LISTA DE ARTIGOS A VENDA
                     runMenuUtilizadorArtigosVenda(email);
                     x = 0;
-                }
-                case 2 -> //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
-                        x = runArtigosVender(email);
-            }
+                case 2: //ADICIONAR ARTIGOS A MINHA LISTA DE VENDAS
+                    x = runArtigosVender(email);
 
+            }
         } while (x != 3);
 
         return 0;
@@ -1379,7 +1355,7 @@ public class Main {
 
             do { //Ver cada parametro especifico, escolher transportadora e adicionar Artigo
                 switch (artigo) {
-                    case 1 -> {
+                    case 1:
                         apresentacao.printAdicionaArtigoVenda();
                         apresentacao.printClear(1);
                         apresentacao.printTamanhosTshirt();
@@ -1474,8 +1450,7 @@ public class Main {
                                 ler.nextLine();
                             }
                         }
-                    }
-                    case 2 -> {
+                    case 2:
                         apresentacao.printAdicionaArtigoVenda();
                         apresentacao.printClear(1);
                         apresentacao.printMensagem("INTRODUZA A SUA DIMENSÃO", 84, 1);
@@ -1617,8 +1592,7 @@ public class Main {
                                 ler.nextLine();
                             }
                         }
-                    }
-                    case 3 -> {
+                    case 3:
                         apresentacao.printAdicionaArtigoVenda();
                         apresentacao.printClear(1);
                         apresentacao.printMensagem("INTRODUZA O SEU TAMANHO (Nº DE CALÇADO )", 84, 1);
@@ -1782,7 +1756,6 @@ public class Main {
                                 ler.nextLine();
                             }
                         }
-                    }
                 }
                 break;
             } while (true);
@@ -1801,7 +1774,7 @@ public class Main {
 
         do {
             switch (flag) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printTax();
                         apresentacao.printEspacos(60);
@@ -1836,8 +1809,7 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { //Alterar imposto
+                case 1: //Alterar imposto
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
                     System.out.println(Apresentacao.CYAN_BOLD + "Taxa de imposto atual: " + Apresentacao.RESET + sistema.getTaxas().getImposto());
@@ -1882,8 +1854,7 @@ public class Main {
                     }
                     sistema.getTaxas().setImposto(imposto);
                     flag = 6;
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
                     System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncPequena());
@@ -1908,8 +1879,7 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncPequena(nTaxa);
                     flag = 6;
-                }
-                case 3 -> {
+                case 3:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
                     System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncMedia());
@@ -1934,8 +1904,7 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncMedia(nTaxa);
                     flag = 6;
-                }
-                case 4 -> {
+                case 4:
                     apresentacao.printTax();
                     apresentacao.printEspacos(86);
                     System.out.println(Apresentacao.CYAN_BOLD + "Taxa atual: " + Apresentacao.RESET + sistema.getTaxas().getTaxaEncGrande());
@@ -1960,14 +1929,13 @@ public class Main {
                     }
                     sistema.getTaxas().setTaxaEncGrande(nTaxa);
                     flag = 6;
-                }
-                case 6 -> {
+
+                case 6:
                     apresentacao.printTax();
                     apresentacao.printMensagem("ALTERACAO REALIZADA COM SUCESSO!!", 87, 3);
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     flag = 0;
-                }
             }
         } while (flag != 5);
         return 0;
@@ -1981,7 +1949,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printMenu(s, 2, 87, "", sistema.getDataAtual());
                         eq = ler.nextLine().toLowerCase();
@@ -2002,12 +1970,11 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> // MENU AVANCAR NO TEMPO
+                case 1: // MENU AVANCAR NO TEMPO
                         x = runAvancaTempo();
-                case 2 -> // MENU ALTERAR IMPOSTO E TAXAS
+                case 2: // MENU ALTERAR IMPOSTO E TAXAS
                         x = runMenuImpostos();
-                case 3 -> {
+                case 3:
                     apresentacao.printReturnTime();
                     apresentacao.printEspacos(82);
                     System.out.println(Apresentacao.CYAN_BOLD + "Limite de dias para devolver uma encomenda: " + Apresentacao.RESET + sistema.getTempoDevolucao());
@@ -2059,10 +2026,8 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
-                }
             }
         } while (x != 4);
-
         return 0;
     }
 
@@ -2075,7 +2040,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printSaltaTempo();
                         apresentacao.printOpcoes("Selecione o metodo para avançar no tempo:", s, 87);
@@ -2097,8 +2062,7 @@ public class Main {
                         }
 
                     } while (true);
-                }
-                case 1 -> {
+                case 1:
                     apresentacao.printSaltaTempo();
                     apresentacao.printMensagem("Introduza o dia (DD)", 87, 1);
                     System.out.println();
@@ -2226,8 +2190,7 @@ public class Main {
                         ler.nextLine();
                         x = 0;
                     }
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printSaltaTempo();
                     apresentacao.printMensagem("Introduza o numero de dias que pretende avançar (DD)", 78, 1);
                     System.out.println();
@@ -2279,9 +2242,7 @@ public class Main {
                     apresentacao.printEnterSair(90);
                     ler.nextLine();
                     x = 0;
-                }
             }
-
         } while (x!=3);
 
         return 0;
@@ -2295,7 +2256,7 @@ public class Main {
 
         do {
             switch (x) {
-                case 0 -> { // MENU ENCOMENDAS
+                case 0: // MENU ENCOMENDAS
 
                     do {
                         apresentacao.printMenu(s, 3, 87, "", sistema.getDataAtual());
@@ -2321,25 +2282,19 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { // MENU PENDENTES
+                case 1: // MENU PENDENTES
                     runListarEncomendas(email, Atributos.PENDENTE);
                     x = 0;
-                }
-                case 2 -> { //MENU EXPEDIDAS
+                case 2:  //MENU EXPEDIDAS
                     runListarEncomendas(email, Atributos.EXPEDIDA);
                     x = 0;
-                }
-                case 3 -> { //MENU FINALIZADAS
+                case 3: //MENU FINALIZADAS
                     runListarEncomendas(email, Atributos.FINALIZADA);
                     x = 0;
-                }
-                case 4 -> {
+                case 4:
                     runListarEncomendas(email, Atributos.DEVOLVIDA);
                     x = 0;
-                }
             }
-
         } while (x != 5);
 
         return 0;
@@ -2410,11 +2365,18 @@ public class Main {
                 apresentacao.printMensagem("INTRODUZA O ID DO ARTIGO QUE DESEJA REMOVER", 82, 2);
                 apresentacao.printEspacos(103);
                 String idArtigo = ler.nextLine().toUpperCase();
-                sistema.removeArtigoEncomenda(idArtigo, email);
-                apresentacao.printClear(2);
-                apresentacao.printMensagem("ARTIGO REMOVIDO COM SUCESSO!!", 89, 3);
-                apresentacao.printEnter("");
-                ler.nextLine();
+                try {
+                    sistema.removeArtigoEncomenda(idArtigo, email);
+                    apresentacao.printClear(2);
+                    apresentacao.printMensagem("ARTIGO REMOVIDO COM SUCESSO!!", 89, 3);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                } catch (ArtigoException e)
+                {
+                    apresentacao.printMensagemCentrada(e.getMessage(),2);
+                    apresentacao.printEnter("");
+                    ler.nextLine();
+                }
             } else if (opcao.equals("s")) {
                 break;
             }
@@ -2696,7 +2658,7 @@ public class Main {
         LocalDate data1, data2;
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printVendedorDinheiro();
                         String[] o = {"DE SEMPRE", "PERÍODO DE TEMPO", "RETROCEDER"};
@@ -2718,8 +2680,7 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { //Desde Sempre
+                case 1: //Desde Sempre
                     apresentacao.printVendedorDinheiro();
                     System.out.println();
                     try {
@@ -2735,8 +2696,7 @@ public class Main {
                         ler.nextLine();
                         x = 0;
                     }
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printVendedorDinheiro();
                     System.out.println();
                     ler = new Scanner(System.in);
@@ -2808,7 +2768,6 @@ public class Main {
                         x = 0;
                     }
                 }
-            }
         }while (x != 3);
     }
 
@@ -2851,7 +2810,7 @@ public class Main {
         List<String> strings;
         do {
             switch (x) {
-                case 0 -> {
+                case 0:
                     do {
                         apresentacao.printCompradorVendedor();
                         String[] ops = {"COMPRADOR", "VENDEDOR", "RETROCEDER"};
@@ -2871,8 +2830,7 @@ public class Main {
                             break;
                         }
                     } while (true);
-                }
-                case 1 -> { // Comprador
+                case 1: // Comprador
                     apresentacao.printCompradorVendedor();
                     apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
                     apresentacao.printEspacos(86);
@@ -2941,8 +2899,7 @@ public class Main {
                     }
                     runPaginacaoMaioresUtilizadores(strings);
                     x = 0;
-                }
-                case 2 -> {
+                case 2:
                     apresentacao.printCompradorVendedor();
                     apresentacao.printMensagemCentrada("INSIRA A DATA INICIAL (AAAA-MM-DD)", 1);
                     apresentacao.printEspacos(86);
@@ -3009,7 +2966,6 @@ public class Main {
                     }
                     runPaginacaoMaioresUtilizadores(strings);
                     x = 0;
-                }
             }
         }while (x != 3);
     }

@@ -250,7 +250,7 @@ public class Sistema implements Serializable,Atributos {
      * @throws TransportadoraException Caso a Transportadora já exista
      */
     public void adicionaTransportadora(String email, String palavraPasse, String nome, String morada, int nrFiscal, double lucro, int tipo, int tempExpedicao) throws TransportadoraException {
-        if (!this.listaTransportadoras.containsKey(email)) { //TODO VERIFICAR NOME TRANSPORTADORA
+        if (!this.listaTransportadoras.containsKey(email)) {
             if (!this.verificaNomeTransportadora(nome.toUpperCase()))
             {
                 int id = this.listaTransportadoras.size() + 1;
@@ -466,8 +466,6 @@ public class Sistema implements Serializable,Atributos {
         }
     }
 
-
-
     public void alteraMargemLucroTransportadora(String email, double margemLucro) throws TransportadoraException {
         if (this.listaTransportadoras.containsKey(email))
         {
@@ -511,18 +509,6 @@ public class Sistema implements Serializable,Atributos {
             }
             else throw new ArtigoException("Este artigo não está à venda!");
         } else throw new ArtigoException("Este artigo não existe!");
-    }
-
-    /**
-     * Procura uma encomenda
-     * @param encomenda Uma encomenda
-     * @return Uma encomenda
-     * @throws EncomendaException Caso a encomenda não exista
-     */
-    public Encomenda procuraEncomendaComprador(Encomenda encomenda) throws EncomendaException {
-        if (this.listaEncomendas.containsValue(encomenda)) {
-            return this.listaEncomendas.values().stream().filter(enc -> enc.equals(encomenda)).collect(Collectors.toList()).get(0);
-        } else throw new EncomendaException("Esta encomenda não existe!");
     }
 
     /**
@@ -626,37 +612,9 @@ public class Sistema implements Serializable,Atributos {
      */
     public void removeEncomenda(int idEncomenda, String email) {
         if (this.listaUtilizadores.containsKey(email)) {
-            Encomenda encomenda = this.listaEncomendas.get(idEncomenda - 1);
+            Encomenda encomenda = this.listaEncomendas.get(idEncomenda);
+            this.listaEncomendas.remove(idEncomenda,encomenda);
         }
-    }
-
-    /**
-     * Adiciona um artigo a uma encomenda
-     * @param artigo Um artigo
-     * @param email Email do utilizador que faz a encomenda
-     * @throws EncomendaException Caso a encomenda não exista
-     * @throws UtilizadorException Caso o utilizador não exista
-     * @throws ArtigoException Caso o artigo não exista
-     */
-    public void adicionaArtigoEncomenda(Artigo artigo, String email) throws EncomendaException, UtilizadorException, ArtigoException {
-        if (this.listaUtilizadores.containsKey(email))
-        {
-            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getVendedor().equals(artigo.getEmailVendedor()) && encomenda.getEstado() == Atributos.PENDENTE && encomenda.getTransportadora().getNome().equals(artigo.getTransportadora().getNome())).collect(Collectors.toList());
-            if (!encomendas.isEmpty())
-            {
-                Encomenda encomenda = encomendas.get(0);
-                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
-                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
-            }
-            else
-            {
-                Encomenda encomenda = new Encomenda(this.listaEncomendas.size() + 1, this.getDataAtual(), this.procuraUtilizadorSistema(email).getEmail() ,this.procuraUtilizadorSistema(artigo.getEmailVendedor()).getEmail());
-                this.procuraArtigo(artigo.getId()).setEstadoVenda(Atributos.VENDIDO);
-                encomenda.adicionaArtigo(this.procuraArtigo(artigo.getId()));
-                this.procuraUtilizadorSistema(email).adicionaEncomenda(encomenda);
-                this.adicionaEncomenda(encomenda,email);
-            }
-        } else throw new UtilizadorException("Utilizador não existente!");
     }
 
     /**
@@ -761,6 +719,7 @@ public class Sistema implements Serializable,Atributos {
                 if (encomenda.getComprador().equals(email) && encomenda.getEstado() == Atributos.PENDENTE)
                 {
                     encomenda.alteraEstadoExpedido(this.getDataAtual());
+                    this.listaEncomendas.put(idEncomenda,encomenda.clone());
                     this.emiteFatura(encomenda,email);
                     this.procuraTransportadora(encomenda.getTransportadora().getNome()).adicionaValorGanho(encomenda.calculaValorExpedicao());
                 } else throw new EncomendaException("ENCOMENDA NÃO ENCONTRADA OU NÃO PODE SER CONFIRMADA!");
@@ -778,7 +737,7 @@ public class Sistema implements Serializable,Atributos {
     public void devolveEncomenda(String email, int idEncomenda) throws UtilizadorException, EncomendaException {
         if (this.listaUtilizadores.containsKey(email))
         {
-            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == idEncomenda && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());;
+            List<Encomenda> encomendas = this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getComprador().equals(email) && encomenda.getId() == idEncomenda && encomenda.getEstado() == Atributos.FINALIZADA).collect(Collectors.toList());
             if (!encomendas.isEmpty())
             {
                 Encomenda encomenda = encomendas.get(0);
@@ -908,11 +867,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public Transportadora transportadoraMaiorFaturacao() throws SistemaException//Querie 2
     {
-        Comparator<Transportadora> comparator = (Transportadora trans1, Transportadora trans2) -> {
-            if (trans1.getValorFaturado() > trans2.getValorFaturado()) return -1;
-            if (trans1.getValorFaturado() < trans2.getValorFaturado()) return  1;
-            return 0;
-        };
+        Comparator<Transportadora> comparator = (Transportadora trans1, Transportadora trans2) -> Double.compare(trans2.getValorFaturado(), trans1.getValorFaturado());
         if (!this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).isEmpty()){
             return this.getListaTransportadoras().values().stream().sorted(comparator).collect(Collectors.toList()).get(0);
         }
@@ -931,24 +886,11 @@ public class Sistema implements Serializable,Atributos {
 
     /**
      * Procura as encomendas de uma transportadora
-     * @param nome Nome de uma transportadora
+     * @param email Email de uma transportadora
      * @return Lista de Encomendas
      */
-    public List<Encomenda> listaEncomendaTransportadoras(String nome){
-        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getTransportadora().getNome().equals(nome) && encomenda.getEstado() != Atributos.PENDENTE).collect(Collectors.toList());
-    }
-
-    /**
-     * Função que devolve uma lista dos utilizadores que mais faturaram entre datas
-     * @param primeiraData Primeira data
-     * @param segundaData Segunda data
-     * @param tipoVenda Tipo de venda, VENDA ou VENDIDO
-     * @return Lista de utilizadores.
-     */
-    private List<Utilizador> utilizadoresFaturaramEntreDatas(LocalDate primeiraData, LocalDate segundaData, int tipoVenda) //TODO CLONE AQUI
-    {
-        return this.listaUtilizadores.values().stream()
-                .filter(utilizador -> utilizador.getListaFaturas().stream().filter(fatura -> ((fatura.getDataFaturacao().isAfter(primeiraData) && fatura.getDataFaturacao().isBefore(segundaData)) || (fatura.getDataFaturacao().equals(primeiraData) && fatura.getDataFaturacao().equals(segundaData))) && fatura.getTipo() == tipoVenda).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
+    public List<Encomenda> listaEncomendaTransportadoras(String email){
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getTransportadora().getEmail().equals(email) && encomenda.getEstado() != Atributos.PENDENTE).map(Encomenda::clone).collect(Collectors.toList());
     }
 
     /**
@@ -979,7 +921,7 @@ public class Sistema implements Serializable,Atributos {
      */
     public double ganhoVintage() //Querie 5
     {
-        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).mapToDouble(encomenda -> encomenda.calculaTaxaArtigos()).sum();
+        return this.listaEncomendas.values().stream().filter(encomenda -> encomenda.getEstado() != Atributos.PENDENTE).mapToDouble(Encomenda::calculaTaxaArtigos).sum();
     }
 
 
@@ -1080,19 +1022,17 @@ public class Sistema implements Serializable,Atributos {
 
     public String toString()
     {
-        StringBuilder string = new StringBuilder();
-        string.append("[Sistema]\n");
-        string.append("[Lista Utilizadores]\n" + this.getListaUtilizadores().toString());
-        string.append("\n[Lista de Transportadoras]\n" + this.getListaTransportadoras().toString());
-        string.append("\n[Lista de Artigos]\n" + this.getListaArtigos().toString());
-        string.append("\n[Lista de Encomendas]\n" + this.getListaEncomendas().toString());
-        string.append("\n[Lista de Faturas]\n" + this.getListaFaturas().toString());
-        string.append("\nData de criação do sistema: " + this.getDataCriacao());
-        string.append("\nData do ultimo acesso ao sistema: " + this.getDataUltimoAcesso());
-        string.append("\nData atual do sistema: " + this.getDataAtual());
-        string.append("\n"+this.getTaxas().toString());
-        string.append("\nTempo de devolução: " + this.getTempoDevolucao());
-        return string.toString();
+        return "[Sistema]\n" +
+                "[Lista Utilizadores]\n" + this.getListaUtilizadores().toString() +
+                "\n[Lista de Transportadoras]\n" + this.getListaTransportadoras().toString() +
+                "\n[Lista de Artigos]\n" + this.getListaArtigos().toString() +
+                "\n[Lista de Encomendas]\n" + this.getListaEncomendas().toString() +
+                "\n[Lista de Faturas]\n" + this.getListaFaturas().toString() +
+                "\nData de criação do sistema: " + this.getDataCriacao() +
+                "\nData do ultimo acesso ao sistema: " + this.getDataUltimoAcesso() +
+                "\nData atual do sistema: " + this.getDataAtual() +
+                "\n" + this.getTaxas().toString() +
+                "\nTempo de devolução: " + this.getTempoDevolucao();
     }
 
     public Sistema clone()

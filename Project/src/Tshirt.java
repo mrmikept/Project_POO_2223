@@ -49,7 +49,7 @@ public class Tshirt extends Vestuario implements Serializable
     public double getCorrecaoPreco() {
         if (!this.verificaNovo() && this.getPadrao() != Tshirt.LISA)
         {
-            return (this.getPrecoBase() * (-0.5));
+            return Math.round((this.getPrecoBase() * (-0.5)) * 100) / 100;
         }
         return 0;
     }

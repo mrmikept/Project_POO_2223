@@ -71,7 +71,7 @@ public class Mala extends Acessorio implements Premium, Serializable
     {
         if (!this.verificaNovo() && this.getTipo() == Atributos.NORMAL)
         {
-            return (this.getPrecoBase() / this.getDimensao()) * -1;
+            return Math.round(((this.getPrecoBase() / this.getDimensao()) * -1) * 100) / 100;
         }
         return 0;
     }

@@ -87,7 +87,7 @@ public class Sapatilha extends Calcado implements Premium, Serializable {
      */
     public double getValorizacaoPremium(int date)
     {
-        return this.getPrecoBase() * Math.round((0.6 * (date - this.getDataLancamento()) * this.getPrecoBase())* 100) / 100;
+        return Math.round((0.6 * (date - this.getDataLancamento()) * this.getPrecoBase())* 100) / 100;
     }
 
     /**

@@ -1,6 +1,6 @@
 # Vintage - Programação Orientada aos Objetos (2022/23)
 
-Repositório do trabalho prático da UC de Programação Orientada aos Objetos (POO) da Universidade do Minho do ano letivo 2023/24.
+Repositório do trabalho prático da UC de Programação Orientada aos Objetos (POO) da Universidade do Minho do ano letivo 2022/23.
 
 ## Objetivo
 
